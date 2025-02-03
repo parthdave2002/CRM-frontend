@@ -38,6 +38,27 @@ export const SAVE_ROLES_ACCESS_LIST = "/api/role/access/role";
 
 
 // Packingtype
-export const GET_PACKING_TYPE_LIST = "/api/product/get-packing-type";
-export const ADD_PACKING_TYPE_LIST = "/api/product/add-packing-type";
-export const DELETE_PACKING_TYPE_LIST = "/api/product/remove-packing-type";
+export const GET_PACKING_TYPE_LIST = "/api/packing-type/get-packing-type";
+export const ADD_PACKING_TYPE_LIST = "/api/packing-type/add-packing-type";
+export const DELETE_PACKING_TYPE_LIST = "/api/packing-type/remove-packing-type";
+
+// Packing
+export const GET_PACKING_LIST = "/api/packing/get-packing";
+export const ADD_PACKING_LIST = "/api/packing/add-packing";
+export const DELETE_PACKING_LIST = "/api/packing/remove-packing";
+
+// Category
+export const GET_CATEGORY_LIST = "/api/category/";
+export const ADD_CATEGORY_LIST = "/api/category/add-category";
+export const DELETE_CATEGORY_LIST = "/api/category/remove-category";
+
+// Company
+export const GET_COMPANY_LIST = "/api/company/get-company-list";
+export const ADD_COMPANY_LIST = "/api/company/add-company-list";
+export const DELETE_COMPANY_LIST = "/api/company/remove-company-list";
+
+// Product
+export const GET_PRODUCT_LIST = "/api/product/get-product";
+export const ADD_PRODUCT_LIST = "/api/product/add-product";
+export const DELETE_PRODUCT_LIST = "/api/product/remove-product";
+export const GET_RELATED_PRODUCT_LIST = "/api/product/product-related";

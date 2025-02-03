@@ -8,7 +8,12 @@ import RoleSaga from "./Roles/saga";
 import RoleAccessSaga from "./RoleAccess/saga";
 import ModuleAccessSaga from "./Module_access/saga";
 
-import PackingSaga from "./Packing/saga";
+import PackingSaga from "./Packing/Packing/saga";
+import PackingTypeSaga from "./Packing/Packing type/saga";
+
+import CategorySaga from "./Category/saga";
+import CompanySaga from "./Company/saga";
+import ProductSaga from "./Product/saga";
 
 
 export default function* rootSaga() {
@@ -21,6 +26,10 @@ export default function* rootSaga() {
     fork(RoleAccessSaga),
     fork(ModuleAccessSaga),
 
-    fork(PackingSaga)
+    fork(PackingTypeSaga),
+    fork(PackingSaga),
+    fork(CategorySaga),
+    fork(CompanySaga),
+    fork(ProductSaga),
   ]);
 }

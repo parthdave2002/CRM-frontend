@@ -29,8 +29,8 @@ const ExamplePagination: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = funct
 
   return (
     <>
-    <div className="sticky right-0 bottom-0 w-full items-center border-t border-gray-200 p-4 dark:border-gray-700 dark:bg-gray-800 sm:flex sm:justify-between">
-          <div className="mb-4 flex items-center sm:mb-0">
+        <div className="sticky right-0 bottom-0 w-full items-center border-t border-gray-200 p-4 dark:border-gray-700 dark:bg-gray-800 md:flex md:justify-between ">
+          <div className="mb-[2rem] md:flex items-center md:mb-0">
             <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
               Pages&nbsp;
               <span className="font-semibold text-gray-900 dark:text-white">
@@ -43,13 +43,9 @@ const ExamplePagination: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = funct
             </span>
           </div>
 
-          <div>
+          <div className="mb-[2rem] md:mb-0">
             <span className="dark:text-white"> Rows Per Pages </span>
-            <select
-              onChange={(e) => {
-                rowData(e);
-              }}
-            >
+            <select className="rounded-xl dark:bg-CardColor dark:text-white" onChange={(e) => { rowData(e); }} >
               <option value="5">5</option>
               <option value="10">10</option>
               <option value="15">15</option>
@@ -57,6 +53,7 @@ const ExamplePagination: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = funct
               <option value="50"> 50</option>
             </select>
           </div>
+
           <div className="flex items-center space-x-3">
             {PageNo == 1 ? 
               <Button className="p-0" disabled={true}> <HiChevronLeft className="mr-1 text-base" /> Previous </Button>
@@ -65,7 +62,6 @@ const ExamplePagination: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = funct
             <Button className="p-0" onClick={() => { NextButtoncalll() }} > Next <HiChevronRight className="ml-1 text-base" />  </Button>
           </div>
         </div>
-      
     </>
   );
 };

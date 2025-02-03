@@ -87,7 +87,6 @@ const ModulesPage: FC = function () {
     TotalModuleListData,
     CurrentPage,
     ModuleListSize,
-    LaravelSubModulelist,
     ModuleListsize,
     TotalModuleListDat,
     Currentpage
@@ -99,12 +98,6 @@ const ModulesPage: FC = function () {
     ModuleListSize: state.Modules.ModuleListSize,
     CurrentPage: state.Modules.CurrentPage,
     TotalModuleListData: state.Modules.TotalModuleListData,
-
-    // laravel Code
-    LaravelSubModulelist: state.LaravelModule.LaravelSubModulelist,
-    ModuleListsize: state.LaravelModule.ModuleListSize,
-    TotalModuleListDat: state.LaravelModule.TotalModuleListData,
-    Currentpage: state.LaravelModule.CurrentPage,
   }));
 
   useEffect(() => {
@@ -138,7 +131,7 @@ const ModulesPage: FC = function () {
   const [CurrentPageNo, setCurrentPageNo] = useState(0);
 
   useEffect(() => {
-    setProductList(ModuleData && ModuleData.modules ? ModuleData.modules : LaravelSubModulelist  || null);
+    setProductList(ModuleData && ModuleData.modules ? ModuleData.modules  : null);
     setAccessList(ModuleData ? ModuleData.AccessData : null);
     setSingleModule(SingleModuleData ? SingleModuleData.data : null);
 
@@ -147,12 +140,11 @@ const ModulesPage: FC = function () {
     setCurrentPageNo(CurrentPage ? CurrentPage : 1);
 
   // Laravel Code
-    // setProductList( ? LaravelSubModulelist : null);
     setTotalListData(TotalModuleListDat ? TotalModuleListDat  : 0);
     setCurrentUserListSize(ModuleListsize ? ModuleListsize : 0);
     setCurrentPageNo(Currentpage ? Currentpage : 1);
     
-  }, [ ModuleData, SingleModuleData, TotalModuleListData, ModuleListSize, CurrentPage, LaravelSubModulelist, ModuleListsize,  TotalModuleListDat, Currentpage]);
+  }, [ ModuleData, SingleModuleData, TotalModuleListData, ModuleListSize, CurrentPage,  ModuleListsize,  TotalModuleListDat, Currentpage]);
 
   useEffect(() => {
     setSearchDataList(SearchModuleData ? SearchModuleData.data : null);
@@ -266,7 +258,7 @@ const ModulesPage: FC = function () {
                 </Breadcrumb.Item>
 
                 <Breadcrumb.Item>
-                  <Link to="/module_list">Module-group</Link>
+                  <Link to="/module-group">Module-group</Link>
                 </Breadcrumb.Item>
 
                 <Breadcrumb.Item>Module List</Breadcrumb.Item>

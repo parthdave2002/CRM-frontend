@@ -8,9 +8,11 @@ import { getPackingTypelist, DeletePackingTypelist } from "../../Store/actions";
 import { useEffect, useState } from "react";
 import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
+import { useNavigate } from "react-router";
 
 const PackinTypeListPage: FC = function () {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isOpenDelteModel, setisOpenDelteModel] = useState(false);
   const [UserDataList, setUserDataList] = useState([]);
   
@@ -90,7 +92,7 @@ const PackinTypeListPage: FC = function () {
   // --------- Checkbox Code end ------------
 
   const OpenAddModel = () =>{
-    console.log("calll");
+    navigate("/packing-type/add")
   }
 
   let Name = "Packing Type List";

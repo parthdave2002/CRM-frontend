@@ -1,6 +1,5 @@
 import { combineReducers } from "redux";
 
-// Node Reducer
 import Login from "./Login/reducer";
 import User from "./User/reducer";
 import Modules from "./Modules/reducer";
@@ -8,8 +7,12 @@ import Role from "./Roles/reducer";
 import RoleAccess from "./RoleAccess/reducer";
 import ModuleAccess from "./Module_access/reducer";
 
-import Packing from "./Packing/reducer";
+import PackingType from "./Packing/Packing type/reducer";
+import Packing from "./Packing/Packing/reducer";
 
+import Category from "./Category/reducer";
+import Company from "./Company/reducer";
+import Product from "./Product/reducer";
 
 const rootReducer = combineReducers({
     // public
@@ -20,7 +23,11 @@ const rootReducer = combineReducers({
     RoleAccess,
     ModuleAccess,
 
-    Packing
+    PackingType,
+    Packing,
+    Category,
+    Company,
+    Product
 });
 
 export default rootReducer;

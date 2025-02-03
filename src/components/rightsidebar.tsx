@@ -23,7 +23,7 @@ const ExampleRightSidebar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> =
     return (
       <>
         {isRightSidebar == true ? (
-          <div>
+          <div className="hidden" >
             <Card className="flex h-full min-w-0 left-0 z-9 flex-col flex-shrink-0 pt-16 xl:max-h-[27rem] duration-75 bg-Gainsboro dark:bg-black sticky" >
 
               <List>

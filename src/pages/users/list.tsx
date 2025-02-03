@@ -8,9 +8,11 @@ import { getUserlist, DeleteUserlist,   } from "../../Store/actions";
 import { lazy, useEffect, useState, Suspense  } from "react";
 import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
+import { useNavigate } from "react-router";
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 
 const UserListPage: FC = function () {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isOpenDelteModel, setisOpenDelteModel] = useState(false);
   const [UserDataList, setUserDataList] = useState([]);
@@ -62,8 +64,6 @@ const UserListPage: FC = function () {
   const [CurrentPageNo, setCurrentPageNo] = useState(0);
   
   useEffect(() => {
-    console.log("UserList", UserList);
-    
     setUserDataList(UserList. pulledData ? UserList. pulledData  : null);
     setAccessList(UserList.AccessData ? UserList.AccessData.list : []);
     setAccessCommon(UserList.AccessData ? UserList.AccessData.common : []);
@@ -100,7 +100,7 @@ const UserListPage: FC = function () {
   // --------- Checkbox Code end ------------
 
   const OpenAddModel = () =>{
-    console.log("Add Page call");
+    navigate("/users/add")
   }
 
   let Name = "User List";

@@ -98,7 +98,7 @@ const RolesPage: FC = function () {
   };
 
   const OpenAddModel = () =>{
-    console.log("Add Page call");
+    navigate("/roles/add");
   }
 
 
@@ -110,7 +110,6 @@ const RolesPage: FC = function () {
     <>
       <NavbarSidebarLayout isFooter={false} isSidebar={true} isNavbar={true} isRightSidebar={true} >
         <ExampleBreadcrumb  Name={Name} Searchplaceholder={Searchplaceholder} searchData={searchData} Changename= {Changename} isOpenAddModel= {OpenAddModel} AddAccess={AddAccess}/>
-          
           <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
             <Table.Head className="bg-gray-100 dark:bg-gray-700">
                       <Table.HeadCell> <Checkbox id="select-all" name="select-all" /></Table.HeadCell>
@@ -148,7 +147,6 @@ const RolesPage: FC = function () {
               ))}
             </Table.Body>
           </Table>
-
         <ExamplePagination PageData={PageDataList} RowPerPage={RowPerPage}  PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData}/>
       </NavbarSidebarLayout>
 

@@ -10,7 +10,7 @@ const DashboardPage: FC = function () {
     <NavbarSidebarLayout isFooter={false}  isSidebar={true} isNavbar={true}  isRightSidebar={true} >
       <div>
         {/* Sectrion :1 */}
-        <div className="grid grid-cols-2 grid-flow-row gap-4">
+        <div className="my-6 lg:grid grid-cols-2 grid-flow-row gap-4 flex flex-col">
           <div>
             <SalesThisWeek />
           </div>
@@ -29,7 +29,7 @@ const DashboardPage: FC = function () {
 
         {/* Scetion : 3 */}
 
-        <div className="my-6 grid grid-cols-3 grid-flow-row gap-4">
+        <div className="my-6 lg:grid grid-cols-3 grid-flow-row gap-4">
           <div>
             <LatestCustomers />
           </div>
@@ -42,7 +42,7 @@ const DashboardPage: FC = function () {
         </div>
 
         {/* Section :4  */}
-        <div className="my-6  grid grid-cols-2 grid-flow-row gap-4">
+        <div className="my-6 lg:grid grid-cols-2 grid-flow-row gap-4 flex flex-col">
           <div>
             <AcquisitionOverview />
           </div>
@@ -615,20 +615,11 @@ const LatestTransactions: FC = function () {
     <div className="rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6 xl:p-8">
       <div className="mb-4 flex items-center justify-between">
         <div>
-          <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
-            Latest Transactions
-          </h3>
-          <span className="text-base font-normal text-gray-600 dark:text-gray-400">
-            This is a list of latest transactions
-          </span>
+          <div className="mb-2 text-md lg:text-xl font-bold text-gray-900 dark:text-white"> Latest Transactions </div>
+          <span className="text-base font-normal text-gray-600 dark:text-gray-400 hidden md:block"> This is a list of latest transactions </span>
         </div>
         <div className="shrink-0">
-          <a
-            href="#"
-            className="rounded-lg p-2 text-sm font-medium text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700"
-          >
-            View all
-          </a>
+          <a href="#" className="rounded-lg p-2 text-sm font-medium text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700" > View all  </a>
         </div>
       </div>
       <div className="mt-8 flex flex-col">

@@ -1,6 +1,6 @@
 import { Sidebar } from "flowbite-react";
 import React, { useEffect, useState } from "react";
-import { HiShoppingBag, HiPuzzle, HiUsers, HiChartPie, HiLibrary } from "react-icons/hi";
+import { HiShoppingBag, HiCube, HiPuzzle, HiUsers, HiChartPie, HiLibrary } from "react-icons/hi";
 import type { FC, PropsWithChildren } from "react";
 import { NavLink } from "react-router-dom";
 
@@ -36,33 +36,43 @@ const LeftSidebar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = function ()
     {
       name: "Modules Group",
       icon: HiLibrary,
-      to: "/module_list",
-    },
-    {
-      name: "Products",
-      icon: HiShoppingBag,
-      to: "/e-commerce/products",
+      to: "/module-group",
     },
   ];
 
+  const MaterMenu = [
+    {
+      name: "Packing Type",
+      icon:   HiCube,
+      to: "/packing-type/list",
+    }
+  ]
+
   return (
-    <>
+    <div className="hidden lg:block">
       <Sidebar>
         <Sidebar.Items className="pb-[6rem]">
           <Sidebar.ItemGroup>
             {ViewDraftOrder.map((item, k) => (
               <NavLink to={item.to} key={k}>
-                <Sidebar.Item
-                  icon={item.icon} // Pass the icon component directly
-                  className={item.to === currentPage ? "dark:bg-gray-700" : ""}
-                >
-                  {item.name}
-                </Sidebar.Item>
+                <Sidebar.Item icon={item.icon}  className={item.to === currentPage ? "dark:bg-gray-700" : ""} >  {item.name} </Sidebar.Item>
               </NavLink>
             ))}
           </Sidebar.ItemGroup>
 
           <Sidebar.ItemGroup>
+            {/* <h4 className={"dark:text-white"}> Master:</h4> */}
+            <Sidebar.Collapse icon={HiShoppingBag} label="Master">
+              {MaterMenu.map((item, k) => (
+                <NavLink to={item.to} key={k}>
+                  <Sidebar.Item icon={item.icon}  className={item.to === currentPage ? "dark:bg-gray-700" : ""} >  {item.name} </Sidebar.Item>
+                </NavLink>
+              ))}
+            </Sidebar.Collapse>
+          </Sidebar.ItemGroup>
+       
+
+          {/* <Sidebar.ItemGroup>
             <h4 className={"dark:text-white"}>Design View only:</h4>
             <NavLink to="/e-commerce/products">
               <Sidebar.Item
@@ -74,10 +84,10 @@ const LeftSidebar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = function ()
                 Products
               </Sidebar.Item>
             </NavLink>
-          </Sidebar.ItemGroup>
+          </Sidebar.ItemGroup> */}
         </Sidebar.Items>
       </Sidebar>
-    </>
+    </div>
   );
 };
 

@@ -1,6 +1,6 @@
 import type { FC ,PropsWithChildren } from "react";
-import {  Breadcrumb,  Button,  Checkbox, Label,  Modal,  Table} from "flowbite-react";
-import { Form, Input, FormFeedback } from "reactstrap";
+import {  Breadcrumb,  Button,} from "flowbite-react";
+import { Input } from "reactstrap";
 import {  HiCog, HiDotsVertical, HiExclamationCircle, HiHome, HiDocumentDownload, HiPlus, HiTrash} from "react-icons/hi";
 import { Link } from "react-router-dom";
 
@@ -11,10 +11,12 @@ interface NavbarSidebarLayoutProps {
   Changename ?: any;
   AcccessData ?: any;
   isOpenAddModel ?: any;
-  AddAccess?: any;
+  AddAccess?: String;
+  ParentName?: String;
+  ParentLink?: any;
 }
 
-const ExampleBreadcrumb: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = function ({Name, Searchplaceholder, searchData, Changename, AcccessData, isOpenAddModel, AddAccess}) {
+const ExampleBreadcrumb: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = function ({Name, Searchplaceholder, searchData, Changename, AcccessData, isOpenAddModel, AddAccess, ParentName, ParentLink }) {
 
 
   const DataChange = (e:any) =>{
@@ -39,12 +41,25 @@ const ExampleBreadcrumb: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = funct
                     </div>
                   </Link>
                 </Breadcrumb.Item>
+
+                {ParentName && ParentLink ?
+                  <Breadcrumb.Item>
+                  <Link to={ParentLink}>
+                    <div className="flex items-center gap-x-3">
+                      <span className="dark:text-white">{ParentName}</span>
+                    </div>
+                  </Link>
+                  </Breadcrumb.Item>
+                : null
+                }
+               
                 <Breadcrumb.Item>{Name}</Breadcrumb.Item>
               </Breadcrumb>
               <h1 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl"> {Name}  </h1>
             </div>
             <div className="sm:flex">
-              <div className="mb-3 hidden items-center dark:divide-gray-700 sm:mb-0 sm:flex sm:divide-x sm:divide-gray-100">
+              {Searchplaceholder && 
+                <div className="mb-3 hidden items-center dark:divide-gray-700 sm:mb-0 sm:flex sm:divide-x sm:divide-gray-100">
                 <form className="lg:pr-3">
                   
                   <div className="relative mt-1 lg:w-64 xl:w-96">
@@ -92,10 +107,16 @@ const ExampleBreadcrumb: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = funct
                   </a>
                 </div>
               </div>
+              }
+              
                <div className="ml-auto flex items-center space-x-2 sm:space-x-3">
-                {/* {AcccessData && AcccessData.map((item:any) => item.value == AddAccess ? ( */}
+                {/* {AcccessData && AcccessData.map((item:any) => item.value == AddAccess ? ( 
+                    <Button color="primary" onClick={() => OpenAddModel()} ><div className="flex items-center gap-x-3"> <HiPlus className="text-xl " />  Add {Name}  </div> </Button>
+                ) : null)}  */}
+
+                 {AddAccess  ? 
                       <Button color="primary" onClick={() => OpenAddModel()} ><div className="flex items-center gap-x-3"> <HiPlus className="text-xl " />  Add {Name}  </div> </Button>
-                 {/* ) : null)}  */}
+                 : null } 
 
                  {AcccessData && AcccessData.map((item:any) => item.value == AddAccess ? ( 
                     <Button color="gray"> <div className="flex items-center gap-x-3"> <HiDocumentDownload className="text-xl" /> <span>Export</span> </div>  </Button>
