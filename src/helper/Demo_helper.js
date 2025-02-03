@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { APIClient, setAuthorization } from "./api_helper";
 import * as url from "./url_helper";
 import axios from "axios";
-import config from "../config";
 
 const api = new APIClient();
 
@@ -108,3 +107,23 @@ export const PackingTypelistApi = (requserdata) => api.get(url.GET_PACKING_TYPE_
 export const AddPackingTypelistApi = async (requserdata) => await api.create(url.ADD_PACKING_TYPE_LIST, requserdata);
 export const DelPackingTypelistApi = async (requserdata) => await api.delete(url.DELETE_PACKING_TYPE_LIST, requserdata);
 
+// Packing API
+export const PackinglistApi = (requserdata) => api.get(url.GET_PACKING_LIST, requserdata);
+export const AddPackinglistApi = async (requserdata) => await api.create(url.ADD_PACKING_LIST, requserdata);
+export const DelPackinglistApi = async (requserdata) => await api.delete(url.DELETE_PACKING_LIST, requserdata);
+
+// Category API
+export const CategorylistApi = (requserdata) => api.get(url.GET_CATEGORY_LIST, requserdata);
+export const AddCategorylistApi = async (requserdata) => await api.create(url.ADD_CATEGORY_LIST, requserdata);
+export const DelCategorylistApi = async (requserdata) => await api.delete(url.DELETE_CATEGORY_LIST, requserdata);
+
+// Company API
+export const CompanylistApi = (requserdata) => api.get(url.GET_COMPANY_LIST, requserdata);
+export const AddCompanylistApi = async (requserdata) => await api.create(url.ADD_COMPANY_LIST, requserdata);
+export const DelCompanylistApi = async (requserdata) => await api.delete(url.DELETE_COMPANY_LIST, requserdata);
+
+// Product API
+export const RelatedProductlistApi = (requserdata) => api.get(url.GET_RELATED_PRODUCT_LIST, requserdata);
+export const ProductlistApi = (requserdata) => api.get(url.GET_PRODUCT_LIST, requserdata);
+export const AddProductlistApi = async (requserdata) => await api.create(url.ADD_PRODUCT_LIST, requserdata);
+export const DelProductlistApi = async (requserdata) => await api.delete(url.DELETE_PRODUCT_LIST, requserdata);
