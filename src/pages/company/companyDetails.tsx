@@ -7,7 +7,7 @@ import { useEffect, useState, } from "react";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useParams } from "react-router";
 
-const PackingTypeDetailsPage: FC = function () {
+const CompanyDetailsPage: FC = function () {
   const dispatch = useDispatch();
   const { id } = useParams();
   const [PackingTypeList, setPackingTypeList] = useState([]);
@@ -45,4 +45,4 @@ const PackingTypeDetailsPage: FC = function () {
   );
 };
 
-export default PackingTypeDetailsPage;
+export default CompanyDetailsPage;

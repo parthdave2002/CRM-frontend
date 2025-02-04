@@ -10,6 +10,10 @@ import {
   DELETE_PACKING_TYPE_LIST,
   DELETE_PACKING_TYPE_LIST_SUCCESS,
   DELETE_PACKING_TYPE_LIST_ERROR,
+
+  RESET_PACKING_TYPE_LIST,
+  RESET_PACKING_TYPE_LIST_SUCCESS,
+  RESET_PACKING_TYPE_LIST_ERROR
 } from "./actionType";
 
 export const getPackingTypelist = (requserdata) => ({
@@ -54,5 +58,21 @@ export const DeletePackingTypelistSuccess = (actionType, data) => ({
 
 export const DeletePackingTypelistFail = (actionType, error) => ({
   type: DELETE_PACKING_TYPE_LIST_ERROR,
+  payload: { actionType, error },
+});
+
+
+export const ResetPackingTypelist = (requserdata) => ({
+  type: RESET_PACKING_TYPE_LIST,
+  payload: requserdata,
+});
+
+export const ResetPackingTypelistSuccess = (actionType, data) => ({
+  type: RESET_PACKING_TYPE_LIST_SUCCESS,
+  payload: { actionType, data },
+});
+
+export const ResetPackingTypelistFail = (actionType, error) => ({
+  type: RESET_PACKING_TYPE_LIST_ERROR,
   payload: { actionType, error },
 });

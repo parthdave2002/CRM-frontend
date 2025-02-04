@@ -35,7 +35,6 @@ axios.interceptors.response.use(
  * @param {*} token
  */
 const setAuthorization = (token) => {
-  const Laraveltoken = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YWQyN2QwNjgzZjcxMmMzODMwMGI1OSIsIm5hbWUiOiJSdXBhIHNodWtsYSIsImVtYWlsIjoicnVwYUBhZ3JvdmlrYXMuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJyb2xlcyI6W3siX2lkIjoiNjQ5ZTU2NGVmYWJlMWI0YjdjMzYxOWY4Iiwicm9sZV90aXRsZSI6IkRldmVsb3BlciJ9XSwiaWF0IjoxNzA1MDQyMDQyLCJleHAiOjE3NDEwNDIwNDJ9.qK9_yUngIgBt0K3Hl1DDOiLmbGKKUT2jWCEVVz1GFLI"
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 };
 
@@ -98,6 +97,7 @@ class APIClient {
         response = axios.delete(`${url}`);
     }
 
+    return response;
   };
 }
 const getLoggedinUser = () => {
