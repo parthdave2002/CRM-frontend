@@ -4,14 +4,14 @@ import type { FC } from "react";
 import { HiTrash} from "react-icons/hi";
 import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
 import { useDispatch, useSelector } from "react-redux";
-import { getPackingTypelist, DeletePackingTypelist } from "../../Store/actions";
+import { DeletePackinglist, DeletePackingTypelist, getPackinglist } from "../../Store/actions";
 import { lazy, Suspense, useEffect, useState } from "react";
 import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useNavigate } from "react-router";
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 
-const PackinTypeListPage: FC = function () {
+const PackingListPage: FC = function () {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isOpenDelteModel, setisOpenDelteModel] = useState(false);
@@ -23,14 +23,14 @@ const PackinTypeListPage: FC = function () {
   const AccessDataList = AccessList && AccessList.map((item: any) => ({ value: item.access_name }));
   const AccessData = AccessCommon && AccessCommon.map((item: any) => ({ value: item.access_name }));
   //--------- Access Data Code end------------------
-
-    const { Packingtypelist,  PackingtypelistSize, TotalPackingtypeData, CurrentPage } = useSelector((state: any) => ({
-      Packingtypelist: state.PackingType.Packingtypelist,
-      PackingtypelistSize: state.PackingType.PackingtypelistSize,
-      TotalPackingtypeData: state.PackingType.TotalPackingtypeData,
-      CurrentPage: state.PackingType.CurrentPage,
+  
+    const { Packinglist,  PackinglistSize, TotalPackingData, CurrentPage } = useSelector((state: any) => ({
+      Packinglist: state.Packing.Packinglist,
+      PackinglistSize: state.Packing.PackinglistSize,
+      TotalPackingData: state.Packing.TotalPackingData,
+      CurrentPage: state.Packing.CurrentPage,
     }));
-
+    
   // ----------- next Button  Code Start -------------
     const [TotalListData, setTotalListData] = useState(0);
     const [CurrentUserListSize, setCurrentUserListSize] = useState();
@@ -56,17 +56,17 @@ const PackinTypeListPage: FC = function () {
         size: RoePerPage,
         search: searchData
       };
-      dispatch(getPackingTypelist());
+      dispatch(getPackinglist());
     }, [dispatch, PageNo, RoePerPage, searchData]);
 
     useEffect(() => {  
-      setPackingTypeList(Packingtypelist ? Packingtypelist : null);
+      setPackingTypeList(Packinglist ? Packinglist : null);
       // setAccessList(UserList.AccessData ? UserList.AccessData.list : []);
       // setAccessCommon(UserList.AccessData ? UserList.AccessData.common : []);
-      setTotalListData(TotalPackingtypeData ? TotalPackingtypeData : 0);
-      setCurrentUserListSize(PackingtypelistSize ? PackingtypelistSize : 0);
+      setTotalListData(TotalPackingData ? TotalPackingData : 0);
+      setCurrentUserListSize(PackinglistSize ? PackinglistSize : 0);
       setCurrentPageNo(CurrentPage ? CurrentPage : 1);
-    }, [Packingtypelist,  PackingtypelistSize, TotalPackingtypeData, CurrentPage]);
+    }, [Packinglist,  PackinglistSize, TotalPackingData, CurrentPage]);
   //  ------------- Get Data From Reducer Code end --------------
 
   // ------------  Delete Code Start ------------
@@ -78,7 +78,7 @@ const PackinTypeListPage: FC = function () {
 
     const DeletepackingType = () => {
       let rqeuserdata = { id: Delete_id };
-      dispatch(DeletePackingTypelist(rqeuserdata));
+      dispatch(DeletePackinglist(rqeuserdata));
       setisOpenDelteModel(false);
     };
   // -------  Delete Code End ---------------
@@ -90,15 +90,15 @@ const PackinTypeListPage: FC = function () {
   // --------- Checkbox Code end ------------
 
   const OpenAddModel = () =>{
-    navigate("/packing-type/add")
+    navigate("/packing/add")
   }
 
   const DetailsPageCall = (id:any) =>{
-    navigate(`/packing-type/details/${id}`)
+    navigate(`/packing/details/${id}`)
   }
 
-  let Name = "Packing Type List";
-  let Searchplaceholder = "Search For Packing Types (Name)";
+  let Name = "Packing List";
+  let Searchplaceholder = "Search For Packing (Name)";
   let AddAccess = "user-add";
 
   return (
@@ -109,7 +109,7 @@ const PackinTypeListPage: FC = function () {
           <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
               <Table.Head className="bg-gray-100 dark:bg-gray-700">
                 <Table.HeadCell> <Checkbox id="select-all" name="select-all" /> </Table.HeadCell>
-                <Table.HeadCell>Type</Table.HeadCell>
+                <Table.HeadCell>Packing Weight</Table.HeadCell>
                 <Table.HeadCell>Status</Table.HeadCell>
                 <Table.HeadCell>Created At</Table.HeadCell>
                 <Table.HeadCell>Actions</Table.HeadCell>
@@ -120,7 +120,7 @@ const PackinTypeListPage: FC = function () {
                   {PackingTypeList && PackingTypeList.map((item: any, k) => (
                         <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
                           <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item._id} onClick={() => {CheckData(item._id)}}/>  </Table.Cell>
-                          <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {item.type} </Table.Cell>
+                          <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {item.number} </Table.Cell>
                           <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white">
                             {item.is_active == true ? <div className="flex items-center">  <div className="mr-2 h-2.5 w-2.5 rounded-full bg-green-400"></div> Active  </div>
                             : <div className="flex items-center">  <div className="mr-2 h-2.5 w-2.5 rounded-full bg-Red"></div> Deactive  </div>}
@@ -148,7 +148,7 @@ const PackinTypeListPage: FC = function () {
     
         {isOpenDelteModel && (
           <Suspense fallback={<div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50"> <div className="text-white">Loading...</div> </div> }>
-            <DeleteModalPage  isOpenDelteModel={isOpenDelteModel}  name={"packing type"} setisOpenDelteModel={setisOpenDelteModel}  DelCall={DeletepackingType} />
+            <DeleteModalPage  isOpenDelteModel={isOpenDelteModel}  name={"packing"} setisOpenDelteModel={setisOpenDelteModel}  DelCall={DeletepackingType} />
           </Suspense>
         )}
                   
@@ -156,4 +156,4 @@ const PackinTypeListPage: FC = function () {
   );
 };
 
-export default PackinTypeListPage;
+export default PackingListPage;

@@ -359,3 +359,32 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   display: flex;
   align-items: center;
 }
+/* React Select Dropdown  */
+
+.react-select-container {
+  @apply w-full;
+}
+
+.react-select__control {
+  @apply border-gray-700 bg-white text-black dark:bg-gray-800 dark:border-gray-700 dark:text-white;
+}
+
+.react-select__menu {
+  @apply bg-white text-black dark:bg-gray-800 dark:text-white;
+}
+
+.react-select__option {
+  @apply bg-white text-black dark:bg-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700;
+}
+
+.react-select__option--is-selected {
+  @apply bg-gray-300 text-black dark:bg-gray-700 dark:text-white;
+}
+
+.react-select__placeholder {
+  @apply text-gray-500 dark:text-gray-400;
+}
+
+.dark .react-select__single-value {
+  @apply text-white;
+}

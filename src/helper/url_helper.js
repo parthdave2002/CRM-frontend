@@ -38,7 +38,7 @@ export const SAVE_ROLES_ACCESS_LIST = "/api/role/access/role";
 
 
 // Packingtype
-export const GET_PACKING_TYPE_LIST = "/api/packing-type/get-packing-type";
+export const GET_PACKING_TYPE_LIST = "/api/packing-type";
 export const ADD_PACKING_TYPE_LIST = "/api/packing-type/add-packing-type";
 export const DELETE_PACKING_TYPE_LIST = "/api/packing-type/remove-packing-type";
 
