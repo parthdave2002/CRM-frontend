@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from "react";
 import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useSelector } from "react-redux";
+import ImageUploadPreview from "../../components/imageuploader";
 
 const ProfilePage : FC = function () {
      
@@ -24,9 +25,19 @@ const ProfilePage : FC = function () {
             <NavbarSidebarLayout isFooter={false}  isSidebar={true} isNavbar={true} isRightSidebar={true}>
                 <ExampleBreadcrumb  Name={Name}  />
                 <div className="mt-[2rem] bg-white dark:bg-gray-800 p-4">
-                    <div> Profile Page</div>
+                    <div className="flex flex-col ">
+
+                        <ImageUploadPreview />
+
+                        <div>
+                            <div className="flex justify-around dark:text-gray-50 w-full">
+                                <div> Name : Parth Dave </div>
+                                <div> Email : Parth Dave </div>
+                                <div> Contact : Parth Dave </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                
             </NavbarSidebarLayout>
         </>
     );
