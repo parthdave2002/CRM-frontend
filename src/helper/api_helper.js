@@ -1,8 +1,7 @@
 import axios from "axios";
-import config from "../config";
 
 // default
-axios.defaults.baseURL = config.API_URL;
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
 // content type
 axios.defaults.headers.post["Content-Type"] = "application/json";
@@ -80,7 +79,7 @@ class APIClient {
   /**
    * Delete
    */
-  delete = (url,params, config) => {
+  delete = (url,params) => {
     let response;
 
     let paramKeys = [];

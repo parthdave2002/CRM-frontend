@@ -20,13 +20,17 @@ interface NavbarSidebarLayoutProps {
 
 const ExampleNavbar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> =
   function () {
-    const navigation = useNavigate();
+    const navigate = useNavigate();
     const [isOpen, setOpen] = useState(false);
 
     const Logoutfun = () => {
       localStorage.clear();
-      navigation("/login");
+      navigate("/login");
     };
+
+    const Prodilefun = () => {
+      navigate("/profile")
+    }
 
     return (
       <Navbar fluid className="px-4">
@@ -82,42 +86,12 @@ const ExampleNavbar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> =
                     leaveTo="transform opacity-0 scale-95"
                   > */}
                     <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none  dark:bg-black">
-                      {/* <Menu.Item>
-                        <Link
-                          to="/dashboard"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200  dark:hover:text-white"
-                        >
-                          Dashboard
-                        </Link>
+                      <Menu.Item>
+                        <Button onClick={() => { Prodilefun()}} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100  min-w-full text-start dark:hover:bg-gray-600 dark:text-gray-200  dark:hover:text-white" > Profile </Button>
                       </Menu.Item>
-
                       
                       <Menu.Item>
-                        <Link
-                          to="/modules"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200  dark:hover:text-white"
-                        >
-                          Module Group
-                        </Link>
-                      </Menu.Item>
-
-                      <Menu.Item>
-                        <Link
-                          to="/campaign"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200  dark:hover:text-white"
-                        >
-                          Campaign
-                        </Link>
-                      </Menu.Item> */}
-                      <Menu.Item>
-                        <Button
-                          onClick={() => {
-                            Logoutfun();
-                          }}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100  min-w-full text-start dark:hover:bg-gray-600 dark:text-gray-200  dark:hover:text-white"
-                        >
-                          Sign out
-                        </Button>
+                        <Button onClick={() => { Logoutfun()}} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100  min-w-full text-start dark:hover:bg-gray-600 dark:text-gray-200  dark:hover:text-white" > Sign out </Button>
                       </Menu.Item>
                     </Menu.Items>
                   {/* </Transition> */}

@@ -10,6 +10,10 @@ import {
   DELETE_COMPANY_LIST,
   DELETE_COMPANY_LIST_SUCCESS,
   DELETE_COMPANY_LIST_ERROR,
+
+  REST_COMPANY_LIST,
+  REST_COMPANY_LIST_SUCCESS,
+  REST_COMPANY_LIST_ERROR
 } from "./actionType";
 
 export const getCompanylist = (requserdata) => ({
@@ -54,5 +58,21 @@ export const DeleteCompanylistSuccess = (actionType, data) => ({
 
 export const DeleteCompanylistFail = (actionType, error) => ({
   type: DELETE_COMPANY_LIST_ERROR,
+  payload: { actionType, error },
+});
+
+
+export const ResetCompanylist = (requserdata) => ({
+  type: REST_COMPANY_LIST,
+  payload: requserdata,
+});
+
+export const ResetCompanylistSuccess = (actionType, data) => ({
+  type: REST_COMPANY_LIST_SUCCESS,
+  payload: { actionType, data },
+});
+
+export const ResetCompanylistFail = (actionType, error) => ({
+  type: REST_COMPANY_LIST_ERROR,
   payload: { actionType, error },
 });

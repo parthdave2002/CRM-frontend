@@ -10,6 +10,10 @@ import {
   DELETE_COMPANY_LIST,
   DELETE_COMPANY_LIST_SUCCESS,
   DELETE_COMPANY_LIST_ERROR,
+
+  REST_COMPANY_LIST,
+  REST_COMPANY_LIST_SUCCESS,
+  REST_COMPANY_LIST_ERROR
 } from "./actionType";
 
 const INIT_STATE = {
@@ -17,6 +21,8 @@ const INIT_STATE = {
   CompanylistSize:0,
   TotalCompanyData:0,
   CurrentPage:1,
+  AddCompanylist: [],
+  DeleteCompanylist: [],
   error: {},
 };
 
@@ -50,7 +56,7 @@ const Company = (state = INIT_STATE, action) => {
         case ADD_COMPANY_LIST:
           return {
             ...state,
-            Companylist: action.payload.data,
+            AddCompanylist: action.payload.data,
           };
       }
     case ADD_COMPANY_LIST_ERROR:
@@ -69,7 +75,7 @@ const Company = (state = INIT_STATE, action) => {
         case DELETE_COMPANY_LIST:
           return {
             ...state,
-            Companylist: action.payload.data,
+            DeleteCompanylist: action.payload.data,
           };
       }
     case DELETE_COMPANY_LIST_ERROR:
@@ -82,6 +88,31 @@ const Company = (state = INIT_STATE, action) => {
         default:
           return { ...state };
       }
+
+      case REST_COMPANY_LIST_SUCCESS:
+        switch (action.payload.actionType) {
+          case REST_COMPANY_LIST:
+            return {
+              ...state,
+              Companylist: [],
+              CompanylistSize:0,
+              TotalCompanyData:0,
+              CurrentPage:1,
+              AddCompanylist: [],
+              DeleteCompanylist: [],
+              error: {},
+            };
+        }
+      case REST_COMPANY_LIST_ERROR:
+        switch (action.payload.actionType) {
+          case REST_COMPANY_LIST:
+            return {
+              ...state,
+              error: action.payload,
+            };
+          default:
+            return { ...state };
+        }
  
     default:
       return state;

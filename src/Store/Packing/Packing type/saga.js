@@ -20,6 +20,7 @@ import {
   RESET_PACKING_TYPE_LIST
 } from "./actionType";
 import { PackingTypelistApi, AddPackingTypelistApi, DelPackingTypelistApi,} from "../../../helper/Demo_helper";
+import { toast } from "react-toastify";
 
 function* onGetPackingTypeList({ payload: requstuser }) {
   try {
@@ -43,9 +44,12 @@ function* onAddPackingTypeList({ payload: requstuser }) {
 function* onDelPackingTypeList({ payload: requstuser }) {
   try {
     const response = yield call(DelPackingTypelistApi, requstuser);
+    console.log(response, "response");
     yield put(DeletePackingTypelistSuccess(DELETE_PACKING_TYPE_LIST, response));
 
     if(response.success === true || response.success === "true"){
+      console.log("response instance calll", response);
+      toast.success(response?.msg)
       const newresponse = yield call(PackingTypelistApi, requstuser);
       yield put(getPackingTypelistSuccess(GET_PACKING_TYPE_LIST, newresponse));
     }

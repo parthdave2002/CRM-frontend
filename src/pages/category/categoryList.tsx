@@ -4,7 +4,7 @@ import type { FC } from "react";
 import { HiTrash} from "react-icons/hi";
 import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
 import { useDispatch, useSelector } from "react-redux";
-import { DeletePackinglist, DeletePackingTypelist, getPackinglist } from "../../Store/actions";
+import { DeleteCompanylist,  getCompanylist } from "../../Store/actions";
 import { lazy, Suspense, useEffect, useState } from "react";
 import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
@@ -12,7 +12,7 @@ import { useNavigate } from "react-router";
 import moment from "moment";
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 
-const PackingListPage: FC = function () {
+const CategoryListPage: FC = function () {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isOpenDelteModel, setisOpenDelteModel] = useState(false);
@@ -25,11 +25,11 @@ const PackingListPage: FC = function () {
   const AccessData = AccessCommon && AccessCommon.map((item: any) => ({ value: item.access_name }));
   //--------- Access Data Code end------------------
   
-    const { Packinglist,  PackinglistSize, TotalPackingData, CurrentPage } = useSelector((state: any) => ({
-      Packinglist: state.Packing.Packinglist,
-      PackinglistSize: state.Packing.PackinglistSize,
-      TotalPackingData: state.Packing.TotalPackingData,
-      CurrentPage: state.Packing.CurrentPage,
+    const { Companylist,  CompanylistSize, TotalCompanyData, CurrentPage } = useSelector((state: any) => ({
+      Companylist: state.Company.Companylist,
+      CompanylistSize: state.Company.CompanylistSize,
+      TotalCompanyData: state.Company.TotalCompanyData,
+      CurrentPage: state.Company.CurrentPage,
     }));
     
   // ----------- next Button  Code Start -------------
@@ -57,17 +57,17 @@ const PackingListPage: FC = function () {
         size: RoePerPage,
         search: searchData
       };
-      dispatch(getPackinglist());
+      dispatch(getCompanylist());
     }, [dispatch, PageNo, RoePerPage, searchData]);
 
-    useEffect(() => {  
-      setPackingTypeList(Packinglist ? Packinglist : null);
+    useEffect(() => {        
+      setPackingTypeList(Companylist?.pulledData);
       // setAccessList(UserList.AccessData ? UserList.AccessData.list : []);
       // setAccessCommon(UserList.AccessData ? UserList.AccessData.common : []);
-      setTotalListData(TotalPackingData ? TotalPackingData : 0);
-      setCurrentUserListSize(PackinglistSize ? PackinglistSize : 0);
+      setTotalListData(TotalCompanyData ? TotalCompanyData : 0);
+      setCurrentUserListSize(CompanylistSize ? CompanylistSize : 0);
       setCurrentPageNo(CurrentPage ? CurrentPage : 1);
-    }, [Packinglist,  PackinglistSize, TotalPackingData, CurrentPage]);
+    }, [Companylist,  CompanylistSize, TotalCompanyData, CurrentPage]);
   //  ------------- Get Data From Reducer Code end --------------
 
   // ------------  Delete Code Start ------------
@@ -79,7 +79,7 @@ const PackingListPage: FC = function () {
 
     const DeletepackingType = () => {
       let rqeuserdata = { id: Delete_id };
-      dispatch(DeletePackinglist(rqeuserdata));
+      dispatch(DeleteCompanylist(rqeuserdata));
       setisOpenDelteModel(false);
     };
   // -------  Delete Code End ---------------
@@ -91,16 +91,16 @@ const PackingListPage: FC = function () {
   // --------- Checkbox Code end ------------
 
   const OpenAddModel = () =>{
-    navigate("/packing/add")
+    navigate("/category/add")
   }
 
   const DetailsPageCall = (id:any) =>{
-    navigate(`/packing/details/${id}`)
+    navigate(`/category/details/${id}`)
   }
 
-  let Name = "Packing List";
-  let Searchplaceholder = "Search For Packing (Name)";
-  let AddAccess = "user-add";
+  let Name = "Category List";
+  let Searchplaceholder = "Search For Category (Name)";
+  let AddAccess = "category-add";
 
   return (
     <>
@@ -110,18 +110,19 @@ const PackingListPage: FC = function () {
           <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
               <Table.Head className="bg-gray-100 dark:bg-gray-700">
                 <Table.HeadCell> <Checkbox id="select-all" name="select-all" /> </Table.HeadCell>
-                <Table.HeadCell>Packing Weight</Table.HeadCell>
+                <Table.HeadCell>Name</Table.HeadCell>
+                <Table.HeadCell>Description</Table.HeadCell>
                 <Table.HeadCell>Status</Table.HeadCell>
                 <Table.HeadCell>Created At</Table.HeadCell>
                 <Table.HeadCell>Actions</Table.HeadCell>
-               
               </Table.Head>
 
               <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
                   {PackingTypeList && PackingTypeList.map((item: any, k) => (
                         <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
                           <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item._id} onClick={() => {CheckData(item._id)}}/>  </Table.Cell>
-                          <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {item.number} </Table.Cell>
+                          <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {item.name} </Table.Cell>
+                          <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {item.description} </Table.Cell>
                           <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white">
                             {item.is_active == true ? <div className="flex items-center">  <div className="mr-2 h-2.5 w-2.5 rounded-full bg-green-400"></div> Active  </div>
                             : <div className="flex items-center">  <div className="mr-2 h-2.5 w-2.5 rounded-full bg-Red"></div> Deactive  </div>}
@@ -149,7 +150,7 @@ const PackingListPage: FC = function () {
     
         {isOpenDelteModel && (
           <Suspense fallback={<div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50"> <div className="text-white">Loading...</div> </div> }>
-            <DeleteModalPage  isOpenDelteModel={isOpenDelteModel}  name={"packing"} setisOpenDelteModel={setisOpenDelteModel}  DelCall={DeletepackingType} />
+            <DeleteModalPage  isOpenDelteModel={isOpenDelteModel}  name={"Company"} setisOpenDelteModel={setisOpenDelteModel}  DelCall={DeletepackingType} />
           </Suspense>
         )}
                   
@@ -157,4 +158,4 @@ const PackingListPage: FC = function () {
   );
 };
 
-export default PackingListPage;
+export default CategoryListPage;

@@ -3,14 +3,6 @@
   "name": "Agri bharat-React",
   "version": "1.0.0",
   "descrption": "Agri bharat-React",
-  "homepage": "https://github.com/themesberg/flowbite-react-admin-dashboard",
-  "bugs": "https://github.com/themesberg/flowbite-react-admin-dashboard/issues",
-  "license": "UNLICENSED",
-  "author": "Conner Davis <cdavis@scu.edu>",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/themesberg/flowbite-react-admin-dashboard.git"
-  },
   "scripts": {
     "build": "vite build",
     "dev": "vite --host --port 5000",
@@ -25,13 +17,11 @@
     "yarn": ">= 1"
   },
   "dependencies": {
-    "@ag-grid-community/react": "^30.0.2",
     "@headlessui/react": "^1.7.15",
     "@heroicons/react": "^2.0.18",
     "@material-tailwind/react": "^2.0.1",
     "@react-spring/web": "^9.7.3",
     "@types/react-redux": "^7.1.25",
-    "ag-grid-react": "^29.3.5",
     "apexcharts": "^3.36.3",
     "axios": "^1.4.0",
     "bootstrap": "^5.3.1",
@@ -43,7 +33,6 @@
     "react-apexcharts": "^1.4.0",
     "react-bootstrap": "^2.8.0",
     "react-icons": "^4.11.0",
-    "react-loader-spinner": "^6.1.6",
     "react-redux": "^8.1.0",
     "react-select": "^5.7.3",
     "react-toastify": "^10.0.4",
@@ -51,7 +40,6 @@
     "reactstrap": "^9.1.10",
     "redux": "^4.2.1",
     "redux-saga": "^1.2.3",
-    "reselect": "^4.1.8",
     "sass": "^1.64.1",
     "socket.io-client": "^4.7.2",
     "web-vitals": "^2.1.4",
