@@ -28,7 +28,6 @@ import {
   HiUpload,
 } from "react-icons/hi";
 import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
-import { Pagination } from "../users/list";
 import { Link } from "react-router-dom";
 
 const EcommerceProductsPage: FC = function () {
@@ -253,7 +252,7 @@ const EcommerceProductsPage: FC = function () {
               <Breadcrumb.Item>Products</Breadcrumb.Item>
             </Breadcrumb>
 
-            {Action == true ? (
+            {/* {Action == true ? (
               <Select
                 className="w-60"
                 value={selectedOption}
@@ -263,7 +262,7 @@ const EcommerceProductsPage: FC = function () {
                 options={options}
                 isClearable={true}
               />
-            ) : null}
+            ) : null} */}
 
             <h1 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
               All products
@@ -304,7 +303,7 @@ const EcommerceProductsPage: FC = function () {
             <SearchForProducts />
             <FromDateToDate />
 
-            <Select
+            {/* <Select
               className="w-full"
               value={selectedOption}
               onChange={(e) => {
@@ -312,7 +311,7 @@ const EcommerceProductsPage: FC = function () {
               }}
               options={options}
               isClearable={true}
-            />
+            /> */}
 
             <div className="relative ml-4">
               <Button color="primary">

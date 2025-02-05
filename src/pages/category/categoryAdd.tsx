@@ -10,7 +10,7 @@ import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { AddCompanylist, ResetCompanylist } from "../../Store/actions";
 
-const CompanyAddPage : FC = function () {
+const CategoryAddPage : FC = function () {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -87,9 +87,9 @@ const CompanyAddPage : FC = function () {
         }, [AddCompanyDatalist]);
     //  ------------- Get Data From Reducer Code end --------------
 
-    let Name = "Company Add";
-    let ParentName = "Company List";
-    let ParentLink = "/company/list";
+    let Name = "Category Add";
+    let ParentName = "Category List";
+    let ParentLink = "/category/list";
 
     return (
         <>  
@@ -104,7 +104,7 @@ const CompanyAddPage : FC = function () {
                                 id="name"
                                 name="name"
                                 className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
-                                placeholder="Company name"
+                                placeholder="Category name"
                                 type="text"
                                 onChange={validation.handleChange}
                                 onBlur={validation.handleBlur}
@@ -169,4 +169,4 @@ const CompanyAddPage : FC = function () {
     );
 }
 
-export default CompanyAddPage;
+export default CategoryAddPage;

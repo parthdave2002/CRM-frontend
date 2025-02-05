@@ -7,7 +7,7 @@ import { useEffect, useState, } from "react";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useParams } from "react-router";
 
-const CompanyDetailsPage: FC = function () {
+const CategoryDetailsPage: FC = function () {
   const dispatch = useDispatch();
   const { id } = useParams();
   const [PackingTypeList, setPackingTypeList] = useState([]);
@@ -27,9 +27,9 @@ const CompanyDetailsPage: FC = function () {
     setPackingTypeList(Packingtypelist ? Packingtypelist : null);
   }, [Packingtypelist]);
 
-  let Name = "Company Details";
-  let ParentName = "Company List";
-  let ParentLink = "/company/list";
+  let Name = "Cateogry Details";
+  let ParentName = "Cateogry List";
+  let ParentLink = "/category/list";
 
   return (
     <>
@@ -45,4 +45,4 @@ const CompanyDetailsPage: FC = function () {
   );
 };
 
-export default CompanyDetailsPage;
+export default CategoryDetailsPage;
