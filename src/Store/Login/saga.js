@@ -39,7 +39,6 @@ function* onInsertLogin({ payload: requstuser }) {
       localStorage.setItem("authUser", JSON.stringify(reponse));
       localStorage.setItem("Username", reponse.data.name);
       localStorage.setItem("isLoggedIn", "true");
-      localStorage.setItem("Menu",   "Default");
     }
 
   } catch (error) {

@@ -135,7 +135,7 @@ const PackinTypeListPage: FC = function () {
                               {/* ) : null )}   */}
 
                                {/* {AccessDataList &&  AccessDataList.map((data) =>  data.value === "user-delete" ? (  */}
-                                  <Button  gradientDuoTone="pinkToOrange" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Details </div> </Button>
+                                  {/* <Button  gradientDuoTone="pinkToOrange" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Details </div> </Button> */}
                               {/* ) : null )}   */}
                             </div>
                           </Table.Cell>

@@ -48,7 +48,7 @@ export const ADD_PACKING_LIST = "/api/packing/add-packing";
 export const DELETE_PACKING_LIST = "/api/packing/remove-packing";
 
 // Category
-export const GET_CATEGORY_LIST = "/api/category/";
+export const GET_CATEGORY_LIST = "/api/category/get-category";
 export const ADD_CATEGORY_LIST = "/api/category/add-category";
 export const DELETE_CATEGORY_LIST = "/api/category/remove-category";
 
@@ -62,3 +62,13 @@ export const GET_PRODUCT_LIST = "/api/product/get-product";
 export const ADD_PRODUCT_LIST = "/api/product/add-product";
 export const DELETE_PRODUCT_LIST = "/api/product/remove-product";
 export const GET_RELATED_PRODUCT_LIST = "/api/product/product-related";
+
+// Banner
+export const GET_BANNER_LIST = "/api/banner/get-banner";
+export const ADD_BANNER_LIST = "/api/banner/add-banner";
+export const DELETE_BANNER_LIST = "/api/banner/remove-banner";
+
+// Taglog
+export const GET_TAGLOG_LIST = "/api/taglog/get-taglog";
+export const ADD_TAGLOG_LIST = "/api/taglog/add-taglog";
+export const DELETE_TAGLOG_LIST = "/api/taglog/remove-taglog";

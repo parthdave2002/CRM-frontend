@@ -13,6 +13,8 @@ import Packing from "./Packing/Packing/reducer";
 import Category from "./Category/reducer";
 import Company from "./Company/reducer";
 import Product from "./Product/reducer";
+import Banner from "./Banner/reducer";
+import Taglog from "./Taglog/reducer";
 
 const rootReducer = combineReducers({
     // public
@@ -27,7 +29,9 @@ const rootReducer = combineReducers({
     Packing,
     Category,
     Company,
-    Product
+    Product,
+    Banner,
+    Taglog
 });
 
 export default rootReducer;

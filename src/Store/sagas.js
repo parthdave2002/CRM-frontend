@@ -14,7 +14,8 @@ import PackingTypeSaga from "./Packing/Packing type/saga";
 import CategorySaga from "./Category/saga";
 import CompanySaga from "./Company/saga";
 import ProductSaga from "./Product/saga";
-
+import BannerSaga from "./Banner/saga";
+import TaglogSaga from "./Taglog/saga";
 
 export default function* rootSaga() {
   yield all([
@@ -31,5 +32,7 @@ export default function* rootSaga() {
     fork(CategorySaga),
     fork(CompanySaga),
     fork(ProductSaga),
+    fork(BannerSaga),
+    fork(TaglogSaga),
   ]);
 }

@@ -1,25 +1,63 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { Badge, Dropdown, Table, useTheme } from "flowbite-react";
 import type { FC } from "react";
+import { FaUser, FaTags  } from "react-icons/fa";
 import Chart from "react-apexcharts";
 import NavbarSidebarLayout from "../layouts/navbar-sidebar";
+import { useNavigate } from "react-router";
 
 const DashboardPage: FC = function () {
 
   return (
     <NavbarSidebarLayout isFooter={false}  isSidebar={true} isNavbar={true}  isRightSidebar={true} >
       <div>
-        {/* Sectrion :1 */}
-        <div className="my-6 lg:grid grid-cols-2 grid-flow-row gap-4 flex flex-col">
-          <div>
-            <SalesThisWeek />
+
+        <div>
+          <div className="flex flex-wrap gap-3">
+        {[ 
+          { label: "Total user", value : 5 , icon: FaTags, type: 'activeUsers' },
+          { label: "Total Order", value : 10, icon: FaTags, type: 'newUsers' },
+          { label: "Total Revenue", value:8 ,icon: FaUser, type: 'engagementRate' }
+        ].map((stat, index) => (
+          <div key={index} className="w-[calc(33%-6px)] md:w-[32%] sm:w-full">
+            <div className="h-20 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-red-200 dark:bg-gray-800 dark:text-gray-50">
+              <div className="flex w-full justify-between items-start">
+                <div className={`p-3 rounded-full bg-purple-500`}>
+                  {typeof stat.icon === 'string' ? (
+                    <img src={stat.icon} alt="icon" className="w-6 h-6" />
+                  ) : (
+                    <stat.icon className="text-white w-6 h-6" />
+                  )}
+                </div>
+
+                <div>
+                <select
+                  className="border border-gray-300 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:gray-50"
+                  defaultValue="daily"
+                  // onChange={(e) => handleChange(e.target.value, stat.type)}
+                >
+                  <option value="daily">Daily</option>
+                  <option value="weekly">Weekly</option>
+                  <option value="monthly">Monthly</option>
+                </select>
+                </div>
+
+                <div className="text-center self-center">
+                  <p className="text-sm font-semibold">{stat.label}</p>
+                  <p className="text-lg font-bold text-center">{stat.value}</p>
+                </div>
+               
+              </div>
+              
+            </div>
           </div>
-          <div>
-            <SalesThisWeek />
+        ))}
           </div>
         </div>
 
-        {/* Section : 2 */}
+        <div className="my-6 lg:grid  grid-flow-row gap-4 flex flex-col">
+            <SalesThisWeek />
+        </div>
 
         <div className="my-6 ">
           <div>
@@ -27,30 +65,17 @@ const DashboardPage: FC = function () {
           </div>
         </div>
 
-        {/* Scetion : 3 */}
-
-        <div className="my-6 lg:grid grid-cols-3 grid-flow-row gap-4">
+        <div className="my-6 lg:grid grid-cols-2 grid-flow-row gap-4">
           <div>
             <LatestCustomers />
           </div>
           <div>
-            <LatestCustomers />
+            <LatestUsers />
           </div>
-          <div>
-            <LatestCustomers />
-          </div>
+         
         </div>
 
-        {/* Section :4  */}
-        <div className="my-6 lg:grid grid-cols-2 grid-flow-row gap-4 flex flex-col">
-          <div>
-            <AcquisitionOverview />
-          </div>
-
-          <div>
-            <AcquisitionOverview />
-          </div>
-        </div>
+       
       </div>
     </NavbarSidebarLayout>
   );
@@ -270,134 +295,66 @@ const Datepicker: FC = function () {
 };
 
 const LatestCustomers: FC = function () {
+  const navigate = useNavigate()
+  const ViewAllCall = () =>{
+    navigate("/customer/list")
+  }
+
+  const CustomerData =[
+    {
+      name : "Neil Sims",
+      phone: "1324567980",
+      taluka: "Ahmedabad",
+      status : "Active"
+    },
+    {
+      name : "Bonnie Green",
+      phone: "1324567980",
+      taluka: "Ahmedabad",
+      status : "Active"
+    },
+    {
+      name : "Michael Gough",
+      phone: "1324567980",
+      taluka: "Ahmedabad",
+      status : "Active"
+    },
+    {
+      name : "Thomes Lean",
+      phone: "1324567980",
+      taluka: "Ahmedabad",
+      status : "Active"
+    },
+    {
+      name : "Lana Byrd",
+      phone: "1324567980",
+      taluka: "Ahmedabad",
+      status : "Active"
+    },
+  ]
   return (
     <div className="mb-4 h-full rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6">
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
-          Latest Customers
-        </h3>
-        <a
-          href="#"
-          className="inline-flex items-center rounded-lg p-2 text-sm font-medium text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700"
-        >
-          View all
-        </a>
+        <h3 className="text-xl font-bold leading-none text-gray-900 dark:text-white"> Latest Customers </h3>
+        <div className="inline-flex items-center rounded-lg p-2 text-sm font-medium text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700 cursor-pointer" onClick={() => ViewAllCall()}>  View all </div>
       </div>
       <div className="flow-root">
         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-          <li className="py-3 sm:py-4">
-            <div className="flex items-center space-x-4">
-              <div className="shrink-0">
-                <img
-                  className="h-8 w-8 rounded-full"
-                  src="/images/users/neil-sims.png"
-                  alt=""
-                />
+          {CustomerData && CustomerData.map((item:any, k:number) =>(
+            <li className="py-3 sm:py-4" key={k}>
+            <div className="flex justify-between items-center space-x-4">
+              <div className="min-w-0 ">
+                <p className="truncate text-sm font-medium text-gray-900 dark:text-white"> {item.name} </p>
+                <p className="truncate text-sm text-gray-500 dark:text-gray-400"> {item.taluka}  </p>
               </div>
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
-                  Neil Sims
-                </p>
-                <p className="truncate text-sm text-gray-500 dark:text-gray-400">
-                  email@flowbite.com
-                </p>
-              </div>
-              <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                $320
-              </div>
+              <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">{item.phone}</div>
+              <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white ">{item.status}</div>
             </div>
-          </li>
-          <li className="py-3 sm:py-4">
-            <div className="flex items-center space-x-4">
-              <div className="shrink-0">
-                <img
-                  className="h-8 w-8 rounded-full"
-                  src="/images/users/bonnie-green.png"
-                  alt=""
-                />
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
-                  Bonnie Green
-                </p>
-                <p className="truncate text-sm text-gray-500 dark:text-gray-400">
-                  email@flowbite.com
-                </p>
-              </div>
-              <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                $3467
-              </div>
-            </div>
-          </li>
-          <li className="py-3 sm:py-4">
-            <div className="flex items-center space-x-4">
-              <div className="shrink-0">
-                <img
-                  className="h-8 w-8 rounded-full"
-                  src="/images/users/michael-gough.png"
-                  alt=""
-                />
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
-                  Michael Gough
-                </p>
-                <p className="truncate text-sm text-gray-500 dark:text-gray-400">
-                  email@flowbite.com
-                </p>
-              </div>
-              <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                $67
-              </div>
-            </div>
-          </li>
-          <li className="py-3 sm:py-4">
-            <div className="flex items-center space-x-4">
-              <div className="shrink-0">
-                <img
-                  className="h-8 w-8 rounded-full"
-                  src="/images/users/thomas-lean.png"
-                  alt=""
-                />
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
-                  Thomes Lean
-                </p>
-                <p className="truncate text-sm text-gray-500 dark:text-gray-400">
-                  email@flowbite.com
-                </p>
-              </div>
-              <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                $2367
-              </div>
-            </div>
-          </li>
-          <li className="py-3 sm:py-4">
-            <div className="flex items-center space-x-4">
-              <div className="shrink-0">
-                <img
-                  className="h-8 w-8 rounded-full"
-                  src="/images/users/lana-byrd.png"
-                  alt=""
-                />
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
-                  Lana Byrd
-                </p>
-                <p className="truncate text-sm text-gray-500 dark:text-gray-400">
-                  email@flowbite.com
-                </p>
-              </div>
-              <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                $367
-              </div>
-            </div>
-          </li>
+            </li>
+          ))}
         </ul>
       </div>
-      <div className="flex items-center justify-between border-t border-gray-200 pt-3 dark:border-gray-700 sm:pt-6">
+      {/* <div className="flex items-center justify-between border-t border-gray-200 pt-3 dark:border-gray-700 sm:pt-6">
         <Datepicker />
         <div className="shrink-0">
           <a
@@ -421,190 +378,73 @@ const LatestCustomers: FC = function () {
             </svg>
           </a>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
 
-const AcquisitionOverview: FC = function () {
+const LatestUsers: FC = function () {
+  const navigate = useNavigate()
+  const ViewAllCall = () =>{
+    navigate("/users/list")
+  }
+
+  const UserData =[
+    {
+      img :"/images/users/neil-sims.png",
+      name : "Neil Sims",
+      email:"email@flowbite.com",
+      status : "Active"
+    },
+    {
+      img :"/images/users/bonnie-green.png",
+      name : "Bonnie Green",
+      email:"email@flowbite.com",
+      status : "Active"
+    },
+    {
+      img :"/images/users/michael-gough.png",
+      name : "Michael Gough",
+      email:"email@flowbite.com",
+      status : "Active"
+    },
+    {
+      img :"/images/users/thomas-lean.png",
+      name : "Thomes Lean",
+      email:"email@flowbite.com",
+      status : "Active"
+    },
+    {
+      img :"/images/users/lana-byrd.png",
+      name : "Lana Byrd",
+      email:"email@flowbite.com",
+      status : "Active"
+    },
+  ]
+
   return (
-    <div className="rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6 xl:p-8">
-      <h3 className="mb-6 text-xl font-bold leading-none text-gray-900 dark:text-white">
-        Acquisition Overview
-      </h3>
-      <div className="flex flex-col">
-        <div className="overflow-x-auto rounded-lg">
-          <div className="inline-block min-w-full align-middle">
-            <div className="overflow-hidden shadow sm:rounded-lg">
-              <Table className="min-w-full table-fixed">
-                <Table.Head>
-                  <Table.HeadCell className="whitespace-nowrap rounded-l border-x-0 bg-gray-50 py-3 px-4 text-left align-middle text-xs font-semibold uppercase text-gray-700 dark:bg-gray-700 dark:text-white">
-                    Top Channels
-                  </Table.HeadCell>
-                  <Table.HeadCell className="whitespace-nowrap border-x-0 bg-gray-50 py-3 px-4 text-left align-middle text-xs font-semibold uppercase text-gray-700 dark:bg-gray-700 dark:text-white">
-                    Users
-                  </Table.HeadCell>
-                  <Table.HeadCell className="min-w-[140px] whitespace-nowrap rounded-r border-x-0 bg-gray-50 py-3 px-4 text-left align-middle text-xs font-semibold uppercase text-gray-700 dark:bg-gray-700 dark:text-white">
-                    Acquisition
-                  </Table.HeadCell>
-                </Table.Head>
-                <Table.Body className="divide-y divide-gray-100 dark:divide-gray-700">
-                  <Table.Row className="text-gray-500 dark:text-gray-400">
-                    <Table.Cell className="whitespace-nowrap border-t-0 p-4 text-left align-middle text-sm font-normal">
-                      Organic Search
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap border-t-0 p-4 align-middle text-xs font-medium text-gray-900 dark:text-white">
-                      5,649
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap border-t-0 p-4 align-middle text-xs">
-                      <div className="flex items-center">
-                        <span className="mr-2 text-xs font-medium">30%</span>
-                        <div className="relative w-full">
-                          <div className="h-2 w-full rounded-sm bg-gray-200 dark:bg-gray-700">
-                            <div
-                              className="h-2 rounded-sm bg-primary-700"
-                              style={{ width: "30%" }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row className="text-gray-500 dark:text-gray-400">
-                    <Table.Cell className="whitespace-nowrap border-t-0 p-4 text-left align-middle text-sm font-normal">
-                      Referral
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap border-t-0 p-4 align-middle text-xs font-medium text-gray-900 dark:text-white">
-                      4,025
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap border-t-0 p-4 align-middle text-xs">
-                      <div className="flex items-center">
-                        <span className="mr-2 text-xs font-medium">24%</span>
-                        <div className="relative w-full">
-                          <div className="h-2 w-full rounded-sm bg-gray-200 dark:bg-gray-700">
-                            <div
-                              className="h-2 rounded-sm bg-orange-300"
-                              style={{ width: "24%" }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row className="text-gray-500 dark:text-gray-400">
-                    <Table.Cell className="whitespace-nowrap border-t-0 p-4 text-left align-middle text-sm font-normal">
-                      Direct
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap border-t-0 p-4 align-middle text-xs font-medium text-gray-900 dark:text-white">
-                      3,105
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap border-t-0 p-4 align-middle text-xs">
-                      <div className="flex items-center">
-                        <span className="mr-2 text-xs font-medium">18%</span>
-                        <div className="relative w-full">
-                          <div className="h-2 w-full rounded-sm bg-gray-200 dark:bg-gray-700">
-                            <div
-                              className="h-2 rounded-sm bg-teal-400"
-                              style={{ width: "18%" }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row className="text-gray-500 dark:text-gray-400">
-                    <Table.Cell className="whitespace-nowrap border-t-0 p-4 text-left align-middle text-sm font-normal">
-                      Social
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap border-t-0 p-4 align-middle text-xs font-medium text-gray-900 dark:text-white">
-                      1251
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap border-t-0 p-4 align-middle text-xs">
-                      <div className="flex items-center">
-                        <span className="mr-2 text-xs font-medium">12%</span>
-                        <div className="relative w-full">
-                          <div className="h-2 w-full rounded-sm bg-gray-200 dark:bg-gray-700">
-                            <div
-                              className="h-2 rounded-sm bg-pink-600"
-                              style={{ width: "12%" }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row className="text-gray-500 dark:text-gray-400">
-                    <Table.Cell className="whitespace-nowrap border-t-0 p-4 text-left align-middle text-sm font-normal">
-                      Other
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap border-t-0 p-4 align-middle text-xs font-medium text-gray-900 dark:text-white">
-                      734
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap border-t-0 p-4 align-middle text-xs">
-                      <div className="flex items-center">
-                        <span className="mr-2 text-xs font-medium">9%</span>
-                        <div className="relative w-full">
-                          <div className="h-2 w-full rounded-sm bg-gray-200 dark:bg-gray-700">
-                            <div
-                              className="h-2 rounded-sm bg-indigo-600"
-                              style={{ width: "9%" }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row className="text-gray-500 dark:text-gray-400">
-                    <Table.Cell className="whitespace-nowrap border-t-0 p-4 text-left align-middle text-sm font-normal">
-                      Email
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap border-t-0 p-4 align-middle text-xs font-medium text-gray-900 dark:text-white">
-                      456
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap border-t-0 p-4 align-middle text-xs">
-                      <div className="flex items-center">
-                        <span className="mr-2 text-xs font-medium">7%</span>
-                        <div className="relative w-full">
-                          <div className="h-2 w-full rounded-sm bg-gray-200 dark:bg-gray-700">
-                            <div
-                              className="h-2 rounded-sm bg-purple-500"
-                              style={{ width: "7%" }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </Table.Cell>
-                  </Table.Row>
-                </Table.Body>
-              </Table>
-            </div>
-          </div>
-        </div>
+    <div className="mb-4 h-full rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6">
+      <div className="mb-4 flex items-center justify-between">
+        <h3 className="text-xl font-bold leading-none text-gray-900 dark:text-white"> Latest Users </h3>
+        <div className="inline-flex items-center rounded-lg p-2 text-sm font-medium text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700 cursor-pointer" onClick={() => ViewAllCall()}>  View all </div>
       </div>
-      <div className="flex items-center justify-between border-t border-gray-200 pt-3 dark:border-gray-700 sm:pt-6">
-        <Datepicker />
-        <div className="shrink-0">
-          <a
-            href="#"
-            className="inline-flex items-center rounded-lg p-2 text-xs font-medium uppercase text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700 sm:text-sm"
-          >
-            Acquisition Report
-            <svg
-              className="ml-1 h-4 w-4 sm:h-5 sm:w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </a>
-        </div>
+      <div className="flow-root">
+        <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+          {UserData && UserData.map((item:any, k:number) =>(
+            <li className="py-3 sm:py-4" key={k}>
+            <div className="flex items-center space-x-4">
+              <div className="shrink-0">
+                <img className="h-8 w-8 rounded-full" src={item.img}  alt="" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-medium text-gray-900 dark:text-white"> {item.name} </p>
+                <p className="truncate text-sm text-gray-500 dark:text-gray-400"> {item.email}  </p>
+              </div>
+              <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">{item.status}</div>
+            </div>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );

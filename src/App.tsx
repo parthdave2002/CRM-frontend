@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import PrivateRoute from "./routes/PrivateRoute";
 import LoaderPage from "./components/loader";
 
+
 const DashboardPage = lazy(() => import("./pages"));
 const SignInPage = lazy(() => import("./pages/authentication/sign-in"));
 const UserListPage = lazy(() => import("./pages/users/list"));
@@ -30,6 +31,17 @@ const CategoryDetailsPage = lazy(() => import("./pages/category/categoryDetails"
 const CustomerListPage = lazy(() => import("./pages/customer/customerlist"));
 const ProfilePage = lazy(() => import("./pages/profile/profile"));
 const PageNotFound = lazy(() => import("./pages/pagenotfound/pagenotfound"));
+const BannerListPage = lazy(() => import("./pages/banner/bannerList"));
+const BannerAddPage = lazy(() => import("./pages/banner/bannerAdd"));
+const BannerDetailsPage = lazy(() => import("./pages/banner/bannerDetails"));
+const ProductAddPage = lazy(() => import("./pages/product/productAdd"));
+const ProductListPage = lazy(() => import("./pages/product/productList"));
+const ProductDetailsPage = lazy(() => import("./pages/product/productDetails"));
+const TaglogListPage = lazy(() => import("./pages/taglog/taglogList"));
+const TaglogAddPage = lazy(() => import("./pages/taglog/taglogAdd"));
+const TaglogDetailsPage = lazy(() => import("./pages/taglog/taglogDetails"));
+const ReportPage = lazy(() => import("./pages/report/report"));
+
 const SalesCRMPage = lazy(() => import("./pages/salesExecutive"));
 
 const App: FC = function () {
@@ -66,14 +78,25 @@ const App: FC = function () {
             <Route path="/company/add" element={<CompanyAddPage />} />
             <Route path="/company/:id" element={<CompanyAddPage />} />
             <Route path="/company/details/:id" element={<CompanyDetailsPage />} />
-
             <Route path="/category/list" element={<CategoryListPage />} />
             <Route path="/category/add" element={<CategoryAddPage />} />
             <Route path="/category/:id" element={<CategoryAddPage />} />
             <Route path="/category/details/:id" element={<CategoryDetailsPage />} />
-
             <Route path="/customer/list" element={<CustomerListPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/banner/list" element={<BannerListPage />} />
+            <Route path="/banner/add" element={<BannerAddPage />} />
+            <Route path="/banner/:id" element={<BannerAddPage />} />
+            <Route path="/banner/details/:id" element={<BannerDetailsPage />} />
+            <Route path="/taglog/list" element={<TaglogListPage />} />
+            <Route path="/taglog/add" element={<TaglogAddPage />} />
+            <Route path="/taglog/:id" element={<TaglogAddPage />} />
+            <Route path="/taglog/details/:id" element={<TaglogDetailsPage />} />
+            <Route path="/product/list" element={<ProductListPage />} />
+            <Route path="/product/add" element={<ProductAddPage />} />
+            <Route path="/product/:id" element={<ProductAddPage />} />
+            <Route path="/product/details/:id" element={<ProductDetailsPage />} />
+            <Route path="/report" element={<ReportPage />} />
 
             {/* Sales Routes */}
             <Route path="/sales-crm" element={<SalesCRMPage />} />

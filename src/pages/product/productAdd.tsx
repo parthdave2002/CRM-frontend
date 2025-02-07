@@ -5,15 +5,46 @@ import { Label, Button } from "flowbite-react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Select from "react-select";
+import { HiTrash} from "react-icons/hi";
 import { Form, Input, FormFeedback } from "reactstrap";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { AddCompanylist, ResetCompanylist } from "../../Store/actions";
-import ImageUploadPreview from "../../components/imageuploader";
 
-const CategoryAddPage : FC = function () {
+interface KeyValue {
+    id: number;
+    header: string;
+    value: string;
+}
+
+const ProductAddPage : FC = function () {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+
+
+
+    const [inputs, setInputs] = useState<KeyValue[]>([{ id: 1, header: "", value: "" }]);
+
+    // Handle input change
+    const handleChange = (id: number, field: "header" | "value", newValue: string) => {
+      setInputs((prev) =>
+        prev.map((item) => (item.id === id ? { ...item, [field]: newValue } : item))
+      );
+    };
+  
+    // Add new input field
+    const handleAddField = () => {
+      setInputs([...inputs, { id: Date.now(), header: "", value: "" }]);
+    };
+  
+    // Remove input field
+    const handleRemoveField = (id: number) => {
+      setInputs((prev) => prev.filter((item) => item.id !== id));
+    };
+
+
+
 
     // ------ status code start ------
     const [selectedactiveOption, setSelectedactiveOption] = useState(null);
@@ -88,9 +119,9 @@ const CategoryAddPage : FC = function () {
         }, [AddCompanyDatalist]);
     //  ------------- Get Data From Reducer Code end --------------
 
-    let Name = "Category Add";
-    let ParentName = "Category List";
-    let ParentLink = "/category/list";
+    let Name = "Product Add";
+    let ParentName = "Product List";
+    let ParentLink = "/product/list";
 
     return (
         <>  
@@ -98,9 +129,6 @@ const CategoryAddPage : FC = function () {
                 <ExampleBreadcrumb  Name={Name} ParentName={ParentName} ParentLink={ParentLink}  />
                 <div className="mt-[2rem] bg-white dark:bg-gray-800 p-4">
                     <Form onSubmit={(e) => { e.preventDefault(); validation.handleSubmit(); return false; }} >
-
-                        <ImageUploadPreview />
-
                         <div>
                             <Label htmlFor="Name">Name</Label>
                             <div className="mt-1">
@@ -119,7 +147,7 @@ const CategoryAddPage : FC = function () {
                             </div>
                         </div>
 
-                        <div className="mt-[1rem]">
+                        {/* <div className="mt-[1rem]">
                             <Label htmlFor="Description">Description</Label>
                             <div className="mt-1">
                             <Input
@@ -135,6 +163,74 @@ const CategoryAddPage : FC = function () {
                             />
                             {validation.touched.description && validation.errors.description ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.description} </FormFeedback> ) : null}
                             </div>
+                        </div> */}
+
+                        <div className="space-y-4 my-[1rem]">
+                            <Button  onClick={handleAddField} className="flex items-center gap-2">
+                                            {/* <Plus size={20} />  */}
+                                            Add Field
+                            </Button>
+                            {inputs.map((item, index) => (
+                                <div key={item.id} className=" items-center gap-2">
+                                        
+
+                                        <div className=" ">
+                                            <div className="flex">
+                                                <div className="flex-1 flex gap-x-[1rem]">
+                                                    <Label className="self-center" htmlFor="Header">Gujarati Header</Label>
+                                                    <Input
+                                                        type="text"
+                                                        placeholder="Header"
+                                                        value={item.header}
+                                                        onChange={(e) => handleChange(item.id, "header", e.target.value)}
+                                                        className="w-[15rem] p-1 border border-gray-300 rounded-lg dark:bg-gray-800 dark:text-gray-50"
+                                                    />
+                                                </div>
+                                                <div className="flex-1 flex gap-x-[1rem]">
+                                                    <Label className="self-center" htmlFor="Header">English Header</Label>
+                                                    <Input
+                                                        type="text"
+                                                        placeholder="Header"
+                                                        value={item.header}
+                                                        onChange={(e) => handleChange(item.id, "header", e.target.value)}
+                                                        className="w-[15rem] p-1 border border-gray-300 rounded-lg dark:bg-gray-800 dark:text-gray-50"
+                                                    />
+                                                </div>
+                                            </div>
+                                        
+                                            <div className="flex gap-x-3">
+                                                <div className="flex-1">
+                                                <Label htmlFor="Header">Gujarati Value</Label>
+                                                <Input
+                                                    type="textarea"
+                                                    placeholder="Value"
+                                                    value={item.value}
+                                                    onChange={(e) => handleChange(item.id, "value", e.target.value)}
+                                                    className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-800 dark:text-gray-50"
+                                                />
+                                                </div>
+
+                                                <div className="flex-1">
+                                                <Label htmlFor="Header">English Value</Label>
+                                                <Input
+                                                    type="textarea"
+                                                    placeholder="Value"
+                                                    value={item.value}
+                                                    onChange={(e) => handleChange(item.id, "value", e.target.value)}
+                                                    className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-800 dark:text-gray-50"
+                                                />
+                                                </div>
+                                            </div>
+                                            <div className="">
+                                                {index > 0 && (
+                                                    <Button  onClick={() => handleRemoveField(item.id)} className="text-red-500">
+                                                    <HiTrash size={20} />
+                                                    </Button>
+                                                )}
+                                            </div>
+                                        </div>
+                                </div>
+                            ))}
                         </div>
 
                         <div className="mt-[1rem]">
@@ -163,7 +259,7 @@ const CategoryAddPage : FC = function () {
                         </div>
 
                         <div className="flex gap-x-3 justify-end mt-[1rem]">
-                            <Button className="bg-addbutton hover:bg-addbutton dark:bg-addbutton dark:hover:bg-addbutton" type="submit" > Add Category </Button>
+                            <Button className="bg-addbutton hover:bg-addbutton dark:bg-addbutton dark:hover:bg-addbutton" type="submit" > Add Product </Button>
                             <Button className="bg-deletebutton hover:bg-deletebutton dark:bg-deletebutton dark:hover:bg-deletebutton" onClick={() => navigate(ParentLink)}>  Close </Button>
                         </div>
                     </Form>
@@ -173,4 +269,4 @@ const CategoryAddPage : FC = function () {
     );
 }
 
-export default CategoryAddPage;
+export default ProductAddPage;

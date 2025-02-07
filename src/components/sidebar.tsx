@@ -2,8 +2,9 @@ import { Sidebar } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { HiShoppingBag, HiCube, HiPuzzle, HiUsers, HiChartPie, HiLibrary } from "react-icons/hi";
 import { LuPackageOpen } from "react-icons/lu";
-import { FaUser } from "react-icons/fa";
-import { BsBuildingsFill } from "react-icons/bs";
+import { TbReportSearch } from "react-icons/tb";
+import { FaUser, FaTags  } from "react-icons/fa";
+import { BsBuildingsFill, BsCloudArrowUpFill  } from "react-icons/bs";
 import { BiCategoryAlt } from "react-icons/bi";
 import type { FC, PropsWithChildren } from "react";
 import { NavLink } from "react-router-dom";
@@ -38,14 +39,19 @@ const LeftSidebar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = function ()
       to: "/roles/list",
     },
     {
-      name: "Modules Group",
-      icon: HiLibrary,
-      to: "/module-group",
-    },
-    {
       name: "Customer",
       icon: FaUser,
       to: "/customer/list",
+    },
+    {
+      name: "Product",
+      icon: HiLibrary,
+      to: "/product/list",
+    },
+    {
+      name: "Report",
+      icon: TbReportSearch,
+      to: "/report",
     },
   ];
 
@@ -55,21 +61,31 @@ const LeftSidebar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = function ()
       icon:   HiCube,
       to: "/packing-type/list",
     },
-    {
-      name: "Packing",
-      icon:  LuPackageOpen,
-      to: "/packing/list",
-    },
-    {
-      name: "Company Information",
-      icon:  BsBuildingsFill,
-      to: "/company/list",
-    },
+    // {
+    //   name: "Packing",
+    //   icon:  LuPackageOpen,
+    //   to: "/packing/list",
+    // },
+    // {
+    //   name: "Company",
+    //   icon:  BsBuildingsFill,
+    //   to: "/company/list",
+    // },
     {
       name: "Category List",
       icon:  BiCategoryAlt,
       to: "/category/list",
-    }
+    },
+    {
+      name: "Banner List",
+      icon:  BsCloudArrowUpFill ,
+      to: "/banner/list",
+    },
+    {
+      name: "Taglog List",
+      icon:  FaTags,
+      to: "/taglog/list",
+    },
   ]
 
   return (

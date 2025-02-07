@@ -36,6 +36,11 @@ function* onDelCategoryList({ payload: requstuser }) {
   try {
     const response = yield call(DelCategorylistApi, requstuser);
     yield put(DeleteCategorylistSuccess(DELETE_CATEGORY_LIST, response));
+     
+    if(response.success === true || response.success === "true"){
+      const newresponse = yield call(CategorylistApi);
+      yield put(getCategorylistSuccess(GET_CATEGORY_LIST, newresponse));
+    }
   } catch (error) {
     yield put(DeleteCategorylistFail(error));
   }
