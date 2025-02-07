@@ -7,7 +7,7 @@ import { Menu, Transition } from "@headlessui/react";
 import Appbar from "../components/appbar";
 import TabNavbar from "../components/tabnavbar";
 import Notification from "../components/notification";
-import logo from "../img/logo.png";
+import logo from "../img/logo.webp";
 import { Modal } from "flowbite-react";
 import userphoto from "../img/profile-picture-3.jpg";
 import { Button } from "reactstrap";

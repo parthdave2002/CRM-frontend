@@ -4,7 +4,7 @@ import type { FC } from "react";
 import { HiTrash} from "react-icons/hi";
 import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
 import { useDispatch, useSelector } from "react-redux";
-import { DeleteCompanylist,  getBannerlist } from "../../Store/actions";
+import { DeleteBannerlist,  getBannerlist } from "../../Store/actions";
 import { lazy, Suspense, useEffect, useState } from "react";
 import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
@@ -80,7 +80,7 @@ const BannerListPage: FC = function () {
 
     const DeletepackingType = () => {
       let rqeuserdata = { id: Delete_id };
-      dispatch(DeleteCompanylist(rqeuserdata));
+      dispatch(DeleteBannerlist(rqeuserdata));
       setisOpenDelteModel(false);
     };
   // -------  Delete Code End ---------------

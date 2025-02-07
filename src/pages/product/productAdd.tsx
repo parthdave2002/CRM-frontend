@@ -21,9 +21,6 @@ const ProductAddPage : FC = function () {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-
-
-
     const [inputs, setInputs] = useState<KeyValue[]>([{ id: 1, header: "", value: "" }]);
 
     // Handle input change

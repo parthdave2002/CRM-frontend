@@ -8,7 +8,7 @@ import Select from "react-select";
 import { Form, Input, FormFeedback } from "reactstrap";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { AddCompanylist, ResetCompanylist } from "../../Store/actions";
+import { AddBannerlist, ResetBannerlist } from "../../Store/actions";
 
 const BannerAddPage : FC = function () {
     const dispatch = useDispatch();
@@ -43,8 +43,8 @@ const BannerAddPage : FC = function () {
         initialValues: initialValues,
     
         validationSchema: Yup.object({
-          name: Yup.string().required("Please enter company name"),
-          description: Yup.string().required("Please enter company description")
+          name: Yup.string().required("Please enter banner name"),
+          description: Yup.string().required("Please enter banner description")
         }),
         
         onSubmit: (values) => {
@@ -55,7 +55,7 @@ const BannerAddPage : FC = function () {
             description: values?.description,
             is_active: selectedactiveid,
           };
-          dispatch(AddCompanylist(requserdata));
+          dispatch(AddBannerlist(requserdata));
         },
     });
 
@@ -71,20 +71,20 @@ const BannerAddPage : FC = function () {
     ]
 
     // ------------- Get  Data From Reducer Code Start --------------
-        const { AddCompanyDatalist } = useSelector((state: any) => ({
-            AddCompanyDatalist: state.Company.AddCompanylist,
+        const { AddBannerDatalist } = useSelector((state: any) => ({
+            AddBannerDatalist: state.Banner.AddBannerlist,
         }));
 
         useEffect(() => {  
-            if(AddCompanyDatalist?.success == true){
-                dispatch(ResetCompanylist())
+            if(AddBannerDatalist?.success == true){
+                dispatch(ResetBannerlist())
                 navigate(ParentLink)
                 validation.resetForm();
                 setSelectedactiveid(0);
                 setSelectedactiveOption(null);
                 setValidateactive(1)
             }
-        }, [AddCompanyDatalist]);
+        }, [AddBannerDatalist]);
     //  ------------- Get Data From Reducer Code end --------------
 
     let Name = "Banner Add";

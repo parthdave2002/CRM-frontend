@@ -4,7 +4,7 @@ import type { FC } from "react";
 import { HiTrash} from "react-icons/hi";
 import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
 import { useDispatch, useSelector } from "react-redux";
-import { DeleteCompanylist,  getCompanylist } from "../../Store/actions";
+import { DeleteProductlist,  getProductlist } from "../../Store/actions";
 import { lazy, Suspense, useEffect, useState } from "react";
 import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
@@ -25,11 +25,11 @@ const ProductListPage: FC = function () {
   const AccessData = AccessCommon && AccessCommon.map((item: any) => ({ value: item.access_name }));
   //--------- Access Data Code end------------------
   
-    const { Companylist,  CompanylistSize, TotalCompanyData, CurrentPage } = useSelector((state: any) => ({
-      Companylist: state.Company.Companylist,
-      CompanylistSize: state.Company.CompanylistSize,
-      TotalCompanyData: state.Company.TotalCompanyData,
-      CurrentPage: state.Company.CurrentPage,
+    const { Productlist,  ProductlistSize, TotalProductData, CurrentPage } = useSelector((state: any) => ({
+      Productlist: state.Product.Productlist,
+      ProductlistSize: state.Product.ProductlistSize,
+      TotalProductData: state.Product.TotalProductData,
+      CurrentPage: state.Product.CurrentPage,
     }));
     
   // ----------- next Button  Code Start -------------
@@ -57,17 +57,17 @@ const ProductListPage: FC = function () {
         size: RoePerPage,
         search: searchData
       };
-      dispatch(getCompanylist());
+      dispatch(getProductlist());
     }, [dispatch, PageNo, RoePerPage, searchData]);
 
     useEffect(() => {        
-      setPackingTypeList(Companylist?.pulledData);
+      setPackingTypeList(Productlist ? Productlist  :[]);
       // setAccessList(UserList.AccessData ? UserList.AccessData.list : []);
       // setAccessCommon(UserList.AccessData ? UserList.AccessData.common : []);
-      setTotalListData(TotalCompanyData ? TotalCompanyData : 0);
-      setCurrentUserListSize(CompanylistSize ? CompanylistSize : 0);
+      setTotalListData(TotalProductData ? TotalProductData : 0);
+      setCurrentUserListSize(ProductlistSize ? ProductlistSize : 0);
       setCurrentPageNo(CurrentPage ? CurrentPage : 1);
-    }, [Companylist,  CompanylistSize, TotalCompanyData, CurrentPage]);
+    }, [Productlist,  ProductlistSize, TotalProductData, CurrentPage]);
   //  ------------- Get Data From Reducer Code end --------------
 
   // ------------  Delete Code Start ------------
@@ -79,7 +79,7 @@ const ProductListPage: FC = function () {
 
     const DeletepackingType = () => {
       let rqeuserdata = { id: Delete_id };
-      dispatch(DeleteCompanylist(rqeuserdata));
+      dispatch(DeleteProductlist(rqeuserdata));
       setisOpenDelteModel(false);
     };
   // -------  Delete Code End ---------------

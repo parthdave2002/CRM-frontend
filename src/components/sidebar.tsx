@@ -49,6 +49,11 @@ const LeftSidebar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = function ()
       to: "/product/list",
     },
     {
+      name: "Order",
+      icon: HiLibrary,
+      to: "/order/list",
+    },
+    {
       name: "Report",
       icon: TbReportSearch,
       to: "/report",

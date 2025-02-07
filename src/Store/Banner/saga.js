@@ -43,7 +43,7 @@ function* onDelBannerList({ payload: requstuser }) {
 
     if(response.success === true || response.success === "true"){
       const newresponse = yield call(BannerlistApi);
-    yield put(getBannerlistSuccess(GET_BANNER_LIST, newresponse));
+      yield put(getBannerlistSuccess(GET_BANNER_LIST, newresponse));
     }
   } catch (error) {
     yield put(DeleteBannerlistFail(error));

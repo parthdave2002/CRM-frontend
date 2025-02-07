@@ -27,9 +27,9 @@ const ProductDetailsPage: FC = function () {
     setPackingTypeList(Packingtypelist ? Packingtypelist : null);
   }, [Packingtypelist]);
 
-  let Name = "Banner Details";
-  let ParentName = "Banner List";
-  let ParentLink = "/banner/list";
+  let Name = "Product Details";
+  let ParentName = "Product List";
+  let ParentLink = "/product/list";
 
   return (
     <>
