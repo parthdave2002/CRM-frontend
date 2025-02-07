@@ -8,12 +8,12 @@ import Select from "react-select";
 import { Form, Input, FormFeedback } from "reactstrap";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { AddPackingTypelist, ResetPackingTypelist } from "../../Store/actions";
+import { AddTagloglist, ResetTagloglist } from "../../Store/actions";
 
-const AddpackingTypePage : FC = function () {
+const TaglogAddPage : FC = function () {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    
+
     // ------ status code start ------
     const [selectedactiveOption, setSelectedactiveOption] = useState(null);
     const [selectedactiveid, setSelectedactiveid] = useState(0);
@@ -33,7 +33,7 @@ const AddpackingTypePage : FC = function () {
     // ------ status code end ------
 
     const [initialValues, setinitialValues] = useState({
-        packing_type: "",
+        name: "",
         status: "",
     });
 
@@ -42,17 +42,17 @@ const AddpackingTypePage : FC = function () {
         initialValues: initialValues,
     
         validationSchema: Yup.object({
-          packing_type: Yup.string().required("Please enter packing type"),
+          name: Yup.string().required("Please enter taglog name"),
         }),
         
         onSubmit: (values) => {
-          {selectedactiveid == 0 ? setValidateactive(1)  : setValidateactive(0) }
+          {selectedactiveid == 0 ? setValidateactive(1) : setValidateactive(0) }
 
           let requserdata = {
-            type: values?.packing_type,
+            taglog_name: values?.name,
             is_active: selectedactiveid,
           };
-          dispatch(AddPackingTypelist(requserdata));
+          dispatch(AddTagloglist(requserdata));
         },
     });
 
@@ -68,27 +68,25 @@ const AddpackingTypePage : FC = function () {
     ]
 
     // ------------- Get  Data From Reducer Code Start --------------
-        const { AddPackingtypelist } = useSelector((state: any) => ({
-            AddPackingtypelist: state.PackingType.AddPackingtypelist,
-
+        const { AddTagloglistData  } = useSelector((state: any) => ({
+            AddTagloglistData : state.Taglog.AddTagloglist,
         }));
 
         useEffect(() => {  
-            if(AddPackingtypelist?.success == true){
-                dispatch(ResetPackingTypelist())
-                navigate("/packing-type/list")
+            if(AddTagloglistData ?.success == true){
+                dispatch(ResetTagloglist())
+                navigate(ParentLink)
                 validation.resetForm();
-                initialValues.packing_type = "";
                 setSelectedactiveid(0);
                 setSelectedactiveOption(null);
                 setValidateactive(1)
             }
-        }, [AddPackingtypelist]);
+        }, [AddTagloglistData ]);
     //  ------------- Get Data From Reducer Code end --------------
 
-    let Name = "Packing type Add";
-    let ParentName = "Packing type List";
-    let ParentLink = "/packing-type/list";
+    let Name = "Taglog Add";
+    let ParentName = "Taglog List";
+    let ParentLink = "/taglog/list";
 
     return (
         <>  
@@ -97,34 +95,24 @@ const AddpackingTypePage : FC = function () {
                 <div className="mt-[2rem] bg-white dark:bg-gray-800 p-4">
                     <Form onSubmit={(e) => { e.preventDefault(); validation.handleSubmit(); return false; }} >
                         <div>
-                            <Label htmlFor="PackingType">Packing Type</Label>
+                            <Label htmlFor="Name">Name</Label>
                             <div className="mt-1">
                             <Input
-                                id="packing_type"
-                                name="packing_type"
+                                id="name"
+                                name="name"
                                 className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
-                                placeholder="Packing Type"
+                                placeholder="Taglog name"
                                 type="text"
                                 onChange={validation.handleChange}
                                 onBlur={validation.handleBlur}
-                                value={validation.values.packing_type || ""}
-                                invalid={
-                                validation.touched.packing_type &&
-                                validation.errors.packing_type
-                                    ? true
-                                    : false
-                                }
+                                value={validation.values.name || ""}
+                                invalid={ validation.touched.name && validation.errors.name ? true : false}
                             />
-                            {validation.touched.packing_type &&
-                            validation.errors.packing_type ? (
-                                <FormFeedback type="invalid" className="text-Red text-sm">
-                                {validation.errors.packing_type}
-                                </FormFeedback>
-                            ) : null}
+                            {validation.touched.name && validation.errors.name ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.name} </FormFeedback> ) : null}
                             </div>
                         </div>
 
-                        <div className="my-[1rem]">
+                        <div className="mt-[1rem]">
                             <Label htmlFor="Status">Status</Label>
                             <div className="mt-1">
                             <Select
@@ -149,9 +137,9 @@ const AddpackingTypePage : FC = function () {
                             </div>
                         </div>
 
-                        <div className="flex gap-x-3 justify-end">
-                            <Button className="bg-addbutton hover:bg-addbutton dark:bg-addbutton dark:hover:bg-addbutton" type="submit" > Add packing type </Button>
-                            <Button className="bg-deletebutton hover:bg-deletebutton dark:bg-deletebutton dark:hover:bg-deletebutton" onClick={() => navigate("/packing-type/list")}>  Close </Button>
+                        <div className="flex gap-x-3 justify-end mt-[1rem]">
+                            <Button className="bg-addbutton hover:bg-addbutton dark:bg-addbutton dark:hover:bg-addbutton" type="submit" > Add Taglog </Button>
+                            <Button className="bg-deletebutton hover:bg-deletebutton dark:bg-deletebutton dark:hover:bg-deletebutton" onClick={() => navigate(ParentLink)}>  Close </Button>
                         </div>
                     </Form>
                 </div>
@@ -160,4 +148,4 @@ const AddpackingTypePage : FC = function () {
     );
 }
 
-export default AddpackingTypePage;
+export default TaglogAddPage;

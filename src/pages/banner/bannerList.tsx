@@ -4,7 +4,7 @@ import type { FC } from "react";
 import { HiTrash} from "react-icons/hi";
 import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
 import { useDispatch, useSelector } from "react-redux";
-import { DeleteCategorylist,  getCategorylist } from "../../Store/actions";
+import { DeleteBannerlist,  getBannerlist } from "../../Store/actions";
 import { lazy, Suspense, useEffect, useState } from "react";
 import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
@@ -13,11 +13,11 @@ import moment from "moment";
 const IMG_URL = import.meta.env["VITE_API_URL"];
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 
-const CategoryListPage: FC = function () {
+const BannerListPage: FC = function () {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isOpenDelteModel, setisOpenDelteModel] = useState(false);
-  const [PackingTypeList, setPackingTypeList] = useState([]);
+  const [BannerDataList, setBannerDataList] = useState([]);
   
   //------------ Access Data Code start------------
   const [AccessList, setAccessList] = useState([]);
@@ -26,11 +26,11 @@ const CategoryListPage: FC = function () {
   const AccessData = AccessCommon && AccessCommon.map((item: any) => ({ value: item.access_name }));
   //--------- Access Data Code end------------------
   
-    const { Categorylist,  CategorylistSize, TotalCategoryData, CurrentPage } = useSelector((state: any) => ({
-      Categorylist: state.Category.Categorylist,
-      CategorylistSize: state.Category.CategorylistSize,
-      TotalCategoryData: state.Category.TotalCategoryData,
-      CurrentPage: state.Category.CurrentPage,
+    const { Bannerlist,  BannerlistSize, TotalBannerData, CurrentPage } = useSelector((state: any) => ({
+      Bannerlist: state.Banner.Bannerlist,
+      BannerlistSize: state.Banner.BannerlistSize,
+      TotalBannerData: state.Banner.TotalBannerData,
+      CurrentPage: state.Banner.CurrentPage,
     }));
     
   // ----------- next Button  Code Start -------------
@@ -58,17 +58,17 @@ const CategoryListPage: FC = function () {
         size: RoePerPage,
         search: searchData
       };
-      dispatch(getCategorylist());
+      dispatch(getBannerlist());
     }, [dispatch, PageNo, RoePerPage, searchData]);
 
     useEffect(() => {        
-      setPackingTypeList(Categorylist? Categorylist : []);
+      setBannerDataList(Bannerlist? Bannerlist : []);
       // setAccessList(UserList.AccessData ? UserList.AccessData.list : []);
       // setAccessCommon(UserList.AccessData ? UserList.AccessData.common : []);
-      setTotalListData(TotalCategoryData ? TotalCategoryData : 0);
-      setCurrentUserListSize(CategorylistSize ? CategorylistSize : 0);
+      setTotalListData(TotalBannerData ? TotalBannerData : 0);
+      setCurrentUserListSize(BannerlistSize ? BannerlistSize : 0);
       setCurrentPageNo(CurrentPage ? CurrentPage : 1);
-    }, [Categorylist,  CategorylistSize, TotalCategoryData, CurrentPage]);
+    }, [Bannerlist,  BannerlistSize, TotalBannerData, CurrentPage]);
   //  ------------- Get Data From Reducer Code end --------------
 
   // ------------  Delete Code Start ------------
@@ -78,9 +78,9 @@ const CategoryListPage: FC = function () {
       setisOpenDelteModel(true);
     };
 
-    const DeleteCategoryData = () => {
+    const DeletepackingType = () => {
       let rqeuserdata = { id: Delete_id };
-      dispatch(DeleteCategorylist(rqeuserdata));
+      dispatch(DeleteBannerlist(rqeuserdata));
       setisOpenDelteModel(false);
     };
   // -------  Delete Code End ---------------
@@ -92,17 +92,17 @@ const CategoryListPage: FC = function () {
   // --------- Checkbox Code end ------------
 
   const OpenAddModel = () =>{
-    navigate("/category/add")
+    navigate("/banner/add")
   }
 
   const DetailsPageCall = (id:any) =>{
-    navigate(`/category/details/${id}`)
+    navigate(`/banner/details/${id}`)
   }
 
-  let Name = "Category List";
-  let Searchplaceholder = "Search For Category (Name)";
-  let AddAccess = "category-add";
-
+  let Name = "Banner List";
+  let Searchplaceholder = "Search For Banner (Name)";
+  let AddAccess = "Banner-add";
+  
   return (
     <>
       <NavbarSidebarLayout isFooter={false}  isSidebar={true} isNavbar={true} isRightSidebar={true}>
@@ -111,7 +111,8 @@ const CategoryListPage: FC = function () {
           <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
               <Table.Head className="bg-gray-100 dark:bg-gray-700">
                 <Table.HeadCell> <Checkbox id="select-all" name="select-all" /> </Table.HeadCell>
-                <Table.HeadCell>Image</Table.HeadCell>
+                <Table.HeadCell>image</Table.HeadCell>
+
                 <Table.HeadCell>Name</Table.HeadCell>
                 {/* <Table.HeadCell>Description</Table.HeadCell> */}
                 <Table.HeadCell>Status</Table.HeadCell>
@@ -120,16 +121,17 @@ const CategoryListPage: FC = function () {
               </Table.Head>
 
               <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
-                  {PackingTypeList && PackingTypeList.map((item: any, k) => (
+                  {BannerDataList && BannerDataList.map((item: any, k) => (
                         <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
                           <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item._id} onClick={() => {CheckData(item._id)}}/>  </Table.Cell>
-
                           <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0"> 
-                              <img
-                                src={`${IMG_URL}/public/category/${item.category_pic}`}
-                                alt="Category"
-                                className="h-16 w-32 object-cover rounded"
-                              />  
+                            <img
+                              src={`${IMG_URL}/public/banner/${item.banner_pic}`}
+                              alt="Banner"
+                              className="h-16 w-32 object-cover rounded"
+                            />
+                            
+                            {/* {`${IMG_URL}/public/banner/${item.banner_pic}`}  */}
                           </Table.Cell>
                           <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {item.name} </Table.Cell>
                           {/* <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {item.description} </Table.Cell> */}
@@ -146,7 +148,7 @@ const CategoryListPage: FC = function () {
                               {/* ) : null )}   */}
 
                                {/* {AccessDataList &&  AccessDataList.map((data) =>  data.value === "user-delete" ? (  */}
-                                  {/* <Button  gradientDuoTone="pinkToOrange" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Details </div> </Button> */}
+                                  <Button  gradientDuoTone="pinkToOrange" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Details </div> </Button>
                               {/* ) : null )}   */}
                             </div>
                           </Table.Cell>
@@ -160,7 +162,7 @@ const CategoryListPage: FC = function () {
     
         {isOpenDelteModel && (
           <Suspense fallback={<div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50"> <div className="text-white">Loading...</div> </div> }>
-            <DeleteModalPage  isOpenDelteModel={isOpenDelteModel}  name={"Category"} setisOpenDelteModel={setisOpenDelteModel}  DelCall={DeleteCategoryData} />
+            <DeleteModalPage  isOpenDelteModel={isOpenDelteModel}  name={"Company"} setisOpenDelteModel={setisOpenDelteModel}  DelCall={DeletepackingType} />
           </Suspense>
         )}
                   
@@ -168,4 +170,4 @@ const CategoryListPage: FC = function () {
   );
 };
 
-export default CategoryListPage;
+export default BannerListPage;

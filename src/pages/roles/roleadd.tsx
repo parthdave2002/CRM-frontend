@@ -4,11 +4,32 @@ import ExampleBreadcrumb from "../../components/breadcrumb";
 import { Label, Button } from "flowbite-react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import Select from "react-select";
 import { Form, Input, FormFeedback } from "reactstrap";
 import { useNavigate } from "react-router";
 
 const AddRolePage : FC = function () {
     const navigate = useNavigate();
+
+    const isactiveoption =[
+        {label :"Active", value : true},
+        { label :"Inactive", value : false}
+    ]
+
+    //---------------- Satus option code start ----------------
+        const [selectedStatusOption, setSelectedStatusOption] = useState(null);
+        const [selectedStatusid, setSelectedStatusid] = useState(0);
+
+        const IsActivedata = (data: any) => {
+        if (!data) {
+            setSelectedStatusid(0);
+            setSelectedStatusOption(null);
+        } else {
+            setSelectedStatusid(data.value);
+            setSelectedStatusOption(data);
+        }
+        };
+    //---------------- Satus option code end ----------------
 
     const [initialValues, setinitialValues] = useState({
         id: 0,
@@ -96,6 +117,27 @@ const AddRolePage : FC = function () {
                                 {validation.errors.description}
                                 </FormFeedback>
                             ) : null}
+                            </div>
+                        </div>
+                        
+                        <div className="mb-[1rem]">
+                            <Label htmlFor="Description"> Status </Label>
+                            <div className="">
+                                    <Select
+                                        className="w-full dark:text-white"
+                                        classNames={{
+                                            control: () => "react-select__control",
+                                            singleValue: () => "react-select__single-value",
+                                            menu: () => "react-select__menu",
+                                            option: ({ isSelected }) =>
+                                                isSelected ? "react-select__option--is-selected" : "react-select__option",
+                                            placeholder: () => "react-select__placeholder",
+                                        }}
+                                        value={selectedStatusOption}
+                                        onChange={(e) => { IsActivedata(e) }}
+                                        options={isactiveoption}
+                                        isClearable={true}
+                                    />
                             </div>
                         </div>
 

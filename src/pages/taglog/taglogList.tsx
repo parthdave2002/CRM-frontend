@@ -4,16 +4,15 @@ import type { FC } from "react";
 import { HiTrash} from "react-icons/hi";
 import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
 import { useDispatch, useSelector } from "react-redux";
-import { DeleteCategorylist,  getCategorylist } from "../../Store/actions";
+import { DeleteTagloglist,  getTagloglist } from "../../Store/actions";
 import { lazy, Suspense, useEffect, useState } from "react";
 import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useNavigate } from "react-router";
 import moment from "moment";
-const IMG_URL = import.meta.env["VITE_API_URL"];
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 
-const CategoryListPage: FC = function () {
+const TaglogListPage: FC = function () {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isOpenDelteModel, setisOpenDelteModel] = useState(false);
@@ -26,11 +25,11 @@ const CategoryListPage: FC = function () {
   const AccessData = AccessCommon && AccessCommon.map((item: any) => ({ value: item.access_name }));
   //--------- Access Data Code end------------------
   
-    const { Categorylist,  CategorylistSize, TotalCategoryData, CurrentPage } = useSelector((state: any) => ({
-      Categorylist: state.Category.Categorylist,
-      CategorylistSize: state.Category.CategorylistSize,
-      TotalCategoryData: state.Category.TotalCategoryData,
-      CurrentPage: state.Category.CurrentPage,
+    const { Tagloglist,  TagloglistSize, TotalTaglogData, CurrentPage } = useSelector((state: any) => ({
+      Tagloglist: state.Taglog.Tagloglist,
+      TagloglistSize: state.Taglog.TagloglistSize,
+      TotalTaglogData: state.Taglog.TotalTaglogData,
+      CurrentPage: state.Taglog.CurrentPage,
     }));
     
   // ----------- next Button  Code Start -------------
@@ -58,17 +57,17 @@ const CategoryListPage: FC = function () {
         size: RoePerPage,
         search: searchData
       };
-      dispatch(getCategorylist());
+      dispatch(getTagloglist());
     }, [dispatch, PageNo, RoePerPage, searchData]);
 
     useEffect(() => {        
-      setPackingTypeList(Categorylist? Categorylist : []);
+      setPackingTypeList(Tagloglist? Tagloglist : []);
       // setAccessList(UserList.AccessData ? UserList.AccessData.list : []);
       // setAccessCommon(UserList.AccessData ? UserList.AccessData.common : []);
-      setTotalListData(TotalCategoryData ? TotalCategoryData : 0);
-      setCurrentUserListSize(CategorylistSize ? CategorylistSize : 0);
+      setTotalListData(TotalTaglogData ? TotalTaglogData : 0);
+      setCurrentUserListSize(TagloglistSize ? TagloglistSize : 0);
       setCurrentPageNo(CurrentPage ? CurrentPage : 1);
-    }, [Categorylist,  CategorylistSize, TotalCategoryData, CurrentPage]);
+    }, [Tagloglist,  TagloglistSize, TotalTaglogData, CurrentPage]);
   //  ------------- Get Data From Reducer Code end --------------
 
   // ------------  Delete Code Start ------------
@@ -78,9 +77,9 @@ const CategoryListPage: FC = function () {
       setisOpenDelteModel(true);
     };
 
-    const DeleteCategoryData = () => {
+    const DeletepackingType = () => {
       let rqeuserdata = { id: Delete_id };
-      dispatch(DeleteCategorylist(rqeuserdata));
+      dispatch(DeleteTagloglist(rqeuserdata));
       setisOpenDelteModel(false);
     };
   // -------  Delete Code End ---------------
@@ -92,16 +91,16 @@ const CategoryListPage: FC = function () {
   // --------- Checkbox Code end ------------
 
   const OpenAddModel = () =>{
-    navigate("/category/add")
+    navigate("/taglog/add")
   }
 
   const DetailsPageCall = (id:any) =>{
-    navigate(`/category/details/${id}`)
+    navigate(`/taglog/details/${id}`)
   }
 
-  let Name = "Category List";
-  let Searchplaceholder = "Search For Category (Name)";
-  let AddAccess = "category-add";
+  let Name = "Taglog List";
+  let Searchplaceholder = "Search For Taglog (Name)";
+  let AddAccess = "Taglog-add";
 
   return (
     <>
@@ -111,9 +110,7 @@ const CategoryListPage: FC = function () {
           <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
               <Table.Head className="bg-gray-100 dark:bg-gray-700">
                 <Table.HeadCell> <Checkbox id="select-all" name="select-all" /> </Table.HeadCell>
-                <Table.HeadCell>Image</Table.HeadCell>
                 <Table.HeadCell>Name</Table.HeadCell>
-                {/* <Table.HeadCell>Description</Table.HeadCell> */}
                 <Table.HeadCell>Status</Table.HeadCell>
                 <Table.HeadCell>Created At</Table.HeadCell>
                 <Table.HeadCell>Actions</Table.HeadCell>
@@ -123,16 +120,7 @@ const CategoryListPage: FC = function () {
                   {PackingTypeList && PackingTypeList.map((item: any, k) => (
                         <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
                           <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item._id} onClick={() => {CheckData(item._id)}}/>  </Table.Cell>
-
-                          <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0"> 
-                              <img
-                                src={`${IMG_URL}/public/category/${item.category_pic}`}
-                                alt="Category"
-                                className="h-16 w-32 object-cover rounded"
-                              />  
-                          </Table.Cell>
-                          <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {item.name} </Table.Cell>
-                          {/* <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {item.description} </Table.Cell> */}
+                          <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {item.taglog_name} </Table.Cell>
                           <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white">
                             {item.is_active == true ? <div className="flex items-center">  <div className="mr-2 h-2.5 w-2.5 rounded-full bg-green-400"></div> Active  </div>
                             : <div className="flex items-center">  <div className="mr-2 h-2.5 w-2.5 rounded-full bg-Red"></div> Deactive  </div>}
@@ -143,10 +131,6 @@ const CategoryListPage: FC = function () {
                              
                               {/* {AccessDataList &&  AccessDataList.map((data) =>  data.value === "user-delete" ? (  */}
                                   <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete </div> </Button>
-                              {/* ) : null )}   */}
-
-                               {/* {AccessDataList &&  AccessDataList.map((data) =>  data.value === "user-delete" ? (  */}
-                                  {/* <Button  gradientDuoTone="pinkToOrange" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Details </div> </Button> */}
                               {/* ) : null )}   */}
                             </div>
                           </Table.Cell>
@@ -160,7 +144,7 @@ const CategoryListPage: FC = function () {
     
         {isOpenDelteModel && (
           <Suspense fallback={<div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50"> <div className="text-white">Loading...</div> </div> }>
-            <DeleteModalPage  isOpenDelteModel={isOpenDelteModel}  name={"Category"} setisOpenDelteModel={setisOpenDelteModel}  DelCall={DeleteCategoryData} />
+            <DeleteModalPage  isOpenDelteModel={isOpenDelteModel}  name={"taglog"} setisOpenDelteModel={setisOpenDelteModel}  DelCall={DeletepackingType} />
           </Suspense>
         )}
                   
@@ -168,4 +152,4 @@ const CategoryListPage: FC = function () {
   );
 };
 
-export default CategoryListPage;
+export default TaglogListPage;

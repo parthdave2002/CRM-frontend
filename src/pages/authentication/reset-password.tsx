@@ -1,17 +1,17 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { Button, Card, Checkbox, Label } from "flowbite-react";
+import { Button, Card,  Label } from "flowbite-react";
 import type { FC } from "react";
 import LOGO from "../../img/logo.webp";
 import { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { Form, Input, FormFeedback } from "reactstrap";
-import { insertlogin, resetinsertlogin} from "../../Store/actions";
+import { insertlogin, resetinsertlogin } from "../../Store/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import ToastMessage from "../../components/ToastMessage";
 
-const SignInPage: FC = function () {
+const ResetPasswordPage: FC = function () {
   const navigation = useNavigate();
   const dispatch = useDispatch();
 
@@ -57,7 +57,7 @@ const SignInPage: FC = function () {
         location.reload();
       }
       else if (AcccessData?.includes("CSR") || AcccessData?.includes("Sales Executive")) {
-        navigation("/dialer");
+        navigation("/sales-crm");
         location.reload();
       }
       else{
@@ -67,28 +67,6 @@ const SignInPage: FC = function () {
     }
     dispatch(resetinsertlogin());
   }, [Login]); 
-
-  //--------------  if User Alredy login redirect to their page code start --------------
-    useEffect(() =>{
-      const id = localStorage.getItem("user");
-      const jsonObject = id ? JSON.parse(id): null;
-      let roleTitle = jsonObject ? jsonObject[0].role_title : null;
-      if (roleTitle) {  
-        if (roleTitle?.includes("CSR") || roleTitle?.includes("Sales Executive")) {
-          navigation("/dialer");
-          location.reload();
-        }
-        else{
-          navigation("/dashboard");
-          location.reload();
-        }
-      }
-    },[])
-  //--------------  if User Alredy login redirect to their page code end --------------
-
-  const LostPassword = () => {
-    alert("Please contact your Admin");
-  };
 
   return (
     <div className="flex flex-col items-center justify-center px-6 lg:h-screen lg:gap-y-12">
@@ -111,11 +89,7 @@ const SignInPage: FC = function () {
               value={validation.values.username || ""}
               invalid={ validation.touched.username && validation.errors.username  ? true : false }
             />
-            {validation.touched.username && validation.errors.username ? (
-              <FormFeedback type="invalid" className="text-Red">
-                {validation.errors.username}
-              </FormFeedback>
-            ) : null}
+            {validation.touched.username && validation.errors.username ? <FormFeedback type="invalid" className="text-Red"> {validation.errors.username} </FormFeedback> : null}
           </div>
 
           <div className="mb-6 flex flex-col gap-y-2">
@@ -134,12 +108,7 @@ const SignInPage: FC = function () {
             {validation.touched.password && validation.errors.password ? ( <FormFeedback type="invalid" className="text-Red"> {validation.errors.password} </FormFeedback>) : null}
           </div>
 
-          <div className="mb-6 flex items-center justify-between">
-            <div className="flex items-center gap-x-3"> <Checkbox id="rememberMe" name="rememberMe" /> <Label htmlFor="rememberMe">Remember me</Label>  </div>
-            <a onClick={() => { LostPassword() }} className="w-1/2 text-right text-sm text-primary-600 dark:text-primary-300 cursor-pointer"  > Lost Password? </a>
-          </div>
-
-          <div className="mb-6">  <Button type="submit" className="w-full ">  Login to your account  </Button> </div>
+          <div className="mb-6">  <Button type="submit" className="w-full ">  Reset Password </Button> </div>
         </Form>
 
       </Card>
@@ -148,4 +117,4 @@ const SignInPage: FC = function () {
   );
 };
 
-export default SignInPage;
+export default ResetPasswordPage;

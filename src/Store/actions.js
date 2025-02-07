@@ -11,4 +11,5 @@ export * from "./Packing/Packing type/action";
 export * from "./Category/action";
 export * from "./Company/action";
 export * from "./Product/action";
-
+export * from "./Banner/action";
+export * from "./Taglog/action";

@@ -127,3 +127,13 @@ export const RelatedProductlistApi = (requserdata) => api.get(url.GET_RELATED_PR
 export const ProductlistApi = (requserdata) => api.get(url.GET_PRODUCT_LIST, requserdata);
 export const AddProductlistApi = async (requserdata) => await api.create(url.ADD_PRODUCT_LIST, requserdata);
 export const DelProductlistApi = async (requserdata) => await api.delete(url.DELETE_PRODUCT_LIST, requserdata);
+
+// Banner API
+export const BannerlistApi = (requserdata) => api.get(url.GET_BANNER_LIST, requserdata);
+export const AddBannerlistApi = async (requserdata) => await api.create(url.ADD_BANNER_LIST, requserdata);
+export const DelBannerlistApi = async (requserdata) => await api.delete(url.DELETE_BANNER_LIST, requserdata);
+
+// Taglog API
+export const TagloglistApi = (requserdata) => api.get(url.GET_TAGLOG_LIST, requserdata);
+export const AddTagloglistApi = async (requserdata) => await api.create(url.ADD_TAGLOG_LIST, requserdata);
+export const DelTagloglistApi = async (requserdata) => await api.delete(url.DELETE_TAGLOG_LIST, requserdata);

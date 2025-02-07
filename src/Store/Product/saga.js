@@ -49,6 +49,11 @@ function* onDelProductList({ payload: requstuser }) {
   try {
     const response = yield call(DelProductlistApi, requstuser);
     yield put(DeleteProductlistSuccess(DELETE_PRODUCT_LIST, response));
+
+    if(response.success === true || response.success === "true"){
+      const newresponse = yield call(ProductlistApi);
+      yield put(getProductlistSuccess(GET_PRODUCT_LIST, newresponse));
+    }
   } catch (error) {
     yield put(DeleteProductlistFail(error));
   }

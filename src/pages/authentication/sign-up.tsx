@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { Button, Card, Checkbox, Label, TextInput } from "flowbite-react";
 import type { FC } from "react";
-import LOGO from "../../img/logo.png"
+import LOGO from "../../img/logo.webp"
 
 
 const SignUpPage: FC = function () {
