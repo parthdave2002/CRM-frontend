@@ -4,7 +4,6 @@ import { BrowserRouter } from "react-router-dom";
 import PrivateRoute from "./routes/PrivateRoute";
 import LoaderPage from "./components/loader";
 
-
 const DashboardPage = lazy(() => import("./pages"));
 const SignInPage = lazy(() => import("./pages/authentication/sign-in"));
 const UserListPage = lazy(() => import("./pages/users/list"));
@@ -37,6 +36,8 @@ const BannerDetailsPage = lazy(() => import("./pages/banner/bannerDetails"));
 const ProductAddPage = lazy(() => import("./pages/product/productAdd"));
 const ProductListPage = lazy(() => import("./pages/product/productList"));
 const ProductDetailsPage = lazy(() => import("./pages/product/productDetails"));
+const OrderListPage = lazy(() => import("./pages/order/order"));
+const LeadListPage = lazy(() => import("./pages/lead/lead"));
 const TaglogListPage = lazy(() => import("./pages/taglog/taglogList"));
 const TaglogAddPage = lazy(() => import("./pages/taglog/taglogAdd"));
 const TaglogDetailsPage = lazy(() => import("./pages/taglog/taglogDetails"));
@@ -63,7 +64,7 @@ const App: FC = function () {
             <Route path="/roles/add" element={<AddRolePage />} />
             <Route path="/roles/:id" element={<AddRolePage />} />
             <Route path="/roles/details" element={<RoleDetailsPage />} />
-            <Route path="/roles/access" element={<RolesAccessPage />} />
+            <Route path="/roles-access/:id" element={<RolesAccessPage />} />
             <Route path="/module-manage" element={<ModulesPage />} />
             <Route path="/module-group" element={<ModulegroupPage />} />
             <Route path="/packing-type/list" element={<PackingTypeListPage />} />
@@ -96,6 +97,9 @@ const App: FC = function () {
             <Route path="/product/add" element={<ProductAddPage />} />
             <Route path="/product/:id" element={<ProductAddPage />} />
             <Route path="/product/details/:id" element={<ProductDetailsPage />} />
+            <Route path="/order/list" element={<OrderListPage />} />
+            <Route path="/lead/list" element={<LeadListPage />} />
+
             <Route path="/report" element={<ReportPage />} />
 
             {/* Sales Routes */}

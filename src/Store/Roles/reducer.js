@@ -2,12 +2,12 @@ import {
   GET_ROLES_LIST,
   GET_ROLES_LIST_SUCCESS,
   GET_ROLES_LIST_ERROR,
-  GET_SINGLE_ROLES_LIST,
-  GET_SINGLE_ROLES_LIST_ERROR,
-  GET_SINGLE_ROLES_LIST_SUCCESS,
-  GET_SEARCH_ROLES_LIST,
-  GET_SEARCH_ROLES_LIST_ERROR,
-  GET_SEARCH_ROLES_LIST_SUCCESS,
+  ADD_ROLES_LIST,
+  ADD_ROLES_LIST_ERROR,
+  ADD_ROLES_LIST_SUCCESS,
+  GET_RESET_ROLES_LIST,
+  GET_RESET_ROLES_LIST_ERROR,
+  GET_RESET_ROLES_LIST_SUCCESS,
 } from "./actionType";
 
 const INIT_STATE = {
@@ -15,8 +15,7 @@ const INIT_STATE = {
   RoleListSize:0,
   TotalRoleListData:0,
   CurrentPage:1,
-  RolesSinglelist: [],
-  SearchRoleslist: [],
+  AddRoleslist: [],
   error: {},
 };
 
@@ -48,17 +47,17 @@ const Role = (state = INIT_STATE, action) => {
       }
 
     // Get Single Array Response
-    case GET_SINGLE_ROLES_LIST_SUCCESS:
+    case ADD_ROLES_LIST_SUCCESS:
       switch (action.payload.actionType) {
-        case GET_SINGLE_ROLES_LIST:
+        case ADD_ROLES_LIST:
           return {
             ...state,
-            RolesSinglelist: action.payload.data,
+            AddRoleslist: action.payload.data,
           };
       }
-    case GET_SINGLE_ROLES_LIST_ERROR:
+    case ADD_ROLES_LIST_ERROR:
       switch (action.payload.actionType) {
-        case GET_SINGLE_ROLES_LIST:
+        case ADD_ROLES_LIST:
           // console.log("CREATE_GROUP_SUCCESS =====>", action.payload);
           return {
             ...state,
@@ -70,17 +69,22 @@ const Role = (state = INIT_STATE, action) => {
       }
 
     // Search Role
-    case GET_SEARCH_ROLES_LIST_SUCCESS:
+    case GET_RESET_ROLES_LIST_SUCCESS:
       switch (action.payload.actionType) {
-        case GET_SEARCH_ROLES_LIST:
+        case GET_RESET_ROLES_LIST:
           return {
             ...state,
-            SearchRoleslist: action.payload.data,
+              Roleslist: [],
+              RoleListSize:0,
+              TotalRoleListData:0,
+              CurrentPage:1,
+              AddRoleslist: [],
+              error: {},
           };
       }
-    case GET_SEARCH_ROLES_LIST_ERROR:
+    case GET_RESET_ROLES_LIST_ERROR:
       switch (action.payload.actionType) {
-        case GET_SEARCH_ROLES_LIST:
+        case GET_RESET_ROLES_LIST:
           // console.log("CREATE_GROUP_SUCCESS =====>", action.payload);
           return {
             ...state,

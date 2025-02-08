@@ -5,17 +5,17 @@ export const LOGOUT ="/api/user/logout";
 //   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Dialer Apis <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 // User Api
-export const GET_USER_LIST = "/api/user";
+export const GET_USER_LIST = "/api/user/get-user";
 export const GET_USER_VIEW = "/api/user/detailview";
 export const ADD_USER_LIST = "/api/user/change";
 export const DELETE_USER_LIST = "/api/user/deluser";
 export const UPDATE_USER_DATA_LIST = "/api/user/update";
 
 // Role Api
-export const GET_ROLES_LIST = "/api/role/role";
+export const GET_ROLES_LIST = "/api/role/get-role";
 export const UPDATE_ROLES_LIST = "/api/role/roleview";
-export const ADD_ROLES_LIST = "/api/role/role";
-export const DELETE_ROLES_LIST = "/api/role/delrole";
+export const ADD_ROLES_LIST = "/api/role/add-role";
+export const DELETE_ROLES_LIST = "/api/role/remove-role";
 export const GET_SEARCH_ROLES_LIST = "/api/role/role-search";
 
 // Module Api

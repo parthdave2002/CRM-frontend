@@ -15,9 +15,9 @@ import {
   DELETE_ROLES_LIST_SUCCESS,
   DELETE_ROLES_LIST_ERROR,
 
-  GET_SEARCH_ROLES_LIST,
-  GET_SEARCH_ROLES_LIST_ERROR,
-  GET_SEARCH_ROLES_LIST_SUCCESS
+  GET_RESET_ROLES_LIST,
+  GET_RESET_ROLES_LIST_ERROR,
+  GET_RESET_ROLES_LIST_SUCCESS
 } from "./actionType";
 
 
@@ -88,17 +88,17 @@ export const DeleteRoleslistFail = (actionType, error) => ({
 });
 
 // Search Role
-export const SearchRoleslist = (requserdata) => ({
-  type: GET_SEARCH_ROLES_LIST,
+export const ResetRoleslist = (requserdata) => ({
+  type: GET_RESET_ROLES_LIST,
   payload: requserdata,
 });
 
-export const SearchRoleslistSuccess = (actionType, data) => ({
-  type: GET_SEARCH_ROLES_LIST_SUCCESS,
+export const ResetRoleslistSuccess = (actionType, data) => ({
+  type: GET_RESET_ROLES_LIST_SUCCESS,
   payload: { actionType, data },
 });
 
-export const SearchRoleslistFail = (actionType, error) => ({
-  type: GET_SEARCH_ROLES_LIST_ERROR,
+export const ResetRoleslistFail = (actionType, error) => ({
+  type: GET_RESET_ROLES_LIST_ERROR,
   payload: { actionType, error },
 });

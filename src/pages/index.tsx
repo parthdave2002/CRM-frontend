@@ -23,11 +23,11 @@ const DashboardPage: FC = function () {
             <div className="h-20 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-red-200 dark:bg-gray-800 dark:text-gray-50">
               <div className="flex w-full justify-between items-start">
                 <div className={`p-3 rounded-full bg-purple-500`}>
-                  {typeof stat.icon === 'string' ? (
+                  {typeof stat.icon === 'string' ? 
                     <img src={stat.icon} alt="icon" className="w-6 h-6" />
-                  ) : (
+                   : 
                     <stat.icon className="text-white w-6 h-6" />
-                  )}
+                  }
                 </div>
 
                 <div>
@@ -55,25 +55,13 @@ const DashboardPage: FC = function () {
           </div>
         </div>
 
-        <div className="my-6 lg:grid  grid-flow-row gap-4 flex flex-col">
-            <SalesThisWeek />
-        </div>
-
-        <div className="my-6 ">
-          <div>
-            <LatestTransactions />
-          </div>
-        </div>
-
+        <div className="my-6 lg:grid  grid-flow-row gap-4 flex flex-col"> <SalesThisWeek /> </div>
+        <div className="my-6 "> <LatestTransactions />  </div>
         <div className="my-6 lg:grid grid-cols-2 grid-flow-row gap-4">
-          <div>
-            <LatestCustomers />
-          </div>
-          <div>
-            <LatestUsers />
-          </div>
-         
+          <div>  <LatestCustomers />  </div>
+          <div> <LatestUsers /> </div>
         </div>
+        <div className="my-6 "> <LatestProduct />  </div>
 
        
       </div>
@@ -354,31 +342,7 @@ const LatestCustomers: FC = function () {
           ))}
         </ul>
       </div>
-      {/* <div className="flex items-center justify-between border-t border-gray-200 pt-3 dark:border-gray-700 sm:pt-6">
-        <Datepicker />
-        <div className="shrink-0">
-          <a
-            href="#"
-            className="inline-flex items-center rounded-lg p-2 text-xs font-medium uppercase text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700 sm:text-sm"
-          >
-            Sales Report
-            <svg
-              className="ml-1 h-4 w-4 sm:h-5 sm:w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </a>
-        </div>
-      </div> */}
+    
     </div>
   );
 };
@@ -662,6 +626,96 @@ const LatestTransactions: FC = function () {
           </a>
         </div>
       </div>
+    </div>
+  );
+};
+
+
+const LatestProduct: FC = function () {
+
+  const navigate = useNavigate()
+  const ViewAllCall = () =>{
+    navigate("/product/list")
+  }
+
+  const ProductData=[
+    {
+      name: "Product 1",
+      category : "Category 1",
+      qty :15,
+      price: 1500,
+      createdAt: "20-05-24 11:55:55"
+    },
+    {
+      name: "Product 1",
+      category : "Category 1",
+      qty :15,
+      price: 1500,
+      createdAt: "20-05-24 11:55:55"
+    },
+    {
+      name: "Product 1",
+      category : "Category 1",
+      qty :15,
+      price: 1500,
+      createdAt: "20-05-24 11:55:55"
+    },
+    {
+      name: "Product 1",
+      category : "Category 1",
+      qty :15,
+      price: 1500,
+      createdAt: "20-05-24 11:55:55"
+    },
+    {
+      name: "Product 1",
+      category : "Category 1",
+      qty :15,
+      price: 1500,
+      createdAt: "20-05-24 11:55:55"
+    }
+  ]
+
+  return (
+    <div className="rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6 xl:p-8">
+      <div className="mb-4 flex items-center justify-between">
+        <div>
+          <div className="mb-2 text-md lg:text-xl font-bold text-gray-900 dark:text-white"> Latest Products </div>
+          <span className="text-base font-normal text-gray-600 dark:text-gray-400 hidden md:block"> This is a list of latest products </span>
+        </div>
+        <div className="shrink-0">
+          <div className="rounded-lg p-2 text-sm font-medium text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700 cursor-pointer" onClick={() =>ViewAllCall()}> View all  </div>
+        </div>
+      </div>
+      <div className="mt-8 flex flex-col">
+        <div className="overflow-x-auto rounded-lg">
+          <div className="inline-block min-w-full align-middle">
+            <div className="overflow-hidden shadow sm:rounded-lg">
+              <Table striped className="min-w-full divide-y divide-gray-200 dark:divide-gray-600" >
+                <Table.Head className="bg-gray-50 dark:bg-gray-700">
+                  <Table.HeadCell>Name</Table.HeadCell>
+                  <Table.HeadCell>Category</Table.HeadCell>
+                  <Table.HeadCell>Qty</Table.HeadCell>
+                  <Table.HeadCell>Price</Table.HeadCell>
+                  <Table.HeadCell>Date &amp; Time</Table.HeadCell>
+                </Table.Head>
+                <Table.Body className="bg-white dark:bg-gray-800">
+                    {ProductData && ProductData.map((item ,k) =>(
+                      <Table.Row key={k}>
+                      <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 dark:text-white"><span className="font-semibold">{item.name}</span>  </Table.Cell>
+                      <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400"> {item.category} </Table.Cell>
+                      <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white"> {item.qty}  </Table.Cell>
+                      <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white"> {item.price}  </Table.Cell>
+                      <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white"> {item.createdAt}  </Table.Cell>
+                      </Table.Row>
+                    ))}
+                </Table.Body>
+              </Table>
+            </div>
+          </div>
+        </div>
+      </div>
+     
     </div>
   );
 };

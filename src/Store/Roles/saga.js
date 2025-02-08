@@ -12,9 +12,9 @@ import {
   DeleteRoleslist,
   DeleteRoleslistSuccess,
   DeleteRoleslistFail,
-  SearchRoleslist,
-  SearchRoleslistSuccess,
-  SearchRoleslistFail
+  ResetRoleslist,
+  ResetRoleslistSuccess,
+  ResetRoleslistFail
 } from "./action";
 import {
   GET_ROLES_LIST,
@@ -29,16 +29,15 @@ import {
   DELETE_ROLES_LIST,
   DELETE_ROLES_LIST_SUCCESS,
   DELETE_ROLES_LIST_ERROR,
-  GET_SEARCH_ROLES_LIST,
-  GET_SEARCH_ROLES_LIST_ERROR,
-  GET_SEARCH_ROLES_LIST_SUCCESS,
+  GET_RESET_ROLES_LIST,
+  GET_RESET_ROLES_LIST_ERROR,
+  GET_RESET_ROLES_LIST_SUCCESS,
 } from "./actionType";
 import {
   RolelistApi,
   AddRolelistApi,
   UpdatelistApi,
   DelRolelistApi,
-  SearchRolelistApi
 } from "../../helper/Demo_helper";
 
 function* onGetRolesList({ payload: requstuser }) {
@@ -85,12 +84,7 @@ function* onDelRolesList({ payload: requstuser }) {
     const reponse = yield call(DelRolelistApi, requstuser);
     yield put(DeleteRoleslistSuccess(DELETE_ROLES_LIST, reponse));
     if(reponse.success == true){
-      let requserdata = {
-        find_role_title: "",
-        page: 1,
-        size: 5
-      };
-      const reponse = yield call(RolelistApi, requserdata);
+      const reponse = yield call(RolelistApi);
       yield put(getRoleslistSuccess(GET_ROLES_LIST, reponse));
     }
   } catch (error) {
@@ -98,13 +92,9 @@ function* onDelRolesList({ payload: requstuser }) {
   }
 }
 
-function* onSearchRolesList({ payload: requstuser }) {
-  try {
-    const reponse = yield call(SearchRolelistApi, requstuser);
-    yield put(SearchRoleslistSuccess(GET_SEARCH_ROLES_LIST, reponse));
-  } catch (error) {
-    yield put(SearchRoleslistFail(error));
-  }
+function* onResetRolesList() {
+    const reponse = yield call(ResetRoleslist);
+    yield put(ResetRoleslistSuccess(GET_RESET_ROLES_LIST, reponse));
 }
   
 
@@ -113,7 +103,7 @@ function* RoleSaga() {
   yield takeEvery(GET_SINGLE_ROLES_LIST, onGetSingleRolesList);
   yield takeEvery(ADD_ROLES_LIST, onAddRolesList);
   yield takeEvery(DELETE_ROLES_LIST, onDelRolesList);
-  yield takeEvery(GET_SEARCH_ROLES_LIST, onSearchRolesList);
+  yield takeEvery(GET_RESET_ROLES_LIST, onResetRolesList);
 
 }
 export default RoleSaga;

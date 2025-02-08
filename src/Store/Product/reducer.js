@@ -22,6 +22,7 @@ const INIT_STATE = {
   ProductlistSize:0,
   TotalProductData:0,
   CurrentPage:1,
+  DeleteProductlist:[],
   error: {},
 };
 
@@ -98,7 +99,7 @@ const Product = (state = INIT_STATE, action) => {
         case DELETE_PRODUCT_LIST:
           return {
             ...state,
-            Productlist: action.payload.data,
+            DeleteProductlist: action.payload.data,
           };
       }
     case DELETE_PRODUCT_LIST_ERROR:

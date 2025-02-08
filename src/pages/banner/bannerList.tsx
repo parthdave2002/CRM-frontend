@@ -53,12 +53,12 @@ const BannerListPage: FC = function () {
 
   // ------------- Get  Data From Reducer Code Start --------------
     useEffect(() => {
-      let requserdata = {
+      let requserdata: { page: number; size: number; search?: string } = {
         page: PageNo,
-        size: RoePerPage,
-        search: searchData
+        size: RoePerPage
       };
-      dispatch(getBannerlist());
+      if (searchData)  requserdata.search = searchData;
+      dispatch(getBannerlist(requserdata));
     }, [dispatch, PageNo, RoePerPage, searchData]);
 
     useEffect(() => {        
