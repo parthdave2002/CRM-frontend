@@ -32,7 +32,7 @@ const RolesPage: FC = function () {
  //  ----------------- next Button  Code Start  -----------------
  const [TotalPage, setTotalPage] = useState(0);
  const [PageNo, setPageNo] = useState(1);
- const [RoePerPage, setRoePerPage] = useState(5);
+ const [RoePerPage, setRoePerPage] = useState(10);
 
  const RowPerPage = (value: any) => {
    setRoePerPage(value);
@@ -57,12 +57,11 @@ const RolesPage: FC = function () {
   }));
 
   useEffect(() => {
-    let requserdata = {
-      find_role_title: "",
+    let requserdata: { page: number; size: number; search?: string } = {
       page: PageNo,
-      size: RoePerPage,
-      search:searchData
+      size: RoePerPage
     };
+    if (searchData)  requserdata.search = searchData;
     dispatch(getRoleslist(requserdata));
   }, [dispatch, PageNo, RoePerPage,searchData]);
 
@@ -88,13 +87,13 @@ const RolesPage: FC = function () {
   };
 
   const DelRole = () => {
-    let rqeuserdata = { id: id, type: "Role-Delete" };
+    let rqeuserdata = { id: id };
     dispatch(DeleteRoleslist(rqeuserdata));
     setisOpenDelteModel(false);
   };
 
   const ModuleListFuncall = (id: any) => {
-    navigate("/roles/access", { state: { id: id._id } });
+    navigate(`/roles-access/${id}`);
   };
 
   const OpenAddModel = () =>{
@@ -135,13 +134,15 @@ const RolesPage: FC = function () {
                     <Table.Cell className="space-x-2 whitespace-nowrap py-0">
                       <div className="flex items-center gap-x-3 justify-evenly">
                         {AccessDataList && AccessDataList.map((data) => data.value === "role-edit" ? (  <Button  gradientDuoTone="greenToBlue" onClick={() => getUnderGuidedata(item._id)}><div className="flex items-center gap-x-2"> <HiOutlinePencilAlt className="text-lg" /> Edit Role </div> </Button>  ) : null)} 
-                        {AccessDataList && AccessDataList.map((data) => data.value === "role-delete" ? ( <Button gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)} > <div className="flex items-center gap-x-2"> <HiTrash className="text-lg" />  Delete Role </div> </Button> ) : null)} 
+                        {/* {AccessDataList && AccessDataList.map((data) => data.value === "role-delete" ? (  */}
+                          <Button gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)} > <div className="flex items-center gap-x-2"> <HiTrash className="text-lg" />  Delete Role </div> </Button>
+                       {/* ) : null)}  */}
                       </div>
                     </Table.Cell>
                     <Table.Cell>  
-                      {AccessDataList && AccessDataList.map((data) => data.value === "roleaccess-view" ? (  
-                      <Button color="primary" className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-dark"  onClick={() => ModuleListFuncall(item)}> <div className="flex items-center gap-x-2"> <HiKey className="text-lg" /> Role Access List </div>  </Button>  
-                      ) : null)}  
+                      {/* {AccessDataList && AccessDataList.map((data) => data.value === "roleaccess-view" ? (   */}
+                      <Button color="primary" className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-dark"  onClick={() => ModuleListFuncall(item._id)}> <div className="flex items-center gap-x-2"> <HiKey className="text-lg" /> Role Access List </div>  </Button>  
+                      {/* ) : null)}   */}
                       </Table.Cell>
                   </Table.Row>
               ))}

@@ -1,14 +1,17 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { Label, Button } from "flowbite-react";
+import { AddRoleslist, ResetRoleslist } from "../../Store/actions"
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Select from "react-select";
 import { Form, Input, FormFeedback } from "reactstrap";
 import { useNavigate } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
 
 const AddRolePage : FC = function () {
+    const dispatch = useDispatch()
     const navigate = useNavigate();
 
     const isactiveoption =[
@@ -33,7 +36,7 @@ const AddRolePage : FC = function () {
 
     const [initialValues, setinitialValues] = useState({
         id: 0,
-        role_name: "",
+        role_title: "",
         description: "",
     });
 
@@ -42,17 +45,39 @@ const AddRolePage : FC = function () {
         initialValues: initialValues,
     
         validationSchema: Yup.object({
-          role_name: Yup.string().required("Please Enter Role Name"),
+          role_title: Yup.string().required("Please Enter Role Name"),
           description: Yup.string().required("Please Enter Description"),
         }),
     
         onSubmit: (values) => {
-        //   dispatch(AddModulelist(values));
+
+            let requserData ={
+                role_title : values.role_title,
+                description : values.description,
+                is_active: selectedStatusid,
+            }
+
+          dispatch(AddRoleslist(requserData));
           validation.resetForm();
-          initialValues.role_name = "";
-          initialValues.description = "";
         },
     });
+
+    // ------------- Get  Data From Reducer Code Start --------------
+            const { AddRolesDatalist } = useSelector((state: any) => ({
+                AddRolesDatalist: state.Role.AddRoleslist,
+            }));
+    
+            useEffect(() => {  
+                if(AddRolesDatalist?.success == true){
+                    dispatch(ResetRoleslist())
+                    navigate(ParentLink)
+                    validation.resetForm();
+                    setSelectedStatusid(0);
+                    setSelectedStatusOption(null);
+                    // setValidateactive(1)
+                }
+            }, [AddRolesDatalist]);
+    //  ------------- Get Data From Reducer Code end --------------
 
     let Name = "Role Add";
     let ParentName = "Role List";
@@ -68,25 +93,25 @@ const AddRolePage : FC = function () {
                             <Label htmlFor="RoleName">Role Name</Label>
                             <div className="mt-1">
                             <Input
-                                id="role_name"
-                                name="role_name"
+                                id="role_title"
+                                name="role_title"
                                 className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
                                 placeholder="Role Name"
                                 type="text"
                                 onChange={validation.handleChange}
                                 onBlur={validation.handleBlur}
-                                value={validation.values.role_name || ""}
+                                value={validation.values.role_title || ""}
                                 invalid={
-                                validation.touched.role_name &&
-                                validation.errors.role_name
+                                validation.touched.role_title &&
+                                validation.errors.role_title
                                     ? true
                                     : false
                                 }
                             />
-                            {validation.touched.role_name &&
-                            validation.errors.role_name ? (
+                            {validation.touched.role_title &&
+                            validation.errors.role_title ? (
                                 <FormFeedback type="invalid" className="text-Red text-sm">
-                                {validation.errors.role_name}
+                                {validation.errors.role_title}
                                 </FormFeedback>
                             ) : null}
                             </div>

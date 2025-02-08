@@ -75,7 +75,7 @@ export const UpdateUserdatalistApi = async (requserdata) => await api.create(url
 export const RolelistApi = async (requserdata) => await api.get(url.GET_ROLES_LIST, requserdata);
 export const UpdatelistApi = async (requserdata) => await api.get(url.UPDATE_ROLES_LIST,requserdata);
 export const AddRolelistApi = async (requserdata) => await api.create(url.ADD_ROLES_LIST,requserdata);
-export const DelRolelistApi =  async (requserdata) => await  api.get(url.DELETE_ROLES_LIST,requserdata);
+export const DelRolelistApi =  async (requserdata) => await  api.delete(url.DELETE_ROLES_LIST,requserdata);
 export const SearchRolelistApi = async (requserdata) => await api.get(url.GET_SEARCH_ROLES_LIST, requserdata);
 
 // Module Api

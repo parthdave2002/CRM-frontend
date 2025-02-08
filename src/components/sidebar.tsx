@@ -1,9 +1,10 @@
 import { Sidebar } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { HiShoppingBag, HiCube, HiPuzzle, HiUsers, HiChartPie, HiLibrary } from "react-icons/hi";
-import { LuPackageOpen } from "react-icons/lu";
+import { MdLeaderboard } from "react-icons/md"; 
 import { TbReportSearch } from "react-icons/tb";
 import { FaUser, FaTags  } from "react-icons/fa";
+import { FaSackDollar } from "react-icons/fa6";
 import { BsBuildingsFill, BsCloudArrowUpFill  } from "react-icons/bs";
 import { BiCategoryAlt } from "react-icons/bi";
 import type { FC, PropsWithChildren } from "react";
@@ -39,23 +40,28 @@ const LeftSidebar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = function ()
       to: "/roles/list",
     },
     {
-      name: "Customer",
+      name: "Customer List",
       icon: FaUser,
       to: "/customer/list",
     },
     {
-      name: "Product",
+      name: "Product List",
       icon: HiLibrary,
       to: "/product/list",
     },
     {
-      name: "Order",
-      icon: HiLibrary,
+      name: "Order List",
+      icon: FaSackDollar,
       to: "/order/list",
     },
     {
-      name: "Report",
+      name: "Lead List",
       icon: TbReportSearch,
+      to: "/lead/list",
+    },
+    {
+      name: "Report",
+      icon: MdLeaderboard,
       to: "/report",
     },
   ];
