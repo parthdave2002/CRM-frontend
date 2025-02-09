@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { Button, Card, Checkbox, Label } from "flowbite-react";
+import { Button, Card, Checkbox, Label, Modal } from "flowbite-react";
 import type { FC } from "react";
 import LOGO from "../../img/logo.webp";
 import { useEffect, useState } from "react";
@@ -10,6 +10,7 @@ import { insertlogin, resetinsertlogin} from "../../Store/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import ToastMessage from "../../components/ToastMessage";
+import { toast } from "react-toastify";
 
 const SignInPage: FC = function () {
   const navigation = useNavigate();
@@ -39,7 +40,6 @@ const SignInPage: FC = function () {
 
   const { login } = useSelector((state:any) => ({
     login: state.Login.Logincode,
-    // loginlaravel: state.LaravelLogin.Logincode
   }));
 
   const AcccessData = LoginRols && LoginRols.map((item:any) => ( item.role_title ));
@@ -86,8 +86,22 @@ const SignInPage: FC = function () {
     },[])
   //--------------  if User Alredy login redirect to their page code end --------------
 
+
+  const [ isOpenDelteModel,setisOpenDelteModel] = useState(false);
+
+  const LostPasswordCall = () =>{
+
+    if(validation.values.username){
+      setisOpenDelteModel(true);
+    }else{
+      toast.error("Please enter username")
+    }
+    
+  }
+
   const LostPassword = () => {
-    alert("Please contact your Admin");
+    setisOpenDelteModel(false);
+    toast.success("Please contact your admin");
   };
 
   return (
@@ -103,7 +117,7 @@ const SignInPage: FC = function () {
 
             <Input
               name="username"
-              className="bg-gray-50 border border-gray-300  disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
+              className="bg-gray-50 dark:bg-gray-800 border border-gray-300  disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
               placeholder="Enter username"
               type="text"
               onChange={validation.handleChange}
@@ -136,13 +150,25 @@ const SignInPage: FC = function () {
 
           <div className="mb-6 flex items-center justify-between">
             <div className="flex items-center gap-x-3"> <Checkbox id="rememberMe" name="rememberMe" /> <Label htmlFor="rememberMe">Remember me</Label>  </div>
-            <a onClick={() => { LostPassword() }} className="w-1/2 text-right text-sm text-primary-600 dark:text-primary-300 cursor-pointer"  > Lost Password? </a>
+            <a onClick={() => LostPasswordCall() } className="w-1/2 text-right text-sm text-primary-600 dark:text-primary-300 cursor-pointer"  > Lost Password? </a>
           </div>
 
           <div className="mb-6">  <Button type="submit" className="w-full ">  Login to your account  </Button> </div>
         </Form>
 
       </Card>
+
+      <Modal onClose={() => setisOpenDelteModel(false)}  show={isOpenDelteModel} size="md">
+          <Modal.Header className="px-6 pt-6 pb-0"> <span className="sr-only"> Send Email to admin</span></Modal.Header>
+            <Modal.Body className="px-6 pt-0 pb-6">
+                <div className="flex flex-col items-center gap-y-6 text-center">  <p className="text-xl text-gray-500"> Are you sure? You want  to send email to admin? </p>
+                    <div className="flex items-center gap-x-3">
+                        <Button color="failure"   onClick={() => LostPassword()}>  Yes, I'm sure </Button> 
+                        <Button color="gray"  onClick={() => setisOpenDelteModel(false)}> No, cancel </Button> 
+                    </div>
+                </div>
+            </Modal.Body>
+      </Modal>
       <ToastMessage />
     </div>
   );
