@@ -7,9 +7,12 @@ import * as Yup from "yup";
 import Select from "react-select";
 import { Form, Input, FormFeedback } from "reactstrap";
 import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
+import { AddUserlist } from "../../Store/actions";
 
 const AddUserPage : FC = function () {
 
+    const dispatch = useDispatch();
 
     const roleoption =[
         { label : "Admin", value : "Admin"},
@@ -20,11 +23,11 @@ const AddUserPage : FC = function () {
 
     //---------------- Role option code start ----------------
         const [selectedRoleOption, setSelectedRoleOption] = useState(null);
-        const [selectedRoleid, setSelectedRoleid] = useState(0);
+        const [selectedRoleid, setSelectedRoleid] = useState("");
 
         const IsActiveRoledata = (data: any) => {
         if (!data) {
-            setSelectedRoleid(0);
+            setSelectedRoleid("");
             setSelectedRoleOption(null);
         } else {
             setSelectedRoleid(data.value);
@@ -52,11 +55,11 @@ const AddUserPage : FC = function () {
 
     //---------------- Gender option code start ----------------
         const [selectedGenderOption, setSelectedGenderOption] = useState(null);
-        const [selectedGenderid, setSelectedGenderid] = useState(0);
+        const [selectedGenderid, setSelectedGenderid] = useState("");
 
         const IsActiveGenderdata = (data: any) => {
         if (!data) {
-            setSelectedGenderid(0);
+            setSelectedGenderid("");
             setSelectedGenderOption(null);
         } else {
             setSelectedGenderid(data.value);
@@ -67,14 +70,16 @@ const AddUserPage : FC = function () {
 
     //---------------- Satus option code start ----------------
         const [selectedStatusOption, setSelectedStatusOption] = useState(null);
-        const [selectedStatusid, setSelectedStatusid] = useState(0);
+        const [selectedStatusid, setSelectedStatusid] = useState<boolean | null>(null);
 
-        const IsActivedata = (data: any) => {
+        const IsActivedata = (data:any) => {
+            console.log("selectedStatusid",data);
+            
         if (!data) {
-            setSelectedStatusid(0);
+            setSelectedStatusid(null);
             setSelectedStatusOption(null);
         } else {
-            setSelectedStatusid(data.value);
+            setSelectedStatusid(!!data.value);
             setSelectedStatusOption(data);
         }
         };
@@ -82,11 +87,11 @@ const AddUserPage : FC = function () {
 
     //---------------- Aadhar option code start ----------------
         const [selectedAadharOption, setSelectedAadharOption] = useState(null);
-        const [selectedAadharid, setSelectedAadharid] = useState(0);
-
+        const [selectedAadharid, setSelectedAadharid] = useState<boolean | null>(null);
+        
         const IsActiveAadhardata = (data: any) => {
         if (!data) {
-            setSelectedAadharid(0);
+            setSelectedAadharid(null);
             setSelectedAadharOption(null);
         } else {
             setSelectedAadharid(data.value);
@@ -97,11 +102,11 @@ const AddUserPage : FC = function () {
 
     //---------------- pan card option code start ----------------
         const [selectedpancardOption, setSelectedpancardOption] = useState(null);
-        const [selectedPancardid, setSelectedPancardid] = useState(0);
+        const [selectedPancardid, setSelectedPancardid] = useState<null | boolean>(null);
     
         const IsActivePancarddata = (data: any) => {
         if (!data) {
-            setSelectedPancardid(0);
+            setSelectedPancardid(null);
             setSelectedpancardOption(null);
         } else {
             setSelectedPancardid(data.value);
@@ -127,7 +132,6 @@ const AddUserPage : FC = function () {
 
     const navigate = useNavigate();
     const [initialValues, setinitialValues] = useState({
-        id: 0,
         user_name: "",
         email:"",
         gender:"",
@@ -162,7 +166,25 @@ const AddUserPage : FC = function () {
         }),
         
         onSubmit: (values) => {
-            //   dispatch(AddModulelist(values));
+
+            const formData = new FormData();
+            formData.append("name", values.user_name);
+            formData.append("email", values.email);
+            formData.append("password", values.password);
+            formData.append("gender", selectedGenderid);
+            formData.append("mobile_no", values.mobile_no);
+            formData.append("date_of_joining", values.date_of_joining);
+            formData.append("date_of_birth", values.date_of_birth);
+            formData.append("emergency_mobile_no", values.emergency_mobile_no);
+            formData.append("emergency_contact_person", values.emergency_contact_person);
+            formData.append("address", values.address);
+            formData.append("aadhar_card", JSON.stringify(selectedAadharid));
+            formData.append("pan_card", JSON.stringify(selectedPancardid));
+            formData.append("bank_passbook",JSON.stringify(selectedBankPassbookid));
+            formData.append("is_active", JSON.stringify(selectedStatusid));
+            formData.append("role", "67a9c77c3022e8352c60d5b9");
+            // formData.append("user_pic", file); 
+            dispatch(AddUserlist(formData));
             validation.resetForm();
             initialValues.user_name = "";
         },

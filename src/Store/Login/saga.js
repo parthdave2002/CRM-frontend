@@ -23,16 +23,17 @@ import {
 } from "./actionType";
 import { LoginApi,LogoutApi } from "../../helper/Demo_helper";
 import { toast } from "react-toastify";
+import Cookies from "js-cookie";
 
 function* onInsertLogin({ payload: requstuser }) {
   try {
+    Cookies.set('token',"callled", { expires: 7 });
     const reponse = yield call(LoginApi, requstuser);
     yield put(insertloginSuccess(INSERT_LOGIN, reponse));
 
     if(reponse.success === false){
       toast.error(reponse.msg)
     }
-
     if (reponse.success === true) {
       localStorage.setItem("token", reponse.token);
       localStorage.setItem("user", JSON.stringify(reponse.data.roles));

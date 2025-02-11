@@ -8,12 +8,14 @@ import Select from "react-select";
 import { Form, Input, FormFeedback } from "reactstrap";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { AddCompanylist, ResetCompanylist } from "../../Store/actions";
+import { AddCategorylist, ResetCategorylist } from "../../Store/actions";
 import ImageUploadPreview from "../../components/imageuploader";
 
 const CategoryAddPage : FC = function () {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const [file, setFile] = useState(null);
 
     // ------ status code start ------
     const [selectedactiveOption, setSelectedactiveOption] = useState(null);
@@ -50,13 +52,12 @@ const CategoryAddPage : FC = function () {
         
         onSubmit: (values) => {
           {selectedactiveid == 0 ? setValidateactive(1) : setValidateactive(0) }
-
-          let requserdata = {
-            name: values?.name,
-            description: values?.description,
-            is_active: selectedactiveid,
-          };
-          dispatch(AddCompanylist(requserdata));
+          const formData = new FormData();
+          formData.append("name", values.name);
+          formData.append("description", values.description);
+          formData.append("is_active", JSON.stringify(selectedactiveid));
+          formData.append("category_pic", JSON.stringify(file));
+          dispatch(AddCategorylist(formData));
         },
     });
 
@@ -78,7 +79,7 @@ const CategoryAddPage : FC = function () {
 
         useEffect(() => {  
             if(AddCompanyDatalist?.success == true){
-                dispatch(ResetCompanylist())
+                dispatch(ResetCategorylist())
                 navigate(ParentLink)
                 validation.resetForm();
                 setSelectedactiveid(0);

@@ -7,9 +7,10 @@ export const LOGOUT ="/api/user/logout";
 // User Api
 export const GET_USER_LIST = "/api/user/get-user";
 export const GET_USER_VIEW = "/api/user/detailview";
-export const ADD_USER_LIST = "/api/user/change";
+export const ADD_USER_LIST = "/api/user/add-user";
 export const DELETE_USER_LIST = "/api/user/deluser";
 export const UPDATE_USER_DATA_LIST = "/api/user/update";
+export const CHECK_USER_LIST = "/api/user/check-user";
 
 // Role Api
 export const GET_ROLES_LIST = "/api/role/get-role";
@@ -72,3 +73,10 @@ export const DELETE_BANNER_LIST = "/api/banner/remove-banner";
 export const GET_TAGLOG_LIST = "/api/taglog/get-taglog";
 export const ADD_TAGLOG_LIST = "/api/taglog/add-taglog";
 export const DELETE_TAGLOG_LIST = "/api/taglog/remove-taglog";
+
+export const GET_EXPORT_DATA_LIST = "/api/export/export-data";
+
+// Customer
+export const GET_CUSTOMER_DATA_LIST = "/api/customer/get-customer";
+export const ADD_CUSTOMER_DATA_LIST = "/api/customer/add-customer";
+export const DELETE_CUSTOMER_DATA_LIST = "/api/customer/remove-customer";

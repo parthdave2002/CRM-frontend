@@ -6,11 +6,15 @@ import {
   AddCategorylistFail,
   DeleteCategorylistSuccess,
   DeleteCategorylistFail,
+  ResetCategorylist,
+  ResetCategorylistSuccess,
+  ResetCategorylistFail
 } from "./action";
 import {
   GET_CATEGORY_LIST,
   ADD_CATEGORY_LIST,
   DELETE_CATEGORY_LIST,
+  RESET_CATEGORY_LIST
 } from "./actionType";
 import { CategorylistApi, AddCategorylistApi, DelCategorylistApi,} from "../../helper/Demo_helper";
 
@@ -46,9 +50,15 @@ function* onDelCategoryList({ payload: requstuser }) {
   }
 }
 
+function* onResetCategoryList({ payload: requstuser }) {
+    const response = yield call(ResetCategorylist);
+    yield put(ResetCategorylistSuccess(RESET_CATEGORY_LIST, response));
+}
+
 function* CategorySaga() {
   yield takeEvery(GET_CATEGORY_LIST, onGetCategoryList);
   yield takeEvery(ADD_CATEGORY_LIST, onAddCategoryList);
   yield takeEvery(DELETE_CATEGORY_LIST, onDelCategoryList);
+  yield takeEvery(RESET_CATEGORY_LIST, onResetCategoryList);
 }
 export default CategorySaga;

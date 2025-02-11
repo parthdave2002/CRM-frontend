@@ -20,6 +20,10 @@ import {
   UpdateUserdatalist,
   UpdateUserdatalistSuccess,
   UpdateUserdatalistFail,
+
+  CheckUserdatalist,
+  CheckUserdatalistSuccess,
+  CheckUserdatalistFail
 } from "./action";
 import {
   GET_USER_LIST,
@@ -41,6 +45,10 @@ import {
   UPDATE_USER_DATA_LIST,
   UPDATE_USER_DATA_LIST_ERROR,
   UPDATE_USER_DATA_LIST_SUCCESS,
+
+  CHECK_USER_LIST,
+  CHECK_USER_LIST_ERROR,
+  CHECK_USER_LIST_SUCCESS
 } from "./actionType";
 import {
   UserlistApi,
@@ -49,6 +57,7 @@ import {
   AddUserlistApi,
   DelUserlistApi,
   UpdateUserdatalistApi,
+  CheckUserdatalistApi,
 } from "../../helper/Demo_helper";
 
 function* onGetuserList({ payload: requstuserlist }) {
@@ -74,20 +83,13 @@ function* onGetAdduserList({ payload: requstuser }) {
     const reponse = yield call(AddUserlistApi, requstuser);
     yield put(AddUserlistSuccess(ADD_USER_LIST, reponse));
 
-
     if (reponse.success == true) {
       toast.success(reponse.message, {});
-      let requserdata = {
-        page: 1,
-        size: 5,
-        search: null
-      };
+      let requserdata = { page: 1, size: 5, search: null};
       const reponse = yield call(UserlistApi, requserdata);
       yield put(getUserlistSuccess(GET_USER_LIST, reponse));
     } 
-    else{
-      toast.error(reponse.msg, {});
-    }
+    else{ toast.error(reponse.msg, {}); }
   } catch (error) {
     yield put(AddUserlistFail(error));
   }
@@ -99,15 +101,10 @@ function* onGetDeleteuserList({ payload: requstuser }) {
     yield put(DeleteUserlistSuccess(DELETE_USER_LIST, reponse));
 
     if (reponse.success == true) {
-      let requserdata = {
-        search: null,
-        page: 1,
-        size: 5,
-      };
+      let requserdata = { search: null, page: 1,  size: 5 };
       const reponse = yield call(UserlistApi, requserdata);
       yield put(getUserlistSuccess(GET_USER_LIST, reponse));
     }
-
   } catch (error) {
     yield put(DeleteUserlistFail(error));
   }
@@ -118,16 +115,21 @@ function* onGetUpdateUserdatalist({ payload: requstuser }) {
     const reponse = yield call(UpdateUserdatalistApi, requstuser);
     yield put(UpdateUserdatalistSuccess(UPDATE_USER_DATA_LIST, reponse));
     if (reponse.success == true) {
-      let requserdata = {
-        page: 1,
-        size: 5,
-        search: null
-      };
+      let requserdata = { page: 1, size: 5, search: null };
       const reponse = yield call(UserlistApi, requserdata);
       yield put(getUserlistSuccess(GET_USER_LIST, reponse));
     } 
   } catch (error) {
     yield put(UpdateUserdatalistFail(error));
+  }
+}
+
+function* onGetCheckUserdatalist({ payload: requstuser }) {
+  try {
+    const reponse = yield call(CheckUserdatalistApi, requstuser);
+    yield put(CheckUserdatalistSuccess(CHECK_USER_LIST, reponse));
+  } catch (error) {
+    yield put(CheckUserdatalistFail(error));
   }
 }
 
@@ -137,6 +139,7 @@ function* UserSaga() {
   yield takeEvery(ADD_USER_LIST, onGetAdduserList);
   yield takeEvery(DELETE_USER_LIST, onGetDeleteuserList);
   yield takeEvery(UPDATE_USER_DATA_LIST, onGetUpdateUserdatalist);
+  yield takeEvery(CHECK_USER_LIST, onGetCheckUserdatalist);
 }
 
 export default UserSaga;

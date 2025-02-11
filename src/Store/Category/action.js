@@ -10,6 +10,10 @@ import {
   DELETE_CATEGORY_LIST,
   DELETE_CATEGORY_LIST_SUCCESS,
   DELETE_CATEGORY_LIST_ERROR,
+
+  RESET_CATEGORY_LIST,
+  RESET_CATEGORY_LIST_SUCCESS,
+  RESET_CATEGORY_LIST_ERROR
 } from "./actionType";
 
 export const getCategorylist = (requserdata) => ({
@@ -54,5 +58,21 @@ export const DeleteCategorylistSuccess = (actionType, data) => ({
 
 export const DeleteCategorylistFail = (actionType, error) => ({
   type: DELETE_CATEGORY_LIST_ERROR,
+  payload: { actionType, error },
+});
+
+
+export const ResetCategorylist = (requserdata) => ({
+  type: RESET_CATEGORY_LIST,
+  payload: requserdata,
+});
+
+export const ResetCategorylistSuccess = (actionType, data) => ({
+  type: RESET_CATEGORY_LIST_SUCCESS,
+  payload: { actionType, data },
+});
+
+export const ResetCategorylistFail = (actionType, error) => ({
+  type: RESET_CATEGORY_LIST_ERROR,
   payload: { actionType, error },
 });

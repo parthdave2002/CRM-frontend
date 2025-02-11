@@ -18,6 +18,10 @@ import {
  UPDATE_USER_DATA_LIST,
  UPDATE_USER_DATA_LIST_ERROR,
  UPDATE_USER_DATA_LIST_SUCCESS,
+
+ CHECK_USER_LIST,
+ CHECK_USER_LIST_ERROR,
+ CHECK_USER_LIST_SUCCESS
 } from "./actionType";
 
 const INIT_STATE = {
@@ -27,6 +31,7 @@ const INIT_STATE = {
   CurrentPage:1,
   UserView: [],
   UpdateUserList: [],
+  CheckUserList:[],
   error: {},
 };
 
@@ -36,7 +41,6 @@ const User = (state = INIT_STATE, action) => {
 
       switch (action.payload.actionType) {
         case GET_USER_LIST:
-          console.log("UserList =====>", action.payload.data.data);
           return {
             ...state,
             UserList: action.payload.data.data,
@@ -131,6 +135,26 @@ const User = (state = INIT_STATE, action) => {
     case UPDATE_USER_DATA_LIST_ERROR:
       switch (action.payload.actionType) {
         case UPDATE_USER_DATA_LIST:
+          return {
+            ...state,
+            error: action.payload,
+          };
+        default:
+          return { ...state };
+      }
+
+    // Check User
+    case CHECK_USER_LIST_SUCCESS:
+      switch (action.payload.actionType) {
+        case CHECK_USER_LIST:
+          return {
+            ...state,
+            CheckUserList: action.payload.data,
+          };
+      }
+    case CHECK_USER_LIST_ERROR:
+      switch (action.payload.actionType) {
+        case CHECK_USER_LIST:
           return {
             ...state,
             error: action.payload,

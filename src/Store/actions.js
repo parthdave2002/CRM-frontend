@@ -13,3 +13,5 @@ export * from "./Company/action";
 export * from "./Product/action";
 export * from "./Banner/action";
 export * from "./Taglog/action";
+export * from "./ExportData/action";
+export * from "./Customer/action";

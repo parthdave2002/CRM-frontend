@@ -14,6 +14,8 @@ const BannerAddPage : FC = function () {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const [file, setFile] = useState(null);
+
     // ------ status code start ------
     const [selectedactiveOption, setSelectedactiveOption] = useState(null);
     const [selectedactiveid, setSelectedactiveid] = useState(0);
@@ -55,19 +57,19 @@ const BannerAddPage : FC = function () {
             description: values?.description,
             is_active: selectedactiveid,
           };
+
+          const formData = new FormData();
+          formData.append("name", values.name);
+          formData.append("description", values.description);
+          formData.append("is_active", JSON.stringify(selectedactiveid));
+          formData.append("banner_pic", JSON.stringify(file));
           dispatch(AddBannerlist(requserdata));
         },
     });
 
     const isactiveoption =[
-        {
-            label :"Active",
-            value : true
-        },
-        {
-            label :"Inactive",
-            value : false
-        }
+        { label :"Active", value : true },
+        { label :"Inactive", value : false }
     ]
 
     // ------------- Get  Data From Reducer Code Start --------------

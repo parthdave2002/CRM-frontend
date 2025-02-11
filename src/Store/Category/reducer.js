@@ -10,6 +10,10 @@ import {
   DELETE_CATEGORY_LIST,
   DELETE_CATEGORY_LIST_SUCCESS,
   DELETE_CATEGORY_LIST_ERROR,
+
+  RESET_CATEGORY_LIST,
+  RESET_CATEGORY_LIST_SUCCESS,
+  RESET_CATEGORY_LIST_ERROR
 } from "./actionType";
 
 const INIT_STATE = {
@@ -82,6 +86,30 @@ const Category = (state = INIT_STATE, action) => {
         default:
           return { ...state };
       }
+
+
+      case RESET_CATEGORY_LIST_SUCCESS:
+        switch (action.payload.actionType) {
+          case RESET_CATEGORY_LIST:
+            return {
+              ...state,
+              Categorylist: [],
+              CategorylistSize:0,
+              TotalCategoryData:0,
+              CurrentPage:1,
+              error: {},
+            };
+        }
+      case RESET_CATEGORY_LIST_ERROR:
+        switch (action.payload.actionType) {
+          case RESET_CATEGORY_LIST:
+            return {
+              ...state,
+              error: action.payload,
+            };
+          default:
+            return { ...state };
+        }
  
     default:
       return state;

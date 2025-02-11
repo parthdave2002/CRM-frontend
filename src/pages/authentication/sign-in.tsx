@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { Form, Input, FormFeedback } from "reactstrap";
-import { insertlogin, resetinsertlogin} from "../../Store/actions";
+import { CheckUserdatalist, insertlogin, resetinsertlogin} from "../../Store/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import ToastMessage from "../../components/ToastMessage";
@@ -38,8 +38,9 @@ const SignInPage: FC = function () {
   const [Login, setLogin] = useState(false);
   const [LoginRols, setLoginRols] = useState([]);
 
-  const { login } = useSelector((state:any) => ({
+  const { login,  CheckUserList} = useSelector((state:any) => ({
     login: state.Login.Logincode,
+    CheckUserList: state.User.CheckUserList,
   }));
 
   const AcccessData = LoginRols && LoginRols.map((item:any) => ( item.role_title ));
@@ -48,6 +49,16 @@ const SignInPage: FC = function () {
     setLogin(login ? login.success : null);
     setLoginRols(login.data ? login.data.roles : null);
   }, [login]);
+
+  useEffect(() =>{
+      if(CheckUserList?.success == false) {
+        toast.error(CheckUserList?.msg);
+        
+      } 
+      else{
+        setisOpenDelteModel(true);
+      }
+  },[CheckUserList])
 
   useEffect(() => {
 
@@ -86,13 +97,13 @@ const SignInPage: FC = function () {
     },[])
   //--------------  if User Alredy login redirect to their page code end --------------
 
-
   const [ isOpenDelteModel,setisOpenDelteModel] = useState(false);
 
   const LostPasswordCall = () =>{
-
     if(validation.values.username){
-      setisOpenDelteModel(true);
+      let data = validation.values.username;
+      dispatch(CheckUserdatalist(data))
+
     }else{
       toast.error("Please enter username")
     }
