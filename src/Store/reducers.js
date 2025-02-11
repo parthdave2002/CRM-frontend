@@ -15,6 +15,8 @@ import Company from "./Company/reducer";
 import Product from "./Product/reducer";
 import Banner from "./Banner/reducer";
 import Taglog from "./Taglog/reducer";
+import ExportData from "./ExportData/reducer";
+import Customer from "./Customer/reducer";
 
 const rootReducer = combineReducers({
     // public
@@ -31,7 +33,9 @@ const rootReducer = combineReducers({
     Company,
     Product,
     Banner,
-    Taglog
+    Taglog,
+    ExportData,
+    Customer
 });
 
 export default rootReducer;

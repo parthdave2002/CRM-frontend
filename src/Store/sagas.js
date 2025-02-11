@@ -17,6 +17,9 @@ import ProductSaga from "./Product/saga";
 import BannerSaga from "./Banner/saga";
 import TaglogSaga from "./Taglog/saga";
 
+import ExportDataSaga from "./ExportData/saga";
+import CustomerSaga from "./Customer/saga";
+
 export default function* rootSaga() {
   yield all([
     //public
@@ -34,5 +37,7 @@ export default function* rootSaga() {
     fork(ProductSaga),
     fork(BannerSaga),
     fork(TaglogSaga),
+    fork(CustomerSaga),
+    fork(ExportDataSaga)
   ]);
 }

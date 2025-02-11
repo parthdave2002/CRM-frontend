@@ -1,8 +1,9 @@
-import type { FC ,PropsWithChildren } from "react";
+import { useState, type FC ,type PropsWithChildren } from "react";
 import {  Breadcrumb,  Button,} from "flowbite-react";
 import { Input } from "reactstrap";
 import {  HiCog, HiDotsVertical, HiExclamationCircle, HiHome, HiDocumentDownload, HiPlus, HiTrash} from "react-icons/hi";
 import { Link } from "react-router-dom";
+import ExportDataModal from "./exportdata/exportCSV";
 
 interface NavbarSidebarLayoutProps {
   Name?: any;
@@ -26,6 +27,8 @@ const ExampleBreadcrumb: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = funct
   const OpenAddModel = () =>{
     isOpenAddModel(true)
   }
+
+  const [data, setData] = useState([]);
 
   return (
     <>
@@ -118,9 +121,11 @@ const ExampleBreadcrumb: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = funct
                       <Button color="primary" onClick={() => OpenAddModel()} ><div className="flex items-center gap-x-3"> <HiPlus className="text-xl " />  Add {Name}  </div> </Button>
                  : null } 
 
-                 {AcccessData && AcccessData.map((item:any) => item.value == AddAccess ? ( 
-                    <Button color="gray"> <div className="flex items-center gap-x-3"> <HiDocumentDownload className="text-xl" /> <span>Export</span> </div>  </Button>
-                 ) : null )} 
+                 {/* {AcccessData && AcccessData.map((item:any) => item.value == AddAccess ? (  */}
+                    {/* <Button color="gray"> <div className="flex items-center gap-x-3"> <HiDocumentDownload className="text-xl" /> <span>Export</span> </div>  </Button> */}
+
+                    <ExportDataModal data={data} name="user-data" />
+                 {/* ) : null )}  */}
               </div>
             </div>
           </div>

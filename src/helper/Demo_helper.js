@@ -67,9 +67,10 @@ export const LogoutApi = (requserdata) => api.get(url.LOGOUT, requserdata);
 // User Api
 export const UserlistApi = (requserdata) => api.get(url.GET_USER_LIST, requserdata);
 export const UserlistViewApi = (requserdata) => api.get(url.GET_USER_VIEW, requserdata);
-export const AddUserlistApi = async (requserdata) => await api.create(url.ADD_USER_LIST, requserdata);
+export const AddUserlistApi = async (requserdata) => await api.postMultipart(url.ADD_USER_LIST, requserdata);
 export const DelUserlistApi = async (requserdata) => await api.get(url.DELETE_USER_LIST, requserdata);
 export const UpdateUserdatalistApi = async (requserdata) => await api.create(url.UPDATE_USER_DATA_LIST, requserdata);
+export const CheckUserdatalistApi = async (requserdata) => await api.get(url.CHECK_USER_LIST, requserdata);
 
 // Roles Api
 export const RolelistApi = async (requserdata) => await api.get(url.GET_ROLES_LIST, requserdata);
@@ -114,7 +115,7 @@ export const DelPackinglistApi = async (requserdata) => await api.delete(url.DEL
 
 // Category API
 export const CategorylistApi = (requserdata) => api.get(url.GET_CATEGORY_LIST, requserdata);
-export const AddCategorylistApi = async (requserdata) => await api.create(url.ADD_CATEGORY_LIST, requserdata);
+export const AddCategorylistApi = async (requserdata) => await api.postMultipart(url.ADD_CATEGORY_LIST, requserdata);
 export const DelCategorylistApi = async (requserdata) => await api.delete(url.DELETE_CATEGORY_LIST, requserdata);
 
 // Company API
@@ -137,3 +138,10 @@ export const DelBannerlistApi = async (requserdata) => await api.delete(url.DELE
 export const TagloglistApi = (requserdata) => api.get(url.GET_TAGLOG_LIST, requserdata);
 export const AddTagloglistApi = async (requserdata) => await api.create(url.ADD_TAGLOG_LIST, requserdata);
 export const DelTagloglistApi = async (requserdata) => await api.delete(url.DELETE_TAGLOG_LIST, requserdata);
+
+export const ExportDatalistApi = async (requserdata,name) => await api.get(url.GET_EXPORT_DATA_LIST, requserdata,name);
+
+// Customer API
+export const CustomerlistApi = (requserdata) => api.get(url.GET_CUSTOMER_DATA_LIST, requserdata);
+export const AddCustomerlistApi = async (requserdata) => await api.create(url.ADD_CUSTOMER_DATA_LIST, requserdata);
+export const DelCustomerlistApi = async (requserdata) => await api.delete(url.DELETE_CUSTOMER_DATA_LIST, requserdata);

@@ -17,7 +17,11 @@ import {
 
   UPDATE_USER_DATA_LIST,
   UPDATE_USER_DATA_LIST_ERROR,
-  UPDATE_USER_DATA_LIST_SUCCESS
+  UPDATE_USER_DATA_LIST_SUCCESS,
+
+  CHECK_USER_LIST,
+  CHECK_USER_LIST_ERROR,
+  CHECK_USER_LIST_SUCCESS
 } from "./actionType";
 
 export const getUserlist = (requserdata) => ({
@@ -96,5 +100,21 @@ export const UpdateUserdatalistSuccess = (actionType, data) => ({
 
 export const UpdateUserdatalistFail = (actionType, error) => ({
   type: UPDATE_USER_DATA_LIST_ERROR,
+  payload: { actionType, error },
+});
+
+// Check user
+export const CheckUserdatalist = (requserdata) => ({
+  type: CHECK_USER_LIST,
+  payload: requserdata,
+});
+
+export const CheckUserdatalistSuccess = (actionType, data) => ({
+  type: CHECK_USER_LIST_SUCCESS,
+  payload: { actionType, data },
+});
+
+export const CheckUserdatalistFail = (actionType, error) => ({
+  type: CHECK_USER_LIST_ERROR,
   payload: { actionType, error },
 });
