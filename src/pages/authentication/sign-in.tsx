@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { Form, Input, FormFeedback } from "reactstrap";
-import { CheckUserdatalist, insertlogin, resetinsertlogin} from "../../Store/actions";
+import { CheckUserdatalist,ResetUserdatalist, insertlogin, resetinsertlogin} from "../../Store/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import ToastMessage from "../../components/ToastMessage";
@@ -16,7 +16,7 @@ const SignInPage: FC = function () {
   const navigation = useNavigate();
   const dispatch = useDispatch();
 
-  const validation = useFormik({
+  const validation = useFormik<{ username: string; password: string }>({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
 
@@ -50,18 +50,16 @@ const SignInPage: FC = function () {
     setLoginRols(login.data ? login.data.roles : null);
   }, [login]);
 
-  useEffect(() =>{
+  useEffect(() =>{      
       if(CheckUserList?.success == false) {
         toast.error(CheckUserList?.msg);
-        
       } 
-      else{
+      else if(CheckUserList?.success == true){
         setisOpenDelteModel(true);
       }
   },[CheckUserList])
 
   useEffect(() => {
-
     if (Login == true) {  
       if(AcccessData?.includes("Team Leader")){
         navigation("/playlist");
@@ -81,6 +79,7 @@ const SignInPage: FC = function () {
 
   //--------------  if User Alredy login redirect to their page code start --------------
     useEffect(() =>{
+      dispatch(ResetUserdatalist())
       const id = localStorage.getItem("user");
       const jsonObject = id ? JSON.parse(id): null;
       let roleTitle = jsonObject ? jsonObject[0].role_title : null;
@@ -100,14 +99,15 @@ const SignInPage: FC = function () {
   const [ isOpenDelteModel,setisOpenDelteModel] = useState(false);
 
   const LostPasswordCall = () =>{
-    if(validation.values.username){
-      let data = validation.values.username;
-      dispatch(CheckUserdatalist(data))
-
-    }else{
-      toast.error("Please enter username")
+    if (validation.values.username) {
+      let data={
+        search: validation.values.username
+      }
+      
+      dispatch(CheckUserdatalist(data));
+    } else {
+      toast.error("Please enter username");
     }
-    
   }
 
   const LostPassword = () => {

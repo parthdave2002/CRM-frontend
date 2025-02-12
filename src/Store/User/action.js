@@ -19,6 +19,10 @@ import {
   UPDATE_USER_DATA_LIST_ERROR,
   UPDATE_USER_DATA_LIST_SUCCESS,
 
+  RESET_USER_DATA_LIST,
+  RESET_USER_DATA_LIST_SUCCESS,
+  RESET_USER_DATA_LIST_ERROR,
+
   CHECK_USER_LIST,
   CHECK_USER_LIST_ERROR,
   CHECK_USER_LIST_SUCCESS
@@ -100,6 +104,22 @@ export const UpdateUserdatalistSuccess = (actionType, data) => ({
 
 export const UpdateUserdatalistFail = (actionType, error) => ({
   type: UPDATE_USER_DATA_LIST_ERROR,
+  payload: { actionType, error },
+});
+
+// Reset user
+export const ResetUserdatalist = (requserdata) => ({
+  type: RESET_USER_DATA_LIST,
+  payload: requserdata,
+});
+
+export const ResetUserdatalistSuccess = (actionType, data) => ({
+  type: RESET_USER_DATA_LIST_SUCCESS,
+  payload: { actionType, data },
+});
+
+export const ResetUserdatalistFail = (actionType, error) => ({
+  type: RESET_USER_DATA_LIST_ERROR,
   payload: { actionType, error },
 });
 

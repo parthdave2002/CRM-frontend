@@ -37,11 +37,9 @@ const ExampleNavbar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> =
         <div className="w-full ">
           <div className="flex items-center justify-between">
               <div className="flex items-center">
-                <Link to="/dashboard">
-                  <Navbar.Brand>
+                  <Navbar.Brand href="/dashboard">
                     <img alt="" src={logo} className="mr-3 h-6 sm:h-10 ml-16" />
                   </Navbar.Brand>
-                </Link>
               </div>
 
               <div className="relative md:w-64  hidden md:block md:pl-2 flex-auto ml-12">

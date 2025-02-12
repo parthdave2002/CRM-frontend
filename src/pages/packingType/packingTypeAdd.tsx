@@ -16,12 +16,12 @@ const AddpackingTypePage : FC = function () {
     
     // ------ status code start ------
     const [selectedactiveOption, setSelectedactiveOption] = useState(null);
-    const [selectedactiveid, setSelectedactiveid] = useState(0);
+    const [selectedactiveid, setSelectedactiveid] = useState<boolean | null>(null);
     const [validateactive, setValidateactive] = useState(0);
   
     const IsActivedata = (data: any) => {
       if (!data) {
-        setSelectedactiveid(0);
+        setSelectedactiveid(null);
         setSelectedactiveOption(null);
         setValidateactive(1)
       } else {
@@ -46,8 +46,7 @@ const AddpackingTypePage : FC = function () {
         }),
         
         onSubmit: (values) => {
-          {selectedactiveid == 0 ? setValidateactive(1)  : setValidateactive(0) }
-
+          if(selectedactiveid == null) return setValidateactive(1);
           let requserdata = {
             type: values?.packing_type,
             is_active: selectedactiveid,
@@ -57,14 +56,8 @@ const AddpackingTypePage : FC = function () {
     });
 
     const isactiveoption =[
-        {
-            label :"Active",
-            value : true
-        },
-        {
-            label :"Inactive",
-            value : false
-        }
+        {  label :"Active",   value : true  },
+        {  label :"Inactive",  value : false }
     ]
 
     // ------------- Get  Data From Reducer Code Start --------------
@@ -79,7 +72,7 @@ const AddpackingTypePage : FC = function () {
                 navigate("/packing-type/list")
                 validation.resetForm();
                 initialValues.packing_type = "";
-                setSelectedactiveid(0);
+                setSelectedactiveid(null);
                 setSelectedactiveOption(null);
                 setValidateactive(1)
             }
@@ -143,9 +136,7 @@ const AddpackingTypePage : FC = function () {
                                 options={isactiveoption}
                                 isClearable={true}
                             />
-                            {validateactive == 1 ? (
-                                <FormFeedback type="invalid" className="text-Red text-sm"> Please Select status </FormFeedback>
-                            ) : null}
+                            {validateactive == 1 ?  <FormFeedback type="invalid" className="text-Red text-sm"> Please select status </FormFeedback> : null}
                             </div>
                         </div>
 

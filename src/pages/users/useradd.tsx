@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { Label, Button } from "flowbite-react";
@@ -7,29 +7,26 @@ import * as Yup from "yup";
 import Select from "react-select";
 import { Form, Input, FormFeedback } from "reactstrap";
 import { useNavigate } from "react-router";
-import { useDispatch } from "react-redux";
-import { AddUserlist } from "../../Store/actions";
+import { useDispatch, useSelector } from "react-redux";
+import { AddUserlist, getRoleslist, ResetUserdatalist } from "../../Store/actions";
+import { toast } from "react-toastify";
 
 const AddUserPage : FC = function () {
 
     const dispatch = useDispatch();
 
-    const roleoption =[
-        { label : "Admin", value : "Admin"},
-        { label : "HR", value : "HR"},
-        { label : "Sales executive", value : "Sales executive"},
-        { label : "Lead manager", value : "Lead manager"},
-    ]
-
     //---------------- Role option code start ----------------
         const [selectedRoleOption, setSelectedRoleOption] = useState(null);
-        const [selectedRoleid, setSelectedRoleid] = useState("");
+        const [selectedRoleid, setSelectedRoleid] = useState<string | null>(null);;
+        const [ValidateRoleid, setValidateRoleid] = useState(0);
 
         const IsActiveRoledata = (data: any) => {
         if (!data) {
-            setSelectedRoleid("");
+            setValidateRoleid(1);
+            setSelectedRoleid(null);
             setSelectedRoleOption(null);
         } else {
+            setValidateRoleid(0);
             setSelectedRoleid(data.value);
             setSelectedRoleOption(data);
         }
@@ -55,13 +52,16 @@ const AddUserPage : FC = function () {
 
     //---------------- Gender option code start ----------------
         const [selectedGenderOption, setSelectedGenderOption] = useState(null);
-        const [selectedGenderid, setSelectedGenderid] = useState("");
+        const [selectedGenderid, setSelectedGenderid] = useState<string | null>(null);
+        const [ValidateGenderid, setValidateGenderid] = useState(0);
 
         const IsActiveGenderdata = (data: any) => {
         if (!data) {
-            setSelectedGenderid("");
+            setValidateGenderid(1)
+            setSelectedGenderid(null);
             setSelectedGenderOption(null);
         } else {
+            setValidateGenderid(0)
             setSelectedGenderid(data.value);
             setSelectedGenderOption(data);
         }
@@ -71,14 +71,15 @@ const AddUserPage : FC = function () {
     //---------------- Satus option code start ----------------
         const [selectedStatusOption, setSelectedStatusOption] = useState(null);
         const [selectedStatusid, setSelectedStatusid] = useState<boolean | null>(null);
+        const [ValidateStatusid, setValidateStatusid] = useState(0);
 
         const IsActivedata = (data:any) => {
-            console.log("selectedStatusid",data);
-            
         if (!data) {
+            setValidateStatusid(1)
             setSelectedStatusid(null);
             setSelectedStatusOption(null);
         } else {
+            setValidateStatusid(0)
             setSelectedStatusid(!!data.value);
             setSelectedStatusOption(data);
         }
@@ -88,12 +89,15 @@ const AddUserPage : FC = function () {
     //---------------- Aadhar option code start ----------------
         const [selectedAadharOption, setSelectedAadharOption] = useState(null);
         const [selectedAadharid, setSelectedAadharid] = useState<boolean | null>(null);
-        
+        const [ValidateAadharStatusid, setValidateAadharStatusid] = useState(0);
+
         const IsActiveAadhardata = (data: any) => {
         if (!data) {
+            setValidateAadharStatusid(1);
             setSelectedAadharid(null);
             setSelectedAadharOption(null);
         } else {
+            setValidateAadharStatusid(0);
             setSelectedAadharid(data.value);
             setSelectedAadharOption(data);
         }
@@ -103,12 +107,15 @@ const AddUserPage : FC = function () {
     //---------------- pan card option code start ----------------
         const [selectedpancardOption, setSelectedpancardOption] = useState(null);
         const [selectedPancardid, setSelectedPancardid] = useState<null | boolean>(null);
+        const [ValidatePanStatusid, setValidatePanStatusid] = useState(0);
     
         const IsActivePancarddata = (data: any) => {
         if (!data) {
+            setValidatePanStatusid(1);
             setSelectedPancardid(null);
             setSelectedpancardOption(null);
         } else {
+            setValidatePanStatusid(0);
             setSelectedPancardid(data.value);
             setSelectedpancardOption(data);
         }
@@ -117,13 +124,16 @@ const AddUserPage : FC = function () {
 
     //---------------- Bank passbook option code start ----------------
         const [selectedBankPassbookOption, setSelectedBankPassbookOption] = useState(null);
-        const [selectedBankPassbookid, setSelectedBankPassbookid] = useState(0);
+        const [selectedBankPassbookid, setSelectedBankPassbookid] = useState<null | boolean>(null);
+        const [ValidatePassbookStatusid, setValidatePassbookStatusid] = useState(0);
 
         const IsActiveBankPassbookdata = (data: any) => {
         if (!data) {
-            setSelectedBankPassbookid(0);
+            setValidatePassbookStatusid(1);
+            setSelectedBankPassbookid(null);
             setSelectedBankPassbookOption(null);
         } else {
+            setValidatePassbookStatusid(0);
             setSelectedBankPassbookid(data.value);
             setSelectedBankPassbookOption(data);
         }
@@ -163,9 +173,15 @@ const AddUserPage : FC = function () {
             emergency_contact_person: Yup.string().required("Please Enter Emergency Contact Person"),
             date_of_birth: Yup.string().required("Please Enter Date of birth"),
             date_of_joining: Yup.string().required("Please Enter Date of joining"),
-        }),
+        }), 
         
-        onSubmit: (values) => {
+        onSubmit: (values) => { 
+            if (selectedGenderid  == null) return setValidateGenderid(1);
+            if (selectedRoleid  == null) return setValidateRoleid(1);
+            if (selectedStatusid  == null) return setValidateStatusid(1);
+            if (selectedAadharid == null) return setValidateAadharStatusid(1);
+            if (selectedPancardid  == null) return setValidatePanStatusid(1);
+            if (selectedBankPassbookid  == null) return setValidatePassbookStatusid(1);
 
             const formData = new FormData();
             formData.append("name", values.user_name);
@@ -182,13 +198,35 @@ const AddUserPage : FC = function () {
             formData.append("pan_card", JSON.stringify(selectedPancardid));
             formData.append("bank_passbook",JSON.stringify(selectedBankPassbookid));
             formData.append("is_active", JSON.stringify(selectedStatusid));
-            formData.append("role", "67a9c77c3022e8352c60d5b9");
+            formData.append("role", selectedRoleid);
             // formData.append("user_pic", file); 
             dispatch(AddUserlist(formData));
             validation.resetForm();
-            initialValues.user_name = "";
         },
     });
+
+    //  -------------- Get Role Data list -------------------
+        const RolesList = useSelector((state: any) => state.Role.Roleslist?.pulledData || []);
+        const roleoption = RolesList && RolesList.map((role : any) => ({  label: role.role_title,  value: role._id  }));
+        
+        useEffect(() =>{
+        dispatch(getRoleslist());
+        },[])
+    //  -------------- Get Role Data list -------------------
+
+
+     //  -------------- Get Role Data list -------------------
+     const UserAddedList = useSelector((state: any) => state.User.AddUserlistdata || []);
+
+     useEffect(() =>{
+        if(UserAddedList?.success == true){
+            toast.success("User added successfully");
+            dispatch(ResetUserdatalist());
+            navigate("/users/list")
+        }
+     },[UserAddedList])
+ //  -------------- Get Role Data list -------------------
+
 
     let Name = "User Add";
     let ParentName = "User List";
@@ -260,6 +298,7 @@ const AddUserPage : FC = function () {
                                         options={genderoption}
                                         isClearable={true}
                                     />
+                                    {ValidateGenderid == 1 ?  <FormFeedback type="invalid" className="text-Red text-sm"> Please select gender  </FormFeedback> : null}
                                 </div>
                             </div>
                         </div>
@@ -284,6 +323,7 @@ const AddUserPage : FC = function () {
                                         options={roleoption}
                                         isClearable={true}
                                     />
+                                    {ValidateRoleid == 1 ?  <FormFeedback type="invalid" className="text-Red text-sm"> Please select role  </FormFeedback> : null}
                                 </div>
                             </div>
                             
@@ -410,6 +450,7 @@ const AddUserPage : FC = function () {
                                         options={isactiveoption}
                                         isClearable={true}
                                     />
+                                    {ValidateStatusid == 1 ?  <FormFeedback type="invalid" className="text-Red text-sm"> Please select status  </FormFeedback> : null}
                                 </div>
                             </div>
 
@@ -473,6 +514,7 @@ const AddUserPage : FC = function () {
                                         options={Dropdownoption}
                                         isClearable={true}
                                     />
+                                    {ValidateAadharStatusid == 1 ?  <FormFeedback type="invalid" className="text-Red text-sm"> Please select aadhar card status  </FormFeedback> : null}
                                 </div>
                             </div>
 
@@ -494,6 +536,7 @@ const AddUserPage : FC = function () {
                                         options={Dropdownoption}
                                         isClearable={true}
                                     />
+                                    {ValidatePanStatusid == 1 ?  <FormFeedback type="invalid" className="text-Red text-sm"> Please select pan card status  </FormFeedback> : null}
                                 </div>
                             </div>
 
@@ -515,6 +558,7 @@ const AddUserPage : FC = function () {
                                         options={Dropdownoption}
                                         isClearable={true}
                                     />
+                                    {ValidatePassbookStatusid == 1 ?  <FormFeedback type="invalid" className="text-Red text-sm"> Please select passbook status  </FormFeedback> : null}
                                 </div>
                             </div>
                         </div>
