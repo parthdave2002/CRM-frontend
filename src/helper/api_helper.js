@@ -108,9 +108,7 @@ class APIClient {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log(response);
-      
-      return response.data;
+      return response;
     } catch (error) {
       console.error("Error:", error);
   

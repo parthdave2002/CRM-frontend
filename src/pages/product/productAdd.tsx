@@ -63,7 +63,15 @@ const ProductAddPage : FC = function () {
 
     const [initialValues, setinitialValues] = useState({
         name: "",
-        description:"",
+        tech_name:"",
+        packing: "",
+        qty: "",
+        price: "",
+        discount:"",
+        batch_number: "",
+        hsn_code: "",
+        cgst:"",
+        sgst:"",
         status: "",
     });
 
@@ -72,8 +80,16 @@ const ProductAddPage : FC = function () {
         initialValues: initialValues,
     
         validationSchema: Yup.object({
-          name: Yup.string().required("Please enter company name"),
-          description: Yup.string().required("Please enter company description")
+          name: Yup.string().required("Please enter product name"),
+          tech_name: Yup.string().required("Please enter product technical name"),
+          packing: Yup.string().required("Please enter product packing"),
+          qty: Yup.string().required("Please enter product qty"),
+          price: Yup.string().required("Please enter product price"),
+          discount: Yup.string().required("Please enter product discount"),
+          batch_number: Yup.string().required("Please enter product batch number"),
+          hsn_code: Yup.string().required("Please enter product hsn code"),
+          cgst: Yup.string().required("Please enter product cgst"),
+          sgst: Yup.string().required("Please enter product sgst"),
         }),
         
         onSubmit: (values) => {
@@ -81,7 +97,15 @@ const ProductAddPage : FC = function () {
 
           let requserdata = {
             name: values?.name,
-            description: values?.description,
+            tech_name: values?.tech_name,
+            packing: values?.packing,
+            avl_qty : values.qty,
+            price: values.price,
+            discount: values?.discount,
+            batch_number : values?.batch_number,
+            hsn_code : values?.hsn_code,
+            cgst: values?.cgst,
+            sgst: values?.sgst,
             is_active: selectedactiveid,
           };
           dispatch(AddCompanylist(requserdata));
@@ -89,14 +113,8 @@ const ProductAddPage : FC = function () {
     });
 
     const isactiveoption =[
-        {
-            label :"Active",
-            value : true
-        },
-        {
-            label :"Inactive",
-            value : false
-        }
+        { label :"Active", value : true },
+        { label :"Inactive", value : false }
     ]
 
     // ------------- Get  Data From Reducer Code Start --------------
@@ -126,47 +144,305 @@ const ProductAddPage : FC = function () {
                 <ExampleBreadcrumb  Name={Name} ParentName={ParentName} ParentLink={ParentLink}  />
                 <div className="mt-[2rem] bg-white dark:bg-gray-800 p-4">
                     <Form onSubmit={(e) => { e.preventDefault(); validation.handleSubmit(); return false; }} >
-                        <div>
-                            <Label htmlFor="Name">Name</Label>
-                            <div className="mt-1">
-                            <Input
-                                id="name"
-                                name="name"
-                                className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
-                                placeholder="Category name"
-                                type="text"
-                                onChange={validation.handleChange}
-                                onBlur={validation.handleBlur}
-                                value={validation.values.name || ""}
-                                invalid={ validation.touched.name && validation.errors.name ? true : false}
-                            />
-                            {validation.touched.name && validation.errors.name ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.name} </FormFeedback> ) : null}
+                        
+                        <div className="flex gap-x-[2rem]">
+                            <div className="flex-1">
+                                <Label htmlFor="Name">Name</Label>
+                                <div className="mt-1">
+                                <Input
+                                    id="name"
+                                    name="name"
+                                    className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
+                                    placeholder="Product name"
+                                    type="text"
+                                    onChange={validation.handleChange}
+                                    onBlur={validation.handleBlur}
+                                    value={validation.values.name || ""}
+                                    invalid={ validation.touched.name && validation.errors.name ? true : false}
+                                />
+                                {validation.touched.name && validation.errors.name ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.name} </FormFeedback> ) : null}
+                                </div>
+                            </div>
+
+                            <div className="flex-1">
+                                <Label htmlFor="tech_name">Technical Name</Label>
+                                <div className="mt-1">
+                                <Input
+                                    id="tech_name"
+                                    name="tech_name"
+                                    className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
+                                    placeholder="Product technical name"
+                                    type="text"
+                                    onChange={validation.handleChange}
+                                    onBlur={validation.handleBlur}
+                                    value={validation.values.tech_name || ""}
+                                    invalid={ validation.touched.tech_name && validation.errors.tech_name ? true : false}
+                                />
+                                {validation.touched.tech_name && validation.errors.tech_name ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.tech_name} </FormFeedback> ) : null}
+                                </div>
+                            </div>
+
+                            <div className="flex-1">
+                                <Label htmlFor="Status">Company</Label>
+                                <div className="mt-1">
+                                <Select
+                                    className="w-full dark:text-white"
+                                    classNames={{
+                                        control: () => "react-select__control",
+                                        singleValue: () => "react-select__single-value",
+                                        menu: () => "react-select__menu",
+                                        option: ({ isSelected }) =>
+                                            isSelected ? "react-select__option--is-selected" : "react-select__option",
+                                        placeholder: () => "react-select__placeholder",
+                                    }}
+                                
+                                    value={selectedactiveOption}
+                                    onChange={(e) => { IsActivedata(e) }}
+                                    options={isactiveoption}
+                                    isClearable={true}
+                                />
+                                {validateactive == 1 ? (
+                                    <FormFeedback type="invalid" className="text-Red text-sm"> Please Select status </FormFeedback>
+                                ) : null}
+                                </div>
                             </div>
                         </div>
 
-                        {/* <div className="mt-[1rem]">
-                            <Label htmlFor="Description">Description</Label>
-                            <div className="mt-1">
-                            <Input
-                                id="description"
-                                name="description"
-                                className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
-                                placeholder="description"
-                                type="text"
-                                onChange={validation.handleChange}
-                                onBlur={validation.handleBlur}
-                                value={validation.values.description || ""}
-                                invalid={ validation.touched.description && validation.errors.description ? true : false}
-                            />
-                            {validation.touched.description && validation.errors.description ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.description} </FormFeedback> ) : null}
+                        <div className="flex  mt-[1rem] gap-x-[2rem]">
+                            
+                            <div className="flex-1">
+                                <Label htmlFor="packing">Packing</Label>
+                                <div className="mt-1">
+                                <Input
+                                    id="packing"
+                                    name="packing"
+                                    className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
+                                    placeholder="Product packing"
+                                    type="text"
+                                    onChange={validation.handleChange}
+                                    onBlur={validation.handleBlur}
+                                    value={validation.values.packing || ""}
+                                    invalid={ validation.touched.packing && validation.errors.packing ? true : false}
+                                />
+                                {validation.touched.packing && validation.errors.packing ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.packing} </FormFeedback> ) : null}
+                                </div>
                             </div>
-                        </div> */}
+
+                            <div className="flex-1">
+                                <Label htmlFor="Status">Packing Type</Label>
+                                <div className="mt-1">
+                                <Select
+                                    className="w-full dark:text-white"
+                                    classNames={{
+                                        control: () => "react-select__control",
+                                        singleValue: () => "react-select__single-value",
+                                        menu: () => "react-select__menu",
+                                        option: ({ isSelected }) =>
+                                            isSelected ? "react-select__option--is-selected" : "react-select__option",
+                                        placeholder: () => "react-select__placeholder",
+                                    }}
+                                
+                                    value={selectedactiveOption}
+                                    onChange={(e) => { IsActivedata(e) }}
+                                    options={isactiveoption}
+                                    isClearable={true}
+                                />
+                                {validateactive == 1 ? (
+                                    <FormFeedback type="invalid" className="text-Red text-sm"> Please Select status </FormFeedback>
+                                ) : null}
+                                </div>
+                            </div>
+
+                            <div className="flex-1">
+                                <Label htmlFor="Status">Category</Label>
+                                <div className="mt-1">
+                                <Select
+                                    className="w-full dark:text-white"
+                                    classNames={{
+                                        control: () => "react-select__control",
+                                        singleValue: () => "react-select__single-value",
+                                        menu: () => "react-select__menu",
+                                        option: ({ isSelected }) =>
+                                            isSelected ? "react-select__option--is-selected" : "react-select__option",
+                                        placeholder: () => "react-select__placeholder",
+                                    }}
+                                
+                                    value={selectedactiveOption}
+                                    onChange={(e) => { IsActivedata(e) }}
+                                    options={isactiveoption}
+                                    isClearable={true}
+                                />
+                                {validateactive == 1 ? (
+                                    <FormFeedback type="invalid" className="text-Red text-sm"> Please Select status </FormFeedback>
+                                ) : null}
+                                </div>
+                            </div>
+
+                           
+                        </div>
+
+                        <div className="flex mt-[1rem] gap-x-[2rem]">
+
+                            <div className="flex-1">
+                                <Label htmlFor="qty"> QTY</Label>
+                                <div className="mt-1">
+                                <Input
+                                    id="qty"
+                                    name="qty"
+                                    className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
+                                    placeholder="Product QTY"
+                                    type="number"
+                                    onChange={validation.handleChange}
+                                    onBlur={validation.handleBlur}
+                                    value={validation.values.qty || ""}
+                                    invalid={ validation.touched.qty && validation.errors.qty ? true : false}
+                                />
+                                {validation.touched.qty && validation.errors.qty ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.qty} </FormFeedback> ) : null}
+                                </div>
+                            </div>
+
+                            <div className="flex-1">
+                                <Label htmlFor="price"> Price</Label>
+                                <div className="mt-1">
+                                <Input
+                                    id="price"
+                                    name="price"
+                                    className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
+                                    placeholder="Product Price"
+                                    type="number"
+                                    onChange={validation.handleChange}
+                                    onBlur={validation.handleBlur}
+                                    value={validation.values.price || ""}
+                                    invalid={ validation.touched.price && validation.errors.price ? true : false}
+                                />
+                                {validation.touched.price && validation.errors.price ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.price} </FormFeedback> ) : null}
+                                </div>
+                            </div>
+
+                            <div className="flex-1">
+                                <Label htmlFor="discount"> Discount</Label>
+                                <div className="mt-1">
+                                <Input
+                                    id="discount"
+                                    name="discount"
+                                    className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
+                                    placeholder="Product discount"
+                                    type="text"
+                                    onChange={validation.handleChange}
+                                    onBlur={validation.handleBlur}
+                                    value={validation.values.discount || ""}
+                                    invalid={ validation.touched.discount && validation.errors.discount ? true : false}
+                                />
+                                {validation.touched.discount && validation.errors.name ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.discount} </FormFeedback> ) : null}
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div className="flex mt-[1rem] gap-x-[2rem]">
+                            <div className="flex-1">
+                                <Label htmlFor="batch_number"> Batch No</Label>
+                                <div className="mt-1">
+                                <Input
+                                    id="batch_number"
+                                    name="batch_number"
+                                    className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
+                                    placeholder="Product batch number"
+                                    type="text"
+                                    onChange={validation.handleChange}
+                                    onBlur={validation.handleBlur}
+                                    value={validation.values.batch_number || ""}
+                                    invalid={ validation.touched.batch_number && validation.errors.batch_number ? true : false}
+                                />
+                                {validation.touched.batch_number && validation.errors.batch_number ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.batch_number} </FormFeedback> ) : null}
+                                </div>
+                            </div>
+
+                            <div className="flex-1">
+                                <Label htmlFor="hsn_code"> HSN code</Label>
+                                <div className="mt-1">
+                                <Input
+                                    id="hsn_code"
+                                    name="hsn_code"
+                                    className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
+                                    placeholder="Product hsn code"
+                                    type="text"
+                                    onChange={validation.handleChange}
+                                    onBlur={validation.handleBlur}
+                                    value={validation.values.hsn_code || ""}
+                                    invalid={ validation.touched.hsn_code && validation.errors.hsn_code ? true : false}
+                                />
+                                {validation.touched.hsn_code && validation.errors.hsn_code ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.hsn_code} </FormFeedback> ) : null}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex mt-[1rem] gap-x-[2rem]">
+
+                            <div className="flex-1">
+                                <Label htmlFor="cgst"> CGST</Label>
+                                <div className="mt-1">
+                                <Input
+                                    id="cgst"
+                                    name="cgst"
+                                    className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
+                                    placeholder="Product CGST"
+                                    type="number"
+                                    onChange={validation.handleChange}
+                                    onBlur={validation.handleBlur}
+                                    value={validation.values.cgst || ""}
+                                    invalid={ validation.touched.cgst && validation.errors.cgst ? true : false}
+                                />
+                                {validation.touched.cgst && validation.errors.cgst ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.cgst} </FormFeedback> ) : null}
+                                </div>
+                            </div>
+
+                            <div className="flex-1">
+                                <Label htmlFor="sgst"> SGST</Label>
+                                <div className="mt-1">
+                                <Input
+                                    id="sgst"
+                                    name="sgst"
+                                    className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
+                                    placeholder="Product SGST"
+                                    type="text"
+                                    onChange={validation.handleChange}
+                                    onBlur={validation.handleBlur}
+                                    value={validation.values.sgst || ""}
+                                    invalid={ validation.touched.sgst && validation.errors.sgst ? true : false}
+                                />
+                                {validation.touched.sgst && validation.errors.sgst ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.sgst} </FormFeedback> ) : null}
+                                </div>
+                            </div>
+
+                            <div className="flex-1">
+                            <Label htmlFor="Status">Status</Label>
+                            <div className="mt-1">
+                            <Select
+                                className="w-full dark:text-white"
+                                classNames={{
+                                    control: () => "react-select__control",
+                                    singleValue: () => "react-select__single-value",
+                                    menu: () => "react-select__menu",
+                                    option: ({ isSelected }) =>
+                                        isSelected ? "react-select__option--is-selected" : "react-select__option",
+                                    placeholder: () => "react-select__placeholder",
+                                }}
+                              
+                                value={selectedactiveOption}
+                                onChange={(e) => { IsActivedata(e) }}
+                                options={isactiveoption}
+                                isClearable={true}
+                            />
+                            {validateactive == 1 ? (
+                                <FormFeedback type="invalid" className="text-Red text-sm"> Please Select status </FormFeedback>
+                            ) : null}
+                            </div>
+                            </div>
+                        </div>
 
                         <div className="space-y-4 my-[1rem]">
-                            <Button  onClick={handleAddField} className="flex items-center gap-2">
-                                            {/* <Plus size={20} />  */}
-                                            Add Field
-                            </Button>
+                            <Button  onClick={handleAddField} className="flex items-center gap-2">  {/* <Plus size={20} />  */} Add Field </Button>
                             {inputs.map((item, index) => (
                                 <div key={item.id} className=" items-center gap-2">
                                         
@@ -228,31 +504,6 @@ const ProductAddPage : FC = function () {
                                         </div>
                                 </div>
                             ))}
-                        </div>
-
-                        <div className="mt-[1rem]">
-                            <Label htmlFor="Status">Status</Label>
-                            <div className="mt-1">
-                            <Select
-                                className="w-full dark:text-white"
-                                classNames={{
-                                    control: () => "react-select__control",
-                                    singleValue: () => "react-select__single-value",
-                                    menu: () => "react-select__menu",
-                                    option: ({ isSelected }) =>
-                                        isSelected ? "react-select__option--is-selected" : "react-select__option",
-                                    placeholder: () => "react-select__placeholder",
-                                }}
-                              
-                                value={selectedactiveOption}
-                                onChange={(e) => { IsActivedata(e) }}
-                                options={isactiveoption}
-                                isClearable={true}
-                            />
-                            {validateactive == 1 ? (
-                                <FormFeedback type="invalid" className="text-Red text-sm"> Please Select status </FormFeedback>
-                            ) : null}
-                            </div>
                         </div>
 
                         <div className="flex gap-x-3 justify-end mt-[1rem]">

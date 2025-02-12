@@ -21,13 +21,17 @@ const AddRolePage : FC = function () {
 
     //---------------- Satus option code start ----------------
         const [selectedStatusOption, setSelectedStatusOption] = useState(null);
-        const [selectedStatusid, setSelectedStatusid] = useState(0);
+        const [selectedStatusid, setSelectedStatusid] = useState<boolean | null>(null);
+        const [validateStatusid, setvalidateStatusid] = useState(0);
+
 
         const IsActivedata = (data: any) => {
         if (!data) {
-            setSelectedStatusid(0);
+            setvalidateStatusid(1);
+            setSelectedStatusid(null);
             setSelectedStatusOption(null);
         } else {
+            setvalidateStatusid(0);
             setSelectedStatusid(data.value);
             setSelectedStatusOption(data);
         }
@@ -50,7 +54,7 @@ const AddRolePage : FC = function () {
         }),
     
         onSubmit: (values) => {
-
+            if (selectedStatusid == null) return setvalidateStatusid(1);
             let requserData ={
                 role_title : values.role_title,
                 description : values.description,
@@ -72,7 +76,7 @@ const AddRolePage : FC = function () {
                     dispatch(ResetRoleslist())
                     navigate(ParentLink)
                     validation.resetForm();
-                    setSelectedStatusid(0);
+                    setSelectedStatusid(null);
                     setSelectedStatusOption(null);
                     // setValidateactive(1)
                 }
@@ -163,6 +167,7 @@ const AddRolePage : FC = function () {
                                         options={isactiveoption}
                                         isClearable={true}
                                     />
+                                     {validateStatusid == 1 ?  <FormFeedback type="invalid" className="text-Red text-sm"> Please select status  </FormFeedback> : null}
                             </div>
                         </div>
 

@@ -18,12 +18,12 @@ const BannerAddPage : FC = function () {
 
     // ------ status code start ------
     const [selectedactiveOption, setSelectedactiveOption] = useState(null);
-    const [selectedactiveid, setSelectedactiveid] = useState(0);
+    const [selectedactiveid, setSelectedactiveid] = useState<boolean | null>(null);
     const [validateactive, setValidateactive] = useState(0);
   
     const IsActivedata = (data: any) => {
       if (!data) {
-        setSelectedactiveid(0);
+        setSelectedactiveid(null);
         setSelectedactiveOption(null);
         setValidateactive(1)
       } else {
@@ -50,7 +50,7 @@ const BannerAddPage : FC = function () {
         }),
         
         onSubmit: (values) => {
-          {selectedactiveid == 0 ? setValidateactive(1) : setValidateactive(0) }
+          if(selectedactiveid == null) return setValidateactive(1)
 
           let requserdata = {
             name: values?.name,
@@ -82,7 +82,7 @@ const BannerAddPage : FC = function () {
                 dispatch(ResetBannerlist())
                 navigate(ParentLink)
                 validation.resetForm();
-                setSelectedactiveid(0);
+                setSelectedactiveid(null);
                 setSelectedactiveOption(null);
                 setValidateactive(1)
             }
@@ -154,9 +154,7 @@ const BannerAddPage : FC = function () {
                                 options={isactiveoption}
                                 isClearable={true}
                             />
-                            {validateactive == 1 ? (
-                                <FormFeedback type="invalid" className="text-Red text-sm"> Please Select status </FormFeedback>
-                            ) : null}
+                            {validateactive == 1 ? <FormFeedback type="invalid" className="text-Red text-sm"> Please select status </FormFeedback> : null}
                             </div>
                         </div>
 

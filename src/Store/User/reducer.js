@@ -19,6 +19,10 @@ import {
  UPDATE_USER_DATA_LIST_ERROR,
  UPDATE_USER_DATA_LIST_SUCCESS,
 
+ RESET_USER_DATA_LIST,
+ RESET_USER_DATA_LIST_SUCCESS,
+ RESET_USER_DATA_LIST_ERROR,
+
  CHECK_USER_LIST,
  CHECK_USER_LIST_ERROR,
  CHECK_USER_LIST_SUCCESS
@@ -29,6 +33,7 @@ const INIT_STATE = {
   UserListSize:0,
   TotalUserListData:0,
   CurrentPage:1,
+  AddUserlistdata:[],
   UserView: [],
   UpdateUserList: [],
   CheckUserList:[],
@@ -87,7 +92,7 @@ const User = (state = INIT_STATE, action) => {
           // console.log("UserList =====>", action.payload.data);
           return {
             ...state,
-            UserList: action.payload.data,
+            AddUserlistdata: action.payload.data,
           };
       }
     case ADD_USER_LIST_ERROR:
@@ -105,7 +110,6 @@ const User = (state = INIT_STATE, action) => {
     case DELETE_USER_LIST_SUCCESS:
       switch (action.payload.actionType) {
         case DELETE_USER_LIST:
-          console.log("UserList Delete =====>", action.payload.data);
           return {
             ...state,
             UserList: action.payload.data,
@@ -135,6 +139,34 @@ const User = (state = INIT_STATE, action) => {
     case UPDATE_USER_DATA_LIST_ERROR:
       switch (action.payload.actionType) {
         case UPDATE_USER_DATA_LIST:
+          return {
+            ...state,
+            error: action.payload,
+          };
+        default:
+          return { ...state };
+      }
+
+    // reset User
+    case RESET_USER_DATA_LIST_SUCCESS:
+      switch (action.payload.actionType) {
+        case RESET_USER_DATA_LIST:
+          return {
+            ...state,
+            UserList: [],
+            UserListSize:0,
+            TotalUserListData:0,
+            CurrentPage:1,
+            UserView: [],
+            AddUserlistdata:[],
+            UpdateUserList: [],
+            CheckUserList:[],
+            error: {},
+          };
+      }
+    case RESET_USER_DATA_LIST_ERROR:
+      switch (action.payload.actionType) {
+        case RESET_USER_DATA_LIST:
           return {
             ...state,
             error: action.payload,

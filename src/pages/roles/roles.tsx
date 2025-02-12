@@ -141,7 +141,7 @@ const RolesPage: FC = function () {
                     </Table.Cell>
                     <Table.Cell>  
                       {/* {AccessDataList && AccessDataList.map((data) => data.value === "roleaccess-view" ? (   */}
-                      <Button color="primary" className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-dark"  onClick={() => ModuleListFuncall(item._id)}> <div className="flex items-center gap-x-2"> <HiKey className="text-lg" /> Role Access List </div>  </Button>  
+                      <Button color="primary" className="whitespace-nowrap text-base font-normal text-gray-900 dark:text-dark"  onClick={() => ModuleListFuncall(item._id)}> <div className="flex items-center gap-x-2"> <HiKey className="text-lg" /> Role Access List </div>  </Button>  
                       {/* ) : null)}   */}
                       </Table.Cell>
                   </Table.Row>

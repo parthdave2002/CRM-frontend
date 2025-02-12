@@ -21,6 +21,9 @@ import {
   UpdateUserdatalistSuccess,
   UpdateUserdatalistFail,
 
+  ResetUserdatalist,
+  ResetUserdatalistSuccess,
+
   CheckUserdatalist,
   CheckUserdatalistSuccess,
   CheckUserdatalistFail
@@ -45,6 +48,10 @@ import {
   UPDATE_USER_DATA_LIST,
   UPDATE_USER_DATA_LIST_ERROR,
   UPDATE_USER_DATA_LIST_SUCCESS,
+
+  RESET_USER_DATA_LIST,
+  RESET_USER_DATA_LIST_SUCCESS,
+  RESET_USER_DATA_LIST_ERROR,
 
   CHECK_USER_LIST,
   CHECK_USER_LIST_ERROR,
@@ -101,7 +108,7 @@ function* onGetDeleteuserList({ payload: requstuser }) {
     yield put(DeleteUserlistSuccess(DELETE_USER_LIST, reponse));
 
     if (reponse.success == true) {
-      let requserdata = { search: null, page: 1,  size: 5 };
+      let requserdata = {  page: 1,  size: 10 };
       const reponse = yield call(UserlistApi, requserdata);
       yield put(getUserlistSuccess(GET_USER_LIST, reponse));
     }
@@ -124,6 +131,11 @@ function* onGetUpdateUserdatalist({ payload: requstuser }) {
   }
 }
 
+function* onGetResetUserdatalist({ payload: requstuser }) {
+  const reponse = yield call(ResetUserdatalist);
+  yield put(ResetUserdatalistSuccess(RESET_USER_DATA_LIST, reponse));
+}
+
 function* onGetCheckUserdatalist({ payload: requstuser }) {
   try {
     const reponse = yield call(CheckUserdatalistApi, requstuser);
@@ -139,6 +151,7 @@ function* UserSaga() {
   yield takeEvery(ADD_USER_LIST, onGetAdduserList);
   yield takeEvery(DELETE_USER_LIST, onGetDeleteuserList);
   yield takeEvery(UPDATE_USER_DATA_LIST, onGetUpdateUserdatalist);
+  yield takeEvery(RESET_USER_DATA_LIST, onGetResetUserdatalist);
   yield takeEvery(CHECK_USER_LIST, onGetCheckUserdatalist);
 }
 
