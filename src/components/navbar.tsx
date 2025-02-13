@@ -12,6 +12,7 @@ import { Modal } from "flowbite-react";
 import userphoto from "../img/profile-picture-3.jpg";
 import { Button } from "reactstrap";
 import { IoIosSearch } from "react-icons/io";
+import Cookies from "js-cookie";
 
 interface NavbarSidebarLayoutProps {
   isNavbar?: boolean;
@@ -24,7 +25,8 @@ const ExampleNavbar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> =
     const [isOpen, setOpen] = useState(false);
 
     const Logoutfun = () => {
-      localStorage.clear();
+      Cookies.remove("token");
+      Cookies.remove("username");
       navigate("/login");
     };
 

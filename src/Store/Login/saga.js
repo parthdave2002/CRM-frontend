@@ -27,7 +27,7 @@ import Cookies from "js-cookie";
 
 function* onInsertLogin({ payload: requstuser }) {
   try {
-    Cookies.set('token',"callled", { expires: 7 });
+
     const reponse = yield call(LoginApi, requstuser);
     yield put(insertloginSuccess(INSERT_LOGIN, reponse));
 
@@ -35,11 +35,8 @@ function* onInsertLogin({ payload: requstuser }) {
       toast.error(reponse.msg)
     }
     if (reponse.success === true) {
-      localStorage.setItem("token", reponse.token);
-      localStorage.setItem("user", JSON.stringify(reponse.data.roles));
-      localStorage.setItem("authUser", JSON.stringify(reponse));
-      localStorage.setItem("Username", reponse.data.name);
-      localStorage.setItem("isLoggedIn", "true");
+      Cookies.set('token',reponse.token, { expires: 7 });
+      Cookies.set('username',reponse.data.name, { expires: 7 });
     }
 
   } catch (error) {

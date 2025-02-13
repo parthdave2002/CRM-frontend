@@ -2,34 +2,58 @@ import { useEffect } from "react";
 import { APIClient, setAuthorization } from "./api_helper";
 import * as url from "./url_helper";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const api = new APIClient();
 
 // Gets the logged in user data from local session
+// export const getLoggedInUser = () => {
+//   const user = Cookies.get("token");
+//   if (user) {
+//     return JSON.parse(user);
+//   }
+//   return null;
+// };
+
 export const getLoggedInUser = () => {
-  const user = localStorage.getItem("authUser");
-  if (user) {
-    return JSON.parse(user);
+  const token = Cookies.get("token");
+  try {
+    return token ? JSON.parse(token) : null;
+  } catch (error) {
+    console.error("Invalid token format:", error);
+    return null;
   }
-  return null;
 };
 
-if (localStorage.getItem("token")) {
-  const users = localStorage.getItem("token");
+
+
+
+if (Cookies.get("token")) {
+  const users = Cookies.get("token");
   setAuthorization(users);
 }
 
 // //is user is logged in
-export const isUserAuthenticated = () => {
-  return getLoggedInUser() !== null;
-};
+// export const isUserAuthenticated = () => {
+//   return getLoggedInUser() !== null;
+// };
+export const isUserAuthenticated = () => getLoggedInUser() !== null;
 
 // ----- Login page redirect-----
-const token = localStorage.getItem("token");
-  if (token == "null") {
-    localStorage.clear();
-    window.location.pathname = "/login";
+// const token = Cookies.get("token");
+//   if (token == "null") {
+//     Cookies.remove()
+//     window.location.pathname = "/login";
+//   }
+
+export const handleLoginRedirect = () => {
+  const token = Cookies.get("token");
+  if (!token || token === "null") {
+    Cookies.remove("token");
+    // window.location.pathname = "/login";
   }
+};
+handleLoginRedirect();
 // ----- Login page redirect-----
 
 // Register Method

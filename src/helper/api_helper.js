@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 
 // default
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
@@ -101,7 +102,7 @@ class APIClient {
 
   postMultipart = async (url, body) => {
     try {   
-      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTljNzk2MzAyMmU4MzUyYzYwZDViZiIsIm5hbWUiOiJkZXZhcnNoaSB0aXZlZGkiLCJlbWFpbCI6ImRldmFyc2hpLnRyaXZlZGlAY21hcml4LmNvbSIsImlhdCI6MTczOTE4Mzk3OSwiZXhwIjoxNzM5NjE1OTc5fQ.TOftLzkcHwE4TasvyVS5PxrM7E1IathTfNYaoKZ8Wx4";
+      const token = Cookies.get("token");
       const response = await axios.post(url, body, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -113,7 +114,8 @@ class APIClient {
       console.error("Error:", error);
   
       if (error?.response?.status === 401) {
-        localStorage.clear();
+        Cookies.remove("token");
+        Cookies.remove("username");
         window.location.replace("/");
         toast.error("Token expired");
       }
@@ -123,7 +125,7 @@ class APIClient {
   };
 }
 const getLoggedinUser = () => {
-  const user = localStorage.getItem("authUser");
+  const user = Cookies.get("token");
   if (!user) {
     return null;
   } else {
