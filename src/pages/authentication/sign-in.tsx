@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import ToastMessage from "../../components/ToastMessage";
 import { toast } from "react-toastify";
+import Cookies from "js-cookie";
 
 const SignInPage: FC = function () {
   const navigation = useNavigate();
@@ -78,22 +79,29 @@ const SignInPage: FC = function () {
   }, [Login]); 
 
   //--------------  if User Alredy login redirect to their page code start --------------
-    useEffect(() =>{
-      dispatch(ResetUserdatalist())
-      const id = localStorage.getItem("user");
-      const jsonObject = id ? JSON.parse(id): null;
-      let roleTitle = jsonObject ? jsonObject[0].role_title : null;
-      if (roleTitle) {  
-        if (roleTitle?.includes("CSR") || roleTitle?.includes("Sales Executive")) {
-          navigation("/dialer");
-          location.reload();
-        }
-        else{
+    // useEffect(() =>{
+    //   dispatch(ResetUserdatalist())
+    //   const id = localStorage.getItem("user");
+    //   const jsonObject = id ? JSON.parse(id): null;
+    //   let roleTitle = jsonObject ? jsonObject[0].role_title : null;
+    //   if (roleTitle) {  
+    //     if (roleTitle?.includes("CSR") || roleTitle?.includes("Sales Executive")) {
+    //       navigation("/dialer");
+    //       location.reload();
+    //     }
+    //     else{
+    //       navigation("/dashboard");
+    //       location.reload();
+    //     }
+    //   }
+    // },[])
+
+    useEffect(()=>{
+      const token = Cookies.get("token");
+      if(token){
           navigation("/dashboard");
-          location.reload();
-        }
       }
-    },[])
+    })
   //--------------  if User Alredy login redirect to their page code end --------------
 
   const [ isOpenDelteModel,setisOpenDelteModel] = useState(false);

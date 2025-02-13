@@ -1,6 +1,7 @@
 import type { FC, PropsWithChildren } from "react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Cookies from "js-cookie";
 // import { logoutformlaravel, resetlogoutformlaravel } from "../Store/actions";
 
 interface NavbarSidebarLayoutProps {children?: any;}
@@ -65,7 +66,8 @@ const events = [
   
     useEffect(() => {
       if (userDataList === true) {
-        localStorage.clear();
+        Cookies.remove("token");
+        Cookies.remove("username");
         // window.location.pathname = "/login";
         window.location.href = 'http://65.1.124.93:5000/login';
         // dispatch(resetlogoutformlaravel());

@@ -120,7 +120,7 @@ const ExampleBreadcrumb: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = funct
                  {/* {AcccessData && AcccessData.map((item:any) => item.value == AddAccess ? (  */}
                     {/* <Button color="gray"> <div className="flex items-center gap-x-3"> <HiDocumentDownload className="text-xl" /> <span>Export</span> </div>  </Button> */}
 
-                    <ExportDataModal data={data} name="user-data" />
+                    {/* <ExportDataModal data={data} name="user-data" /> */}
                  {/* ) : null )}  */}
               </div>
             </div>
