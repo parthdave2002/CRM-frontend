@@ -36,7 +36,7 @@ export const ADD_MODULE_GROUP_LIST = "/api/role/module-group";
 export const DELETE_MODULE_GROUP_LIST = "/api/role/delmodule-group";
 
 // Role access Api
-export const GET_ROLES_ACCESS_LIST = "/api/role/module-hierarchy";
+export const GET_ROLES_ACCESS_LIST = "/api/role/role-permission";
 export const SAVE_ROLES_ACCESS_LIST = "/api/role/access/role";
 
 

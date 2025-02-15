@@ -7,6 +7,9 @@ import {
   SaveRolesAccesslist,
   SaveRolesAccesslistSuccess,
   SaveRolesAccesslistFail,
+
+  ResetRolesAccesslist,
+  ResetRolesAccesslistSuccess
 } from "./action";
 import {
   GET_ROLES_ACCESS_LIST,
@@ -14,7 +17,9 @@ import {
   GET_ROLES_ACCESS_LIST_ERROR,
   SAVE_ROLES_ACCESS_LIST,
   SAVE_ROLES_ACCESS_LIST_ERROR,
-  SAVE_ROLES_ACCESS_LIST_SUCCESS
+  SAVE_ROLES_ACCESS_LIST_SUCCESS,
+  RESET_ROLES_ACCESS_LIST,
+  RESET_ROLES_ACCESS_LIST_SUCCESS
 } from "./actionType";
 import { RoleAccesslistApi, PostRoleAccesslistApi } from "../../helper/Demo_helper";
 
@@ -27,7 +32,6 @@ function* onGetRolesList({ payload: requstuser }) {
   }
 }
 
-
 function* onSaveRolesList({ payload: requstuser }) {
   try {
     const reponse = yield call(PostRoleAccesslistApi, requstuser);
@@ -37,8 +41,14 @@ function* onSaveRolesList({ payload: requstuser }) {
   }
 }
 
+function* onResetRolesList() {
+    const reponse = yield call(ResetRolesAccesslist);
+    yield put(ResetRolesAccesslistSuccess(RESET_ROLES_ACCESS_LIST, reponse));
+}
+
 function* RoleAccessSaga() {
   yield takeEvery(GET_ROLES_ACCESS_LIST, onGetRolesList);
-  yield takeEvery(SAVE_ROLES_ACCESS_LIST, onSaveRolesList);  
+  yield takeEvery(SAVE_ROLES_ACCESS_LIST, onSaveRolesList);
+  yield takeEvery(RESET_ROLES_ACCESS_LIST, onResetRolesList);  
 }
 export default RoleAccessSaga;

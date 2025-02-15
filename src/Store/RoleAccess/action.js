@@ -5,7 +5,11 @@ import {
 
   SAVE_ROLES_ACCESS_LIST,
   SAVE_ROLES_ACCESS_LIST_ERROR,
-  SAVE_ROLES_ACCESS_LIST_SUCCESS
+  SAVE_ROLES_ACCESS_LIST_SUCCESS,
+
+  RESET_ROLES_ACCESS_LIST,
+  RESET_ROLES_ACCESS_LIST_SUCCESS,
+  RESET_ROLES_ACCESS_LIST_ERROR
 } from "./actionType";
 
 
@@ -38,5 +42,22 @@ export const SaveRolesAccesslistSuccess = (actionType, data) => ({
 
 export const SaveRolesAccesslistFail = (actionType, error) => ({
   type: SAVE_ROLES_ACCESS_LIST_ERROR,
+  payload: { actionType, error },
+});
+
+
+// Reset Role Access 
+export const ResetRolesAccesslist = (requserdata) => ({
+  type: RESET_ROLES_ACCESS_LIST,
+  payload: requserdata,
+});
+
+export const ResetRolesAccesslistSuccess = (actionType, data) => ({
+  type: RESET_ROLES_ACCESS_LIST_SUCCESS,
+  payload: { actionType, data },
+});
+
+export const ResetRolesAccesslistFail = (actionType, error) => ({
+  type: RESET_ROLES_ACCESS_LIST_ERROR,
   payload: { actionType, error },
 });

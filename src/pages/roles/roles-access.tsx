@@ -1,8 +1,8 @@
 import type { FC } from "react";
 import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
-import { Button, Checkbox,} from "flowbite-react";
+import { Button, } from "flowbite-react";
 import { useState, useEffect } from "react";
-import {  SaveRolesAccesslist } from "../../Store/actions";
+import {  ResetRolesAccesslist, SaveRolesAccesslist, getRolesAccesslist } from "../../Store/actions";
 import { useDispatch, useSelector } from "react-redux";
 import {  useNavigate, useParams } from "react-router-dom";
 import ExampleBreadcrumb from "../../components/breadcrumb";
@@ -13,12 +13,46 @@ const RolesAccessPage: FC = function () {
   const { id }= useParams();
   const navigate = useNavigate();
 
-  const [Role_id, set_Role_id] = useState("");
-  useEffect(() => { if (id)  set_Role_id(id) }, [id]);
-
   const [selectedPermissions, setSelectedPermissions] = useState<{ [key: string]: { [key: string]: boolean } }>({});
+
+  useEffect(() =>{
+    let reqUser={
+      id: id
+    }
+    dispatch(getRolesAccesslist(reqUser))
+  },[])
+
+  // ------------- Get  Data From Reducer Code Start --------------
+    const { SaveDatalist, GetDatalist } = useSelector((state: any) => ({
+      SaveDatalist: state.RoleAccess.SaveRolesAccesslist,
+      GetDatalist: state.RoleAccess.GetRolesAccesslist,
+    }));
+      
+    useEffect(() => {  
+      if(SaveDatalist?.success == true){
+        dispatch(ResetRolesAccesslist())
+        navigate(ParentLink)
+      }
+    }, [SaveDatalist]);
+
+    useEffect(() => {
+      if (Array.isArray(GetDatalist?.data)) {
+        const formattedData: { [key: string]: { [key: string]: boolean } } = {};
+        GetDatalist?.data.forEach((module:any) => {
+          formattedData[module.module_name] = module.permissions;
+        });
+        setSelectedPermissions(formattedData);
+      }
+    }, [GetDatalist]);
+  //  ------------- Get Data From Reducer Code end --------------
+
+  const getFormattedData = () => {
+    const modules = Object.entries(selectedPermissions || {}).map(([module, permissions]) => ({  module_name: module,  permissions }));
+    return modules
+  };
+
   const handleCheckboxChange = (role: string, permission: string) => {
-    setSelectedPermissions((prevState) => ({
+    setSelectedPermissions((prevState:any) => ({
       ...prevState,
       [role]: {
         ...prevState[role],
@@ -27,17 +61,16 @@ const RolesAccessPage: FC = function () {
     }));
   };
 
-  const SaveFuncall = () => {
-    // let rqeuserdata = {
-    //   is_active: true,
-    //   role-id : Role_id,
-    //   id: "0",
-    // };
-    console.log("Selected Permissions:", selectedPermissions);
-    // dispatch(SaveRolesAccesslist());
+  const SaveFuncall = async () => {
+    const permissionData = await getFormattedData();
+    let rqeuserdata = {
+      role_id : id,
+      modules: permissionData
+    };
+    dispatch(SaveRolesAccesslist(rqeuserdata));
   };
 
-  const permissions = ["View", "Add", "Edit", "Delete"];
+  const permissions = ["view", "add", "edit", "delete"];
   const roles = ["Dashboard", "User", "Roles", "Customer", "Product", "Order", "Lead", "Report", "Packing Type", "Category", "Banner", "Taglog"];
 
   let Name = "Role Access List";
@@ -68,7 +101,7 @@ const RolesAccessPage: FC = function () {
                       <td className="p-3 border border-gray-200 dark:border-gray-700">{role}</td>
                       {permissions.map((perm, permIndex) => (
                         <td key={permIndex} className="p-3 border border-gray-200 dark:border-gray-700 text-center">
-                          <input   type="checkbox"  className="w-5 h-5 border-gray-300 focus:ring-0 focus:border-none rounded-md" onChange={() => handleCheckboxChange(role, perm)} />
+                          <input   type="checkbox"  className="w-5 h-5 border-gray-300 focus:ring-0 focus:border-none rounded-md"  checked={!!selectedPermissions[role]?.[perm]}  onChange={() => handleCheckboxChange(role, perm)} />
                         </td>
                       ))}
                     </tr>
@@ -77,7 +110,6 @@ const RolesAccessPage: FC = function () {
               </table>
             </div>
 
-            <div > Save Permission </div>
 
               <div className="flex gap-x-3 justify-end mt-[3rem]">
                 <Button className="bg-addbutton hover:bg-addbutton dark:bg-addbutton dark:hover:bg-addbutton" onClick={() => SaveFuncall()}>  Save Permission </Button>

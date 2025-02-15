@@ -2,10 +2,19 @@ import {
   GET_ROLES_ACCESS_LIST,
   GET_ROLES_ACCESS_LIST_SUCCESS,
   GET_ROLES_ACCESS_LIST_ERROR,
+
+  SAVE_ROLES_ACCESS_LIST,
+  SAVE_ROLES_ACCESS_LIST_ERROR,
+  SAVE_ROLES_ACCESS_LIST_SUCCESS,
+
+  RESET_ROLES_ACCESS_LIST,
+  RESET_ROLES_ACCESS_LIST_SUCCESS,
+  RESET_ROLES_ACCESS_LIST_ERROR
 } from "./actionType";
 
 const INIT_STATE = {
-  RolesAccesslist: [],
+  GetRolesAccesslist: [],
+  SaveRolesAccesslist: [],
   error: {},
 };
 
@@ -16,13 +25,13 @@ const RoleAccess = (state = INIT_STATE, action) => {
         case GET_ROLES_ACCESS_LIST:
           return {
             ...state,
-            RolesAccesslist: action.payload.data,
+            GetRolesAccesslist: action.payload.data,
           };
       }
     case GET_ROLES_ACCESS_LIST_ERROR:
       switch (action.payload.actionType) {
         case GET_ROLES_ACCESS_LIST:
-          // console.log("CREATE_GROUP_SUCCESS =====>", action.payload);
+         
           return {
             ...state,
             error: action.payload,
@@ -30,6 +39,46 @@ const RoleAccess = (state = INIT_STATE, action) => {
 
         default:
           return { ...state };
+      }
+
+    case SAVE_ROLES_ACCESS_LIST_SUCCESS:
+      switch (action.payload.actionType) {
+        case SAVE_ROLES_ACCESS_LIST:
+          return {
+            ...state,
+            SaveRolesAccesslist: action.payload.data,
+          };
+      }
+    case SAVE_ROLES_ACCESS_LIST_ERROR:
+      switch (action.payload.actionType) {
+        case SAVE_ROLES_ACCESS_LIST:
+          return {
+            ...state,
+            error: action.payload,
+          };
+        default:
+          return { ...state };
+      }
+
+    case RESET_ROLES_ACCESS_LIST_SUCCESS:
+        switch (action.payload.actionType) {
+          case RESET_ROLES_ACCESS_LIST:
+            return {
+              ...state,
+              RolesAccesslist: [],
+              SaveRolesAccesslist: [],
+            };
+      }
+    case RESET_ROLES_ACCESS_LIST_ERROR:
+        switch (action.payload.actionType) {
+          case RESET_ROLES_ACCESS_LIST:
+            return {
+              ...state,
+              error: action.payload,
+            };
+  
+          default:
+            return { ...state };
       }
 
     default:
