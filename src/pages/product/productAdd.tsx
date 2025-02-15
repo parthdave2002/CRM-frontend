@@ -145,8 +145,8 @@ const ProductAddPage : FC = function () {
                 <div className="mt-[2rem] bg-white dark:bg-gray-800 p-4">
                     <Form onSubmit={(e) => { e.preventDefault(); validation.handleSubmit(); return false; }} >
                         
-                        <div className="flex gap-x-[2rem]">
-                            <div className="flex-1">
+                        <div className="md:flex gap-x-[2rem]">
+                            <div className="flex-1 mt-[1rem] ">
                                 <Label htmlFor="Name">Name</Label>
                                 <div className="mt-1">
                                 <Input
@@ -164,7 +164,7 @@ const ProductAddPage : FC = function () {
                                 </div>
                             </div>
 
-                            <div className="flex-1">
+                            <div className="flex-1 mt-[1rem] ">
                                 <Label htmlFor="tech_name">Technical Name</Label>
                                 <div className="mt-1">
                                 <Input
@@ -182,7 +182,7 @@ const ProductAddPage : FC = function () {
                                 </div>
                             </div>
 
-                            <div className="flex-1">
+                            <div className="flex-1 mt-[1rem] ">
                                 <Label htmlFor="Status">Company</Label>
                                 <div className="mt-1">
                                 <Select
@@ -208,9 +208,8 @@ const ProductAddPage : FC = function () {
                             </div>
                         </div>
 
-                        <div className="flex  mt-[1rem] gap-x-[2rem]">
-                            
-                            <div className="flex-1">
+                        <div className="md:flex gap-x-[2rem]">
+                            <div className="flex-1 mt-[1rem]">
                                 <Label htmlFor="packing">Packing</Label>
                                 <div className="mt-1">
                                 <Input
@@ -228,7 +227,7 @@ const ProductAddPage : FC = function () {
                                 </div>
                             </div>
 
-                            <div className="flex-1">
+                            <div className="flex-1 mt-[1rem]">
                                 <Label htmlFor="Status">Packing Type</Label>
                                 <div className="mt-1">
                                 <Select
@@ -253,7 +252,7 @@ const ProductAddPage : FC = function () {
                                 </div>
                             </div>
 
-                            <div className="flex-1">
+                            <div className="flex-1 mt-[1rem]">
                                 <Label htmlFor="Status">Category</Label>
                                 <div className="mt-1">
                                 <Select
@@ -277,13 +276,11 @@ const ProductAddPage : FC = function () {
                                 ) : null}
                                 </div>
                             </div>
-
-                           
                         </div>
 
-                        <div className="flex mt-[1rem] gap-x-[2rem]">
+                        <div className="md:flex gap-x-[2rem]">
 
-                            <div className="flex-1">
+                            <div className="flex-1 mt-[1rem]">
                                 <Label htmlFor="qty"> QTY</Label>
                                 <div className="mt-1">
                                 <Input
@@ -301,7 +298,7 @@ const ProductAddPage : FC = function () {
                                 </div>
                             </div>
 
-                            <div className="flex-1">
+                            <div className="flex-1 mt-[1rem]">
                                 <Label htmlFor="price"> Price</Label>
                                 <div className="mt-1">
                                 <Input
@@ -319,7 +316,7 @@ const ProductAddPage : FC = function () {
                                 </div>
                             </div>
 
-                            <div className="flex-1">
+                            <div className="flex-1 mt-[1rem]">
                                 <Label htmlFor="discount"> Discount</Label>
                                 <div className="mt-1">
                                 <Input
@@ -339,8 +336,8 @@ const ProductAddPage : FC = function () {
 
                         </div>
 
-                        <div className="flex mt-[1rem] gap-x-[2rem]">
-                            <div className="flex-1">
+                        <div className="md:flex gap-x-[2rem]">
+                            <div className="flex-1 mt-[1rem]">
                                 <Label htmlFor="batch_number"> Batch No</Label>
                                 <div className="mt-1">
                                 <Input
@@ -358,7 +355,7 @@ const ProductAddPage : FC = function () {
                                 </div>
                             </div>
 
-                            <div className="flex-1">
+                            <div className="flex-1 mt-[1rem]">
                                 <Label htmlFor="hsn_code"> HSN code</Label>
                                 <div className="mt-1">
                                 <Input
@@ -377,9 +374,9 @@ const ProductAddPage : FC = function () {
                             </div>
                         </div>
 
-                        <div className="flex mt-[1rem] gap-x-[2rem]">
+                        <div className="md:flex gap-x-[2rem]">
 
-                            <div className="flex-1">
+                            <div className="flex-1 mt-[1rem] ">
                                 <Label htmlFor="cgst"> CGST</Label>
                                 <div className="mt-1">
                                 <Input
@@ -397,7 +394,7 @@ const ProductAddPage : FC = function () {
                                 </div>
                             </div>
 
-                            <div className="flex-1">
+                            <div className="flex-1 mt-[1rem] ">
                                 <Label htmlFor="sgst"> SGST</Label>
                                 <div className="mt-1">
                                 <Input
@@ -415,7 +412,7 @@ const ProductAddPage : FC = function () {
                                 </div>
                             </div>
 
-                            <div className="flex-1">
+                            <div className="flex-1 mt-[1rem] ">
                             <Label htmlFor="Status">Status</Label>
                             <div className="mt-1">
                             <Select

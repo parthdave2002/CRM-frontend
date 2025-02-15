@@ -7,6 +7,14 @@ import  {
   RESET_INSERT_LOGIN_ERROR,
   RESET_INSERT_LOGIN_SUCCESS,
 
+  VERIFY_TOKEN_DATA,
+  VERIFY_TOKEN_DATA_ERROR,
+  VERIFY_TOKEN_DATA_SUCCESS,
+
+  RESET_PASSWORD_DATA,
+  RESET_PASSWORD_DATA_ERROR,
+  RESET_PASSWORD_DATA_SUCCESS,
+
   LOGOUT,
   LOGOUT_ERROR,
   LOGOUT_SUCCESS,
@@ -67,4 +75,36 @@ import  {
     export const resetinsertLogoutSuccess = (actionType,data) => ({
       type: RESET_INSERT_LOGOUT_SUCCESS,
       payload: {actionType,data},
+    });
+
+    export const VerifyTokenData = (requserdata) => ({
+      type: VERIFY_TOKEN_DATA,
+      payload: requserdata
+    });
+    
+    export const VerifyTokenDataSuccess = (actionType,data) => ({
+      type: VERIFY_TOKEN_DATA_SUCCESS,
+      payload: {actionType,data},
+    });
+    
+    export const VerifyTokenDataFail = (actionType,error) => ({
+      type: VERIFY_TOKEN_DATA_ERROR,
+      payload: {actionType,error},
+    });
+
+
+    // Reset password
+    export const resetpasswordData = (requserdata) => ({
+      type: RESET_PASSWORD_DATA,
+      payload: requserdata
+    });
+    
+    export const resetpasswordDataSuccess = (actionType,data) => ({
+      type: RESET_PASSWORD_DATA_SUCCESS,
+      payload: {actionType,data},
+    });
+    
+    export const resetpasswordDataFail = (actionType,error) => ({
+      type: RESET_PASSWORD_DATA_ERROR,
+      payload: {actionType,error},
     });

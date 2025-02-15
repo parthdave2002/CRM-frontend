@@ -3,9 +3,9 @@ import { Routes, Route } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 import PrivateRoute from "./routes/PrivateRoute";
 import LoaderPage from "./components/loader";
-
 const DashboardPage = lazy(() => import("./pages"));
 const SignInPage = lazy(() => import("./pages/authentication/sign-in"));
+const ResetPasswordPage = lazy(() => import("./pages/authentication/reset-password"));
 const UserListPage = lazy(() => import("./pages/users/list"));
 const AddUserPage = lazy(() => import("./pages/users/useradd"));
 const UserDetailsPage = lazy(() => import("./pages/users/userdetails"));
@@ -64,7 +64,7 @@ const App: FC = function () {
             <Route path="/roles/add" element={<AddRolePage />} />
             <Route path="/roles/:id" element={<AddRolePage />} />
             <Route path="/roles/details" element={<RoleDetailsPage />} />
-            <Route path="/roles-access/:id" element={<RolesAccessPage />} />
+            <Route path="/role-access" element={<RolesAccessPage />} />
             <Route path="/module-manage" element={<ModulesPage />} />
             <Route path="/module-group" element={<ModulegroupPage />} />
             <Route path="/packing-type/list" element={<PackingTypeListPage />} />
@@ -107,6 +107,7 @@ const App: FC = function () {
           </Route>
 
           <Route path="/login" element={<SignInPage />} index />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>

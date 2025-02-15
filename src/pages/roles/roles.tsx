@@ -93,7 +93,7 @@ const RolesPage: FC = function () {
   };
 
   const ModuleListFuncall = (id: any) => {
-    navigate(`/roles-access/${id}`);
+    navigate(`/role-access/${id}`);
   };
 
   const OpenAddModel = () =>{

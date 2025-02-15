@@ -5,6 +5,7 @@ import LOGO from "../../img/logo.webp";
 import { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
+import { FaRegEye, FaRegEyeSlash  } from "react-icons/fa";
 import { Form, Input, FormFeedback } from "reactstrap";
 import { CheckUserdatalist,ResetUserdatalist, insertlogin, resetinsertlogin} from "../../Store/actions";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +18,8 @@ const SignInPage: FC = function () {
   const navigation = useNavigate();
   const dispatch = useDispatch();
 
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const validation = useFormik<{ username: string; password: string }>({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
@@ -28,7 +31,12 @@ const SignInPage: FC = function () {
 
     validationSchema: Yup.object({
       username: Yup.string().required("Please Enter Username"),
-      password: Yup.string().required("Please Enter Password"),
+      password: Yup.string().required("Please Enter Password")
+      .min(5, "Password must be at least 5 characters long")
+      .max(10, "Password must be at most 10 characters long")
+      .matches(/[A-Z]/, "Password must contain at least one uppercase letter (A-Z)")
+      .matches(/\d/, "Password must contain at least one numeric digit (0-9)")
+      .matches(/[@$!%*?&]/, "Password must contain at least one special character (@$!%*?&)"),
     }),
     onSubmit: (values) => {
       dispatch(insertlogin(values));
@@ -108,10 +116,7 @@ const SignInPage: FC = function () {
 
   const LostPasswordCall = () =>{
     if (validation.values.username) {
-      let data={
-        search: validation.values.username
-      }
-      
+      let data={ search: validation.values.username }
       dispatch(CheckUserdatalist(data));
     } else {
       toast.error("Please enter username");
@@ -136,7 +141,7 @@ const SignInPage: FC = function () {
 
             <Input
               name="username"
-              className="bg-gray-50 dark:bg-gray-800 border border-gray-300  disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
+              className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
               placeholder="Enter username"
               type="text"
               onChange={validation.handleChange}
@@ -153,7 +158,23 @@ const SignInPage: FC = function () {
 
           <div className="mb-6 flex flex-col gap-y-2">
             <Label htmlFor="password">Your password</Label>
-            <Input
+                        <div>
+                          <div className="relative w-full">
+                            <Input
+                              name="password"
+                              className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
+                              placeholder="Enter password"
+                              type={showConfirmPassword ? "text" : "password"}
+                              onChange={validation.handleChange}
+                              onBlur={validation.handleBlur}
+                              value={validation.values.password || ""}
+                              invalid={validation.touched.password && validation.errors.password ? true : false}
+                            />
+                              <button type="button" className="absolute inset-y-0 right-3 flex items-center text-gray-500 dark:text-gray-100" onClick={() => setShowConfirmPassword(!showConfirmPassword)} > {showConfirmPassword ? <FaRegEyeSlash size={20} /> : <FaRegEye size={20} />} </button>
+                          </div>
+                          {validation.touched.password && validation.errors.password ? ( <FormFeedback type="invalid" className="text-Red"> {validation.errors.password} </FormFeedback>) : null}
+                        </div>
+            {/* <Input
               id="password"
               className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
               name="password"
@@ -164,7 +185,7 @@ const SignInPage: FC = function () {
               value={validation.values.password || ""}
               invalid={ validation.touched.password && validation.errors.password ? true : false }
             />
-            {validation.touched.password && validation.errors.password ? ( <FormFeedback type="invalid" className="text-Red"> {validation.errors.password} </FormFeedback>) : null}
+            {validation.touched.password && validation.errors.password ? ( <FormFeedback type="invalid" className="text-Red"> {validation.errors.password} </FormFeedback>) : null} */}
           </div>
 
           <div className="mb-6 flex items-center justify-between">

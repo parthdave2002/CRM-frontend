@@ -82,7 +82,6 @@ class APIClient {
    */
   delete = (url,params) => {
     let response;
-
     let paramKeys = [];
 
     if(params){
