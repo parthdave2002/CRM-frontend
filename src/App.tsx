@@ -64,7 +64,7 @@ const App: FC = function () {
             <Route path="/roles/add" element={<AddRolePage />} />
             <Route path="/roles/:id" element={<AddRolePage />} />
             <Route path="/roles/details" element={<RoleDetailsPage />} />
-            <Route path="/role-access" element={<RolesAccessPage />} />
+            <Route path="/role-access/:id" element={<RolesAccessPage />} />
             <Route path="/module-manage" element={<ModulesPage />} />
             <Route path="/module-group" element={<ModulegroupPage />} />
             <Route path="/packing-type/list" element={<PackingTypeListPage />} />
