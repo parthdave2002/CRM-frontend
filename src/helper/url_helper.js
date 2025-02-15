@@ -1,5 +1,7 @@
 // Login/Logout Api
 export const INSERT_LOGIN = "/api/user/login";
+export const VERIFY_TOKEN_DATA = "/api/user/verify-token";
+export const RESET_PASSWORD_DATA = "/api/user/reset-password";
 export const LOGOUT ="/api/user/logout";
 
 //   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Dialer Apis <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

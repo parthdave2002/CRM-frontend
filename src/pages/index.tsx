@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import { Badge, Dropdown, Table, useTheme } from "flowbite-react";
 import type { FC } from "react";
 import { FaUser, FaTags  } from "react-icons/fa";
@@ -8,18 +7,130 @@ import { useNavigate } from "react-router";
 
 const DashboardPage: FC = function () {
 
+  const navigate = useNavigate()
+  
+  // -------- Customer Data code start -----------------
+    const ViewAllCall = (data:string) =>{
+      navigate(`/${data}/list`)
+    }
+
+    const CustomerData =[
+      {
+        name : "Neil Sims",
+        phone: "1324567980",
+        taluka: "Ahmedabad",
+        status : "Active"
+      },
+      {
+        name : "Bonnie Green",
+        phone: "1324567980",
+        taluka: "Ahmedabad",
+        status : "Active"
+      },
+      {
+        name : "Michael Gough",
+        phone: "1324567980",
+        taluka: "Ahmedabad",
+        status : "Active"
+      },
+      {
+        name : "Thomes Lean",
+        phone: "1324567980",
+        taluka: "Ahmedabad",
+        status : "Active"
+      },
+      {
+        name : "Lana Byrd",
+        phone: "1324567980",
+        taluka: "Ahmedabad",
+        status : "Active"
+      },
+    ]
+  
+    const UserData =[
+      {
+        img :"/images/users/neil-sims.png",
+        name : "Neil Sims",
+        email:"email@flowbite.com",
+        status : "Active"
+      },
+      {
+        img :"/images/users/bonnie-green.png",
+        name : "Bonnie Green",
+        email:"email@flowbite.com",
+        status : "Active"
+      },
+      {
+        img :"/images/users/michael-gough.png",
+        name : "Michael Gough",
+        email:"email@flowbite.com",
+        status : "Active"
+      },
+      {
+        img :"/images/users/thomas-lean.png",
+        name : "Thomes Lean",
+        email:"email@flowbite.com",
+        status : "Active"
+      },
+      {
+        img :"/images/users/lana-byrd.png",
+        name : "Lana Byrd",
+        email:"email@flowbite.com",
+        status : "Active"
+      },
+    ]
+
+    const ProductData=[
+      {
+        name: "Product 1",
+        category : "Category 1",
+        qty :15,
+        price: 1500,
+        createdAt: "20-05-24 11:55:55"
+      },
+      {
+        name: "Product 1",
+        category : "Category 1",
+        qty :15,
+        price: 1500,
+        createdAt: "20-05-24 11:55:55"
+      },
+      {
+        name: "Product 1",
+        category : "Category 1",
+        qty :15,
+        price: 1500,
+        createdAt: "20-05-24 11:55:55"
+      },
+      {
+        name: "Product 1",
+        category : "Category 1",
+        qty :15,
+        price: 1500,
+        createdAt: "20-05-24 11:55:55"
+      },
+      {
+        name: "Product 1",
+        category : "Category 1",
+        qty :15,
+        price: 1500,
+        createdAt: "20-05-24 11:55:55"
+      }
+    ]
+  // -------- Customer Data code end -----------------
+
   return (
     <NavbarSidebarLayout isFooter={false}  isSidebar={true} isNavbar={true}  isRightSidebar={true} >
       <div>
 
         <div>
-          <div className="flex flex-wrap gap-3">
+          <div className="md:flex flex-wrap gap-3">
         {[ 
           { label: "Total user", value : 5 , icon: FaTags, type: 'activeUsers' },
           { label: "Total Order", value : 10, icon: FaTags, type: 'newUsers' },
           { label: "Total Revenue", value:8 ,icon: FaUser, type: 'engagementRate' }
         ].map((stat, index) => (
-          <div key={index} className="w-[calc(33%-6px)] md:w-[32%] sm:w-full">
+          <div key={index} className="w-[calc(33%-6px)] md:w-[32%] w-full mt-[1.5rem] md:mt-0">
             <div className="h-20 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-red-200 dark:bg-gray-800 dark:text-gray-50">
               <div className="flex w-full justify-between items-start">
                 <div className={`p-3 rounded-full bg-purple-500`}>
@@ -57,12 +168,99 @@ const DashboardPage: FC = function () {
 
         <div className="my-6 lg:grid  grid-flow-row gap-4 flex flex-col"> <SalesThisWeek /> </div>
         <div className="my-6 "> <LatestTransactions />  </div>
+        
         <div className="my-6 lg:grid grid-cols-2 grid-flow-row gap-4">
-          <div>  <LatestCustomers />  </div>
-          <div> <LatestUsers /> </div>
-        </div>
-        <div className="my-6 "> <LatestProduct />  </div>
+          {/* Customer Data */}
+            <div className="mb-4 h-full rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6">
+                <div className="mb-4 flex items-center justify-between">
+                  <h3 className="text-xl font-bold leading-none text-gray-900 dark:text-white"> Latest Customers </h3>
+                  <div className="inline-flex items-center rounded-lg p-2 text-sm font-medium text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700 cursor-pointer" onClick={() => ViewAllCall("customer")}>  View all </div>
+                </div>
+                <div className="flow-root">
+                  <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+                    {CustomerData && CustomerData.map((item:any, k:number) =>(
+                      <li className="py-3 sm:py-4" key={k}>
+                      <div className="flex justify-between items-center space-x-4">
+                        <div className="min-w-0 ">
+                          <p className="truncate text-sm font-medium text-gray-900 dark:text-white"> {item.name} </p>
+                          <p className="truncate text-sm text-gray-500 dark:text-gray-400"> {item.taluka}  </p>
+                        </div>
+                        <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">{item.phone}</div>
+                        <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white ">{item.status}</div>
+                      </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+            </div>
 
+          {/* User Data */}
+            <div className="mb-4 h-full rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6">
+              <div className="mb-4 flex items-center justify-between">
+                <h3 className="text-xl font-bold leading-none text-gray-900 dark:text-white"> Latest Users </h3>
+                <div className="inline-flex items-center rounded-lg p-2 text-sm font-medium text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700 cursor-pointer" onClick={() => ViewAllCall("users")}>  View all </div>
+              </div>
+              <div className="flow-root">
+                <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+                  {UserData && UserData.map((item:any, k:number) =>(
+                    <li className="py-3 sm:py-4" key={k}>
+                    <div className="flex items-center space-x-4">
+                      <div className="shrink-0">
+                        <img className="h-8 w-8 rounded-full" src={item.img}  alt="" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-sm font-medium text-gray-900 dark:text-white"> {item.name} </p>
+                        <p className="truncate text-sm text-gray-500 dark:text-gray-400"> {item.email}  </p>
+                      </div>
+                      <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">{item.status}</div>
+                    </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+        </div>
+
+
+        <div className=" my-6 rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6 xl:p-8">
+          <div className="mb-4 flex items-center justify-between">
+            <div>
+              <div className="mb-2 text-md lg:text-xl font-bold text-gray-900 dark:text-white"> Latest Products </div>
+              <span className="text-base font-normal text-gray-600 dark:text-gray-400 hidden md:block"> This is a list of latest products </span>
+            </div>
+            <div className="shrink-0">
+              <div className="rounded-lg p-2 text-sm font-medium text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700 cursor-pointer" onClick={() =>ViewAllCall("product")}> View all  </div>
+            </div>
+          </div>
+          <div className="mt-8 flex flex-col">
+            <div className="overflow-x-auto rounded-lg">
+              <div className="inline-block min-w-full align-middle">
+                <div className="overflow-hidden shadow sm:rounded-lg">
+                  <Table striped className="min-w-full divide-y divide-gray-200 dark:divide-gray-600" >
+                    <Table.Head className="bg-gray-50 dark:bg-gray-700">
+                      <Table.HeadCell>Name</Table.HeadCell>
+                      <Table.HeadCell>Category</Table.HeadCell>
+                      <Table.HeadCell>Qty</Table.HeadCell>
+                      <Table.HeadCell>Price</Table.HeadCell>
+                      <Table.HeadCell>Date &amp; Time</Table.HeadCell>
+                    </Table.Head>
+                    <Table.Body className="bg-white dark:bg-gray-800">
+                        {ProductData && ProductData.map((item ,k) =>(
+                          <Table.Row key={k}>
+                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 dark:text-white"><span className="font-semibold">{item.name}</span>  </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400"> {item.category} </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white"> {item.qty}  </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white"> {item.price}  </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white"> {item.createdAt}  </Table.Cell>
+                          </Table.Row>
+                        ))}
+                    </Table.Body>
+                  </Table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
        
       </div>
     </NavbarSidebarLayout>
@@ -98,31 +296,7 @@ const SalesThisWeek: FC = function () {
         </div>
       </div>
       <SalesChart />
-      <div className="mt-5 flex items-center justify-between border-t border-gray-200 pt-3 dark:border-gray-700 sm:pt-6">
-        <Datepicker />
-        <div className="shrink-0">
-          <a
-            href="#"
-            className="inline-flex items-center rounded-lg p-2 text-xs font-medium uppercase text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700 sm:text-sm"
-          >
-            Sales Report
-            <svg
-              className="ml-1 h-4 w-4 sm:h-5 sm:w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </a>
-        </div>
-      </div>
+     
     </div>
   );
 };
@@ -260,158 +434,6 @@ const SalesChart: FC = function () {
   ];
 
   return <Chart height={420} options={options} series={series} type="area" />;
-};
-
-const Datepicker: FC = function () {
-  return (
-    <span className="text-sm text-gray-600">
-      <Dropdown inline label="Last 7 days">
-        <Dropdown.Item>
-          <strong>Sep 16, 2021 - Sep 22, 2021</strong>
-        </Dropdown.Item>
-        <Dropdown.Divider />
-        <Dropdown.Item>Yesterday</Dropdown.Item>
-        <Dropdown.Item>Today</Dropdown.Item>
-        <Dropdown.Item>Last 7 days</Dropdown.Item>
-        <Dropdown.Item>Last 30 days</Dropdown.Item>
-        <Dropdown.Item>Last 90 days</Dropdown.Item>
-        <Dropdown.Divider />
-        <Dropdown.Item>Custom...</Dropdown.Item>
-      </Dropdown>
-    </span>
-  );
-};
-
-const LatestCustomers: FC = function () {
-  const navigate = useNavigate()
-  const ViewAllCall = () =>{
-    navigate("/customer/list")
-  }
-
-  const CustomerData =[
-    {
-      name : "Neil Sims",
-      phone: "1324567980",
-      taluka: "Ahmedabad",
-      status : "Active"
-    },
-    {
-      name : "Bonnie Green",
-      phone: "1324567980",
-      taluka: "Ahmedabad",
-      status : "Active"
-    },
-    {
-      name : "Michael Gough",
-      phone: "1324567980",
-      taluka: "Ahmedabad",
-      status : "Active"
-    },
-    {
-      name : "Thomes Lean",
-      phone: "1324567980",
-      taluka: "Ahmedabad",
-      status : "Active"
-    },
-    {
-      name : "Lana Byrd",
-      phone: "1324567980",
-      taluka: "Ahmedabad",
-      status : "Active"
-    },
-  ]
-  return (
-    <div className="mb-4 h-full rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6">
-      <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-xl font-bold leading-none text-gray-900 dark:text-white"> Latest Customers </h3>
-        <div className="inline-flex items-center rounded-lg p-2 text-sm font-medium text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700 cursor-pointer" onClick={() => ViewAllCall()}>  View all </div>
-      </div>
-      <div className="flow-root">
-        <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-          {CustomerData && CustomerData.map((item:any, k:number) =>(
-            <li className="py-3 sm:py-4" key={k}>
-            <div className="flex justify-between items-center space-x-4">
-              <div className="min-w-0 ">
-                <p className="truncate text-sm font-medium text-gray-900 dark:text-white"> {item.name} </p>
-                <p className="truncate text-sm text-gray-500 dark:text-gray-400"> {item.taluka}  </p>
-              </div>
-              <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">{item.phone}</div>
-              <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white ">{item.status}</div>
-            </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-    
-    </div>
-  );
-};
-
-const LatestUsers: FC = function () {
-  const navigate = useNavigate()
-  const ViewAllCall = () =>{
-    navigate("/users/list")
-  }
-
-  const UserData =[
-    {
-      img :"/images/users/neil-sims.png",
-      name : "Neil Sims",
-      email:"email@flowbite.com",
-      status : "Active"
-    },
-    {
-      img :"/images/users/bonnie-green.png",
-      name : "Bonnie Green",
-      email:"email@flowbite.com",
-      status : "Active"
-    },
-    {
-      img :"/images/users/michael-gough.png",
-      name : "Michael Gough",
-      email:"email@flowbite.com",
-      status : "Active"
-    },
-    {
-      img :"/images/users/thomas-lean.png",
-      name : "Thomes Lean",
-      email:"email@flowbite.com",
-      status : "Active"
-    },
-    {
-      img :"/images/users/lana-byrd.png",
-      name : "Lana Byrd",
-      email:"email@flowbite.com",
-      status : "Active"
-    },
-  ]
-
-  return (
-    <div className="mb-4 h-full rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6">
-      <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-xl font-bold leading-none text-gray-900 dark:text-white"> Latest Users </h3>
-        <div className="inline-flex items-center rounded-lg p-2 text-sm font-medium text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700 cursor-pointer" onClick={() => ViewAllCall()}>  View all </div>
-      </div>
-      <div className="flow-root">
-        <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-          {UserData && UserData.map((item:any, k:number) =>(
-            <li className="py-3 sm:py-4" key={k}>
-            <div className="flex items-center space-x-4">
-              <div className="shrink-0">
-                <img className="h-8 w-8 rounded-full" src={item.img}  alt="" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-gray-900 dark:text-white"> {item.name} </p>
-                <p className="truncate text-sm text-gray-500 dark:text-gray-400"> {item.email}  </p>
-              </div>
-              <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">{item.status}</div>
-            </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
 };
 
 const LatestTransactions: FC = function () {
@@ -601,121 +623,7 @@ const LatestTransactions: FC = function () {
           </div>
         </div>
       </div>
-      <div className="flex items-center justify-between pt-3 sm:pt-6">
-        <Datepicker />
-        <div className="shrink-0">
-          <a
-            href="#"
-            className="inline-flex items-center rounded-lg p-2 text-xs font-medium uppercase text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700 sm:text-sm"
-          >
-            Transactions Report
-            <svg
-              className="ml-1 h-4 w-4 sm:h-5 sm:w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </a>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-
-const LatestProduct: FC = function () {
-
-  const navigate = useNavigate()
-  const ViewAllCall = () =>{
-    navigate("/product/list")
-  }
-
-  const ProductData=[
-    {
-      name: "Product 1",
-      category : "Category 1",
-      qty :15,
-      price: 1500,
-      createdAt: "20-05-24 11:55:55"
-    },
-    {
-      name: "Product 1",
-      category : "Category 1",
-      qty :15,
-      price: 1500,
-      createdAt: "20-05-24 11:55:55"
-    },
-    {
-      name: "Product 1",
-      category : "Category 1",
-      qty :15,
-      price: 1500,
-      createdAt: "20-05-24 11:55:55"
-    },
-    {
-      name: "Product 1",
-      category : "Category 1",
-      qty :15,
-      price: 1500,
-      createdAt: "20-05-24 11:55:55"
-    },
-    {
-      name: "Product 1",
-      category : "Category 1",
-      qty :15,
-      price: 1500,
-      createdAt: "20-05-24 11:55:55"
-    }
-  ]
-
-  return (
-    <div className="rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6 xl:p-8">
-      <div className="mb-4 flex items-center justify-between">
-        <div>
-          <div className="mb-2 text-md lg:text-xl font-bold text-gray-900 dark:text-white"> Latest Products </div>
-          <span className="text-base font-normal text-gray-600 dark:text-gray-400 hidden md:block"> This is a list of latest products </span>
-        </div>
-        <div className="shrink-0">
-          <div className="rounded-lg p-2 text-sm font-medium text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700 cursor-pointer" onClick={() =>ViewAllCall()}> View all  </div>
-        </div>
-      </div>
-      <div className="mt-8 flex flex-col">
-        <div className="overflow-x-auto rounded-lg">
-          <div className="inline-block min-w-full align-middle">
-            <div className="overflow-hidden shadow sm:rounded-lg">
-              <Table striped className="min-w-full divide-y divide-gray-200 dark:divide-gray-600" >
-                <Table.Head className="bg-gray-50 dark:bg-gray-700">
-                  <Table.HeadCell>Name</Table.HeadCell>
-                  <Table.HeadCell>Category</Table.HeadCell>
-                  <Table.HeadCell>Qty</Table.HeadCell>
-                  <Table.HeadCell>Price</Table.HeadCell>
-                  <Table.HeadCell>Date &amp; Time</Table.HeadCell>
-                </Table.Head>
-                <Table.Body className="bg-white dark:bg-gray-800">
-                    {ProductData && ProductData.map((item ,k) =>(
-                      <Table.Row key={k}>
-                      <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 dark:text-white"><span className="font-semibold">{item.name}</span>  </Table.Cell>
-                      <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400"> {item.category} </Table.Cell>
-                      <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white"> {item.qty}  </Table.Cell>
-                      <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white"> {item.price}  </Table.Cell>
-                      <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white"> {item.createdAt}  </Table.Cell>
-                      </Table.Row>
-                    ))}
-                </Table.Body>
-              </Table>
-            </div>
-          </div>
-        </div>
-      </div>
-     
+      
     </div>
   );
 };

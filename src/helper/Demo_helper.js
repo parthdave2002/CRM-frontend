@@ -86,6 +86,8 @@ export const postJwtRegister = (url, data) => {
 
 //Login
 export const LoginApi = (requserdata) => api.create(url.INSERT_LOGIN, requserdata);
+export const VerifyTokenApi = (requserdata) => api.get(url.VERIFY_TOKEN_DATA, requserdata);
+export const ResetPasswordApi = (requserdata) => api.create(url.RESET_PASSWORD_DATA, requserdata);
 export const LogoutApi = (requserdata) => api.get(url.LOGOUT, requserdata);
 
 // User Api

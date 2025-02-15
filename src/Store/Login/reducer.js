@@ -6,6 +6,14 @@ import {
   RESET_INSERT_LOGIN,
   RESET_INSERT_LOGIN_SUCCESS,
 
+  VERIFY_TOKEN_DATA,
+  VERIFY_TOKEN_DATA_ERROR,
+  VERIFY_TOKEN_DATA_SUCCESS,
+
+  RESET_PASSWORD_DATA,
+  RESET_PASSWORD_DATA_ERROR,
+  RESET_PASSWORD_DATA_SUCCESS,
+
   LOGOUT,
   LOGOUT_ERROR,
   LOGOUT_SUCCESS,
@@ -18,6 +26,8 @@ import {
     Logincode: [],
     LoginRoles:[],
     Logoutcode:[],
+    Verifytoken:[],
+    resetpassword:[],
     error: {},
   };
   
@@ -44,8 +54,7 @@ import {
             return { ...state };
         }
 
-        // Reset Login
-        case RESET_INSERT_LOGIN_SUCCESS:
+      case RESET_INSERT_LOGIN_SUCCESS:
           switch (action.payload.actionType) {
             case RESET_INSERT_LOGIN:
              
@@ -53,11 +62,51 @@ import {
                 ...state,
                 Logincode: [],
               };
-          }
+        }
 
+      case VERIFY_TOKEN_DATA_SUCCESS:
+          switch (action.payload.actionType) {
+            case VERIFY_TOKEN_DATA:
+              return {
+                ...state,
+                Verifytoken: action.payload.data,
+              };
+        }
+      case VERIFY_TOKEN_DATA_ERROR:
+          switch (action.payload.actionType) {
+            case VERIFY_TOKEN_DATA:
+              // console.log("CREATE_GROUP_SUCCESS =====>", action.payload);
+              return {
+                ...state,
+                error: action.payload,
+              };
+    
+            default:
+              return { ...state };
+        }
 
-        // Logout
-        case LOGOUT_SUCCESS:
+        case RESET_PASSWORD_DATA_SUCCESS:
+          switch (action.payload.actionType) {
+            case RESET_PASSWORD_DATA:
+              return {
+                ...state,
+                resetpassword: action.payload.data,
+              };
+        }
+      case RESET_PASSWORD_DATA_ERROR:
+          switch (action.payload.actionType) {
+            case RESET_PASSWORD_DATA:
+              // console.log("CREATE_GROUP_SUCCESS =====>", action.payload);
+              return {
+                ...state,
+                error: action.payload,
+              };
+    
+            default:
+              return { ...state };
+        }
+       
+      case LOGOUT_SUCCESS:
         switch (action.payload.actionType) {
           case LOGOUT:
             return {
@@ -78,8 +127,7 @@ import {
             return { ...state };
         }
 
-        // Reset Logout
-        case RESET_INSERT_LOGOUT_SUCCESS:
+      case RESET_INSERT_LOGOUT_SUCCESS:
           switch (action.payload.actionType) {
             case RESET_INSERT_LOGOUT:
              
@@ -87,7 +135,7 @@ import {
                 ...state,
                 Logoutcode: [],
               };
-          }
+        }
   
      
       default:

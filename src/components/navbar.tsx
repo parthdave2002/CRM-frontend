@@ -44,7 +44,7 @@ const ExampleNavbar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> =
                   </Navbar.Brand>
               </div>
 
-              <div className="relative md:w-64  hidden md:block md:pl-2 flex-auto ml-12">
+              {/* <div className="relative md:w-64  hidden md:block md:pl-2 flex-auto ml-12">
                 <div className="flex absolute inset-y-0 left-0 items-center pl-[1.2rem] pointer-events-none">
                   <IoIosSearch  className="w-5 h-5 text-gray-500 dark:text-gray-400 "   />
                 </div>
@@ -56,7 +56,7 @@ const ExampleNavbar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> =
                   placeholder="Search "
                   onClick={() => {  setOpen(true);  }}
                 />
-              </div>
+              </div> */}
           
               <div className="flex items-center gap-[1rem]">
                 {/* <Notification /> */}

@@ -165,11 +165,21 @@ const AddUserPage : FC = function () {
         
         validationSchema: Yup.object({
             user_name: Yup.string().required("Please Enter User Name"),
-            email: Yup.string().required("Please Enter Email"),
-            password: Yup.string().required("Please Enter Password"),
-            mobile_no: Yup.string().required("Please Enter Mobile Number"),
+            email: Yup.string().required("Please Enter Email")
+            .matches(/^[^@]+@[^@]+$/, "Email must contain exactly one '@'") // Ensures exactly one '@'
+            .matches(/@[^@]+\.[^@]+$/, "Email must contain exactly one '.' after '@'") // Ensures '.' after '@'
+            .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email format"), // General email validation,
+            password: Yup.string().required("Please Enter Password")
+            .min(5, "Password must be at least 5 characters long")
+            .max(10, "Password must be at most 10 characters long")
+            .matches(/[A-Z]/, "Password must contain at least one uppercase letter (A-Z)")
+            .matches(/\d/, "Password must contain at least one numeric digit (0-9)")
+            .matches(/[@$!%*?&]/, "Password must contain at least one special character (@$!%*?&)"),
+            mobile_no: Yup.string().required("Please Enter Mobile Number")
+            .matches(/^\d{10}$/, "Mobile number must be 10 digits"),
             address: Yup.string().required("Please Enter Address"),
-            emergency_mobile_no: Yup.string().required("Please Enter Emergency Mobile Number"),
+            emergency_mobile_no: Yup.string().required("Please Enter Emergency Mobile Number")
+            .matches(/^\d{10}$/, "Mobile number must be 10 digits"),
             emergency_contact_person: Yup.string().required("Please Enter Emergency Contact Person"),
             date_of_birth: Yup.string().required("Please Enter Date of birth"),
             date_of_joining: Yup.string().required("Please Enter Date of joining"),
@@ -239,8 +249,8 @@ const AddUserPage : FC = function () {
                 <div className="mt-[2rem] bg-white dark:bg-gray-800 p-4">
                     <Form onSubmit={(e) => { e.preventDefault(); validation.handleSubmit(); return false; }} >
                        
-                        <div className="flex gap-x-[2rem]">
-                            <div className="flex-1">
+                        <div className="md:flex gap-x-[2rem]">
+                            <div className="flex-1 mt-[1rem]">
                                 <Label htmlFor="UserName">User Name</Label>
                                 <div className="mt-1">
                                 <Input
@@ -260,7 +270,7 @@ const AddUserPage : FC = function () {
                                 </div>
                             </div>
 
-                            <div  className="flex-1">
+                            <div  className="flex-1 mt-[1rem]">
                                 <Label htmlFor="email">Email</Label>
                                 <div className="mt-1">
                                 <Input
@@ -280,7 +290,7 @@ const AddUserPage : FC = function () {
                                 </div>
                             </div>
 
-                            <div  className="flex-1">
+                            <div  className="flex-1 mt-[1rem]">
                                 <Label htmlFor="email">Gender</Label>
                                 <div className="mt-1">
                                     <Select
@@ -303,9 +313,9 @@ const AddUserPage : FC = function () {
                             </div>
                         </div>
 
-                        <div className="flex mt-[1rem] gap-x-[2rem]">
+                        <div className="md:flex  gap-x-[2rem]">
                             
-                            <div className="flex-1">
+                            <div className="flex-1 mt-[1rem]">
                                 <Label htmlFor="UserName">Role</Label>
                                 <div className="mt-1">
                                     <Select
@@ -327,7 +337,7 @@ const AddUserPage : FC = function () {
                                 </div>
                             </div>
                             
-                            <div className="flex-1">
+                            <div className="flex-1 mt-[1rem]">
                                 <Label htmlFor="password">Password</Label>
                                 <div className="mt-1">
                                 <Input
@@ -347,7 +357,7 @@ const AddUserPage : FC = function () {
                                 </div>
                             </div>
 
-                            <div  className="flex-1">
+                            <div  className="flex-1 mt-[1rem]">
                                 <Label htmlFor="mobile_no"> Mobile Number</Label>
                                 <div className="mt-1">
                                 <Input
@@ -368,9 +378,9 @@ const AddUserPage : FC = function () {
                             </div>
                         </div>
 
-                        <div className="flex mt-[1rem] gap-x-[2rem]">
+                        <div className="md:flex gap-x-[2rem]">
                             
-                            <div className="flex-1">
+                            <div className="flex-1 mt-[1rem]">
                                 <Label htmlFor="address">Address</Label>
                                 <div className="mt-1">
                                 <Input
@@ -390,7 +400,7 @@ const AddUserPage : FC = function () {
                                 </div>
                             </div>
                             
-                            <div className="flex-1">
+                            <div className="flex-1 mt-[1rem]">
                                 <Label htmlFor="date_of_birth">Date of Birth</Label>
                                 <div className="mt-1">
                                 <Input
@@ -410,7 +420,7 @@ const AddUserPage : FC = function () {
                                 </div>
                             </div>
 
-                            <div  className="flex-1">
+                            <div  className="flex-1 mt-[1rem]">
                                 <Label htmlFor="date_of_joining">Date of Joining</Label>
                                 <div className="mt-1">
                                 <Input
@@ -431,8 +441,8 @@ const AddUserPage : FC = function () {
                             </div>
                         </div>
 
-                        <div className="flex mt-[1rem] gap-x-[2rem]">
-                            <div  className="flex-1">
+                        <div className="md:flex gap-x-[2rem] ">
+                            <div  className="flex-1 mt-[1rem]">
                                 <Label htmlFor="email"> Status</Label>
                                 <div className="mt-1">
                                     <Select
@@ -454,7 +464,7 @@ const AddUserPage : FC = function () {
                                 </div>
                             </div>
 
-                            <div  className="flex-1">
+                            <div  className="flex-1 mt-[1rem]">
                                 <Label htmlFor="emergency_contact_person">Emergency contact person</Label>
                                 <div className="mt-1">
                                 <Input
@@ -474,7 +484,7 @@ const AddUserPage : FC = function () {
                                 </div>
                             </div>
 
-                            <div className="flex-1">
+                            <div className="flex-1 mt-[1rem]">
                                 <Label htmlFor="emergency_mobile_no">Emergency mobile no</Label>
                                 <div className="mt-1">
                                 <Input
@@ -495,8 +505,8 @@ const AddUserPage : FC = function () {
                             </div>
                         </div>
                         
-                        <div className="flex mt-[1rem] gap-x-[2rem]">
-                            <div className="flex-1">
+                        <div className="md:flex gap-x-[2rem]">
+                            <div className="flex-1  mt-[1rem]">
                                 <Label htmlFor="password">Aadhar card</Label>
                                 <div className="mt-1">
                                     <Select
@@ -518,7 +528,7 @@ const AddUserPage : FC = function () {
                                 </div>
                             </div>
 
-                            <div  className="flex-1">
+                            <div className="flex-1  mt-[1rem]">
                                 <Label htmlFor="pan_card">Pan card</Label>
                                 <div className="mt-1">
                                     <Select
@@ -540,7 +550,7 @@ const AddUserPage : FC = function () {
                                 </div>
                             </div>
 
-                            <div className="flex-1">
+                            <div className="flex-1  mt-[1rem]">
                                 <Label htmlFor="bank_passbook">Bank passbook</Label>
                                 <div className="mt-1">
                                     <Select
