@@ -7,8 +7,8 @@ export const LOGOUT ="/api/user/logout";
 //   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Dialer Apis <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 // Dashboard Api
-export const GET_DASHBOARD_DATA_LIST = "/dashboard/dashboard";
-export const GET_REPORT_DATA_LIST = "/report/report";
+export const GET_DASHBOARD_DATA_LIST = "/api/dashboard/details";
+export const GET_REPORT_DATA_LIST = "/api/report/report";
 
 // User Api
 export const GET_USER_LIST = "/api/user/get-user";
