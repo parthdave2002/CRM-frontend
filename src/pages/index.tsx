@@ -1,122 +1,146 @@
 import { Badge, Dropdown, Table, useTheme } from "flowbite-react";
-import type { FC } from "react";
+import { useEffect, useState, type FC } from "react";
 import { FaUser, FaTags  } from "react-icons/fa";
 import Chart from "react-apexcharts";
 import NavbarSidebarLayout from "../layouts/navbar-sidebar";
 import { useNavigate } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+const IMG_URL = import.meta.env["VITE_API_URL"];
+import moment from "moment";
+import {getDashboarddatalist } from "../Store/actions";
 
 const DashboardPage: FC = function () {
 
   const navigate = useNavigate()
+ const dispatch = useDispatch()
+
+
+  const { DashboardDataList } = useSelector((state: any) => ({
+    DashboardDataList: state.AdminDashboard.Dashboardlist
+  }))
+
+  const [CustomerData , setCustomerData] = useState([]);
+  const [UserData , setUserData] = useState([]);
+  const [ProductData, setProductData] =useState([]);
+  
+  useEffect(() =>{
+    setCustomerData(DashboardDataList?.data?.customers);
+    setUserData(DashboardDataList?.data?.users);
+    setProductData(DashboardDataList?.data?.products);
+  },[DashboardDataList])
+
+  useEffect(() =>{
+    dispatch(getDashboarddatalist())
+  },[])
   
   // -------- Customer Data code start -----------------
     const ViewAllCall = (data:string) =>{
       navigate(`/${data}/list`)
     }
 
-    const CustomerData =[
-      {
-        name : "Neil Sims",
-        phone: "1324567980",
-        taluka: "Ahmedabad",
-        status : "Active"
-      },
-      {
-        name : "Bonnie Green",
-        phone: "1324567980",
-        taluka: "Ahmedabad",
-        status : "Active"
-      },
-      {
-        name : "Michael Gough",
-        phone: "1324567980",
-        taluka: "Ahmedabad",
-        status : "Active"
-      },
-      {
-        name : "Thomes Lean",
-        phone: "1324567980",
-        taluka: "Ahmedabad",
-        status : "Active"
-      },
-      {
-        name : "Lana Byrd",
-        phone: "1324567980",
-        taluka: "Ahmedabad",
-        status : "Active"
-      },
-    ]
+    // const CustomerData =[
+    //   {
+    //     name : "Neil Sims",
+    //     phone: "1324567980",
+    //     taluka: "Ahmedabad",
+    //     status : "Active"
+    //   },
+    //   {
+    //     name : "Bonnie Green",
+    //     phone: "1324567980",
+    //     taluka: "Ahmedabad",
+    //     status : "Active"
+    //   },
+    //   {
+    //     name : "Michael Gough",
+    //     phone: "1324567980",
+    //     taluka: "Ahmedabad",
+    //     status : "Active"
+    //   },
+    //   {
+    //     name : "Thomes Lean",
+    //     phone: "1324567980",
+    //     taluka: "Ahmedabad",
+    //     status : "Active"
+    //   },
+    //   {
+    //     name : "Lana Byrd",
+    //     phone: "1324567980",
+    //     taluka: "Ahmedabad",
+    //     status : "Active"
+    //   },
+    // ]
   
-    const UserData =[
-      {
-        img :"/images/users/neil-sims.png",
-        name : "Neil Sims",
-        email:"email@flowbite.com",
-        status : "Active"
-      },
-      {
-        img :"/images/users/bonnie-green.png",
-        name : "Bonnie Green",
-        email:"email@flowbite.com",
-        status : "Active"
-      },
-      {
-        img :"/images/users/michael-gough.png",
-        name : "Michael Gough",
-        email:"email@flowbite.com",
-        status : "Active"
-      },
-      {
-        img :"/images/users/thomas-lean.png",
-        name : "Thomes Lean",
-        email:"email@flowbite.com",
-        status : "Active"
-      },
-      {
-        img :"/images/users/lana-byrd.png",
-        name : "Lana Byrd",
-        email:"email@flowbite.com",
-        status : "Active"
-      },
-    ]
+    // const UserData =[
+    //   {
+    //     img :"/images/users/neil-sims.png",
+    //     name : "Neil Sims",
+    //     email:"email@flowbite.com",
+    //     status : "Active"
+    //   },
+    //   {
+    //     img :"/images/users/bonnie-green.png",
+    //     name : "Bonnie Green",
+    //     email:"email@flowbite.com",
+    //     status : "Active"
+    //   },
+    //   {
+    //     img :"/images/users/michael-gough.png",
+    //     name : "Michael Gough",
+    //     email:"email@flowbite.com",
+    //     status : "Active"
+    //   },
+    //   {
+    //     img :"/images/users/thomas-lean.png",
+    //     name : "Thomes Lean",
+    //     email:"email@flowbite.com",
+    //     status : "Active"
+    //   },
+    //   {
+    //     img :"/images/users/lana-byrd.png",
+    //     name : "Lana Byrd",
+    //     email:"email@flowbite.com",
+    //     status : "Active"
+    //   },
+    // ]
 
-    const ProductData=[
-      {
-        name: "Product 1",
-        category : "Category 1",
-        qty :15,
-        price: 1500,
-        createdAt: "20-05-24 11:55:55"
-      },
-      {
-        name: "Product 1",
-        category : "Category 1",
-        qty :15,
-        price: 1500,
-        createdAt: "20-05-24 11:55:55"
-      },
-      {
-        name: "Product 1",
-        category : "Category 1",
-        qty :15,
-        price: 1500,
-        createdAt: "20-05-24 11:55:55"
-      },
-      {
-        name: "Product 1",
-        category : "Category 1",
-        qty :15,
-        price: 1500,
-        createdAt: "20-05-24 11:55:55"
-      },
-      {
-        name: "Product 1",
-        category : "Category 1",
-        qty :15,
-        price: 1500,
-        createdAt: "20-05-24 11:55:55"
-      }
-    ]
+    // const ProductData=[
+    //   {
+    //     name: "Product 1",
+    //     category : "Category 1",
+    //     qty :15,
+    //     price: 1500,
+    //     createdAt: "20-05-24 11:55:55"
+    //   },
+    //   {
+    //     name: "Product 1",
+    //     category : "Category 1",
+    //     qty :15,
+    //     price: 1500,
+    //     createdAt: "20-05-24 11:55:55"
+    //   },
+    //   {
+    //     name: "Product 1",
+    //     category : "Category 1",
+    //     qty :15,
+    //     price: 1500,
+    //     createdAt: "20-05-24 11:55:55"
+    //   },
+    //   {
+    //     name: "Product 1",
+    //     category : "Category 1",
+    //     qty :15,
+    //     price: 1500,
+    //     createdAt: "20-05-24 11:55:55"
+    //   },
+    //   {
+    //     name: "Product 1",
+    //     category : "Category 1",
+    //     qty :15,
+    //     price: 1500,
+    //     createdAt: "20-05-24 11:55:55"
+    //   }
+    // ]
   // -------- Customer Data code end -----------------
 
   return (
@@ -182,11 +206,11 @@ const DashboardPage: FC = function () {
                       <li className="py-3 sm:py-4" key={k}>
                       <div className="flex justify-between items-center space-x-4">
                         <div className="min-w-0 ">
-                          <p className="truncate text-sm font-medium text-gray-900 dark:text-white"> {item.name} </p>
+                          <p className="truncate text-sm font-medium text-gray-900 dark:text-white"> {item.customer_name} </p>
                           <p className="truncate text-sm text-gray-500 dark:text-gray-400"> {item.taluka}  </p>
                         </div>
-                        <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">{item.phone}</div>
-                        <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white ">{item.status}</div>
+                        <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">{item.mobile_number}</div>
+                        <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white ">{item.village}</div>
                       </div>
                       </li>
                     ))}
@@ -206,13 +230,13 @@ const DashboardPage: FC = function () {
                     <li className="py-3 sm:py-4" key={k}>
                     <div className="flex items-center space-x-4">
                       <div className="shrink-0">
-                        <img className="h-8 w-8 rounded-full" src={item.img}  alt="" />
+                        <img className="h-8 w-8 rounded-full"    src={`${IMG_URL}/public/user/${item.user_pic}`}  alt="" />
                       </div>
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-sm font-medium text-gray-900 dark:text-white"> {item.name} </p>
                         <p className="truncate text-sm text-gray-500 dark:text-gray-400"> {item.email}  </p>
                       </div>
-                      <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">{item.status}</div>
+                      <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">{item.is_active == true ? "Active" : "Deactive"}</div>
                     </div>
                     </li>
                   ))}
@@ -245,13 +269,13 @@ const DashboardPage: FC = function () {
                       <Table.HeadCell>Date &amp; Time</Table.HeadCell>
                     </Table.Head>
                     <Table.Body className="bg-white dark:bg-gray-800">
-                        {ProductData && ProductData.map((item ,k) =>(
+                        {ProductData && ProductData.map((item:any ,k:number) =>(
                           <Table.Row key={k}>
                           <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 dark:text-white"><span className="font-semibold">{item.name}</span>  </Table.Cell>
                           <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400"> {item.category} </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white"> {item.qty}  </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white"> {item.avl_qty}  </Table.Cell>
                           <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white"> {item.price}  </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white"> {item.createdAt}  </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white">   {moment(item.createdAt).format("DD-MM-YYYY hh:mm:ss")}   </Table.Cell>
                           </Table.Row>
                         ))}
                     </Table.Body>

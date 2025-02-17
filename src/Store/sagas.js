@@ -1,6 +1,7 @@
 import { all, fork } from "redux-saga/effects";
 
 //  >>>>>>>>>>>>>>>>>>>>>>> Node Api <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+import AdminDashboardSaga from "./AdminDashboard/saga"
 import LoginSaga from "./Login/saga";
 import UserSaga from "./User/saga";
 import RoleSaga from "./Roles/saga";
@@ -20,6 +21,7 @@ import CustomerSaga from "./Customer/saga";
 export default function* rootSaga() {
   yield all([
     //public
+    fork(AdminDashboardSaga),
     fork(LoginSaga),
     fork(UserSaga),
     fork(RoleSaga),

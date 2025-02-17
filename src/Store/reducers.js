@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
 
+import AdminDashboard from "./AdminDashboard/reducer";
 import Login from "./Login/reducer";
 import User from "./User/reducer";
 import Role from "./Roles/reducer";
@@ -16,6 +17,7 @@ import Customer from "./Customer/reducer";
 
 const rootReducer = combineReducers({
     // public
+    AdminDashboard,
     Login,
     User,
     Role,

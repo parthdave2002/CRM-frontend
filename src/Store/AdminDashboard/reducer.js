@@ -18,7 +18,7 @@ const INIT_STATE = {
   error: {},
 };
 
-const Banner = (state = INIT_STATE, action) => {
+const AdminDashboard = (state = INIT_STATE, action) => {
   switch (action.type) {
     case GET_DASHBOARD_DATA_LIST_SUCCESS:
       switch (action.payload.actionType) {
@@ -84,4 +84,4 @@ const Banner = (state = INIT_STATE, action) => {
   }
 };
 
-export default Banner;
+export default AdminDashboard;
