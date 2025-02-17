@@ -13,8 +13,6 @@ const RolesPage = lazy(() => import("./pages/roles/roles"));
 const AddRolePage = lazy(() => import("./pages/roles/roleadd"));
 const RoleDetailsPage = lazy(() => import("./pages/roles/roledeatails"));
 const RolesAccessPage = lazy(() => import("./pages/roles/roles-access"));
-const ModulesPage = lazy(() => import("./pages/module/modules"));
-const ModulegroupPage = lazy(() => import("./pages/module/module-group"));
 const PackingTypeListPage = lazy(() => import("./pages/packingType/packingType"));
 const AddpackingTypePage = lazy(() => import("./pages/packingType/packingTypeAdd"));
 const PackingTypeDetailsPage = lazy(() => import("./pages/packingType/packingTypeDetails"));
@@ -65,8 +63,6 @@ const App: FC = function () {
             <Route path="/roles/:id" element={<AddRolePage />} />
             <Route path="/roles/details" element={<RoleDetailsPage />} />
             <Route path="/role-access/:id" element={<RolesAccessPage />} />
-            <Route path="/module-manage" element={<ModulesPage />} />
-            <Route path="/module-group" element={<ModulegroupPage />} />
             <Route path="/packing-type/list" element={<PackingTypeListPage />} />
             <Route path="/packing-type/add" element={<AddpackingTypePage />} />
             <Route path="/packing-type/:id" element={<AddpackingTypePage />} />

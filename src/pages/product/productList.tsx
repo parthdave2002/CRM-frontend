@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { Button, Checkbox, Table} from "flowbite-react";
+import { Button, Checkbox, Table, Tooltip} from "flowbite-react";
 import type { FC } from "react";
 import { HiTrash} from "react-icons/hi";
 import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
@@ -134,7 +134,7 @@ const ProductListPage: FC = function () {
                             />
                            </Table.Cell>
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.name} </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.description} </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap overflow-hidden text-ellipsis max-w-[400px] text-base font-medium text-gray-900 dark:text-white py-0">  {item.description}</Table.Cell>
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.category} </Table.Cell>
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.avl_qty} </Table.Cell>
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.price} Rs.</Table.Cell>

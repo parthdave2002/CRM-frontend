@@ -90,6 +90,10 @@ export const VerifyTokenApi = (requserdata) => api.get(url.VERIFY_TOKEN_DATA, re
 export const ResetPasswordApi = (requserdata) => api.create(url.RESET_PASSWORD_DATA, requserdata);
 export const LogoutApi = (requserdata) => api.get(url.LOGOUT, requserdata);
 
+//  Dashboard Api
+export const DashboardDatalistApi = (requserdata) => api.get(url.GET_DASHBOARD_DATA_LIST, requserdata);
+export const ReportDataApi = (requserdata) => api.get(url.GET_REPORT_DATA_LIST, requserdata);
+
 // User Api
 export const UserlistApi = (requserdata) => api.get(url.GET_USER_LIST, requserdata);
 export const UserlistViewApi = (requserdata) => api.get(url.GET_USER_VIEW, requserdata);
@@ -104,26 +108,6 @@ export const UpdatelistApi = async (requserdata) => await api.get(url.UPDATE_ROL
 export const AddRolelistApi = async (requserdata) => await api.create(url.ADD_ROLES_LIST,requserdata);
 export const DelRolelistApi =  async (requserdata) => await  api.delete(url.DELETE_ROLES_LIST,requserdata);
 export const SearchRolelistApi = async (requserdata) => await api.get(url.GET_SEARCH_ROLES_LIST, requserdata);
-
-// Module Api
-export const SearchModulelistApi = async (requserdata) => await api.get(url.GET_SEARCH_LIST, requserdata);
-export const ModulelistApi = async (requserdata) => await api.get(url.GET_MODULE_LIST, requserdata);
-export const UpdateModulelistApi = async (requserdata) => await api.get(url.UPDATE_MODULE_LIST,requserdata);
-export const AddModulelistApi = async (requserdata) => await api.create(url.ADD_MODULE_LIST, requserdata);
-export const DelModulelistApi = async (requserdata) => await api.get(url.DELETE_MODULE_LIST, requserdata);
-
-// Module Group  Api
-export const SearchModuleGrouplistApi = async (requserdata) => await api.get(url.GET_SEARCH_GROUP_LIST, requserdata);
-export const ModuleGrouplistApi = (requserdata) => api.get(url.GET_MODULE_GROUP_LIST, requserdata);
-export const UpdateModuleGrouplistApi = async (requserdata) => await api.get(url.UPDATE_MODULE_GROUP_LIST,requserdata);
-export const AddModuleGrouplistApi = async (requserdata) => await api.create(url.ADD_MODULE_GROUP_LIST, requserdata);
-export const DelModuleGrouplistApi = async (requserdata) => await api.get(url.DELETE_MODULE_GROUP_LIST, requserdata);
-
-// Module Acess List api
-export const ModuleAcesslistApi = async (requserdata) => await api.get(url.GET_MODULE_ACCESS_LIST, requserdata);
-export const SearchModuleAccesslistApi = async (requserdata) => await api.get(url.GET_SEARCH_MODULE_ACCESS_LIST, requserdata);
-export const AddModuleAcesslistApi = async (requserdata) => await api.create(url.ADD_MODULE_ACCESS_LIST, requserdata);
-
 
 // Role Access Api
 export const RoleAccesslistApi = async (requserdata) => await api.get(url.GET_ROLES_ACCESS_LIST, requserdata);

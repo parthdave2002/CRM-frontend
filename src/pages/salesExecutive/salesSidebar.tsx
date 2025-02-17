@@ -28,7 +28,7 @@ const SalesSidebarPage : FC = function () {
                         >
                             {item.icon}
                             <span>{item.name}</span>
-                            {active === item.name && <div className="absolute right-0 top-2 bottom-2 w-1.5 bg-blue-600 rounded-l-md" />}
+                            {active === item.name && <div className="absolute right-0 top-2 bottom-2 w-1 bg-blue-400 rounded-md" />}
                         </li>
                         ))}
                     </ul>
