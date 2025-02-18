@@ -1,8 +1,8 @@
 import { useState, type FC ,type PropsWithChildren } from "react";
 import {  Breadcrumb,  Button,} from "flowbite-react";
 import { Input } from "reactstrap";
-import {  HiCog, HiDotsVertical, HiExclamationCircle, HiHome, HiDocumentDownload, HiPlus, HiTrash} from "react-icons/hi";
-import { Link } from "react-router-dom";
+import {  HiCog, HiDotsVertical, HiExclamationCircle, HiHome,  HiPlus, HiTrash} from "react-icons/hi";
+import { Link, useNavigate } from "react-router-dom";
 import ExportDataModal from "./exportdata/exportCSV";
 
 interface NavbarSidebarLayoutProps {
@@ -19,6 +19,7 @@ interface NavbarSidebarLayoutProps {
 
 const ExampleBreadcrumb: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = function ({Name, Searchplaceholder, searchData, Changename, AcccessData, isOpenAddModel, AddAccess, ParentName, ParentLink }) {
 
+  const navigate = useNavigate();
 
   const DataChange = (e:any) =>{
     Changename(e.target.value)
@@ -30,22 +31,32 @@ const ExampleBreadcrumb: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = funct
 
   const [data, setData] = useState([]);
 
+  const handleNavigation = () =>{
+    if (ParentLink) {
+      navigate(ParentLink);
+    }
+  }
+
+  const handleNavigationdashboard = () =>{
+    navigate("/dashboard");
+  }
+
   return (
     <>
       <div className="block items-center justify-between border-b border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800 sm:flex">
           <div className="mb-1 w-full">
             <div className="mb-3">
               <Breadcrumb className="mb-4">
-                <Breadcrumb.Item href="/dashboard">
-                    <div className="flex items-center gap-x-3">
+                <Breadcrumb.Item  onClick={handleNavigationdashboard}>
+                    <div className="flex items-center gap-x-3 cursor-pointer">
                       <HiHome className="text-xl" />
                       <span className="dark:text-white">Home</span>
                     </div>
                 </Breadcrumb.Item>
 
                 {ParentName && ParentLink ?
-                  <Breadcrumb.Item href={ParentLink}>
-                    <div className="flex items-center gap-x-3">
+                  <Breadcrumb.Item  onClick={handleNavigation} >
+                    <div className="flex items-center gap-x-3 cursor-pointer">
                       <span className="dark:text-white">{ParentName}</span>
                     </div>
                   </Breadcrumb.Item>
