@@ -34,12 +34,16 @@ const ExampleNavbar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> =
       navigate("/profile")
     }
 
+    const handleNavigationdashboard = () =>{
+      navigate("/dashboard");
+    }
+
     return (
       <Navbar fluid className="px-4">
         <div className="w-full ">
           <div className="flex items-center justify-between">
               <div className="flex items-center">
-                  <Navbar.Brand href="/dashboard">
+                  <Navbar.Brand onClick={handleNavigationdashboard}>
                     <img alt="" src={logo} className="mr-3 h-6 sm:h-10 ml-16" />
                   </Navbar.Brand>
               </div>
