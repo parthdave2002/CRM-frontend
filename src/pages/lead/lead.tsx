@@ -66,10 +66,7 @@ const LeadListPage : FC = function () {
                         <Table.HeadCell> <Checkbox id="select-all" name="select-all" /> </Table.HeadCell>
                         <Table.HeadCell>Name</Table.HeadCell>
                         <Table.HeadCell>Phone</Table.HeadCell>
-                        <Table.HeadCell>Email</Table.HeadCell>
-                        <Table.HeadCell>State</Table.HeadCell>
-                        <Table.HeadCell>City</Table.HeadCell>
-                        <Table.HeadCell>Status</Table.HeadCell>
+                        <Table.HeadCell>Lead from</Table.HeadCell>
                         <Table.HeadCell>Created At</Table.HeadCell>
                         <Table.HeadCell>Actions</Table.HeadCell>
                     </Table.Head>
@@ -78,12 +75,11 @@ const LeadListPage : FC = function () {
                         {UserDataList && UserDataList.map((item: any, k) => (
                                 <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
                                 <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item._id} onClick={() => {CheckData(item._id)}}/>  </Table.Cell>
-                                <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {item.name} </Table.Cell>
-                                <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0"> {item.email} </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white">
-                                    {item.is_active == true ? <div className="flex items-center">  <div className="mr-2 h-2.5 w-2.5 rounded-full bg-green-400"></div> Active  </div>
-                                    : <div className="flex items-center">  <div className="mr-2 h-2.5 w-2.5 rounded-full bg-Red"></div> Deactive  </div>}
-                                </Table.Cell>
+                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.name} </Table.Cell>
+                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.phone} </Table.Cell>
+                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.lead_from} </Table.Cell>
+                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.created_at} </Table.Cell>
+
                                 <Table.Cell className="space-x-2 whitespace-nowrap py-0">
                                     <div className="flex items-center gap-x-3">
                                   

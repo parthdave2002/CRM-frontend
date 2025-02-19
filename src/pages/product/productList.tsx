@@ -1,7 +1,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { Button, Checkbox, Table, Tooltip} from "flowbite-react";
+import { Button, Checkbox, Table} from "flowbite-react";
 import type { FC } from "react";
-import { HiTrash} from "react-icons/hi";
+import { FaExclamationCircle } from "react-icons/fa";
+import { HiOutlinePencilAlt, HiTrash} from "react-icons/hi";
 import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { DeleteProductlist,  getProductlist } from "../../Store/actions";
@@ -146,12 +147,15 @@ const ProductListPage: FC = function () {
                           <Table.Cell className="space-x-2 whitespace-nowrap py-0">
                             <div className="flex items-center gap-x-3">
                              
+
+                                  <Button gradientDuoTone="greenToBlue"  > <div className="flex items-center gap-x-2">  <HiOutlinePencilAlt className="text-lg" />  Edit Product  </div></Button>
+
                               {/* {AccessDataList &&  AccessDataList.map((data) =>  data.value === "user-delete" ? (  */}
-                                  <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete </div> </Button>
+                                  <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" /> Delete Product </div> </Button>
                               {/* ) : null )}   */}
 
                                {/* {AccessDataList &&  AccessDataList.map((data) =>  data.value === "user-delete" ? (  */}
-                                  <Button  gradientDuoTone="pinkToOrange" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Details </div> </Button>
+                                  <Button  gradientDuoTone="purpleToBlue" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <FaExclamationCircle className="text-lg" /> Detail Product </div> </Button>
                               {/* ) : null )}   */}
                             </div>
                           </Table.Cell>

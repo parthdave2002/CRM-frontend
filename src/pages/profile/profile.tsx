@@ -5,7 +5,10 @@ import { useSelector } from "react-redux";
 import ImageUploadPreview from "../../components/imageuploader";
 
 const ProfilePage : FC = function () {
-     
+
+    const [file1, setFile1] = useState<File | null>(null);
+    console.log("file1 >>>>>>", file1);
+    
     const [UserDataList, setUserDataList] = useState([]);
 
     // ------------- Get  Data From Reducer Code Start --------------
@@ -27,7 +30,7 @@ const ProfilePage : FC = function () {
                 <div className="mt-[2rem] bg-white dark:bg-gray-800 p-4">
                     <div className="flex flex-col ">
 
-                        <ImageUploadPreview />
+                        <ImageUploadPreview onFileSelect={setFile1} />
 
                         <div>
                             <div className="flex justify-around dark:text-gray-50 w-full">

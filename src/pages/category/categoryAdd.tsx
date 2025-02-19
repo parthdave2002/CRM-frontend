@@ -15,7 +15,7 @@ const CategoryAddPage : FC = function () {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const [file, setFile] = useState(null);
+    const [file, setFile] = useState<File | null>(null);
 
     // ------ status code start ------
     const [selectedactiveOption, setSelectedactiveOption] = useState(null);
@@ -56,7 +56,9 @@ const CategoryAddPage : FC = function () {
           formData.append("name", values.name);
           formData.append("description", values.description);
           formData.append("is_active", JSON.stringify(selectedactiveid));
-          formData.append("category_pic", JSON.stringify(file));
+          if (file) {
+            formData.append("category_pic", file); 
+          }
           dispatch(AddCategorylist(formData));
         },
     });
@@ -94,7 +96,7 @@ const CategoryAddPage : FC = function () {
                 <div className="mt-[2rem] bg-white dark:bg-gray-800 p-4">
                     <Form onSubmit={(e) => { e.preventDefault(); validation.handleSubmit(); return false; }} >
 
-                        <ImageUploadPreview />
+                        <ImageUploadPreview onFileSelect={setFile}/>
 
                         <div>
                             <Label htmlFor="Name">Name</Label>
