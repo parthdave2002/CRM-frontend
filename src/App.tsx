@@ -1,4 +1,4 @@
-import { useState, type FC, lazy, Suspense } from "react";
+import { useState, type FC, lazy, Suspense, useEffect } from "react";
 import { Routes, Route } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 import PrivateRoute from "./routes/PrivateRoute";
@@ -26,6 +26,7 @@ const CategoryListPage = lazy(() => import("./pages/category/categoryList"));
 const CategoryAddPage = lazy(() => import("./pages/category/categoryAdd"));
 const CategoryDetailsPage = lazy(() => import("./pages/category/categoryDetails"));
 const CustomerListPage = lazy(() => import("./pages/customer/customerlist"));
+const CustomerDetailsPage = lazy(() => import("./pages/customer/customerdetails"));
 const ProfilePage = lazy(() => import("./pages/profile/profile"));
 const PageNotFound = lazy(() => import("./pages/pagenotfound/pagenotfound"));
 const BannerListPage = lazy(() => import("./pages/banner/bannerList"));
@@ -35,6 +36,7 @@ const ProductAddPage = lazy(() => import("./pages/product/productAdd"));
 const ProductListPage = lazy(() => import("./pages/product/productList"));
 const ProductDetailsPage = lazy(() => import("./pages/product/productDetails"));
 const OrderListPage = lazy(() => import("./pages/order/order"));
+const OrderDetailsPage = lazy(() => import("./pages/order/orderdetails"));
 const LeadListPage = lazy(() => import("./pages/lead/lead"));
 const TaglogListPage = lazy(() => import("./pages/taglog/taglogList"));
 const TaglogAddPage = lazy(() => import("./pages/taglog/taglogAdd"));
@@ -44,7 +46,12 @@ const ReportPage = lazy(() => import("./pages/report/report"));
 const SalesCRMPage = lazy(() => import("./pages/salesExecutive"));
 
 const App: FC = function () {
-  const [isAuthenticate, setisAuthenticate] = useState(true);
+  const [isAuthenticate, setIsAuthenticate] = useState<boolean>(true);
+
+  // useEffect(() => {
+  //   const token = localStorage.getItem("authToken"); // Assuming token is stored
+  //   setIsAuthenticate(!!token);
+  // }, []);
 
   return (
     <Suspense fallback={<div> <LoaderPage /> </div>}>
@@ -57,7 +64,7 @@ const App: FC = function () {
             <Route path="/users/list" element={<UserListPage />} />
             <Route path="/users/add" element={<AddUserPage />} />
             <Route path="/users/:id" element={<AddUserPage />} />
-            <Route path="/users/details" element={<UserDetailsPage />} />
+            <Route path="/users/details/:id" element={<UserDetailsPage />} />
             <Route path="/roles/list" element={<RolesPage />} />
             <Route path="/roles/add" element={<AddRolePage />} />
             <Route path="/roles/:id" element={<AddRolePage />} />
@@ -80,6 +87,7 @@ const App: FC = function () {
             <Route path="/category/:id" element={<CategoryAddPage />} />
             <Route path="/category/details/:id" element={<CategoryDetailsPage />} />
             <Route path="/customer/list" element={<CustomerListPage />} />
+            <Route path="/customer/details" element={<CustomerDetailsPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/banner/list" element={<BannerListPage />} />
             <Route path="/banner/add" element={<BannerAddPage />} />
@@ -94,6 +102,7 @@ const App: FC = function () {
             <Route path="/product/:id" element={<ProductAddPage />} />
             <Route path="/product/details/:id" element={<ProductDetailsPage />} />
             <Route path="/order/list" element={<OrderListPage />} />
+            <Route path="/order/details" element={<OrderDetailsPage />} />
             <Route path="/lead/list" element={<LeadListPage />} />
 
             <Route path="/report" element={<ReportPage />} />

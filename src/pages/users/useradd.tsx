@@ -10,10 +10,12 @@ import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { AddUserlist, getRoleslist, ResetUserdatalist } from "../../Store/actions";
 import { toast } from "react-toastify";
+import ImageUploadPreview from "../../components/imageuploader";
 
 const AddUserPage : FC = function () {
 
     const dispatch = useDispatch();
+    const [file, setFile] = useState<File | null>(null);
 
     //---------------- Role option code start ----------------
         const [selectedRoleOption, setSelectedRoleOption] = useState(null);
@@ -209,7 +211,9 @@ const AddUserPage : FC = function () {
             formData.append("bank_passbook",JSON.stringify(selectedBankPassbookid));
             formData.append("is_active", JSON.stringify(selectedStatusid));
             formData.append("role", selectedRoleid);
-            // formData.append("user_pic", file); 
+            if (file) {
+                formData.append("user_pic", file); 
+            }
             dispatch(AddUserlist(formData));
             validation.resetForm();
         },
@@ -249,6 +253,9 @@ const AddUserPage : FC = function () {
                 <div className="mt-[2rem] bg-white dark:bg-gray-800 p-4">
                     <Form onSubmit={(e) => { e.preventDefault(); validation.handleSubmit(); return false; }} >
                        
+
+                        <ImageUploadPreview onFileSelect={setFile}/>
+
                         <div className="md:flex gap-x-[2rem]">
                             <div className="flex-1 mt-[1rem]">
                                 <Label htmlFor="UserName">User Name</Label>

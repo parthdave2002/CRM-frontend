@@ -5,8 +5,11 @@ import ExampleBreadcrumb from "../../components/breadcrumb";
 import { Button,  Checkbox, Table} from "flowbite-react";
 import { useSelector } from "react-redux";
 import { HiTrash } from "react-icons/hi";
+import { useNavigate } from "react-router";
 
 const CustomerListPage : FC = function () {
+
+    const navigate = useNavigate()
 
     // ----------- next Button  Code Start -------------
       const [UserDataList, setUserDataList] = useState([]);
@@ -54,6 +57,10 @@ const CustomerListPage : FC = function () {
     // --------- Checkbox Code end ------------
   
 
+    const DetailsUserCall= (id:string) =>{
+        navigate(`/users/details/${id}`)
+      }
+
     let Name = "Customer List";
     let Searchplaceholder = "Search For Customers (Name)";
 
@@ -90,6 +97,8 @@ const CustomerListPage : FC = function () {
                                     {/* {AccessDataList &&  AccessDataList.map((data) =>  data.value === "user-delete" ? (  */}
                                         <Button  gradientDuoTone="purpleToPink" ><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete </div> </Button>
                                     {/* ) : null )}   */}
+
+                                    <Button  gradientDuoTone="purpleToPink" onClick={() => DetailsUserCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Details </div> </Button>
                                     </div>
                                 </Table.Cell>
 

@@ -2,6 +2,7 @@
 import { Button,  Checkbox, Table} from "flowbite-react";
 import type { FC } from "react";
 import {  HiOutlineExclamationCircle, HiOutlinePencilAlt, HiTrash} from "react-icons/hi";
+import { FaExclamationCircle } from "react-icons/fa";
 import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserlist, DeleteUserlist,   } from "../../Store/actions";
@@ -102,6 +103,10 @@ const UserListPage: FC = function () {
     navigate("/users/add")
   }
 
+  const DetailsUserCall= (id:string) =>{
+    navigate(`/users/details/${id}`)
+  }
+
   let Name = "User List";
   let Searchplaceholder = "Search For Users (Name)";
   let AddAccess = "user-add";
@@ -126,7 +131,7 @@ const UserListPage: FC = function () {
                   {UserDataList && UserDataList.map((item: any, k) => (
                         <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
                           <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item._id} onClick={() => {CheckData(item._id)}}/>  </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.name} </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => DetailsUserCall(item._id)}>  {item.name} </Table.Cell>
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.email} </Table.Cell>
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.gender} </Table.Cell>
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.mobile_no} </Table.Cell>
@@ -142,8 +147,10 @@ const UserListPage: FC = function () {
                               {/* ) : null)}  */}
        
                               {/* {AccessDataList &&  AccessDataList.map((data) =>  data.value === "user-delete" ? (  */}
-                                  <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete user  </div> </Button>
+                                  <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete User  </div> </Button>
                               {/* ) : null )}   */}
+
+                              <Button  gradientDuoTone="purpleToBlue" onClick={() => DetailsUserCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <FaExclamationCircle className="text-lg" /> Detail User  </div> </Button>
                             </div>
                           </Table.Cell>
 
