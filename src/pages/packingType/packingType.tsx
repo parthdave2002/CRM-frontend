@@ -10,6 +10,7 @@ import { lazy, Suspense, useEffect, useState } from "react";
 import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useNavigate } from "react-router";
+import { FaExclamationCircle } from "react-icons/fa";
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 
 const PackinTypeListPage: FC = function () {
@@ -19,18 +20,28 @@ const PackinTypeListPage: FC = function () {
   const [PackingTypeList, setPackingTypeList] = useState([]);
   
   //------------ Access Data Code start------------
-  const [AccessList, setAccessList] = useState([]);
-  const [AccessCommon, setAccessCommon] = useState([]);
-  const AccessDataList = AccessList && AccessList.map((item: any) => ({ value: item.access_name }));
-  const AccessData = AccessCommon && AccessCommon.map((item: any) => ({ value: item.access_name }));
+  interface AccessData{
+    add: boolean;
+    view: boolean;
+    edit: boolean;
+    delete: boolean;
+  }
+  const [AccessList, setAccessList] = useState<AccessData>();
+
   //--------- Access Data Code end------------------
 
-    const { Packingtypelist,  PackingtypelistSize, TotalPackingtypeData, CurrentPage } = useSelector((state: any) => ({
+    const { Packingtypelist,  PackingtypelistSize, TotalPackingtypeData, CurrentPage, permissionsdata } = useSelector((state: any) => ({
       Packingtypelist: state.PackingType.Packingtypelist,
       PackingtypelistSize: state.PackingType.PackingtypelistSize,
       TotalPackingtypeData: state.PackingType.TotalPackingtypeData,
       CurrentPage: state.PackingType.CurrentPage,
+      permissionsdata: state.Login.permissionsdata
     }));
+
+    useEffect(() =>{
+      const userPermissions = permissionsdata && permissionsdata?.find( (item:any) => item.module_name === "Packing Type")?.permissions;
+      setAccessList(userPermissions || [])
+    },[permissionsdata]);
 
   // ----------- next Button  Code Start -------------
     const [TotalListData, setTotalListData] = useState(0);
@@ -100,7 +111,7 @@ const PackinTypeListPage: FC = function () {
 
   let Name = "Packing Type List";
   let Searchplaceholder = "Search For Packing Types (Name)";
-  let AddAccess = "user-add";
+  let AddAccess = AccessList?.add;
 
   return (
     <>
@@ -129,14 +140,11 @@ const PackinTypeListPage: FC = function () {
                           <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0"> {moment(item.createdAt).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
                           <Table.Cell className="space-x-2 whitespace-nowrap py-0">
                             <div className="flex items-center gap-x-3">
-                             
-                              {/* {AccessDataList &&  AccessDataList.map((data) =>  data.value === "user-delete" ? (  */}
+                                {AccessList?.delete ?
                                   <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete </div> </Button>
-                              {/* ) : null )}   */}
+                                : null}
 
-                               {/* {AccessDataList &&  AccessDataList.map((data) =>  data.value === "user-delete" ? (  */}
-                                  {/* <Button  gradientDuoTone="pinkToOrange" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Details </div> </Button> */}
-                              {/* ) : null )}   */}
+                               <Button  gradientDuoTone="purpleToBlue" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <FaExclamationCircle className="text-lg" /> Detail PackingType  </div> </Button> 
                             </div>
                           </Table.Cell>
                         </Table.Row>

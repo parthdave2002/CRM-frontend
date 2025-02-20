@@ -10,6 +10,7 @@ import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useNavigate } from "react-router";
 import moment from "moment";
+import { FaExclamationCircle } from "react-icons/fa";
 const IMG_URL = import.meta.env["VITE_API_URL"];
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 
@@ -20,18 +21,28 @@ const CategoryListPage: FC = function () {
   const [PackingTypeList, setPackingTypeList] = useState([]);
   
   //------------ Access Data Code start------------
-  const [AccessList, setAccessList] = useState([]);
-  const [AccessCommon, setAccessCommon] = useState([]);
-  const AccessDataList = AccessList && AccessList.map((item: any) => ({ value: item.access_name }));
-  const AccessData = AccessCommon && AccessCommon.map((item: any) => ({ value: item.access_name }));
+  interface AccessData{
+    add: boolean;
+    view: boolean;
+    edit: boolean;
+    delete: boolean;
+  }
+  const [AccessList, setAccessList] = useState<AccessData>();
+
   //--------- Access Data Code end------------------
   
-    const { Categorylist,  CategorylistSize, TotalCategoryData, CurrentPage } = useSelector((state: any) => ({
+    const { Categorylist,  CategorylistSize, TotalCategoryData, CurrentPage, permissionsdata } = useSelector((state: any) => ({
       Categorylist: state.Category.Categorylist,
       CategorylistSize: state.Category.CategorylistSize,
       TotalCategoryData: state.Category.TotalCategoryData,
       CurrentPage: state.Category.CurrentPage,
+      permissionsdata: state.Login.permissionsdata
     }));
+
+    useEffect(() =>{
+      const userPermissions = permissionsdata && permissionsdata?.find( (item:any) => item.module_name === "Category")?.permissions;
+      setAccessList(userPermissions || [])
+    },[permissionsdata]);
     
   // ----------- next Button  Code Start -------------
     const [TotalListData, setTotalListData] = useState(0);
@@ -63,8 +74,6 @@ const CategoryListPage: FC = function () {
 
     useEffect(() => {        
       setPackingTypeList(Categorylist? Categorylist : []);
-      // setAccessList(UserList.AccessData ? UserList.AccessData.list : []);
-      // setAccessCommon(UserList.AccessData ? UserList.AccessData.common : []);
       setTotalListData(TotalCategoryData ? TotalCategoryData : 0);
       setCurrentUserListSize(CategorylistSize ? CategorylistSize : 0);
       setCurrentPageNo(CurrentPage ? CurrentPage : 1);
@@ -101,7 +110,7 @@ const CategoryListPage: FC = function () {
 
   let Name = "Category List";
   let Searchplaceholder = "Search For Category (Name)";
-  let AddAccess = "category-add";
+  let AddAccess = AccessList?.add;
 
   return (
     <>
@@ -141,10 +150,8 @@ const CategoryListPage: FC = function () {
                           <Table.Cell className="space-x-2 whitespace-nowrap py-0">
                             <div className="flex items-center gap-x-3">
                              
-                              {/* {AccessDataList &&  AccessDataList.map((data) =>  data.value === "user-delete" ? (  */}
-                                  <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete </div> </Button>
-                              {/* ) : null )}   */}
-
+                            {AccessList?.delete ?  <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete Category </div> </Button> : null }  
+                            <Button  gradientDuoTone="purpleToBlue" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <FaExclamationCircle className="text-lg" /> Detail Category  </div> </Button> 
                                {/* {AccessDataList &&  AccessDataList.map((data) =>  data.value === "user-delete" ? (  */}
                                   {/* <Button  gradientDuoTone="pinkToOrange" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Details </div> </Button> */}
                               {/* ) : null )}   */}

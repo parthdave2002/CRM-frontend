@@ -19,18 +19,29 @@ const PackingListPage: FC = function () {
   const [PackingTypeList, setPackingTypeList] = useState([]);
   
   //------------ Access Data Code start------------
-  const [AccessList, setAccessList] = useState([]);
-  const [AccessCommon, setAccessCommon] = useState([]);
-  const AccessDataList = AccessList && AccessList.map((item: any) => ({ value: item.access_name }));
-  const AccessData = AccessCommon && AccessCommon.map((item: any) => ({ value: item.access_name }));
+  
+  interface AccessData{
+    add: boolean;
+    view: boolean;
+    edit: boolean;
+    delete: boolean;
+  }
+  const [AccessList, setAccessList] = useState<AccessData>();
+
   //--------- Access Data Code end------------------
   
-    const { Packinglist,  PackinglistSize, TotalPackingData, CurrentPage } = useSelector((state: any) => ({
+    const { Packinglist,  PackinglistSize, TotalPackingData, CurrentPage, permissionsdata } = useSelector((state: any) => ({
       Packinglist: state.Packing.Packinglist,
       PackinglistSize: state.Packing.PackinglistSize,
       TotalPackingData: state.Packing.TotalPackingData,
       CurrentPage: state.Packing.CurrentPage,
+      permissionsdata: state.Login.permissionsdata
     }));
+
+    useEffect(() =>{
+      const userPermissions = permissionsdata && permissionsdata?.find( (item:any) => item.module_name === "Taglog")?.permissions;
+      setAccessList(userPermissions || [])
+    },[permissionsdata]);
     
   // ----------- next Button  Code Start -------------
     const [TotalListData, setTotalListData] = useState(0);
@@ -62,8 +73,6 @@ const PackingListPage: FC = function () {
 
     useEffect(() => {  
       setPackingTypeList(Packinglist ? Packinglist : null);
-      // setAccessList(UserList.AccessData ? UserList.AccessData.list : []);
-      // setAccessCommon(UserList.AccessData ? UserList.AccessData.common : []);
       setTotalListData(TotalPackingData ? TotalPackingData : 0);
       setCurrentUserListSize(PackinglistSize ? PackinglistSize : 0);
       setCurrentPageNo(CurrentPage ? CurrentPage : 1);
@@ -100,7 +109,7 @@ const PackingListPage: FC = function () {
 
   let Name = "Packing List";
   let Searchplaceholder = "Search For Packing (Name)";
-  let AddAccess = "user-add";
+  let AddAccess = AccessList?.add;
 
   return (
     <>
@@ -129,14 +138,8 @@ const PackingListPage: FC = function () {
                           <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0"> {moment(item.createdAt).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
                           <Table.Cell className="space-x-2 whitespace-nowrap py-0">
                             <div className="flex items-center gap-x-3">
-                             
-                              {/* {AccessDataList &&  AccessDataList.map((data) =>  data.value === "user-delete" ? (  */}
-                                  <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete </div> </Button>
-                              {/* ) : null )}   */}
-
-                               {/* {AccessDataList &&  AccessDataList.map((data) =>  data.value === "user-delete" ? (  */}
-                                  <Button  gradientDuoTone="pinkToOrange" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Details </div> </Button>
-                              {/* ) : null )}   */}
+                              {AccessList?.delete ? <Button gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete </div> </Button> : null}
+                              <Button gradientDuoTone="pinkToOrange" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Details </div> </Button>
                             </div>
                           </Table.Cell>
                         </Table.Row>

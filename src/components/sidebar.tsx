@@ -5,10 +5,12 @@ import { MdLeaderboard } from "react-icons/md";
 import { TbReportSearch } from "react-icons/tb";
 import { FaUser, FaTags  } from "react-icons/fa";
 import { FaSackDollar } from "react-icons/fa6";
-import { BsBuildingsFill, BsCloudArrowUpFill  } from "react-icons/bs";
+import { BsCloudArrowUpFill  } from "react-icons/bs";
 import { BiCategoryAlt } from "react-icons/bi";
 import type { FC, PropsWithChildren } from "react";
 import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Cookies from "js-cookie";
 
 interface NavbarSidebarLayoutProps {
   isSidebar?: boolean;
@@ -22,15 +24,30 @@ const LeftSidebar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = function ()
     setCurrentPage(newPage);
   }, []);
 
+  const [AccessList, setAccessList] = useState<string[]>([]);
+  const { permissionsdata } = useSelector((state: any) => ({
+    permissionsdata: state.Login.permissionsdata
+  }));
+
+  const user = Cookies.get("role");
+  useEffect(() => {
+    if (user !== "67b388a7d593423df0e24295" && permissionsdata) {
+      const userPermissions = permissionsdata.map((item: any) => item.module_name);
+      setAccessList(userPermissions);
+    } else {
+      setAccessList([]); 
+    }
+  }, [permissionsdata, user]);
+
   // Updated to use actual icon components
-  const ViewDraftOrder = [
+  const SidebarData = [
     {
       name: "Dashboard",
       icon: HiChartPie, // Reference the actual icon component
       to: "/dashboard",
     },
     {
-      name: "Users List",
+      name: "User",
       icon: HiUsers,
       to: "/users/list",
     },
@@ -99,20 +116,27 @@ const LeftSidebar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = function ()
     },
   ]
 
+  const filteredSidebarData =
+  user === "67b388a7d593423df0e24295"
+    ? SidebarData
+    : SidebarData.filter((item:any) => AccessList.includes(item.name));
+
+
   return (
     <div className="hidden lg:block">
       <Sidebar>
         <Sidebar.Items className="pb-[6rem]">
           <Sidebar.ItemGroup>
-            {ViewDraftOrder.map((item, k) => (
+            {filteredSidebarData.map((item, k) => (
               <NavLink to={item.to} key={k}>
                 <Sidebar.Item icon={item.icon}  className={item.to === currentPage ? "dark:bg-gray-700" : ""} >  {item.name} </Sidebar.Item>
               </NavLink>
             ))}
           </Sidebar.ItemGroup>
 
-          <Sidebar.ItemGroup>
-            {/* <h4 className={"dark:text-white"}> Master:</h4> */}
+          {user == "67b388a7d593423df0e24295"  ?
+            <Sidebar.ItemGroup>
+            <h4 className="dark:text-gray-400"> Master:</h4>
             <Sidebar.Collapse icon={HiShoppingBag} label="Master">
               {SubMasterMenu.map((item, k) => (
                 <NavLink to={item.to} key={k}>
@@ -120,9 +144,9 @@ const LeftSidebar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = function ()
                 </NavLink>
               ))}
             </Sidebar.Collapse>
-          </Sidebar.ItemGroup>
-       
-
+            </Sidebar.ItemGroup>
+          : null }
+          
           {/* <Sidebar.ItemGroup>
             <h4 className={"dark:text-white"}>Design View only:</h4>
             <NavLink to="/e-commerce/products">

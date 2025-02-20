@@ -12,7 +12,7 @@ interface NavbarSidebarLayoutProps {
   Changename ?: any;
   AcccessData ?: any;
   isOpenAddModel ?: any;
-  AddAccess?: String;
+  AddAccess?: boolean;
   ParentName?: String;
   ParentLink?: any;
 }
@@ -28,8 +28,6 @@ const ExampleBreadcrumb: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = funct
   const OpenAddModel = () =>{
     isOpenAddModel(true)
   }
-
-  const [data, setData] = useState([]);
 
   const handleNavigation = () =>{
     if (ParentLink) {

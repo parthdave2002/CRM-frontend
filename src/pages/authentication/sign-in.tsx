@@ -45,18 +45,16 @@ const SignInPage: FC = function () {
   });
 
   const [Login, setLogin] = useState(false);
-  const [LoginRols, setLoginRols] = useState([]);
+  const [LoginRols, setLoginRols] = useState("");
 
   const { login,  CheckUserList} = useSelector((state:any) => ({
     login: state.Login.Logincode,
     CheckUserList: state.User.CheckUserList,
   }));
 
-  const AcccessData = LoginRols && LoginRols.map((item:any) => ( item.role_title ));
-
   useEffect(() => {
     setLogin(login ? login.success : null);
-    setLoginRols(login.data ? login.data.roles : null);
+    setLoginRols(login ? login?.data?.roles : null);
   }, [login]);
 
   useEffect(() =>{      
@@ -67,15 +65,11 @@ const SignInPage: FC = function () {
         setisOpenDelteModel(true);
       }
   },[CheckUserList])
-
+  
   useEffect(() => {
     if (Login == true) {  
-      if(AcccessData?.includes("Team Leader")){
-        navigation("/playlist");
-        location.reload();
-      }
-      else if (AcccessData?.includes("CSR") || AcccessData?.includes("Sales Executive")) {
-        navigation("/dialer");
+      if( LoginRols == "67b1195be442284118ab89bf"){
+        navigation("/sales-crm");
         location.reload();
       }
       else{
@@ -105,11 +99,15 @@ const SignInPage: FC = function () {
     // },[])
 
     useEffect(()=>{
+      const role = Cookies.get("role");
       const token = Cookies.get("token");
-      if(token){
+
+      if(token  && role  != "67b1195be442284118ab89bf" ){
           navigation("/dashboard");
+      }else if(token  && role == "67b1195be442284118ab89bf"){
+        navigation("/sales-crm");
       }
-    })
+    },[])
   //--------------  if User Alredy login redirect to their page code end --------------
 
   const [ isOpenDelteModel,setisOpenDelteModel] = useState(false);

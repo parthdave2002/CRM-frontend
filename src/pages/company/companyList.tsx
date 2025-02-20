@@ -19,18 +19,28 @@ const CompanyListPage: FC = function () {
   const [PackingTypeList, setPackingTypeList] = useState([]);
   
   //------------ Access Data Code start------------
-  const [AccessList, setAccessList] = useState([]);
-  const [AccessCommon, setAccessCommon] = useState([]);
-  const AccessDataList = AccessList && AccessList.map((item: any) => ({ value: item.access_name }));
-  const AccessData = AccessCommon && AccessCommon.map((item: any) => ({ value: item.access_name }));
+  interface AccessData{
+    add: boolean;
+    view: boolean;
+    edit: boolean;
+    delete: boolean;
+  }
+  const [AccessList, setAccessList] = useState<AccessData>();
+
   //--------- Access Data Code end------------------
   
-    const { Companylist,  CompanylistSize, TotalCompanyData, CurrentPage } = useSelector((state: any) => ({
+    const { Companylist,  CompanylistSize, TotalCompanyData, CurrentPage, permissionsdata } = useSelector((state: any) => ({
       Companylist: state.Company.Companylist,
       CompanylistSize: state.Company.CompanylistSize,
       TotalCompanyData: state.Company.TotalCompanyData,
       CurrentPage: state.Company.CurrentPage,
+      permissionsdata: state.Login.permissionsdata
     }));
+
+    useEffect(() =>{
+      const userPermissions = permissionsdata && permissionsdata?.find( (item:any) => item.module_name === "Company")?.permissions;
+      setAccessList(userPermissions || [])
+    },[permissionsdata]);
     
   // ----------- next Button  Code Start -------------
     const [TotalListData, setTotalListData] = useState(0);
@@ -62,8 +72,6 @@ const CompanyListPage: FC = function () {
 
     useEffect(() => {        
       setPackingTypeList(Companylist?.pulledData);
-      // setAccessList(UserList.AccessData ? UserList.AccessData.list : []);
-      // setAccessCommon(UserList.AccessData ? UserList.AccessData.common : []);
       setTotalListData(TotalCompanyData ? TotalCompanyData : 0);
       setCurrentUserListSize(CompanylistSize ? CompanylistSize : 0);
       setCurrentPageNo(CurrentPage ? CurrentPage : 1);
@@ -100,7 +108,7 @@ const CompanyListPage: FC = function () {
 
   let Name = "Company List";
   let Searchplaceholder = "Search For Company (Name)";
-  let AddAccess = "company-add";
+  let AddAccess = AccessList?.add;
 
   return (
     <>
@@ -131,14 +139,8 @@ const CompanyListPage: FC = function () {
                           <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0"> {moment(item.createdAt).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
                           <Table.Cell className="space-x-2 whitespace-nowrap py-0">
                             <div className="flex items-center gap-x-3">
-                             
-                              {/* {AccessDataList &&  AccessDataList.map((data) =>  data.value === "user-delete" ? (  */}
-                                  <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete </div> </Button>
-                              {/* ) : null )}   */}
-
-                               {/* {AccessDataList &&  AccessDataList.map((data) =>  data.value === "user-delete" ? (  */}
-                                  <Button  gradientDuoTone="pinkToOrange" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Details </div> </Button>
-                              {/* ) : null )}   */}
+                              {AccessList?.delete ?  <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete </div> </Button> : null }  
+                              <Button  gradientDuoTone="pinkToOrange" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Details </div> </Button>
                             </div>
                           </Table.Cell>
                         </Table.Row>

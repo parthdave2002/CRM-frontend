@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { Button, Checkbox, Table} from "flowbite-react";
 import type { FC } from "react";
-import { HiTrash} from "react-icons/hi";
+import { HiOutlinePencilAlt, HiTrash} from "react-icons/hi";
 import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { DeleteTagloglist,  getTagloglist } from "../../Store/actions";
@@ -10,28 +10,38 @@ import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useNavigate } from "react-router";
 import moment from "moment";
+import { FaExclamationCircle } from "react-icons/fa";
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 
 const TaglogListPage: FC = function () {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isOpenDelteModel, setisOpenDelteModel] = useState(false);
-  const [PackingTypeList, setPackingTypeList] = useState([]);
+  const [TaglogList, setTaglogList] = useState([]);
   
   //------------ Access Data Code start------------
-  const [AccessList, setAccessList] = useState([]);
-  const [AccessCommon, setAccessCommon] = useState([]);
-  const AccessDataList = AccessList && AccessList.map((item: any) => ({ value: item.access_name }));
-  const AccessData = AccessCommon && AccessCommon.map((item: any) => ({ value: item.access_name }));
+  interface AccessData{
+    add: boolean;
+    view: boolean;
+    edit: boolean;
+    delete: boolean;
+  }
+  const [AccessList, setAccessList] = useState<AccessData>();
+
   //--------- Access Data Code end------------------
   
-    const { Tagloglist,  TagloglistSize, TotalTaglogData, CurrentPage } = useSelector((state: any) => ({
+    const { Tagloglist,  TagloglistSize, TotalTaglogData, CurrentPage, permissionsdata } = useSelector((state: any) => ({
       Tagloglist: state.Taglog.Tagloglist,
       TagloglistSize: state.Taglog.TagloglistSize,
       TotalTaglogData: state.Taglog.TotalTaglogData,
       CurrentPage: state.Taglog.CurrentPage,
+      permissionsdata: state.Login.permissionsdata
     }));
     
+    useEffect(() =>{
+      const userPermissions = permissionsdata && permissionsdata?.find( (item:any) => item.module_name === "Taglog")?.permissions;
+      setAccessList(userPermissions || [])
+    },[permissionsdata]);
   // ----------- next Button  Code Start -------------
     const [TotalListData, setTotalListData] = useState(0);
     const [CurrentUserListSize, setCurrentUserListSize] = useState();
@@ -61,9 +71,7 @@ const TaglogListPage: FC = function () {
     }, [dispatch, PageNo, RoePerPage, searchData]);
 
     useEffect(() => {        
-      setPackingTypeList(Tagloglist? Tagloglist : []);
-      // setAccessList(UserList.AccessData ? UserList.AccessData.list : []);
-      // setAccessCommon(UserList.AccessData ? UserList.AccessData.common : []);
+      setTaglogList(Tagloglist? Tagloglist : []);
       setTotalListData(TotalTaglogData ? TotalTaglogData : 0);
       setCurrentUserListSize(TagloglistSize ? TagloglistSize : 0);
       setCurrentPageNo(CurrentPage ? CurrentPage : 1);
@@ -98,9 +106,14 @@ const TaglogListPage: FC = function () {
     navigate(`/taglog/details/${id}`)
   }
 
+  const getEditTaglogData = (id:any) =>{
+    console.log("Edit calll");
+    navigate(`/taglog/add/${id}`)
+  }
+
   let Name = "Taglog List";
   let Searchplaceholder = "Search For Taglog (Name)";
-  let AddAccess = "Taglog-add";
+  let AddAccess = AccessList?.add;
 
   return (
     <>
@@ -117,7 +130,7 @@ const TaglogListPage: FC = function () {
               </Table.Head>
 
               <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
-                  {PackingTypeList && PackingTypeList.map((item: any, k) => (
+                  {TaglogList && TaglogList.map((item: any, k) => (
                         <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
                           <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item._id} onClick={() => {CheckData(item._id)}}/>  </Table.Cell>
                           <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {item.taglog_name} </Table.Cell>
@@ -128,10 +141,9 @@ const TaglogListPage: FC = function () {
                           <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0"> {moment(item.createdAt).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
                           <Table.Cell className="space-x-2 whitespace-nowrap py-0">
                             <div className="flex items-center gap-x-3">
-                             
-                              {/* {AccessDataList &&  AccessDataList.map((data) =>  data.value === "user-delete" ? (  */}
-                                  <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete </div> </Button>
-                              {/* ) : null )}   */}
+                              {AccessList?.edit ?  <Button gradientDuoTone="greenToBlue" onClick={() => getEditTaglogData(item._id)} > <div className="flex items-center gap-x-2">  <HiOutlinePencilAlt className="text-lg" />  Edit Taglog  </div></Button> : null}
+                              {AccessList?.delete ?  <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete Taglog </div> </Button> : null } 
+                              <Button  gradientDuoTone="purpleToBlue" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <FaExclamationCircle className="text-lg" /> Detail Taglog  </div> </Button>
                             </div>
                           </Table.Cell>
                         </Table.Row>

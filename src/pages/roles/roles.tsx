@@ -6,7 +6,7 @@ import {  HiOutlinePencilAlt,  HiTrash, HiKey,} from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { getRoleslist, DeleteRoleslist,} from "../../Store/actions";
 import ExamplePagination from "../../components/pagination";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 
@@ -23,10 +23,13 @@ const RolesPage: FC = function () {
   // ----------------- Search Code end -----------------
 
   // ----------------- Access Data Code start  -----------------
-  const [AccessList, setAccessList] = useState([]);
-  const [AccessCommon, setAccessCommon] = useState([]);
-  const AccessDataList = AccessList && AccessList.map((item: any) => ({ value: item.access_name }));
-  const AccessData = AccessCommon && AccessCommon.map((item: any) => ({ value: item.access_name }));
+  interface AccessData{
+    add: boolean;
+    view: boolean;
+    edit: boolean;
+    delete: boolean;
+  }
+  const [AccessList, setAccessList] = useState<AccessData>();
   // ----------------- Access Data Code end  -----------------
  
  //  ----------------- next Button  Code Start  -----------------
@@ -49,12 +52,18 @@ const RolesPage: FC = function () {
 
   const [RolesList, setRoleList] = useState([]);
 
-  const { Roleslist,  RoleListSize, TotalRoleListData, CurrentPage,} = useSelector((state: any) => ({
+  const { Roleslist,  RoleListSize, TotalRoleListData, CurrentPage,permissionsdata} = useSelector((state: any) => ({
     Roleslist: state.Role.Roleslist,
     RoleListSize: state.Role.RoleListSize,
     TotalRoleListData: state.Role.TotalRoleListData,
     CurrentPage: state.Role.CurrentPage,
+    permissionsdata: state.Login.permissionsdata
   }));
+
+  useEffect(() =>{
+    const userPermissions = permissionsdata && permissionsdata?.find( (item:any) => item.module_name === "Role")?.permissions;
+    setAccessList(userPermissions || [])
+  },[permissionsdata]);
 
   useEffect(() => {
     let requserdata: { page: number; size: number; search?: string } = {
@@ -67,8 +76,6 @@ const RolesPage: FC = function () {
 
   useEffect(() => {
     setRoleList(Roleslist ? Roleslist.pulledData : null);
-    setAccessList(Roleslist.AccessData ? Roleslist.AccessData.list : []);
-    setAccessCommon(Roleslist.AccessData ? Roleslist.AccessData.common : []);
     setTotalListData(TotalRoleListData ? TotalRoleListData : 0);
     setCurrentPageNo(CurrentPage ? CurrentPage : 1);
   }, [Roleslist, TotalRoleListData, CurrentPage]);
@@ -103,7 +110,7 @@ const RolesPage: FC = function () {
 
   let Name = "Role List";
   let Searchplaceholder = "Search For Role (Name)";
-  let AddAccess = "role-add";
+  let AddAccess = AccessList?.add;
 
   return (
     <>
@@ -133,17 +140,15 @@ const RolesPage: FC = function () {
                     </Table.Cell>
                     <Table.Cell className="space-x-2 whitespace-nowrap py-0">
                       <div className="flex items-center gap-x-3 justify-evenly">
-                        {AccessDataList && AccessDataList.map((data) => data.value === "role-edit" ? (  <Button  gradientDuoTone="greenToBlue" onClick={() => getUnderGuidedata(item._id)}><div className="flex items-center gap-x-2"> <HiOutlinePencilAlt className="text-lg" /> Edit Role </div> </Button>  ) : null)} 
-                        {/* {AccessDataList && AccessDataList.map((data) => data.value === "role-delete" ? (  */}
-                          <Button gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)} > <div className="flex items-center gap-x-2"> <HiTrash className="text-lg" />  Delete Role </div> </Button>
-                       {/* ) : null)}  */}
+                        {AccessList?.edit ? <Button  gradientDuoTone="greenToBlue" onClick={() => getUnderGuidedata(item._id)}><div className="flex items-center gap-x-2"> <HiOutlinePencilAlt className="text-lg" /> Edit Role </div> </Button> : null} 
+                        {AccessList?.delete ? <Button gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)} > <div className="flex items-center gap-x-2"> <HiTrash className="text-lg" />  Delete Role </div> </Button> : null} 
                       </div>
                     </Table.Cell>
                     <Table.Cell>  
-                      {/* {AccessDataList && AccessDataList.map((data) => data.value === "roleaccess-view" ? (   */}
-                      <Button color="primary" className="whitespace-nowrap text-base font-normal text-gray-900 dark:text-dark"  onClick={() => ModuleListFuncall(item._id)}> <div className="flex items-center gap-x-2"> <HiKey className="text-lg" /> Role Access List </div>  </Button>  
-                      {/* ) : null)}   */}
-                      </Table.Cell>
+                      {/* {AccessList?.edit ?  */}
+                        <Button color="primary" className="whitespace-nowrap text-base font-normal text-gray-900 dark:text-dark"  onClick={() => ModuleListFuncall(item._id)}> <div className="flex items-center gap-x-2"> <HiKey className="text-lg" /> Role Access List </div>  </Button>  
+                      {/* : null}    */}
+                    </Table.Cell>
                   </Table.Row>
               ))}
             </Table.Body>

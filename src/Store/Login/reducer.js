@@ -28,6 +28,7 @@ import {
     Logoutcode:[],
     Verifytoken:[],
     resetpassword:[],
+    permissionsdata:[],
     error: {},
   };
   
@@ -40,6 +41,7 @@ import {
               ...state,
               Logincode: action.payload.data,
               LoginRoles: action.payload.data.roles,
+              permissionsdata: action.payload.data?.data?.rolePermissions,
             };
         }
       case INSERT_LOGIN_ERROR:

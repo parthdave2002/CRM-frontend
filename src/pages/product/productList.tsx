@@ -21,18 +21,28 @@ const ProductListPage: FC = function () {
   const [ProductList, setProductList] = useState([]);
   
   //------------ Access Data Code start------------
-  const [AccessList, setAccessList] = useState([]);
-  const [AccessCommon, setAccessCommon] = useState([]);
-  const AccessDataList = AccessList && AccessList.map((item: any) => ({ value: item.access_name }));
-  const AccessData = AccessCommon && AccessCommon.map((item: any) => ({ value: item.access_name }));
+  interface AccessData{
+    add: boolean;
+    view: boolean;
+    edit: boolean;
+    delete: boolean;
+  }
+  const [AccessList, setAccessList] = useState<AccessData>();
+
   //--------- Access Data Code end------------------
   
-    const { Productlist,  ProductlistSize, TotalProductData, CurrentPage } = useSelector((state: any) => ({
+    const { Productlist,  ProductlistSize, TotalProductData, CurrentPage, permissionsdata } = useSelector((state: any) => ({
       Productlist: state.Product.Productlist,
       ProductlistSize: state.Product.ProductlistSize,
       TotalProductData: state.Product.TotalProductData,
       CurrentPage: state.Product.CurrentPage,
+      permissionsdata: state.Login.permissionsdata
     }));
+
+    useEffect(() =>{
+      const userPermissions = permissionsdata && permissionsdata?.find( (item:any) => item.module_name === "Product")?.permissions;
+      setAccessList(userPermissions || [])
+    },[permissionsdata]);
     
   // ----------- next Button  Code Start -------------
     const [TotalListData, setTotalListData] = useState(0);
@@ -102,7 +112,7 @@ const ProductListPage: FC = function () {
 
   let Name = "Product List";
   let Searchplaceholder = "Search For Product (Name)";
-  let AddAccess = "Product-add";
+  let AddAccess = AccessList?.add;;
 
   return (
     <>
@@ -146,17 +156,9 @@ const ProductListPage: FC = function () {
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item.createdAt).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
                           <Table.Cell className="space-x-2 whitespace-nowrap py-0">
                             <div className="flex items-center gap-x-3">
-                             
-
-                                  <Button gradientDuoTone="greenToBlue"  > <div className="flex items-center gap-x-2">  <HiOutlinePencilAlt className="text-lg" />  Edit Product  </div></Button>
-
-                              {/* {AccessDataList &&  AccessDataList.map((data) =>  data.value === "user-delete" ? (  */}
-                                  <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" /> Delete Product </div> </Button>
-                              {/* ) : null )}   */}
-
-                               {/* {AccessDataList &&  AccessDataList.map((data) =>  data.value === "user-delete" ? (  */}
-                                  <Button  gradientDuoTone="purpleToBlue" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <FaExclamationCircle className="text-lg" /> Detail Product </div> </Button>
-                              {/* ) : null )}   */}
+                              {AccessList?.edit ? <Button gradientDuoTone="greenToBlue"  > <div className="flex items-center gap-x-2">  <HiOutlinePencilAlt className="text-lg" />  Edit Product  </div></Button> : null}
+                              {AccessList?.delete ?  <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" /> Delete Product </div> </Button> : null}
+                              <Button  gradientDuoTone="purpleToBlue" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <FaExclamationCircle className="text-lg" /> Detail Product </div> </Button>
                             </div>
                           </Table.Cell>
                         </Table.Row>
