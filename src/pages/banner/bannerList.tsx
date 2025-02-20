@@ -10,6 +10,7 @@ import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useNavigate } from "react-router";
 import moment from "moment";
+import { FaExclamationCircle } from "react-icons/fa";
 const IMG_URL = import.meta.env["VITE_API_URL"];
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 
@@ -20,19 +21,29 @@ const BannerListPage: FC = function () {
   const [BannerDataList, setBannerDataList] = useState([]);
   
   //------------ Access Data Code start------------
-  const [AccessList, setAccessList] = useState([]);
-  const [AccessCommon, setAccessCommon] = useState([]);
-  const AccessDataList = AccessList && AccessList.map((item: any) => ({ value: item.access_name }));
-  const AccessData = AccessCommon && AccessCommon.map((item: any) => ({ value: item.access_name }));
+  interface AccessData{
+    add: boolean;
+    view: boolean;
+    edit: boolean;
+    delete: boolean;
+  }
+  const [AccessList, setAccessList] = useState<AccessData>();
+
   //--------- Access Data Code end------------------
   
-    const { Bannerlist,  BannerlistSize, TotalBannerData, CurrentPage } = useSelector((state: any) => ({
+    const { Bannerlist,  BannerlistSize, TotalBannerData, CurrentPage, permissionsdata } = useSelector((state: any) => ({
       Bannerlist: state.Banner.Bannerlist,
       BannerlistSize: state.Banner.BannerlistSize,
       TotalBannerData: state.Banner.TotalBannerData,
       CurrentPage: state.Banner.CurrentPage,
+      permissionsdata: state.Login.permissionsdata
     }));
     
+    useEffect(() =>{
+      const userPermissions = permissionsdata && permissionsdata?.find( (item:any) => item.module_name === "Banner")?.permissions;
+      setAccessList(userPermissions || [])
+    },[permissionsdata]);
+
   // ----------- next Button  Code Start -------------
     const [TotalListData, setTotalListData] = useState(0);
     const [CurrentUserListSize, setCurrentUserListSize] = useState();
@@ -63,8 +74,6 @@ const BannerListPage: FC = function () {
 
     useEffect(() => {        
       setBannerDataList(Bannerlist? Bannerlist : []);
-      // setAccessList(UserList.AccessData ? UserList.AccessData.list : []);
-      // setAccessCommon(UserList.AccessData ? UserList.AccessData.common : []);
       setTotalListData(TotalBannerData ? TotalBannerData : 0);
       setCurrentUserListSize(BannerlistSize ? BannerlistSize : 0);
       setCurrentPageNo(CurrentPage ? CurrentPage : 1);
@@ -101,7 +110,7 @@ const BannerListPage: FC = function () {
 
   let Name = "Banner List";
   let Searchplaceholder = "Search For Banner (Name)";
-  let AddAccess = "Banner-add";
+  let AddAccess = AccessList?.add;
   
   return (
     <>
@@ -143,13 +152,8 @@ const BannerListPage: FC = function () {
                           <Table.Cell className="space-x-2 whitespace-nowrap py-0">
                             <div className="flex items-center gap-x-3">
                              
-                              {/* {AccessDataList &&  AccessDataList.map((data) =>  data.value === "user-delete" ? (  */}
-                                  <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete </div> </Button>
-                              {/* ) : null )}   */}
-
-                               {/* {AccessDataList &&  AccessDataList.map((data) =>  data.value === "user-delete" ? (  */}
-                                  <Button  gradientDuoTone="pinkToOrange" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Details </div> </Button>
-                              {/* ) : null )}   */}
+                              {AccessList?.delete ?    <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete  Banner </div> </Button> : null }
+                              <Button  gradientDuoTone="pinkToOrange" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <FaExclamationCircle className="text-lg" />  Details Banner </div> </Button>
                             </div>
                           </Table.Cell>
                         </Table.Row>

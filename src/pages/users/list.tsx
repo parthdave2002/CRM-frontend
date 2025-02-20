@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { Button,  Checkbox, Table} from "flowbite-react";
 import type { FC } from "react";
-import {  HiOutlineExclamationCircle, HiOutlinePencilAlt, HiTrash} from "react-icons/hi";
+import { HiOutlinePencilAlt, HiTrash} from "react-icons/hi";
 import { FaExclamationCircle } from "react-icons/fa";
 import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,18 +19,27 @@ const UserListPage: FC = function () {
   const [UserDataList, setUserDataList] = useState([]);
 
   // Access Data Code start
-  const [AccessList, setAccessList] = useState([]);
-  const [AccessCommon, setAccessCommon] = useState([]);
-  const AccessDataList = AccessList && AccessList.map((item: any) => ({ value: item.access_name }));
-  const AccessData = AccessCommon && AccessCommon.map((item: any) => ({ value: item.access_name }));
-  // Access Data Code end
+  interface AccessData{
+    add: boolean;
+    view: boolean;
+    edit: boolean;
+    delete: boolean;
+  }
+  const [AccessList, setAccessList] = useState<AccessData>();
 
-  const { UserList,  UserListSize, TotalUserListData, CurrentPage } = useSelector((state: any) => ({
+  // Access Data Code end
+  const { UserList,  UserListSize, TotalUserListData, CurrentPage, permissionsdata } = useSelector((state: any) => ({
       UserList: state.User.UserList,
       UserListSize: state.User.UserListSize,
       TotalUserListData: state.User.TotalUserListData,
       CurrentPage: state.User.CurrentPage,
-    }));
+      permissionsdata: state.Login.permissionsdata
+  }));
+  
+  useEffect(() =>{
+    const userPermissions = permissionsdata && permissionsdata?.find( (item:any) => item.module_name === "User")?.permissions;
+    setAccessList(userPermissions || [])
+  },[permissionsdata]);
 
   // ----------- next Button  Code Start -------------
   const [TotalPage, setTotalPage] = useState(0);
@@ -65,8 +74,6 @@ const UserListPage: FC = function () {
   
   useEffect(() => {
     setUserDataList(UserList. pulledData ? UserList. pulledData  : null);
-    setAccessList(UserList.AccessData ? UserList.AccessData.list : []);
-    setAccessCommon(UserList.AccessData ? UserList.AccessData.common : []);
     setTotalListData(TotalUserListData ? TotalUserListData : 0);
     setCurrentUserListSize(UserListSize ? UserListSize : 0);
     setCurrentPageNo(CurrentPage ? CurrentPage : 1);
@@ -109,7 +116,7 @@ const UserListPage: FC = function () {
 
   let Name = "User List";
   let Searchplaceholder = "Search For Users (Name)";
-  let AddAccess = "user-add";
+  let AddAccess = AccessList?.add;
 
   return (
     <>
@@ -142,14 +149,13 @@ const UserListPage: FC = function () {
                           </Table.Cell>
                           <Table.Cell className="space-x-2 whitespace-nowrap py-0">
                             <div className="flex items-center gap-x-3">
-                              {/* {AccessDataList && AccessDataList.map((data) => data.value === "user-edit" ? ( */}
+                                {AccessList?.edit ? (
                                   <Button gradientDuoTone="greenToBlue" onClick={() => getUserData(item._id)} > <div className="flex items-center gap-x-2">  <HiOutlinePencilAlt className="text-lg" />  Edit User  </div></Button>
-                              {/* ) : null)}  */}
+                                ) : null}   
        
-                              {/* {AccessDataList &&  AccessDataList.map((data) =>  data.value === "user-delete" ? (  */}
+                                {AccessList?.delete ? (
                                   <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete User  </div> </Button>
-                              {/* ) : null )}   */}
-
+                                ) : null}
                               <Button  gradientDuoTone="purpleToBlue" onClick={() => DetailsUserCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <FaExclamationCircle className="text-lg" /> Detail User  </div> </Button>
                             </div>
                           </Table.Cell>

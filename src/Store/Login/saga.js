@@ -33,15 +33,14 @@ function* onInsertLogin({ payload: requstuser }) {
   try {
     const reponse = yield call(LoginApi, requstuser);
     yield put(insertloginSuccess(INSERT_LOGIN, reponse));
-
-    console.log("reponse" , reponse);
-    
     if(reponse.success === false){
       toast.error(reponse?.msg)
     }
-    if (reponse.success === true) {
+    if (reponse.success === true) {      
       Cookies.set('token',reponse?.token, { expires: 7 });
       Cookies.set('username',reponse?.data?.name, { expires: 7 });
+      Cookies.set('access',reponse?.data?.rolePermissions, { expires: 7 });
+      Cookies.set('role',reponse?.data?.roles, { expires: 7 });
     }
   } catch (error) {
     yield put(insertloginFail(error));
