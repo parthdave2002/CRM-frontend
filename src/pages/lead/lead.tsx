@@ -2,10 +2,13 @@ import { FC, useEffect, useState } from "react";
 import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
 import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
-import { Button,  Checkbox, Table} from "flowbite-react";
+import { Button,  Checkbox, Modal, Table} from "flowbite-react";
+import Select from "react-select";
 import { useSelector } from "react-redux";
 import { HiTrash } from "react-icons/hi";
-
+import { IoCheckmarkDoneSharp } from "react-icons/io5";
+import { FormFeedback, Input } from "reactstrap";
+import { GiCheckMark } from "react-icons/gi";
 const LeadListPage : FC = function () {
 
     // ----------- next Button  Code Start -------------
@@ -52,49 +55,216 @@ const LeadListPage : FC = function () {
         console.log(data)
       }
     // --------- Checkbox Code end ------------
-  
+
+     //---------------- Satus option code start ----------------
+     const [selectedStatusOption, setSelectedStatusOption] = useState(null);
+     const [selectedStatusid, setSelectedStatusid] = useState<string>("");
+     const IsActivedata = (data: any) => {
+       if (!data) {
+           setSelectedStatusid("");
+           setSelectedStatusOption(null);
+       } else {
+           setSelectedStatusid(data.value);
+           setSelectedStatusOption(data);
+       }
+     };
+ 
+     const isactiveoption = [
+       { label : "Contactus Page", value:"contactus" },
+       { label : "Help Page", value:"help" },
+       { label : "Order", value:"order" }
+     ]
+   //---------------- Satus option code end ----------------
+
+   const orderData=[
+    {
+      "name": "XYZ",
+      "phone": 1234657980,
+      "order_id": "#AB-202502221-1",
+      "status": "active",
+      "created_at": "21-02-2025"
+    }
+   ]
 
     let Name = "Lead List";
     let Searchplaceholder = "Search For Lead";
+
+    const [isOpenDelteModel, setisOpenCommentModel] = useState(false);
+    const OpenDesModal = () => {
+      setcommentData("");
+      setisOpenCommentModel(true)
+    }
+
+    const [ commentData, setcommentData] = useState("");
+    const [ commentDataValidation, setcommentDataValidation] = useState(0);
+
+    const CommentAddCall = ()  => {
+      if(commentData == ""){
+        setcommentDataValidation(1)
+      }else{
+        setcommentDataValidation(0)
+      // dispatch(AddRoleslist(requserData));
+      setisOpenCommentModel(false);
+      }
+    }
+
+    const DataChange = (e:any) => {
+      setcommentDataValidation(0);
+      setcommentData(e.target.value);
+    }
 
     return (
         <>  
             <NavbarSidebarLayout isFooter={false}  isSidebar={true} isNavbar={true} isRightSidebar={true}>
                 <ExampleBreadcrumb  Name={Name} Searchplaceholder={Searchplaceholder} searchData={searchData} Changename= {Changename} />
-                <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
-                    <Table.Head className="bg-gray-100 dark:bg-gray-700">
-                        <Table.HeadCell> <Checkbox id="select-all" name="select-all" /> </Table.HeadCell>
-                        <Table.HeadCell>Name</Table.HeadCell>
-                        <Table.HeadCell>Phone</Table.HeadCell>
-                        <Table.HeadCell>Lead from</Table.HeadCell>
-                        <Table.HeadCell>Created At</Table.HeadCell>
-                        <Table.HeadCell>Actions</Table.HeadCell>
-                    </Table.Head>
 
-                    <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
-                        {UserDataList && UserDataList.map((item: any, k) => (
-                                <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
-                                <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item._id} onClick={() => {CheckData(item._id)}}/>  </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.name} </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.phone} </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.lead_from} </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.created_at} </Table.Cell>
+                <div className="bg-white dark:bg-gray-800 p-4 flex gap-x-4">
+                  <Select
+                    className="w-[15rem] dark:text-white"
+                    classNames={{
+                      control: () => "react-select__control",
+                      singleValue: () => "react-select__single-value",
+                      menu: () => "react-select__menu",
+                      option: ({ isSelected }) =>
+                        isSelected ? "react-select__option--is-selected" : "react-select__option",
+                      placeholder: () => "react-select__placeholder",
+                    }}
+                    value={selectedStatusOption}
+                    onChange={(e) => { IsActivedata(e) }}
+                    options={isactiveoption}
+                    isClearable={true}
+                  />
+                </div>
+                
+                <div className="mt-[2rem] bg-white dark:bg-gray-800 p-4">
+                  {selectedStatusid === "contactus" ?
+                    <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
+                      <Table.Head className="bg-gray-100 dark:bg-gray-700">
+                          <Table.HeadCell> <Checkbox id="select-all" name="select-all" /> </Table.HeadCell>
+                          <Table.HeadCell>Name</Table.HeadCell>
+                          <Table.HeadCell>Phone</Table.HeadCell>
+                          <Table.HeadCell>Purpose</Table.HeadCell>
+                          <Table.HeadCell>Description</Table.HeadCell>
+                          <Table.HeadCell>Created At</Table.HeadCell>
+                          <Table.HeadCell>Actions</Table.HeadCell>
+                      </Table.Head>
 
-                                <Table.Cell className="space-x-2 whitespace-nowrap py-0">
-                                    <div className="flex items-center gap-x-3">
-                                  
-                                    {/* {AccessDataList &&  AccessDataList.map((data) =>  data.value === "user-delete" ? (  */}
-                                        <Button  gradientDuoTone="purpleToPink" ><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete </div> </Button>
-                                    {/* ) : null )}   */}
-                                    </div>
-                                </Table.Cell>
+                      <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
+                          {UserDataList && UserDataList.map((item: any, k) => (
+                                  <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
+                                  <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item._id} onClick={() => {CheckData(item._id)}}/>  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.name} </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.phone} </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.purpose} </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.description} </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.created_at} </Table.Cell>
+                                  <Table.Cell className="space-x-2 whitespace-nowrap py-0">
+                                      <div className="flex items-center gap-x-3">
+                                          <Button  gradientDuoTone="purpleToPink" ><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete </div> </Button>
+                                      </div>
+                                  </Table.Cell>
 
-                                </Table.Row>
-                        ))}
-                    </Table.Body>
-                </Table>
-                <ExamplePagination PageData={PageDataList} RowPerPage={RowPerPage}  PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData}/>
+                                  </Table.Row>
+                          ))}
+                      </Table.Body>
+                    </Table>
+
+                  :selectedStatusid === "help" ?
+
+                    <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
+                      <Table.Head className="bg-gray-100 dark:bg-gray-700">
+                          <Table.HeadCell> <Checkbox id="select-all" name="select-all" /> </Table.HeadCell>
+                          <Table.HeadCell>Name</Table.HeadCell>
+                          <Table.HeadCell>Phone</Table.HeadCell>
+                          <Table.HeadCell>Taglog</Table.HeadCell>
+                          <Table.HeadCell>Created At</Table.HeadCell>
+                          <Table.HeadCell>Actions</Table.HeadCell>
+                      </Table.Head>
+
+                      <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
+                          {UserDataList && UserDataList.map((item: any, k) => (
+                                  <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
+                                  <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item._id} onClick={() => {CheckData(item._id)}}/>  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.name} </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.phone} </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.taglog} </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.created_at} </Table.Cell>
+
+                                  <Table.Cell className="space-x-2 whitespace-nowrap py-0">
+                                      <div className="flex items-center gap-x-3">
+                                          <Button  gradientDuoTone="purpleToPink" ><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete </div> </Button>
+                                      </div>
+                                  </Table.Cell>
+
+                                  </Table.Row>
+                          ))}
+                      </Table.Body>
+                    </Table>
+                
+                  :selectedStatusid === "order" ?
+
+                    <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
+                        <Table.Head className="bg-gray-100 dark:bg-gray-700">
+                            <Table.HeadCell> <Checkbox id="select-all" name="select-all" /> </Table.HeadCell>
+                            <Table.HeadCell>Name</Table.HeadCell>
+                            <Table.HeadCell>Phone</Table.HeadCell>
+                            <Table.HeadCell>Order id</Table.HeadCell>
+                            <Table.HeadCell>Created At</Table.HeadCell>
+                            <Table.HeadCell>Actions</Table.HeadCell>
+                        </Table.Head>
+
+                        <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
+                            {orderData && orderData.map((item: any, k) => (
+                              <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
+                                    <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item._id} onClick={() => {CheckData(item._id)}}/>  </Table.Cell>
+                                    <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.name} </Table.Cell>
+                                    <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.phone} </Table.Cell>
+                                    <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.order_id} </Table.Cell>
+                                    <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.created_at} </Table.Cell>
+
+                                    <Table.Cell className="space-x-2 whitespace-nowrap py-0">
+                                        <div className="flex items-center gap-x-3">
+                                            <Button  gradientDuoTone="purpleToPink" onClick={() => OpenDesModal()}><div className="flex items-center gap-x-2 deletebutton"> <IoCheckmarkDoneSharp className="text-lg" /> Mark As Done </div> </Button>
+                                        </div>
+                                    </Table.Cell>
+                              </Table.Row>
+                            ))}
+                        </Table.Body>
+                    </Table>
+
+                  :null}
+                </div>
+
+                {/* <ExamplePagination PageData={PageDataList} RowPerPage={RowPerPage}  PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData}/> */}
             </NavbarSidebarLayout>
+
+
+        <Modal onClose={() => setisOpenCommentModel(false)} show={isOpenDelteModel} size="md">
+          <Modal.Header className="p-2">
+              <div> Closing Comment</div>
+          </Modal.Header>
+          <Modal.Body className="px-2 pt-6 pb-6">
+            <div className="flex flex-col items-center gap-y-6 text-center"> 
+
+                <div className="mt-1">
+                  <Input
+                    id="comment"
+                    name="comment"
+                    className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-[22rem]"
+                    placeholder="Enter comment"
+                    type="textarea"
+                    onChange={(e) => { DataChange(e) }}
+                    value={commentData}
+                  />
+                  {commentDataValidation && commentDataValidation ? 
+                    <FormFeedback type="invalid" className="text-Red text-sm text-left"> Please Enter Comment </FormFeedback>
+                   : null}
+                </div>
+
+              <Button gradientDuoTone="greenToBlue" onClick={() => CommentAddCall()}>  <div className="flex items-center gap-x-2"> <GiCheckMark className="text-xl" />  Submit  </div> </Button>
+            </div>
+          </Modal.Body>
+        </Modal>
         </>
     );
 }

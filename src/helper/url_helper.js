@@ -72,3 +72,12 @@ export const GET_EXPORT_DATA_LIST = "/api/export/export-data";
 export const GET_CUSTOMER_DATA_LIST = "/api/customer/get-customer";
 export const ADD_CUSTOMER_DATA_LIST = "/api/customer/add-customer";
 export const DELETE_CUSTOMER_DATA_LIST = "/api/customer/remove-customer";
+
+export const GET_CROP_LIST = "/api/crop/get-crop";
+export const ADD_CROP_LIST = "/api/crop/add-crop";
+export const DELETE_CROP_LIST = "/api/crop/remove-crop";
+
+export const GET_LEAD_LIST = "/api/lead/get-lead";
+export const ADD_LEAD_LIST = "/api/lead/add-lead";
+export const MARK_AS_READ_LEAD_LIST = "/api/lead/mark-lead";
+export const DELETE_LEAD_LIST = "/api/lead/remove-lead";

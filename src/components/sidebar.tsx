@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { HiShoppingBag, HiCube, HiPuzzle, HiUsers, HiChartPie, HiLibrary } from "react-icons/hi";
 import { MdLeaderboard } from "react-icons/md"; 
 import { TbReportSearch } from "react-icons/tb";
+import { GiWheat } from "react-icons/gi";
 import { FaUser, FaTags  } from "react-icons/fa";
 import { FaSackDollar } from "react-icons/fa6";
 import { BsCloudArrowUpFill  } from "react-icons/bs";
@@ -52,27 +53,27 @@ const LeftSidebar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = function ()
       to: "/users/list",
     },
     {
-      name: "Roles List",
+      name: "Roles",
       icon: HiPuzzle,
       to: "/roles/list",
     },
     {
-      name: "Customer List",
+      name: "Customer",
       icon: FaUser,
       to: "/customer/list",
     },
     {
-      name: "Product List",
+      name: "Product",
       icon: HiLibrary,
       to: "/product/list",
     },
     {
-      name: "Order List",
+      name: "Order",
       icon: FaSackDollar,
       to: "/order/list",
     },
     {
-      name: "Lead List",
+      name: "Lead",
       icon: TbReportSearch,
       to: "/lead/list",
     },
@@ -100,19 +101,24 @@ const LeftSidebar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = function ()
     //   to: "/company/list",
     // },
     {
-      name: "Category List",
+      name: "Category",
       icon:  BiCategoryAlt,
       to: "/category/list",
     },
     {
-      name: "Banner List",
+      name: "Banner",
       icon:  BsCloudArrowUpFill ,
       to: "/banner/list",
     },
     {
-      name: "Taglog List",
+      name: "Taglog",
       icon:  FaTags,
       to: "/taglog/list",
+    },
+    {
+      name: "Crop",
+      icon:  GiWheat,
+      to: "/crop/list",
     },
   ]
 

@@ -155,3 +155,14 @@ export const ExportDatalistApi = async (requserdata,name) => await api.get(url.G
 export const CustomerlistApi = (requserdata) => api.get(url.GET_CUSTOMER_DATA_LIST, requserdata);
 export const AddCustomerlistApi = async (requserdata) => await api.create(url.ADD_CUSTOMER_DATA_LIST, requserdata);
 export const DelCustomerlistApi = async (requserdata) => await api.delete(url.DELETE_CUSTOMER_DATA_LIST, requserdata);
+
+// Crops API
+export const CroplistApi = (requserdata) => api.get(url.GET_CROP_LIST, requserdata);
+export const AddCroplistApi = async (requserdata) => await api.create(url.ADD_CROP_LIST, requserdata);
+export const DelCroplistApi = async (requserdata) => await api.delete(url.DELETE_CROP_LIST, requserdata);
+
+// Lead API
+export const LeadlistApi = (requserdata) => api.get(url.GET_LEAD_LIST, requserdata);
+export const AddLeadlistApi = async (requserdata) => await api.create(url.ADD_LEAD_LIST, requserdata);
+export const MarkAsReadLeadlistApi = async (requserdata) => await api.create(url.MARK_AS_READ_LEAD_LIST, requserdata);
+export const DelLeadlistApi = async (requserdata) => await api.delete(url.DELETE_LEAD_LIST, requserdata);
