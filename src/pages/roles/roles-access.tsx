@@ -71,7 +71,7 @@ const RolesAccessPage: FC = function () {
   };
 
   const permissions = ["view", "add", "edit", "delete"];
-  const roles = ["Dashboard", "User", "Roles", "Customer", "Product", "Order", "Lead", "Report", "Packing Type", "Category", "Banner", "Taglog"];
+  const roles = ["Dashboard", "User", "Roles", "Customer", "Product", "Order", "Lead", "Report", "Packing Type", "Category", "Banner", "Taglog", "Crop"];
 
   let Name = "Role Access List";
   let ParentName = "Role List";

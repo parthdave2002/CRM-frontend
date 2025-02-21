@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 import PrivateRoute from "./routes/PrivateRoute";
 import LoaderPage from "./components/loader";
+
 const DashboardPage = lazy(() => import("./pages"));
 const SignInPage = lazy(() => import("./pages/authentication/sign-in"));
 const ResetPasswordPage = lazy(() => import("./pages/authentication/reset-password"));
@@ -42,7 +43,9 @@ const TaglogListPage = lazy(() => import("./pages/taglog/taglogList"));
 const TaglogAddPage = lazy(() => import("./pages/taglog/taglogAdd"));
 const TaglogDetailsPage = lazy(() => import("./pages/taglog/taglogDetails"));
 const ReportPage = lazy(() => import("./pages/report/report"));
-
+const CropsListPage = lazy(() => import("./pages/crops/cropsList"));
+const AddCropsPage = lazy(() => import("./pages/crops/cropsAdd"));
+const CropsDetailsPage = lazy(() => import("./pages/crops/cropsDetails"));
 const SalesCRMPage = lazy(() => import("./pages/salesExecutive"));
 
 const App: FC = function () {
@@ -104,9 +107,11 @@ const App: FC = function () {
             <Route path="/order/list" element={<OrderListPage />} />
             <Route path="/order/details" element={<OrderDetailsPage />} />
             <Route path="/lead/list" element={<LeadListPage />} />
-
             <Route path="/report" element={<ReportPage />} />
-
+            <Route path="/crop/list" element={<CropsListPage />} />
+            <Route path="/crop/add" element={<AddCropsPage />} />
+            <Route path="/crop/:id" element={<AddCropsPage />} />
+            <Route path="/crop/details/:id" element={<CropsDetailsPage />} />
             {/* Sales Routes */}
             <Route path="/sales-crm" element={<SalesCRMPage />} />
           </Route>

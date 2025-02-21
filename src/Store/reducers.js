@@ -14,6 +14,8 @@ import Banner from "./Banner/reducer";
 import Taglog from "./Taglog/reducer";
 import ExportData from "./ExportData/reducer";
 import Customer from "./Customer/reducer";
+import Crop from "./Crop/reducer";
+
 
 const rootReducer = combineReducers({
     // public
@@ -31,7 +33,8 @@ const rootReducer = combineReducers({
     Banner,
     Taglog,
     ExportData,
-    Customer
+    Customer,
+    Crop
 });
 
 export default rootReducer;

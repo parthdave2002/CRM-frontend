@@ -3,7 +3,6 @@ import {  Breadcrumb,  Button,} from "flowbite-react";
 import { Input } from "reactstrap";
 import {  HiCog, HiDotsVertical, HiExclamationCircle, HiHome,  HiPlus, HiTrash} from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
-import ExportDataModal from "./exportdata/exportCSV";
 
 interface NavbarSidebarLayoutProps {
   Name?: any;
@@ -122,15 +121,10 @@ const ExampleBreadcrumb: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = funct
                     <Button color="primary" onClick={() => OpenAddModel()} ><div className="flex items-center gap-x-3"> <HiPlus className="text-xl " />  Add {Name}  </div> </Button>
                 ) : null)}  */}
 
-                 {AddAccess  ? 
+                 {/* {AddAccess  ?  */}
                       <Button color="primary" onClick={() => OpenAddModel()} ><div className="flex items-center gap-x-3"> <HiPlus className="text-xl " />  Add {Name}  </div> </Button>
-                 : null } 
+                 {/* : null }  */}
 
-                 {/* {AcccessData && AcccessData.map((item:any) => item.value == AddAccess ? (  */}
-                    {/* <Button color="gray"> <div className="flex items-center gap-x-3"> <HiDocumentDownload className="text-xl" /> <span>Export</span> </div>  </Button> */}
-
-                    {/* <ExportDataModal data={data} name="user-data" /> */}
-                 {/* ) : null )}  */}
               </div>
             </div>
           </div>
