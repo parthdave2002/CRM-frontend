@@ -7,6 +7,10 @@ import  {
   RESET_INSERT_LOGIN_ERROR,
   RESET_INSERT_LOGIN_SUCCESS,
 
+  FORGOT_PASSWORD_DATA,
+  FORGOT_PASSWORD_DATA_ERROR,
+  FORGOT_PASSWORD_DATA_SUCCESS,
+
   VERIFY_TOKEN_DATA,
   VERIFY_TOKEN_DATA_ERROR,
   VERIFY_TOKEN_DATA_SUCCESS,
@@ -108,3 +112,19 @@ import  {
       type: RESET_PASSWORD_DATA_ERROR,
       payload: {actionType,error},
     });
+
+    // forgot password
+    export const forgotpasswordData = (requserdata) => ({
+        type: FORGOT_PASSWORD_DATA,
+        payload: requserdata
+    });
+      
+      export const forgotpasswordDataSuccess = (actionType,data) => ({
+        type: FORGOT_PASSWORD_DATA_SUCCESS,
+        payload: {actionType,data},
+      });
+      
+      export const forgotpasswordDataFail = (actionType,error) => ({
+        type: FORGOT_PASSWORD_DATA_ERROR,
+        payload: {actionType,error},
+      });

@@ -25,7 +25,11 @@ import {
 
   CHECK_USER_LIST,
   CHECK_USER_LIST_ERROR,
-  CHECK_USER_LIST_SUCCESS
+  CHECK_USER_LIST_SUCCESS,
+
+  GET_PROFILE_DATA_LIST,
+  GET_PROFILE_DATA_LIST_SUCCESS,
+  GET_PROFILE_DATA_LIST_ERROR
 } from "./actionType";
 
 export const getUserlist = (requserdata) => ({
@@ -136,5 +140,21 @@ export const CheckUserdatalistSuccess = (actionType, data) => ({
 
 export const CheckUserdatalistFail = (actionType, error) => ({
   type: CHECK_USER_LIST_ERROR,
+  payload: { actionType, error },
+});
+
+// Profile user
+export const ProfileUserdatalist = (requserdata) => ({
+  type: GET_PROFILE_DATA_LIST,
+  payload: requserdata,
+});
+
+export const ProfileUserdatalistSuccess = (actionType, data) => ({
+  type: GET_PROFILE_DATA_LIST_SUCCESS,
+  payload: { actionType, data },
+});
+
+export const ProfileUserdatalistFail = (actionType, error) => ({
+  type: GET_PROFILE_DATA_LIST_ERROR,
   payload: { actionType, error },
 });

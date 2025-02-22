@@ -25,7 +25,11 @@ import {
 
  CHECK_USER_LIST,
  CHECK_USER_LIST_ERROR,
- CHECK_USER_LIST_SUCCESS
+ CHECK_USER_LIST_SUCCESS,
+
+ GET_PROFILE_DATA_LIST,
+ GET_PROFILE_DATA_LIST_SUCCESS,
+ GET_PROFILE_DATA_LIST_ERROR
 } from "./actionType";
 
 const INIT_STATE = {
@@ -37,6 +41,7 @@ const INIT_STATE = {
   UserView: [],
   UpdateUserList: [],
   CheckUserList:[],
+  Profileuserdata:[],
   error: {},
 };
 
@@ -194,6 +199,25 @@ const User = (state = INIT_STATE, action) => {
         default:
           return { ...state };
       }
+
+    case GET_PROFILE_DATA_LIST_SUCCESS:
+        switch (action.payload.actionType) {
+          case GET_PROFILE_DATA_LIST:
+            return {
+              ...state,
+              Profileuserdata: action.payload.data,
+            };
+        }
+      case GET_PROFILE_DATA_LIST_ERROR:
+        switch (action.payload.actionType) {
+          case GET_PROFILE_DATA_LIST:
+            return {
+              ...state,
+              error: action.payload,
+            };
+          default:
+            return { ...state };
+        }
 
     default:
       return state;

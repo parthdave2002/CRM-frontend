@@ -7,7 +7,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { FaRegEye, FaRegEyeSlash  } from "react-icons/fa";
 import { Form, Input, FormFeedback } from "reactstrap";
-import { CheckUserdatalist,ResetUserdatalist, insertlogin, resetinsertlogin} from "../../Store/actions";
+import { CheckUserdatalist,ResetUserdatalist, forgotpasswordData, insertlogin, resetinsertlogin} from "../../Store/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import ToastMessage from "../../components/ToastMessage";
@@ -123,6 +123,10 @@ const SignInPage: FC = function () {
 
   const LostPassword = () => {
     setisOpenDelteModel(false);
+    let requser={
+      username: validation.values.username
+    }
+    dispatch(forgotpasswordData(requser))
     toast.success("Please contact your admin");
   };
 
