@@ -6,6 +6,10 @@ import {
   RESET_INSERT_LOGIN,
   RESET_INSERT_LOGIN_SUCCESS,
 
+  FORGOT_PASSWORD_DATA,
+  FORGOT_PASSWORD_DATA_ERROR,
+  FORGOT_PASSWORD_DATA_SUCCESS,
+
   VERIFY_TOKEN_DATA,
   VERIFY_TOKEN_DATA_ERROR,
   VERIFY_TOKEN_DATA_SUCCESS,
@@ -29,6 +33,7 @@ import {
     Verifytoken:[],
     resetpassword:[],
     permissionsdata:[],
+    forgotpasscode:[],
     error: {},
   };
   
@@ -63,6 +68,9 @@ import {
               return {
                 ...state,
                 Logincode: [],
+                forgotpasscode:[],
+                Verifytoken:[],
+                resetpassword:[],
               };
         }
 
@@ -136,8 +144,29 @@ import {
               return {
                 ...state,
                 Logoutcode: [],
+                forgotpasscode:[],
               };
         }
+
+        case FORGOT_PASSWORD_DATA_SUCCESS:
+          switch (action.payload.actionType) {
+            case FORGOT_PASSWORD_DATA:
+              return {
+                ...state,
+                forgotpasscode: action.payload.data,
+              };
+          }
+        case FORGOT_PASSWORD_DATA_ERROR:
+          switch (action.payload.actionType) {
+            case FORGOT_PASSWORD_DATA:
+              return {
+                ...state,
+                error: action.payload,
+              };
+    
+            default:
+              return { ...state };
+          }
   
      
       default:

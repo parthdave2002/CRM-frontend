@@ -1,25 +1,39 @@
 import { FC, useEffect, useState } from "react";
 import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
 import ExampleBreadcrumb from "../../components/breadcrumb";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ImageUploadPreview from "../../components/imageuploader";
-
+import {ProfileUserdatalist }  from "../../Store/actions"
 const ProfilePage : FC = function () {
 
+    const dispatch =useDispatch()
+    interface RoleData{
+        id:string;
+        role_title:string;
+    }
+
+    interface UserData{
+        name:string;
+        email:string;
+        role: RoleData;
+    }
+
     const [file1, setFile1] = useState<File | null>(null);
-    console.log("file1 >>>>>>", file1);
-    
-    const [UserDataList, setUserDataList] = useState([]);
+    const [userData, setuserData] = useState<UserData>();
 
     // ------------- Get  Data From Reducer Code Start --------------
-        const { UserList } = useSelector((state: any) => ({
-            UserList: state.User.UserList,
+        const {  Profileuserdata } = useSelector((state: any) => ({
+            Profileuserdata: state.User.Profileuserdata
         }));
 
         useEffect(() => {
-            setUserDataList(UserList. pulledData ? UserList. pulledData  : null);
-        }, [UserList]);
+            setuserData(Profileuserdata.data  ? Profileuserdata.data   : null);
+        }, [ Profileuserdata]);
     //  ------------- Get  Data From Reducer Code end --------------
+
+    useEffect(() =>{
+        dispatch(ProfileUserdatalist())
+    },[])
 
     let Name = "Profile";
 
@@ -33,10 +47,10 @@ const ProfilePage : FC = function () {
                         <ImageUploadPreview onFileSelect={setFile1} />
 
                         <div>
-                            <div className="flex justify-around dark:text-gray-50 w-full">
-                                <div> Name : Parth Dave </div>
-                                <div> Email : Parth Dave </div>
-                                <div> Contact : Parth Dave </div>
+                                <div className="flex flex-col gap-y-3 dark:text-gray-50 w-full mt-[3rem]">
+                                <div> Name : { userData ? userData?.name : "N/A"}</div>
+                                <div> Email : { userData ? userData?.email : "N/A" } </div>
+                                <div> Role : {   userData ? userData?.role?.role_title : "N/A"   } </div>
                             </div>
                         </div>
                     </div>

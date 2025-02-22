@@ -7,16 +7,17 @@ import { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { Form, Input, FormFeedback } from "reactstrap";
-import { insertlogin, VerifyTokenData } from "../../Store/actions";
+import { resetpasswordData, VerifyTokenData } from "../../Store/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
 import ToastMessage from "../../components/ToastMessage";
+import { toast } from "react-toastify";
 
 const ResetPasswordPage: FC = function () {
-  const navigation = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { id } = useParams(); 
-
+  const { token, id } = useParams(); 
+  
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -39,25 +40,34 @@ const ResetPasswordPage: FC = function () {
       confirm_password: Yup.string().required("Please enter confirm password").oneOf([Yup.ref("new_password")], "Confirm password not matched"),
     }),
     onSubmit: (values) => {
-      dispatch(insertlogin(values));
+      let requserData ={
+        user_id : id,
+        password: values.new_password
+      }
+      dispatch(resetpasswordData(requserData));
       validation.resetForm();
     },
   });
 
-  const [Login, setLogin] = useState(false);
-  const [LoginRols, setLoginRols] = useState([]);
-
-  const { login } = useSelector((state:any) => ({
-    login: state.Login.Logincode,
+  const {  resetpassword } = useSelector((state:any) => ({
+    resetpassword: state.Login.resetpassword
   }));
 
+  useEffect(() =>{
+    if(resetpassword?.success == true){
+      toast.success(resetpassword?.msg);
+      setTimeout(()=>{
+        navigate("/login")
+      },5000) 
+    }
+  },[resetpassword])
 
   useEffect(() => {
-    const verifyToken = async () => {
-      const verifytokenAPI = {  token: id };
+    const verifyTokenCalll = async () => {
+      const verifytokenAPI = {  token: token, user_id :id };
       await dispatch(VerifyTokenData(verifytokenAPI));
     };
-    verifyToken();
+    verifyTokenCalll();
   }, [dispatch, id]);
 
   return (

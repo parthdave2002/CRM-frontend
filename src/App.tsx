@@ -117,7 +117,7 @@ const App: FC = function () {
           </Route>
 
           <Route path="/login" element={<SignInPage />} index />
-          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/reset-password/:token/:id" element={<ResetPasswordPage />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>

@@ -1,5 +1,6 @@
 // Login/Logout Api
 export const INSERT_LOGIN = "/api/user/login";
+export const FORGOT_PASSWORD_DATA = "/api/user/forgot-password";
 export const VERIFY_TOKEN_DATA = "/api/user/verify-token";
 export const RESET_PASSWORD_DATA = "/api/user/reset-password";
 export const LOGOUT ="/api/user/logout";
@@ -8,7 +9,7 @@ export const LOGOUT ="/api/user/logout";
 
 // Dashboard Api
 export const GET_DASHBOARD_DATA_LIST = "/api/dashboard/details";
-export const GET_REPORT_DATA_LIST = "/api/report/report";
+export const GET_REPORT_DATA_LIST = "/api/dashboard/report";
 
 // User Api
 export const GET_USER_LIST = "/api/user/get-user";
@@ -17,6 +18,7 @@ export const ADD_USER_LIST = "/api/user/add-user";
 export const DELETE_USER_LIST = "/api/user/deluser";
 export const UPDATE_USER_DATA_LIST = "/api/user/update";
 export const CHECK_USER_LIST = "/api/user/check-user";
+export const GET_PROFILE_DATA_LIST = "/api/user/profile";
 
 // Role Api
 export const GET_ROLES_LIST = "/api/role/get-role";

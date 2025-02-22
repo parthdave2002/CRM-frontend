@@ -15,7 +15,9 @@ import {
   logoutSuccess,
   logoutFail,
   resetinsertlogout,
-  resetinsertLogoutSuccess
+  resetinsertLogoutSuccess,
+  forgotpasswordDataSuccess,
+  forgotpasswordDataFail
 } from "./action";
 import {
   INSERT_LOGIN,
@@ -24,8 +26,9 @@ import {
   RESET_PASSWORD_DATA,
   RESET_INSERT_LOGIN,
   RESET_INSERT_LOGOUT,
+  FORGOT_PASSWORD_DATA
 } from "./actionType";
-import { LoginApi,LogoutApi, VerifyTokenApi, ResetPasswordApi } from "../../helper/Demo_helper";
+import { LoginApi,LogoutApi, VerifyTokenApi, ResetPasswordApi, ForgotPassApi } from "../../helper/Demo_helper";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 
@@ -66,6 +69,14 @@ function* onVerifyTokenData({ payload: requstuser }) {
     const reponse = yield call(VerifyTokenApi, requstuser);
     yield put(VerifyTokenDataSuccess(VERIFY_TOKEN_DATA, reponse));
   } catch (error) {
+    if (error  === "Invalid credentials") {
+      Cookies.remove("token");
+      Cookies.remove("username");
+      setTimeout(() =>{
+        window.location.replace("/login");
+      },5000)
+      toast.error("Token expired");
+    }
     yield put(VerifyTokenDataFail(error));
   }
 }
@@ -79,6 +90,14 @@ function* ongetResetPassword({ payload: requstuser }) {
   }
 }
 
+function* ongetForgetPassword({ payload: requstuser }) {
+  try {
+    const reponse = yield call(ForgotPassApi, requstuser);
+    yield put(forgotpasswordDataSuccess(FORGOT_PASSWORD_DATA, reponse));
+  } catch (error) {
+    yield put(forgotpasswordDataFail(error));
+  }
+}
 
 function* onResetInsertLogout() {
   const reponse = yield call(resetinsertlogout);
@@ -93,7 +112,7 @@ function* LoginSaga() {
   yield takeEvery(RESET_INSERT_LOGOUT, onResetInsertLogout);
   yield takeEvery(VERIFY_TOKEN_DATA, onVerifyTokenData);
   yield takeEvery(RESET_PASSWORD_DATA, ongetResetPassword);
-
+  yield takeEvery(FORGOT_PASSWORD_DATA, ongetForgetPassword);
 }
 
 export default LoginSaga;

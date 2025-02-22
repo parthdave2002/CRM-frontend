@@ -86,6 +86,7 @@ export const postJwtRegister = (url, data) => {
 
 //Login
 export const LoginApi = (requserdata) => api.create(url.INSERT_LOGIN, requserdata);
+export const ForgotPassApi = (requserdata) => api.create(url.FORGOT_PASSWORD_DATA, requserdata);
 export const VerifyTokenApi = (requserdata) => api.get(url.VERIFY_TOKEN_DATA, requserdata);
 export const ResetPasswordApi = (requserdata) => api.create(url.RESET_PASSWORD_DATA, requserdata);
 export const LogoutApi = (requserdata) => api.get(url.LOGOUT, requserdata);
@@ -101,6 +102,7 @@ export const AddUserlistApi = async (requserdata) => await api.postMultipart(url
 export const DelUserlistApi = async (requserdata) => await api.get(url.DELETE_USER_LIST, requserdata);
 export const UpdateUserdatalistApi = async (requserdata) => await api.create(url.UPDATE_USER_DATA_LIST, requserdata);
 export const CheckUserdatalistApi = async (requserdata) => await api.get(url.CHECK_USER_LIST, requserdata);
+export const profileUserdatalistApi = async (requserdata) => await api.get(url.GET_PROFILE_DATA_LIST, requserdata);
 
 // Roles Api
 export const RolelistApi = async (requserdata) => await api.get(url.GET_ROLES_LIST, requserdata);
