@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AddUserlist, getRoleslist, ResetUserdatalist } from "../../Store/actions";
 import { toast } from "react-toastify";
 import ImageUploadPreview from "../../components/imageuploader";
+import moment from "moment";
 
 const AddUserPage : FC = function () {
 
@@ -201,8 +202,8 @@ const AddUserPage : FC = function () {
             formData.append("password", values.password);
             formData.append("gender", selectedGenderid);
             formData.append("mobile_no", values.mobile_no);
-            formData.append("date_of_joining", values.date_of_joining);
-            formData.append("date_of_birth", values.date_of_birth);
+            formData.append("date_of_joining", moment(values?.date_of_joining).format("DD-MM-YYYY"));
+            formData.append("date_of_birth", moment(values.date_of_birth).format("DD-MM-YYYY"));
             formData.append("emergency_mobile_no", values.emergency_mobile_no);
             formData.append("emergency_contact_person", values.emergency_contact_person);
             formData.append("address", values.address);
@@ -214,8 +215,8 @@ const AddUserPage : FC = function () {
             if (file) {
                 formData.append("user_pic", file); 
             }
+            console.log("createdAt", formData);
             dispatch(AddUserlist(formData));
-            validation.resetForm();
         },
     });
 
@@ -228,13 +229,15 @@ const AddUserPage : FC = function () {
         },[])
     //  -------------- Get Role Data list -------------------
 
-
      //  -------------- Get Role Data list -------------------
      const UserAddedList = useSelector((state: any) => state.User.AddUserlistdata || []);
 
      useEffect(() =>{
         if(UserAddedList?.success == true){
-            toast.success("User added successfully");
+            validation.resetForm();
+            setTimeout(() =>{
+                toast.success("User added successfully");
+            },5000)
             dispatch(ResetUserdatalist());
             navigate("/users/list")
         }

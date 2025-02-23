@@ -14,10 +14,23 @@ const DashboardPage: FC = function () {
   const navigate = useNavigate()
  const dispatch = useDispatch()
 
+ interface totalCustomer {
+  daily:number;
+  monthly:number;
+  weekly: number;
+ }
 
   const { DashboardDataList } = useSelector((state: any) => ({
     DashboardDataList: state.AdminDashboard.Dashboardlist
   }))
+
+  const [total_revenueData , set_total_revenueData] = useState<totalCustomer>();
+  const [total_userData , set_total_userData] = useState<totalCustomer>();
+  const [total_orderData , set_total_orderData] = useState<totalCustomer>();
+
+  const [selectedUserframe, setSelectedUserframe] = useState("");
+  const [selectedOrderframe, setSelectedOrderframe] = useState("");
+  const [selectedrevenueframe, setSelectedrevenueframe] = useState("");
 
   const [CustomerData , setCustomerData] = useState([]);
   const [UserData , setUserData] = useState([]);
@@ -27,6 +40,10 @@ const DashboardPage: FC = function () {
     setCustomerData(DashboardDataList?.data?.customers);
     setUserData(DashboardDataList?.data?.users);
     setProductData(DashboardDataList?.data?.products);
+    set_total_revenueData(DashboardDataList?.data?.totalCustomers);
+    set_total_orderData(DashboardDataList?.data?.totalProducts);
+    set_total_userData(DashboardDataList?.data?.totalUsers);
+
   },[DashboardDataList])
 
   useEffect(() =>{
@@ -38,110 +55,17 @@ const DashboardPage: FC = function () {
       navigate(`/${data}/list`)
     }
 
-    // const CustomerData =[
-    //   {
-    //     name : "Neil Sims",
-    //     phone: "1324567980",
-    //     taluka: "Ahmedabad",
-    //     status : "Active"
-    //   },
-    //   {
-    //     name : "Bonnie Green",
-    //     phone: "1324567980",
-    //     taluka: "Ahmedabad",
-    //     status : "Active"
-    //   },
-    //   {
-    //     name : "Michael Gough",
-    //     phone: "1324567980",
-    //     taluka: "Ahmedabad",
-    //     status : "Active"
-    //   },
-    //   {
-    //     name : "Thomes Lean",
-    //     phone: "1324567980",
-    //     taluka: "Ahmedabad",
-    //     status : "Active"
-    //   },
-    //   {
-    //     name : "Lana Byrd",
-    //     phone: "1324567980",
-    //     taluka: "Ahmedabad",
-    //     status : "Active"
-    //   },
-    // ]
-  
-    // const UserData =[
-    //   {
-    //     img :"/images/users/neil-sims.png",
-    //     name : "Neil Sims",
-    //     email:"email@flowbite.com",
-    //     status : "Active"
-    //   },
-    //   {
-    //     img :"/images/users/bonnie-green.png",
-    //     name : "Bonnie Green",
-    //     email:"email@flowbite.com",
-    //     status : "Active"
-    //   },
-    //   {
-    //     img :"/images/users/michael-gough.png",
-    //     name : "Michael Gough",
-    //     email:"email@flowbite.com",
-    //     status : "Active"
-    //   },
-    //   {
-    //     img :"/images/users/thomas-lean.png",
-    //     name : "Thomes Lean",
-    //     email:"email@flowbite.com",
-    //     status : "Active"
-    //   },
-    //   {
-    //     img :"/images/users/lana-byrd.png",
-    //     name : "Lana Byrd",
-    //     email:"email@flowbite.com",
-    //     status : "Active"
-    //   },
-    // ]
+    const UserDropDownCall = (e:any) =>{
+      setSelectedUserframe(e.target.value)
+    }
 
-    // const ProductData=[
-    //   {
-    //     name: "Product 1",
-    //     category : "Category 1",
-    //     qty :15,
-    //     price: 1500,
-    //     createdAt: "20-05-24 11:55:55"
-    //   },
-    //   {
-    //     name: "Product 1",
-    //     category : "Category 1",
-    //     qty :15,
-    //     price: 1500,
-    //     createdAt: "20-05-24 11:55:55"
-    //   },
-    //   {
-    //     name: "Product 1",
-    //     category : "Category 1",
-    //     qty :15,
-    //     price: 1500,
-    //     createdAt: "20-05-24 11:55:55"
-    //   },
-    //   {
-    //     name: "Product 1",
-    //     category : "Category 1",
-    //     qty :15,
-    //     price: 1500,
-    //     createdAt: "20-05-24 11:55:55"
-    //   },
-    //   {
-    //     name: "Product 1",
-    //     category : "Category 1",
-    //     qty :15,
-    //     price: 1500,
-    //     createdAt: "20-05-24 11:55:55"
-    //   }
-    // ]
-  // -------- Customer Data code end -----------------
+    const OrderDropDownCall =  (e:any) =>{
+      setSelectedOrderframe(e.target.value)
+    }
+
+    const revenueDropDownCall =  (e:any) =>{
+      setSelectedrevenueframe(e.target.value)
+    }
 
   return (
     <NavbarSidebarLayout isFooter={false}  isSidebar={true} isNavbar={true}  isRightSidebar={true} >
@@ -149,44 +73,70 @@ const DashboardPage: FC = function () {
 
         <div>
           <div className="md:flex flex-wrap gap-3">
-        {[ 
-          { label: "Total user", value : 5 , icon: FaTags, type: 'activeUsers' },
-          { label: "Total Order", value : 10, icon: FaTags, type: 'newUsers' },
-          { label: "Total Revenue", value:8 ,icon: FaUser, type: 'engagementRate' }
-        ].map((stat, index) => (
-          <div key={index} className="w-[calc(33%-6px)] md:w-[32%] w-full mt-[1.5rem] md:mt-0">
-            <div className="h-20 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-red-200 dark:bg-gray-800 dark:text-gray-50">
-              <div className="flex w-full justify-between items-start">
-                <div className={`p-3 rounded-full bg-purple-500`}>
-                  {typeof stat.icon === 'string' ? 
-                    <img src={stat.icon} alt="icon" className="w-6 h-6" />
-                   : 
-                    <stat.icon className="text-white w-6 h-6" />
-                  }
+            <div className="w-[calc(33%-6px)] md:w-[32%] w-full mt-[1.5rem] md:mt-0">
+              <div className="h-20 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-red-200 dark:bg-gray-800 dark:text-gray-50">
+                <div className="flex w-full justify-between items-start">
+                  <div className="p-3 rounded-full bg-purple-500">
+                    <FaTags className="text-white w-6 h-6" />
+                  </div>
+                  <div>
+                    <select className="border border-gray-300 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily"    onChange={(e) => UserDropDownCall(e)}>
+                      <option value="daily">Daily</option>
+                      <option value="weekly">Weekly</option>
+                      <option value="monthly">Monthly</option>
+                    </select>
+                  </div>
+                  <div className="text-center self-center">
+                    <p className="text-sm font-semibold">Total User</p>
+                    <p className="text-lg font-bold text-center">{ selectedUserframe == "weekly" ? total_userData?.weekly   : selectedUserframe == "monthly" ?  total_userData?.monthly :    total_userData?.daily}</p>
+                  </div>
                 </div>
-
-                <div>
-                <select
-                  className="border border-gray-300 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:gray-50"
-                  defaultValue="daily"
-                  // onChange={(e) => handleChange(e.target.value, stat.type)}
-                >
-                  <option value="daily">Daily</option>
-                  <option value="weekly">Weekly</option>
-                  <option value="monthly">Monthly</option>
-                </select>
-                </div>
-
-                <div className="text-center self-center">
-                  <p className="text-sm font-semibold">{stat.label}</p>
-                  <p className="text-lg font-bold text-center">{stat.value}</p>
-                </div>
-               
               </div>
-              
             </div>
-          </div>
-        ))}
+
+            <div className="w-[calc(33%-6px)] md:w-[32%] w-full mt-[1.5rem] md:mt-0">
+              <div className="h-20 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-red-200 dark:bg-gray-800 dark:text-gray-50">
+                <div className="flex w-full justify-between items-start">
+                  <div className="p-3 rounded-full bg-purple-500">
+                    <FaTags className="text-white w-6 h-6" />
+                  </div>
+                  <div>
+                    <select className="border border-gray-300 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily" onChange={(e) => OrderDropDownCall(e)}>
+                      <option value="daily">Daily</option>
+                      <option value="weekly">Weekly</option>
+                      <option value="monthly">Monthly</option>
+                    </select>
+                  </div>
+                  <div className="text-center self-center">
+                    <p className="text-sm font-semibold">Total Order</p>
+                    <p className="text-lg font-bold text-center">{ selectedOrderframe == "weekly" ? total_orderData?.weekly   : selectedOrderframe == "monthly" ?  total_orderData?.monthly :    total_orderData?.daily}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Third Card - Total Revenue */}
+            <div className="w-[calc(33%-6px)] md:w-[32%] w-full mt-[1.5rem] md:mt-0">
+              <div className="h-20 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-red-200 dark:bg-gray-800 dark:text-gray-50">
+                <div className="flex w-full justify-between items-start">
+                  <div className="p-3 rounded-full bg-purple-500">
+                    <FaUser className="text-white w-6 h-6" />
+                  </div>
+                  <div>
+                    <select className="border border-gray-300 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily"  onChange={(e) => revenueDropDownCall(e)}>
+                      <option value="daily">Daily</option>
+                      <option value="weekly">Weekly</option>
+                      <option value="monthly">Monthly</option>
+                    </select>
+                  </div>
+                  <div className="text-center self-center">
+                    <p className="text-sm font-semibold">Total Revenue</p>
+                    <p className="text-lg font-bold text-center">{ selectedrevenueframe == "weekly" ? total_revenueData?.weekly   : selectedrevenueframe == "monthly" ?  total_revenueData?.monthly :    total_revenueData?.daily}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
 
