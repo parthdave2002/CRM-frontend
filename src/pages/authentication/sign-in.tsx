@@ -7,7 +7,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { FaRegEye, FaRegEyeSlash  } from "react-icons/fa";
 import { Form, Input, FormFeedback } from "reactstrap";
-import { CheckUserdatalist,ResetUserdatalist, forgotpasswordData, insertlogin, resetinsertlogin} from "../../Store/actions";
+import { CheckUserdatalist, forgotpasswordData, insertlogin, resetinsertlogin} from "../../Store/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import ToastMessage from "../../components/ToastMessage";
@@ -40,7 +40,7 @@ const SignInPage: FC = function () {
     }),
     onSubmit: (values) => {
       dispatch(insertlogin(values));
-      validation.resetForm();
+
     },
   });
 
@@ -68,13 +68,12 @@ const SignInPage: FC = function () {
   
   useEffect(() => {
     if (Login == true) {  
+      validation.resetForm();
       if( LoginRols == "67b1195be442284118ab89bf"){
         navigation("/sales-crm");
-        location.reload();
       }
       else{
         navigation("/dashboard");
-        location.reload();
       }
     }
     dispatch(resetinsertlogin());
