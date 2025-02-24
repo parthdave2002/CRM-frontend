@@ -16,6 +16,7 @@ import {
   RESET_CROP_LIST
 } from "./actionType";
 import { CroplistApi, AddCroplistApi, DelCroplistApi,} from "../../helper/Demo_helper";
+import { toast } from "react-toastify";
 
 function* onGetCropList({ payload: requstuser }) {
   try {
@@ -41,6 +42,7 @@ function* onDelCropList({ payload: requstuser }) {
     yield put(DeleteCroplistSuccess(DELETE_CROP_LIST, response));
      
     if(response.success === true || response.success === "true"){
+      toast.success(response.msg);
       const newresponse = yield call(CroplistApi);
       yield put(getCroplistSuccess(GET_CROP_LIST, newresponse));
     }

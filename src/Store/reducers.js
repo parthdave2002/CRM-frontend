@@ -10,6 +10,7 @@ import Packing from "./Packing/Packing/reducer";
 import Category from "./Category/reducer";
 import Company from "./Company/reducer";
 import Product from "./Product/reducer";
+import Order from "./Order/reducer";
 import Banner from "./Banner/reducer";
 import Taglog from "./Taglog/reducer";
 import ExportData from "./ExportData/reducer";
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
     Packing,
     Category,
     Company,
+    Order,
     Product,
     Banner,
     Taglog,

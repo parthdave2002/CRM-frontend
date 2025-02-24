@@ -58,6 +58,12 @@ export const ADD_PRODUCT_LIST = "/api/product/add-product";
 export const DELETE_PRODUCT_LIST = "/api/product/remove-product";
 export const GET_RELATED_PRODUCT_LIST = "/api/product/product-related";
 
+// Order
+export const GET_UPDATE_ORDER_LIST = "/api/order/get-order";
+export const GET_ORDER_LIST = "/api/order/get-order";
+export const DELETE_ORDER_LIST = "/api/order/remove-order";
+export const ADD_ORDER_LIST = "/api/order/add-order";
+
 // Banner
 export const GET_BANNER_LIST = "/api/banner/get-banner";
 export const ADD_BANNER_LIST = "/api/banner/add-banner";

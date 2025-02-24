@@ -13,35 +13,35 @@ import { AddCompanylist, ResetCompanylist } from "../../Store/actions";
 
 interface KeyValue {
     id: number;
-    header: string;
-    value: string;
-}
+    gujaratiHeader: string;
+    englishHeader: string;
+    gujaratiValue: string;
+    englishValue: string;
+  }
 
 const ProductAddPage : FC = function () {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const [inputs, setInputs] = useState<KeyValue[]>([{ id: 1, header: "", value: "" }]);
+    const [inputs, setInputs] = useState<KeyValue[]>([
+        { id: 1, gujaratiHeader: "", englishHeader: "", gujaratiValue: "", englishValue: "" }
+    ]);
 
-    // Handle input change
-    const handleChange = (id: number, field: "header" | "value", newValue: string) => {
-      setInputs((prev) =>
-        prev.map((item) => (item.id === id ? { ...item, [field]: newValue } : item))
-      );
+    const handleChange = (id: number, field: keyof KeyValue, newValue: string) => {
+        setInputs((prev) =>
+            prev.map((item) => (item.id === id ? { ...item, [field]: newValue } : item))
+        );
     };
-  
-    // Add new input field
+
     const handleAddField = () => {
-      setInputs([...inputs, { id: Date.now(), header: "", value: "" }]);
+        setInputs([...inputs, { id: Date.now(), gujaratiHeader: "", englishHeader: "", gujaratiValue: "", englishValue: "" }]);
     };
-  
-    // Remove input field
+
     const handleRemoveField = (id: number) => {
-      setInputs((prev) => prev.filter((item) => item.id !== id));
+        setInputs((prev) => prev.filter((item) => item.id !== id));
     };
 
-
-
+    console.log("inputs", );
 
     // ------ status code start ------
     const [selectedactiveOption, setSelectedactiveOption] = useState(null);
@@ -107,8 +107,11 @@ const ProductAddPage : FC = function () {
             cgst: values?.cgst,
             sgst: values?.sgst,
             is_active: selectedactiveid,
+            description : inputs
           };
-          dispatch(AddCompanylist(requserdata));
+          console.log("requserdata", requserdata);
+          
+        //   dispatch(AddCompanylist(requserdata));
         },
     });
 
@@ -438,67 +441,66 @@ const ProductAddPage : FC = function () {
                             </div>
                         </div>
 
-                        <div className="space-y-4 my-[1rem]">
-                            <Button  onClick={handleAddField} className="flex items-center gap-2">  {/* <Plus size={20} />  */} Add Field </Button>
+                        <div className=" text-white r w-full mt-[2rem] mx-auto">
+                            <div className="flex justify-between">
+                            <div className="mb-4 dark:text-gray-100 text-gray-900 text-[1.5rem] font-semibold"> Product Description</div>
+                            <div onClick={handleAddField} className="mb-4 px-4 py-1 w-[8rem] text-center bg-blue-500 hover:bg-blue-600 text-white rounded-lg cursor-pointer"> Add Field </div>
+                            </div>
+
                             {inputs.map((item, index) => (
-                                <div key={item.id} className=" items-center gap-2">
-                                        
-
-                                        <div className=" ">
-                                            <div className="flex">
-                                                <div className="flex-1 flex gap-x-[1rem]">
-                                                    <Label className="self-center" htmlFor="Header">Gujarati Header</Label>
-                                                    <Input
-                                                        type="text"
-                                                        placeholder="Header"
-                                                        value={item.header}
-                                                        onChange={(e) => handleChange(item.id, "header", e.target.value)}
-                                                        className="w-[15rem] p-1 border border-gray-300 rounded-lg dark:bg-gray-800 dark:text-gray-50"
-                                                    />
-                                                </div>
-                                                <div className="flex-1 flex gap-x-[1rem]">
-                                                    <Label className="self-center" htmlFor="Header">English Header</Label>
-                                                    <Input
-                                                        type="text"
-                                                        placeholder="Header"
-                                                        value={item.header}
-                                                        onChange={(e) => handleChange(item.id, "header", e.target.value)}
-                                                        className="w-[15rem] p-1 border border-gray-300 rounded-lg dark:bg-gray-800 dark:text-gray-50"
-                                                    />
-                                                </div>
-                                            </div>
-                                        
-                                            <div className="flex gap-x-3">
-                                                <div className="flex-1">
-                                                <Label htmlFor="Header">Gujarati Value</Label>
-                                                <Input
-                                                    type="textarea"
-                                                    placeholder="Value"
-                                                    value={item.value}
-                                                    onChange={(e) => handleChange(item.id, "value", e.target.value)}
-                                                    className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-800 dark:text-gray-50"
-                                                />
-                                                </div>
-
-                                                <div className="flex-1">
-                                                <Label htmlFor="Header">English Value</Label>
-                                                <Input
-                                                    type="textarea"
-                                                    placeholder="Value"
-                                                    value={item.value}
-                                                    onChange={(e) => handleChange(item.id, "value", e.target.value)}
-                                                    className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-800 dark:text-gray-50"
-                                                />
-                                                </div>
-                                            </div>
-                                            <div className="">
-                                                {index > 0 && (
-                                                    <Button  onClick={() => handleRemoveField(item.id)} className="text-red-500">
-                                                    <HiTrash size={20} />
-                                                    </Button>
-                                                )}
-                                            </div>
+                                <div key={item.id} className="dark:bg-gray-800 p-4 rounded-lg ring ring-gray-300  dark:ring-gray-500 space-y-3 mb-4">
+                                    <div className="grid lg:grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-sm font-medium mb-1 dark:text-gray-100 text-gray-700">Gujarati Header</label>
+                                            <Input
+                                                type="text"
+                                                placeholder="Header"
+                                                value={item.gujaratiHeader}
+                                                onChange={(e) => handleChange(item.id, "gujaratiHeader", e.target.value)}
+                                                className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white  bg-gray-200 text-gray-700"
+                                            />
                                         </div>
+                                        <div>
+                                            <label className="block text-sm font-medium mb-1 dark:text-gray-100 text-gray-700">English Header</label>
+                                            <Input
+                                                type="text"
+                                                placeholder="Header"
+                                                value={item.englishHeader}
+                                                onChange={(e) => handleChange(item.id, "englishHeader", e.target.value)}
+                                                className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white  bg-gray-200 text-gray-700"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="grid lg:grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-sm font-medium mb-1">Gujarati Value</label>
+                                            <Input
+                                                type="textarea"
+                                                placeholder="Value"
+                                                value={item.gujaratiValue}
+                                                onChange={(e) => handleChange(item.id, "gujaratiValue", e.target.value)}
+                                                className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white bg-gray-200 text-gray-800"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium mb-1">English Value</label>
+                                            <Input
+                                                type="textarea"
+                                                placeholder="Value"
+                                                value={item.englishValue}
+                                                onChange={(e) => handleChange(item.id, "englishValue", e.target.value)}
+                                                className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white bg-gray-200 text-gray-800"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {index > 0 && (
+
+                                            <div onClick={() => handleRemoveField(item.id)} className="text-red-500 hover:text-red-600 text-right justify-items-end">
+                                                <HiTrash size={20} />
+                                            </div>
+                                    )}
                                 </div>
                             ))}
                         </div>

@@ -3,10 +3,15 @@ import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
 import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { Button,  Checkbox, Table} from "flowbite-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { HiTrash } from "react-icons/hi";
+import { getOrderlist } from "../../Store/actions";
+import { useNavigate } from "react-router";
+import moment from "moment";
 
 const OrderListPage : FC = function () {
+      const navigate = useNavigate();
+      const dispatch = useDispatch();
 
     // ----------- next Button  Code Start -------------
       const [UserDataList, setUserDataList] = useState([]);
@@ -17,34 +22,41 @@ const OrderListPage : FC = function () {
       const RowPerPage = (value: any) => { setRoePerPage(value)};
       const PageDataList = (data:any) =>{ setPageNo(data)}
     // ------------- Next button Code End -------------
-    
-    // ---------------- Search User code start ----------------
-        const [searchData, setSearchData] = useState(null);
-        const Changename = (data:any) =>{
-            setSearchData(data)
-        }
-    // ---------------- Search User code end ----------------
 
+    // ---------------- Search User code start ----------------
+       const [searchData, setSearchData] = useState(null);
+       const Changename = (data:any) =>{
+           setSearchData(data)
+       }
+   // ---------------- Search User code end ----------------
+
+    useEffect(() => {
+        let requserdata: { page: number; size: number; search?: string } = {
+            page: PageNo,
+            size: RoePerPage
+        };
+        if (searchData) requserdata.search = searchData;
+        dispatch(getOrderlist(requserdata));
+    }, [dispatch, PageNo, RoePerPage, searchData]);
+ 
     // ------------- Get  Data From Reducer Code Start --------------
-      const { UserList,  UserListSize, TotalUserListData, CurrentPage } = useSelector((state: any) => ({
-          UserList: state.User.UserList,
-          UserListSize: state.User.UserListSize,
-          TotalUserListData: state.User.TotalUserListData,
-          CurrentPage: state.User.CurrentPage,
+      const { Orderlist,  OrderlistSize, TotalOrderData, CurrentPage } = useSelector((state: any) => ({
+          Orderlist: state.Order.Orderlist,
+          OrderlistSize: state.Order.OrderlistSize,
+          TotalOrderData: state.Order.TotalOrderData,
+          CurrentPage: state.Order.CurrentPage,
         }));
 
       const [TotalListData, setTotalListData] = useState(0);
-      const [CurrentUserListSize, setCurrentUserListSize] = useState();
+      const [CurrentOrderlistSize, setCurrentUserListSize] = useState();
       const [CurrentPageNo, setCurrentPageNo] = useState(0);
       
       useEffect(() => {
-        // setUserDataList(UserList. pulledData ? UserList. pulledData  : null);
-        // setAccessList(UserList.AccessData ? UserList.AccessData.list : []);
-        // setAccessCommon(UserList.AccessData ? UserList.AccessData.common : []);
-        setTotalListData(TotalUserListData ? TotalUserListData : 0);
-        setCurrentUserListSize(UserListSize ? UserListSize : 0);
+        setUserDataList(Orderlist ? Orderlist  : null);
+        setTotalListData(TotalOrderData ? TotalOrderData : 0);
+        setCurrentUserListSize(OrderlistSize ? OrderlistSize : 0);
         setCurrentPageNo(CurrentPage ? CurrentPage : 1);
-      }, [UserList,  TotalUserListData, UserListSize, CurrentPage]);
+      }, [Orderlist,  TotalOrderData, OrderlistSize, CurrentPage]);
     //  ------------- Get  Data From Reducer Code end --------------
     
     // --------- Checkbox Code start ------------
@@ -57,6 +69,10 @@ const OrderListPage : FC = function () {
     let Name = "Order List";
     let Searchplaceholder = "Search For Orders";
 
+    const OrderDetailsCall = (data:any) =>{
+        navigate(`/order/details/${data}`)
+    }
+
     return (
         <>  
             <NavbarSidebarLayout isFooter={false}  isSidebar={true} isNavbar={true} isRightSidebar={true}>
@@ -64,36 +80,23 @@ const OrderListPage : FC = function () {
                 <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
                     <Table.Head className="bg-gray-100 dark:bg-gray-700">
                         <Table.HeadCell> <Checkbox id="select-all" name="select-all" /> </Table.HeadCell>
-                        <Table.HeadCell>Name</Table.HeadCell>
-                        <Table.HeadCell>Phone</Table.HeadCell>
-                        <Table.HeadCell>Email</Table.HeadCell>
-                        <Table.HeadCell>State</Table.HeadCell>
-                        <Table.HeadCell>City</Table.HeadCell>
-                        <Table.HeadCell>Status</Table.HeadCell>
+                        <Table.HeadCell>Order id</Table.HeadCell>
+                        <Table.HeadCell>Advisor Name </Table.HeadCell>
                         <Table.HeadCell>Created At</Table.HeadCell>
-                        <Table.HeadCell>Actions</Table.HeadCell>
+                        <Table.HeadCell>COD Amt</Table.HeadCell>
+                        <Table.HeadCell>Status</Table.HeadCell>
                     </Table.Head>
 
                     <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
                         {UserDataList && UserDataList.map((item: any, k) => (
-                                <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
+                            <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
                                 <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item._id} onClick={() => {CheckData(item._id)}}/>  </Table.Cell>
-                                <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {item.name} </Table.Cell>
+                                <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => OrderDetailsCall(item._id)}>  {item._id} </Table.Cell>
                                 <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0"> {item.email} </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white">
-                                    {item.is_active == true ? <div className="flex items-center">  <div className="mr-2 h-2.5 w-2.5 rounded-full bg-green-400"></div> Active  </div>
-                                    : <div className="flex items-center">  <div className="mr-2 h-2.5 w-2.5 rounded-full bg-Red"></div> Deactive  </div>}
-                                </Table.Cell>
-                                <Table.Cell className="space-x-2 whitespace-nowrap py-0">
-                                    <div className="flex items-center gap-x-3">
-                                  
-                                    {/* {AccessDataList &&  AccessDataList.map((data) =>  data.value === "user-delete" ? (  */}
-                                        <Button  gradientDuoTone="purpleToPink" ><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete </div> </Button>
-                                    {/* ) : null )}   */}
-                                    </div>
-                                </Table.Cell>
-
-                                </Table.Row>
+                                <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {moment(item.createdAt).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
+                                <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0"> {item.totalAmount} </Table.Cell>
+                                <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {item.status} </Table.Cell>
+                            </Table.Row>
                         ))}
                     </Table.Body>
                 </Table>

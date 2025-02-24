@@ -104,7 +104,7 @@ class APIClient {
       const token = Cookies.get("token");
       const response = await axios.post(url, body, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `${token}`,
           "Content-Type": "multipart/form-data",
         },
       });

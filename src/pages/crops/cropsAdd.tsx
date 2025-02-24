@@ -9,6 +9,7 @@ import { Form, Input, FormFeedback } from "reactstrap";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { AddCroplist, ResetCroplist } from "../../Store/actions";
+import { toast } from "react-toastify";
 
 const AddCropsPage : FC = function () {
     const dispatch = useDispatch();
@@ -34,7 +35,7 @@ const AddCropsPage : FC = function () {
 
     const [initialValues, setinitialValues] = useState({
         name: "",
-        details:"",
+        description:"",
         status: "",
     });
 
@@ -50,7 +51,7 @@ const AddCropsPage : FC = function () {
           if(selectedactiveid == null) return setValidateactive(1);
           let requserdata = {
             name: values?.name,
-            details : values?.details,
+            description : values?.description,
             is_active: selectedactiveid,
           };
           dispatch(AddCroplist(requserdata));
@@ -71,7 +72,10 @@ const AddCropsPage : FC = function () {
         useEffect(() => {  
             if(AddCropdatalist?.success == true){
                 dispatch(ResetCroplist())
-                navigate("/crop/list")
+                toast.success(AddCropdatalist?.message);
+                // setTimeout(() =>{
+                    navigate("/crop/list")
+                // },5000)
                 validation.resetForm();
                 initialValues.name = "";
                 setSelectedactiveid(null);
@@ -120,17 +124,17 @@ const AddCropsPage : FC = function () {
                         </div>
 
                         <div className="my-[1rem]">
-                            <Label htmlFor="name">Details</Label>
+                            <Label htmlFor="name">Description</Label>
                             <div className="mt-1">
                             <Input
-                                id="details"
-                                name="details"
+                                id="description"
+                                name="description"
                                 className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
-                                placeholder="Crop details"
+                                placeholder="Crop description"
                                 type="textarea"
                                 onChange={validation.handleChange}
                                 onBlur={validation.handleBlur}
-                                value={validation.values.details || ""}
+                                value={validation.values.description || ""}
                             />
                             </div>
                         </div>
