@@ -55,10 +55,10 @@ function* onRestetCompanyList() {
     yield put(ResetCompanylistSuccess(REST_COMPANY_LIST, response)); 
 }
 
-function* CategorySaga() {
+function* CompanySaga() {
   yield takeEvery(GET_COMPANY_LIST, onGetCompanyList);
   yield takeEvery(ADD_COMPANY_LIST, onAddCompanyList);
   yield takeEvery(DELETE_COMPANY_LIST, onDelCompanyList);
   yield takeEvery(REST_COMPANY_LIST, onRestetCompanyList);
 }
-export default CategorySaga;
+export default CompanySaga;

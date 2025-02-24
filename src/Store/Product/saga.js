@@ -59,10 +59,10 @@ function* onDelProductList({ payload: requstuser }) {
   }
 }
 
-function* CategorySaga() {
+function* ProductSaga() {
   yield takeEvery(GET_RELATED_PRODUCT_LIST, onGetRelatedProductList);
   yield takeEvery(GET_PRODUCT_LIST, onGetProductList);
   yield takeEvery(ADD_PRODUCT_LIST, onAddProductlist);
   yield takeEvery(DELETE_PRODUCT_LIST, onDelProductList);
 }
-export default CategorySaga;
+export default ProductSaga;

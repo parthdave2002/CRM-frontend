@@ -141,6 +141,14 @@ export const ProductlistApi = (requserdata) => api.get(url.GET_PRODUCT_LIST, req
 export const AddProductlistApi = async (requserdata) => await api.create(url.ADD_PRODUCT_LIST, requserdata);
 export const DelProductlistApi = async (requserdata) => await api.delete(url.DELETE_PRODUCT_LIST, requserdata);
 
+
+// Order API
+export const UpdateOrderlistApi = (requserdata) => api.get(url.GET_UPDATE_ORDER_LIST, requserdata);
+export const OrderlistApi = (requserdata) => api.get(url.GET_ORDER_LIST, requserdata);
+export const AddOrderlistApi = async (requserdata) => await api.create(url.ADD_ORDER_LIST, requserdata);
+export const DelOrderlistApi = async (requserdata) => await api.delete(url.DELETE_ORDER_LIST, requserdata);
+
+
 // Banner API
 export const BannerlistApi = (requserdata) => api.get(url.GET_BANNER_LIST, requserdata);
 export const AddBannerlistApi = async (requserdata) => await api.create(url.ADD_BANNER_LIST, requserdata);

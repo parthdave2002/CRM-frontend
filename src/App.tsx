@@ -105,7 +105,7 @@ const App: FC = function () {
             <Route path="/product/:id" element={<ProductAddPage />} />
             <Route path="/product/details/:id" element={<ProductDetailsPage />} />
             <Route path="/order/list" element={<OrderListPage />} />
-            <Route path="/order/details" element={<OrderDetailsPage />} />
+            <Route path="/order/details/:id" element={<OrderDetailsPage />} />
             <Route path="/lead/list" element={<LeadListPage />} />
             <Route path="/report" element={<ReportPage />} />
             <Route path="/crop/list" element={<CropsListPage />} />

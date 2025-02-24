@@ -11,7 +11,10 @@ import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useNavigate } from "react-router";
 import { FaExclamationCircle } from "react-icons/fa";
+import { toast } from "react-toastify";
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
+const ToastMessage = lazy(() => import("../../components/ToastMessage"));
+
 
 const CropsListPage: FC = function () {
   const dispatch = useDispatch();
@@ -86,7 +89,7 @@ const CropsListPage: FC = function () {
       setisOpenDelteModel(true);
     };
 
-    const DeletepackingType = () => {
+    const DeleteCrop = () => {
       let rqeuserdata = { id: Delete_id };
       dispatch(DeleteCroplist(rqeuserdata));
       setisOpenDelteModel(false);
@@ -120,7 +123,7 @@ const CropsListPage: FC = function () {
               <Table.Head className="bg-gray-100 dark:bg-gray-700">
                 <Table.HeadCell> <Checkbox id="select-all" name="select-all" /> </Table.HeadCell>
                 <Table.HeadCell>Name</Table.HeadCell>
-                <Table.HeadCell>Details</Table.HeadCell>
+                <Table.HeadCell>Description</Table.HeadCell>
                 <Table.HeadCell>Status</Table.HeadCell>
                 <Table.HeadCell>Created At</Table.HeadCell>
                 <Table.HeadCell>Actions</Table.HeadCell>
@@ -140,11 +143,11 @@ const CropsListPage: FC = function () {
                           <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0"> {moment(item.createdAt).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
                           <Table.Cell className="space-x-2 whitespace-nowrap py-0">
                             <div className="flex items-center gap-x-3">
-                                {AccessList?.delete ?
+                                {/* {AccessList?.delete ? */}
                                   <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete </div> </Button>
-                                : null}
+                                {/* : null} */}
 
-                               <Button  gradientDuoTone="purpleToBlue" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <FaExclamationCircle className="text-lg" /> Detail PackingType  </div> </Button> 
+                               <Button  gradientDuoTone="purpleToBlue" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <FaExclamationCircle className="text-lg" /> Detail Crop  </div> </Button> 
                             </div>
                           </Table.Cell>
                         </Table.Row>
@@ -157,10 +160,10 @@ const CropsListPage: FC = function () {
     
         {isOpenDelteModel && (
           <Suspense fallback={<div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50"> <div className="text-white">Loading...</div> </div> }>
-            <DeleteModalPage  isOpenDelteModel={isOpenDelteModel}  name={"packing type"} setisOpenDelteModel={setisOpenDelteModel}  DelCall={DeletepackingType} />
+            <DeleteModalPage  isOpenDelteModel={isOpenDelteModel}  name={"Crop"} setisOpenDelteModel={setisOpenDelteModel}  DelCall={DeleteCrop} />
           </Suspense>
         )}
-                  
+      <ToastMessage />       
     </>
   );
 };
