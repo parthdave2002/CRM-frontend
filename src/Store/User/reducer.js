@@ -29,7 +29,11 @@ import {
 
  GET_PROFILE_DATA_LIST,
  GET_PROFILE_DATA_LIST_SUCCESS,
- GET_PROFILE_DATA_LIST_ERROR
+ GET_PROFILE_DATA_LIST_ERROR,
+
+ UPDATE_PROFILE_DATA_LIST,
+ UPDATE_PROFILE_DATA_LIST_SUCCESS,
+ UPDATE_PROFILE_DATA_LIST_ERROR
 } from "./actionType";
 
 const INIT_STATE = {
@@ -218,6 +222,25 @@ const User = (state = INIT_STATE, action) => {
           default:
             return { ...state };
         }
+
+    case UPDATE_PROFILE_DATA_LIST_SUCCESS:
+      switch (action.payload.actionType) {
+        case UPDATE_PROFILE_DATA_LIST:
+          return {
+            ...state,
+            UpdateProfileuserdata: action.payload.data,
+          };
+      }
+    case UPDATE_PROFILE_DATA_LIST_ERROR:
+      switch (action.payload.actionType) {
+        case UPDATE_PROFILE_DATA_LIST:
+          return {
+            ...state,
+            error: action.payload,
+          };
+        default:
+          return { ...state };
+      }
 
     default:
       return state;

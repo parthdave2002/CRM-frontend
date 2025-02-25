@@ -30,7 +30,11 @@ import {
 
   ProfileUserdatalist,
   ProfileUserdatalistSuccess,
-  ProfileUserdatalistFail
+  ProfileUserdatalistFail,
+
+  UpdateProfileUserdatalist,
+  UpdateProfileUserdatalistSuccess,
+  UpdateProfileUserdatalistFail
 } from "./action";
 import {
   GET_USER_LIST,
@@ -63,7 +67,11 @@ import {
 
   GET_PROFILE_DATA_LIST,
   GET_PROFILE_DATA_LIST_SUCCESS,
-  GET_PROFILE_DATA_LIST_ERROR
+  GET_PROFILE_DATA_LIST_ERROR,
+
+  UPDATE_PROFILE_DATA_LIST,
+  UPDATE_PROFILE_DATA_LIST_SUCCESS,
+  UPDATE_PROFILE_DATA_LIST_ERROR
 } from "./actionType";
 import {
   UserlistApi,
@@ -73,7 +81,8 @@ import {
   DelUserlistApi,
   UpdateUserdatalistApi,
   CheckUserdatalistApi,
-  profileUserdatalistApi
+  profileUserdatalistApi,
+  updateprofileUserdatalistApi
 } from "../../helper/Demo_helper";
 
 function* onGetuserList({ payload: requstuserlist }) {
@@ -131,7 +140,7 @@ function* onGetUpdateUserdatalist({ payload: requstuser }) {
     const reponse = yield call(UpdateUserdatalistApi, requstuser);
     yield put(UpdateUserdatalistSuccess(UPDATE_USER_DATA_LIST, reponse));
     if (reponse.success == true) {
-      let requserdata = { page: 1, size: 5, search: null };
+      let requserdata = { page: 1, size: 10, search: null };
       const reponse = yield call(UserlistApi, requserdata);
       yield put(getUserlistSuccess(GET_USER_LIST, reponse));
     } 
@@ -163,6 +172,19 @@ function* onGetProfileData({ payload: requstuser }) {
   }
 }
 
+function* onGetUpdateProfileData({ payload: requstuser }) {
+  try {
+    const reponse = yield call(updateprofileUserdatalistApi, requstuser);
+    yield put(UpdateProfileUserdatalistSuccess(UPDATE_PROFILE_DATA_LIST, reponse));
+    if (reponse.success == true) {
+      const reponse = yield call(profileUserdatalistApi, requstuser);
+      yield put(ProfileUserdatalistSuccess(GET_PROFILE_DATA_LIST, reponse));
+    } 
+  } catch (error) {
+    yield put(UpdateProfileUserdatalistFail(error));
+  }
+}
+
 function* UserSaga() {
   yield takeEvery(GET_USER_LIST, onGetuserList);
   yield takeEvery(GET_USER_VIEW, onGetuserView);
@@ -172,6 +194,7 @@ function* UserSaga() {
   yield takeEvery(RESET_USER_DATA_LIST, onGetResetUserdatalist);
   yield takeEvery(CHECK_USER_LIST, onGetCheckUserdatalist);
   yield takeEvery(GET_PROFILE_DATA_LIST, onGetProfileData);
+  yield takeEvery(UPDATE_PROFILE_DATA_LIST, onGetUpdateProfileData);
 }
 
 export default UserSaga;

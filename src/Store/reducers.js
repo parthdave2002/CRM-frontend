@@ -16,7 +16,7 @@ import Taglog from "./Taglog/reducer";
 import ExportData from "./ExportData/reducer";
 import Customer from "./Customer/reducer";
 import Crop from "./Crop/reducer";
-
+import Lead from "./Lead/reducer";
 
 const rootReducer = combineReducers({
     // public
@@ -36,7 +36,8 @@ const rootReducer = combineReducers({
     Taglog,
     ExportData,
     Customer,
-    Crop
+    Crop,
+    Lead
 });
 
 export default rootReducer;

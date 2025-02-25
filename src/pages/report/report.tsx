@@ -100,7 +100,7 @@ const ReportPage: FC = function () {
   let Name = "Report Page";
 
   return (
-    <>
+    <div className="min-h-screen">
       <NavbarSidebarLayout
         isFooter={false}
         isSidebar={true}
@@ -108,7 +108,7 @@ const ReportPage: FC = function () {
         isRightSidebar={true}
       >
         <ExampleBreadcrumb Name={Name} />
-        <div className="bg-white dark:bg-gray-800 p-4 flex gap-x-4">
+        <div className="bg-white dark:bg-gray-800 p-4 flex gap-x-4 mt-[3rem]">
           <div className="relative">
             <DatePicker
               selectsRange
@@ -321,7 +321,7 @@ const ReportPage: FC = function () {
           </div>
         ) : null}
       </NavbarSidebarLayout>
-    </>
+    </div>
   );
 };
 

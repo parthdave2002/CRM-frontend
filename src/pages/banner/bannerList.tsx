@@ -11,6 +11,7 @@ import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useNavigate } from "react-router";
 import moment from "moment";
 import { FaExclamationCircle } from "react-icons/fa";
+import Cookies from "js-cookie";
 const IMG_URL = import.meta.env["VITE_API_URL"];
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 
@@ -40,8 +41,19 @@ const BannerListPage: FC = function () {
     }));
     
     useEffect(() =>{
-      const userPermissions = permissionsdata && permissionsdata?.find( (item:any) => item.module_name === "Banner")?.permissions;
-      setAccessList(userPermissions || [])
+      const user = Cookies.get("role");
+      if (user === "67b388a7d593423df0e24295") {
+        setAccessList({
+          add: true,
+          view: true,
+          edit: true,
+          delete: true,
+        })
+      }
+      else {
+        const userPermissions = permissionsdata && permissionsdata?.find((item: any) => item.module_name === "Banner")?.permissions;
+        setAccessList(userPermissions || [])
+      }
     },[permissionsdata]);
 
   // ----------- next Button  Code Start -------------
@@ -49,7 +61,7 @@ const BannerListPage: FC = function () {
     const [CurrentUserListSize, setCurrentUserListSize] = useState();
     const [CurrentPageNo, setCurrentPageNo] = useState(0);
     const [PageNo, setPageNo] = useState(1);
-    const [RoePerPage, setRoePerPage] = useState(5);
+    const [RoePerPage, setRoePerPage] = useState(10);
 
     const RowPerPage = (value: any) => { setRoePerPage(value)};
     const PageDataList = (data:any) =>{ setPageNo(data)}
@@ -139,8 +151,6 @@ const BannerListPage: FC = function () {
                               alt="Banner"
                               className="h-16 w-32 object-cover rounded"
                             />
-                            
-                            {/* {`${IMG_URL}/public/banner/${item.banner_pic}`}  */}
                           </Table.Cell>
                           <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {item.name} </Table.Cell>
                           {/* <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {item.description} </Table.Cell> */}
@@ -166,7 +176,7 @@ const BannerListPage: FC = function () {
     
         {isOpenDelteModel && (
           <Suspense fallback={<div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50"> <div className="text-white">Loading...</div> </div> }>
-            <DeleteModalPage  isOpenDelteModel={isOpenDelteModel}  name={"Company"} setisOpenDelteModel={setisOpenDelteModel}  DelCall={DeletepackingType} />
+            <DeleteModalPage  isOpenDelteModel={isOpenDelteModel}  name={"Banner"} setisOpenDelteModel={setisOpenDelteModel}  DelCall={DeletepackingType} />
           </Suspense>
         )}
                   

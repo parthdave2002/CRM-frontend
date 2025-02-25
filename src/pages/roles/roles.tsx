@@ -8,6 +8,7 @@ import { getRoleslist, DeleteRoleslist,} from "../../Store/actions";
 import ExamplePagination from "../../components/pagination";
 import { useNavigate } from "react-router-dom";
 import ExampleBreadcrumb from "../../components/breadcrumb";
+import Cookies from "js-cookie";
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 
 const RolesPage: FC = function () {
@@ -49,7 +50,6 @@ const RolesPage: FC = function () {
   const [TotalListData, setTotalListData] = useState(0);
   const [CurrentUserListSize, setCurrentUserListSize] = useState();
   const [CurrentPageNo, setCurrentPageNo] = useState(0);
-
   const [RolesList, setRoleList] = useState([]);
 
   const { Roleslist,  RoleListSize, TotalRoleListData, CurrentPage,permissionsdata} = useSelector((state: any) => ({
@@ -61,8 +61,19 @@ const RolesPage: FC = function () {
   }));
 
   useEffect(() =>{
-    const userPermissions = permissionsdata && permissionsdata?.find( (item:any) => item.module_name === "Role")?.permissions;
-    setAccessList(userPermissions || [])
+    const user = Cookies.get("role");
+    if (user === "67b388a7d593423df0e24295") {
+      setAccessList({
+        add: true,
+        view: true,
+        edit: true,
+        delete: true,
+      })
+    }
+    else{
+      const userPermissions = permissionsdata && permissionsdata?.find( (item:any) => item.module_name === "Role")?.permissions;
+      setAccessList(userPermissions || [])
+    }
   },[permissionsdata]);
 
   useEffect(() => {

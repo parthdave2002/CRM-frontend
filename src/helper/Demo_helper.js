@@ -103,6 +103,7 @@ export const DelUserlistApi = async (requserdata) => await api.get(url.DELETE_US
 export const UpdateUserdatalistApi = async (requserdata) => await api.create(url.UPDATE_USER_DATA_LIST, requserdata);
 export const CheckUserdatalistApi = async (requserdata) => await api.get(url.CHECK_USER_LIST, requserdata);
 export const profileUserdatalistApi = async (requserdata) => await api.get(url.GET_PROFILE_DATA_LIST, requserdata);
+export const updateprofileUserdatalistApi = async (requserdata) => await api.update(url.UPDATE_PROFILE_DATA_LIST, requserdata);
 
 // Roles Api
 export const RolelistApi = async (requserdata) => await api.get(url.GET_ROLES_LIST, requserdata);
@@ -151,7 +152,7 @@ export const DelOrderlistApi = async (requserdata) => await api.delete(url.DELET
 
 // Banner API
 export const BannerlistApi = (requserdata) => api.get(url.GET_BANNER_LIST, requserdata);
-export const AddBannerlistApi = async (requserdata) => await api.create(url.ADD_BANNER_LIST, requserdata);
+export const AddBannerlistApi = async (requserdata) => await api.postMultipart(url.ADD_BANNER_LIST, requserdata);
 export const DelBannerlistApi = async (requserdata) => await api.delete(url.DELETE_BANNER_LIST, requserdata);
 
 // Taglog API

@@ -29,7 +29,11 @@ import {
 
   GET_PROFILE_DATA_LIST,
   GET_PROFILE_DATA_LIST_SUCCESS,
-  GET_PROFILE_DATA_LIST_ERROR
+  GET_PROFILE_DATA_LIST_ERROR,
+
+  UPDATE_PROFILE_DATA_LIST,
+  UPDATE_PROFILE_DATA_LIST_ERROR,
+  UPDATE_PROFILE_DATA_LIST_SUCCESS
 } from "./actionType";
 
 export const getUserlist = (requserdata) => ({
@@ -156,5 +160,22 @@ export const ProfileUserdatalistSuccess = (actionType, data) => ({
 
 export const ProfileUserdatalistFail = (actionType, error) => ({
   type: GET_PROFILE_DATA_LIST_ERROR,
+  payload: { actionType, error },
+});
+
+
+// Update Profile user
+export const UpdateProfileUserdatalist = (requserdata) => ({
+  type: UPDATE_PROFILE_DATA_LIST,
+  payload: requserdata,
+});
+
+export const UpdateProfileUserdatalistSuccess = (actionType, data) => ({
+  type: UPDATE_PROFILE_DATA_LIST_SUCCESS,
+  payload: { actionType, data },
+});
+
+export const UpdateProfileUserdatalistFail = (actionType, error) => ({
+  type: UPDATE_PROFILE_DATA_LIST_ERROR,
   payload: { actionType, error },
 });

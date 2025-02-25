@@ -6,10 +6,19 @@ import { Button,  Checkbox, Table} from "flowbite-react";
 import { useSelector } from "react-redux";
 import { HiTrash } from "react-icons/hi";
 import { useNavigate } from "react-router";
+import Cookies from "js-cookie";
 
 const CustomerListPage : FC = function () {
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+
+    interface AccessData{
+      add: boolean;
+      view: boolean;
+      edit: boolean;
+      delete: boolean;
+    }
+    const [AccessList, setAccessList] = useState<AccessData>();
 
     // ----------- next Button  Code Start -------------
       const [UserDataList, setUserDataList] = useState([]);
@@ -29,11 +38,12 @@ const CustomerListPage : FC = function () {
     // ---------------- Search User code end ----------------
 
     // ------------- Get  Data From Reducer Code Start --------------
-      const { UserList,  UserListSize, TotalUserListData, CurrentPage } = useSelector((state: any) => ({
+      const { UserList,  UserListSize, TotalUserListData, CurrentPage, permissionsdata } = useSelector((state: any) => ({
           UserList: state.User.UserList,
           UserListSize: state.User.UserListSize,
           TotalUserListData: state.User.TotalUserListData,
           CurrentPage: state.User.CurrentPage,
+          permissionsdata: state.Login.permissionsdata
         }));
 
       const [TotalListData, setTotalListData] = useState(0);
@@ -42,13 +52,27 @@ const CustomerListPage : FC = function () {
       
       useEffect(() => {
         // setUserDataList(UserList. pulledData ? UserList. pulledData  : null);
-        // setAccessList(UserList.AccessData ? UserList.AccessData.list : []);
-        // setAccessCommon(UserList.AccessData ? UserList.AccessData.common : []);
         setTotalListData(TotalUserListData ? TotalUserListData : 0);
         setCurrentUserListSize(UserListSize ? UserListSize : 0);
         setCurrentPageNo(CurrentPage ? CurrentPage : 1);
       }, [UserList,  TotalUserListData, UserListSize, CurrentPage]);
     //  ------------- Get  Data From Reducer Code end --------------
+
+    useEffect(() =>{
+        const user = Cookies.get("role");
+        if (user === "67b388a7d593423df0e24295") {
+          setAccessList({
+            add: true,
+            view: true,
+            edit: true,
+            delete: true,
+          })
+        }
+        else{
+          const userPermissions = permissionsdata && permissionsdata?.find( (item:any) => item.module_name === "Customer")?.permissions;
+          setAccessList(userPermissions || [])
+        }
+      },[permissionsdata]);
     
     // --------- Checkbox Code start ------------
       const CheckData = (data:any) =>{

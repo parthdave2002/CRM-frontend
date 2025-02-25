@@ -4,13 +4,15 @@ import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { Button,  Checkbox, Modal, Table} from "flowbite-react";
 import Select from "react-select";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { HiTrash } from "react-icons/hi";
 import { IoCheckmarkDoneSharp } from "react-icons/io5";
 import { FormFeedback, Input } from "reactstrap";
 import { GiCheckMark } from "react-icons/gi";
+import { getleadlist } from "../../Store/actions";
+import moment from "moment";
 const LeadListPage : FC = function () {
-
+  const dispatch = useDispatch();
     // ----------- next Button  Code Start -------------
       const [UserDataList, setUserDataList] = useState([]);
       const [TotalPage, setTotalPage] = useState(0);
@@ -29,25 +31,23 @@ const LeadListPage : FC = function () {
     // ---------------- Search User code end ----------------
 
     // ------------- Get  Data From Reducer Code Start --------------
-      const { UserList,  UserListSize, TotalUserListData, CurrentPage } = useSelector((state: any) => ({
-          UserList: state.User.UserList,
-          UserListSize: state.User.UserListSize,
-          TotalUserListData: state.User.TotalUserListData,
-          CurrentPage: state.User.CurrentPage,
-        }));
+    const { Leaddatalist, LeaddatalistSize, TotalLeaddatalistData, CurrentPage } = useSelector((state: any) => ({
+      Leaddatalist: state.Lead.Leaddatalist,
+      LeaddatalistSize: state.Lead.LeaddatalistSize,
+      TotalLeaddatalistData: state.Lead.TotalLeaddatalistData,
+      CurrentPage: state.Lead.CurrentPage,
+    }));
 
       const [TotalListData, setTotalListData] = useState(0);
       const [CurrentUserListSize, setCurrentUserListSize] = useState();
       const [CurrentPageNo, setCurrentPageNo] = useState(0);
       
       useEffect(() => {
-        // setUserDataList(UserList. pulledData ? UserList. pulledData  : null);
-        // setAccessList(UserList.AccessData ? UserList.AccessData.list : []);
-        // setAccessCommon(UserList.AccessData ? UserList.AccessData.common : []);
-        setTotalListData(TotalUserListData ? TotalUserListData : 0);
-        setCurrentUserListSize(UserListSize ? UserListSize : 0);
+        setUserDataList(Leaddatalist ? Leaddatalist  : null);
+        setTotalListData(TotalLeaddatalistData ? TotalLeaddatalistData : 0);
+        setCurrentUserListSize(LeaddatalistSize ? LeaddatalistSize : 0);
         setCurrentPageNo(CurrentPage ? CurrentPage : 1);
-      }, [UserList,  TotalUserListData, UserListSize, CurrentPage]);
+      }, [Leaddatalist,  TotalLeaddatalistData, LeaddatalistSize, CurrentPage]);
     //  ------------- Get  Data From Reducer Code end --------------
     
     // --------- Checkbox Code start ------------
@@ -76,15 +76,6 @@ const LeadListPage : FC = function () {
      ]
    //---------------- Satus option code end ----------------
 
-   const orderData=[
-    {
-      "name": "XYZ",
-      "phone": 1234657980,
-      "order_id": "#AB-202502221-1",
-      "status": "active",
-      "created_at": "21-02-2025"
-    }
-   ]
 
     let Name = "Lead List";
     let Searchplaceholder = "Search For Lead";
@@ -112,6 +103,16 @@ const LeadListPage : FC = function () {
       setcommentDataValidation(0);
       setcommentData(e.target.value);
     }
+
+  useEffect(() => {
+    let requserdata: { page: number; size: number; search?: string; added_from:string } = {
+      page: PageNo,
+      size: RoePerPage,
+      added_from:selectedStatusid
+    };
+    if (searchData) requserdata.search = searchData;
+    if(selectedStatusid) dispatch(getleadlist(requserdata));
+  }, [dispatch, PageNo, RoePerPage, searchData, selectedStatusid]);
 
     return (
         <>  
@@ -150,22 +151,21 @@ const LeadListPage : FC = function () {
                       </Table.Head>
 
                       <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
-                          {UserDataList && UserDataList.map((item: any, k) => (
-                                  <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
-                                  <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item._id} onClick={() => {CheckData(item._id)}}/>  </Table.Cell>
-                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.name} </Table.Cell>
-                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.phone} </Table.Cell>
-                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.purpose} </Table.Cell>
-                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.description} </Table.Cell>
-                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.created_at} </Table.Cell>
-                                  <Table.Cell className="space-x-2 whitespace-nowrap py-0">
-                                      <div className="flex items-center gap-x-3">
-                                          <Button  gradientDuoTone="purpleToPink" ><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete </div> </Button>
-                                      </div>
-                                  </Table.Cell>
-
-                                  </Table.Row>
-                          ))}
+                        {UserDataList && UserDataList.map((item: any, k) => (
+                          <Table.Row key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
+                            <Table.Cell className="w-4 py-0" style={{ paddingTop: "0", paddingBottom: "0" }}>  <Checkbox value={item._id} onClick={() => { CheckData(item._id) }} />  </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white">  {item.name} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white">  {item.mobile_number} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white">  {item.purpose} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white">  {item.description} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white">  {moment(item.added_at).format("DD-MM-YYYY hh:ss:mm")} </Table.Cell>
+                            <Table.Cell className="space-x-2 whitespace-nowrap py-0">
+                              <div className="flex items-center gap-x-3">
+                                <Button gradientDuoTone="purpleToPink" onClick={() => OpenDesModal()}><div className="flex items-center gap-x-2 deletebutton"> <IoCheckmarkDoneSharp className="text-lg" /> Mark As Done </div> </Button>
+                              </div>
+                            </Table.Cell>
+                          </Table.Row>
+                        ))}
                       </Table.Body>
                     </Table>
 
@@ -182,22 +182,20 @@ const LeadListPage : FC = function () {
                       </Table.Head>
 
                       <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
-                          {UserDataList && UserDataList.map((item: any, k) => (
-                                  <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
-                                  <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item._id} onClick={() => {CheckData(item._id)}}/>  </Table.Cell>
-                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.name} </Table.Cell>
-                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.phone} </Table.Cell>
-                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.taglog} </Table.Cell>
-                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.created_at} </Table.Cell>
-
-                                  <Table.Cell className="space-x-2 whitespace-nowrap py-0">
-                                      <div className="flex items-center gap-x-3">
-                                          <Button  gradientDuoTone="purpleToPink" ><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete </div> </Button>
-                                      </div>
-                                  </Table.Cell>
-
-                                  </Table.Row>
-                          ))}
+                        {UserDataList && UserDataList.map((item: any, k) => (
+                          <Table.Row key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
+                            <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox value={item._id} onClick={() => { CheckData(item._id) }} />  </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.name} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.phone} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.taglog} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {moment(item.added_at).format("DD-MM-YYYY hh:ss:mm")} </Table.Cell>
+                            <Table.Cell className="space-x-2 whitespace-nowrap py-0">
+                              <div className="flex items-center gap-x-3">
+                                <Button gradientDuoTone="purpleToPink" onClick={() => OpenDesModal()}><div className="flex items-center gap-x-2 deletebutton"> <IoCheckmarkDoneSharp className="text-lg" /> Mark As Done </div> </Button>
+                              </div>
+                            </Table.Cell>
+                          </Table.Row>
+                        ))}
                       </Table.Body>
                     </Table>
                 
@@ -214,13 +212,13 @@ const LeadListPage : FC = function () {
                         </Table.Head>
 
                         <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
-                            {orderData && orderData.map((item: any, k) => (
+                            {UserDataList && UserDataList.map((item: any, k) => (
                               <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
                                     <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item._id} onClick={() => {CheckData(item._id)}}/>  </Table.Cell>
                                     <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.name} </Table.Cell>
-                                    <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.phone} </Table.Cell>
+                                    <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.mobile_number} </Table.Cell>
                                     <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.order_id} </Table.Cell>
-                                    <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.created_at} </Table.Cell>
+                                    <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {moment(item.added_at).format("DD-MM-YYYY hh:ss:mm")} </Table.Cell>
 
                                     <Table.Cell className="space-x-2 whitespace-nowrap py-0">
                                         <div className="flex items-center gap-x-3">

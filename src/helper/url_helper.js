@@ -19,6 +19,7 @@ export const DELETE_USER_LIST = "/api/user/deluser";
 export const UPDATE_USER_DATA_LIST = "/api/user/update";
 export const CHECK_USER_LIST = "/api/user/check-user";
 export const GET_PROFILE_DATA_LIST = "/api/user/profile";
+export const UPDATE_PROFILE_DATA_LIST = "/api/user/update-user";
 
 // Role Api
 export const GET_ROLES_LIST = "/api/role/get-role";

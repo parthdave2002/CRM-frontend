@@ -9,13 +9,14 @@ import { Form, Input, FormFeedback } from "reactstrap";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { AddBannerlist, ResetBannerlist } from "../../Store/actions";
+import ImageUploadPreview from "../../components/imageuploader";
 
 const BannerAddPage : FC = function () {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const [file, setFile] = useState(null);
-
+    const [file, setFile] = useState<File | null>(null);
+    
     // ------ status code start ------
     const [selectedactiveOption, setSelectedactiveOption] = useState(null);
     const [selectedactiveid, setSelectedactiveid] = useState<boolean | null>(null);
@@ -52,18 +53,14 @@ const BannerAddPage : FC = function () {
         onSubmit: (values) => {
           if(selectedactiveid == null) return setValidateactive(1)
 
-          let requserdata = {
-            name: values?.name,
-            description: values?.description,
-            is_active: selectedactiveid,
-          };
-
           const formData = new FormData();
           formData.append("name", values.name);
           formData.append("description", values.description);
           formData.append("is_active", JSON.stringify(selectedactiveid));
-          formData.append("banner_pic", JSON.stringify(file));
-          dispatch(AddBannerlist(requserdata));
+          if (file) {
+            formData.append("banner_pic", file); 
+          }
+          dispatch(AddBannerlist(formData));
         },
     });
 
@@ -99,6 +96,9 @@ const BannerAddPage : FC = function () {
                 <ExampleBreadcrumb  Name={Name} ParentName={ParentName} ParentLink={ParentLink}  />
                 <div className="mt-[2rem] bg-white dark:bg-gray-800 p-4">
                     <Form onSubmit={(e) => { e.preventDefault(); validation.handleSubmit(); return false; }} >
+
+                        <ImageUploadPreview onFileSelect={setFile}/>
+
                         <div>
                             <Label htmlFor="Name">Name</Label>
                             <div className="mt-1">

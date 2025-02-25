@@ -12,6 +12,7 @@ import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useNavigate } from "react-router";
 import { FaExclamationCircle } from "react-icons/fa";
 import { toast } from "react-toastify";
+import Cookies from "js-cookie";
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 const ToastMessage = lazy(() => import("../../components/ToastMessage"));
 
@@ -42,8 +43,19 @@ const CropsListPage: FC = function () {
     }));
 
     useEffect(() =>{
-      const userPermissions = permissionsdata && permissionsdata?.find( (item:any) => item.module_name === "Packing Type")?.permissions;
-      setAccessList(userPermissions || [])
+      const user = Cookies.get("role");
+      if (user === "67b388a7d593423df0e24295") {
+        setAccessList({
+          add: true,
+          view: true,
+          edit: true,
+          delete: true,
+        })
+      }
+      else {
+        const userPermissions = permissionsdata && permissionsdata?.find((item: any) => item.module_name === "Packing Type")?.permissions;
+        setAccessList(userPermissions || []);
+      }
     },[permissionsdata]);
 
   // ----------- next Button  Code Start -------------
@@ -51,7 +63,7 @@ const CropsListPage: FC = function () {
     const [CurrentUserListSize, setCurrentUserListSize] = useState();
     const [CurrentPageNo, setCurrentPageNo] = useState(0);
     const [PageNo, setPageNo] = useState(1);
-    const [RoePerPage, setRoePerPage] = useState(5);
+    const [RoePerPage, setRoePerPage] = useState(10);
 
     const RowPerPage = (value: any) => { setRoePerPage(value)};
     const PageDataList = (data:any) =>{ setPageNo(data)}

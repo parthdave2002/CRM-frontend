@@ -10,7 +10,10 @@ import { lazy, useEffect, useState, Suspense  } from "react";
 import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
+import Cookies from "js-cookie";
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
+const ToastMessage = lazy(() => import("../../components/ToastMessage"));
 
 const UserListPage: FC = function () {
   const navigate = useNavigate();
@@ -37,8 +40,19 @@ const UserListPage: FC = function () {
   }));
   
   useEffect(() =>{
-    const userPermissions = permissionsdata && permissionsdata?.find( (item:any) => item.module_name === "User")?.permissions;
-    setAccessList(userPermissions || [])
+    const user = Cookies.get("role");
+    if (user === "67b388a7d593423df0e24295") {
+      setAccessList({
+        add: true,
+        view: true,
+        edit: true,
+        delete: true,
+      })
+    }
+    else{
+      const userPermissions = permissionsdata && permissionsdata?.find( (item:any) => item.module_name === "User")?.permissions;
+      setAccessList(userPermissions || [])
+    }
   },[permissionsdata]);
 
   // ----------- next Button  Code Start -------------
@@ -73,7 +87,7 @@ const UserListPage: FC = function () {
   const [CurrentPageNo, setCurrentPageNo] = useState(0);
   
   useEffect(() => {
-    setUserDataList(UserList. pulledData ? UserList. pulledData  : null);
+    setUserDataList(UserList ? UserList  : null);
     setTotalListData(TotalUserListData ? TotalUserListData : 0);
     setCurrentUserListSize(UserListSize ? UserListSize : 0);
     setCurrentPageNo(CurrentPage ? CurrentPage : 1);
@@ -173,7 +187,10 @@ const UserListPage: FC = function () {
             <DeleteModalPage  isOpenDelteModel={isOpenDelteModel}  name={"user"} setisOpenDelteModel={setisOpenDelteModel}  DelCall={DelRole} />
           </Suspense>
       )}
-
+      
+      <Suspense fallback={<div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50"> <div className="text-white">Loading...</div> </div> }>
+        <ToastMessage />
+      </Suspense>
     </>
   );
 };
