@@ -4,7 +4,6 @@ import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { Button,  Checkbox, Table} from "flowbite-react";
 import { useDispatch, useSelector } from "react-redux";
-import { HiTrash } from "react-icons/hi";
 import { getOrderlist } from "../../Store/actions";
 import { useNavigate } from "react-router";
 import moment from "moment";
@@ -22,7 +21,7 @@ const OrderListPage : FC = function () {
       const RowPerPage = (value: any) => { setRoePerPage(value)};
       const PageDataList = (data:any) =>{ setPageNo(data)}
     // ------------- Next button Code End -------------
-
+    
     // ---------------- Search User code start ----------------
        const [searchData, setSearchData] = useState(null);
        const Changename = (data:any) =>{
@@ -56,7 +55,7 @@ const OrderListPage : FC = function () {
         setTotalListData(TotalOrderData ? TotalOrderData : 0);
         setCurrentUserListSize(OrderlistSize ? OrderlistSize : 0);
         setCurrentPageNo(CurrentPage ? CurrentPage : 1);
-      }, [Orderlist,  TotalOrderData, OrderlistSize, CurrentPage]);
+      }, [Orderlist, TotalOrderData, OrderlistSize, CurrentPage]);
     //  ------------- Get  Data From Reducer Code end --------------
     
     // --------- Checkbox Code start ------------
@@ -83,19 +82,19 @@ const OrderListPage : FC = function () {
                         <Table.HeadCell>Order id</Table.HeadCell>
                         <Table.HeadCell>Advisor Name </Table.HeadCell>
                         <Table.HeadCell>Created At</Table.HeadCell>
-                        <Table.HeadCell>COD Amt</Table.HeadCell>
+                        {/* <Table.HeadCell>COD Amt</Table.HeadCell> */}
                         <Table.HeadCell>Status</Table.HeadCell>
                     </Table.Head>
 
                     <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
-                        {UserDataList && UserDataList.map((item: any, k) => (
+                        {UserDataList && UserDataList.map((item: any, k:number) => (
                             <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
                                 <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item._id} onClick={() => {CheckData(item._id)}}/>  </Table.Cell>
-                                <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => OrderDetailsCall(item._id)}>  {item._id} </Table.Cell>
-                                <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0"> {item.email} </Table.Cell>
-                                <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {moment(item.createdAt).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
-                                <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0"> {item.totalAmount} </Table.Cell>
-                                <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {item.status} </Table.Cell>
+                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => OrderDetailsCall(item._id)}>  {item._id} </Table.Cell>
+                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.email} </Table.Cell>
+                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {moment(item.createdAt).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
+                                {/* <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.totalAmount} </Table.Cell> */}
+                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.status} </Table.Cell>
                             </Table.Row>
                         ))}
                     </Table.Body>

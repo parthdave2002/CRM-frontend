@@ -1,13 +1,20 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 interface ImageUploadPreviewProps {
   onFileSelect: (file: File | null) => void;
+  defaultImage?: string;
 }
 
-const ImageUploadPreview: React.FC<ImageUploadPreviewProps> = ({ onFileSelect }) => {
+const ImageUploadPreview: React.FC<ImageUploadPreviewProps> = ({ onFileSelect, defaultImage }) => {
   const [fileName, setFileName] = useState<string>("");
-  const [previewSrc, setPreviewSrc] = useState<string>("");
+  const [previewSrc, setPreviewSrc] = useState<string>(defaultImage || "");
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (defaultImage) {
+      setPreviewSrc(defaultImage);
+    }
+  }, [defaultImage]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -33,6 +40,7 @@ const ImageUploadPreview: React.FC<ImageUploadPreviewProps> = ({ onFileSelect })
     event.stopPropagation(); // Prevent opening file selector
     setFileName("");
     setPreviewSrc("");
+    setPreviewSrc(defaultImage || "");
     onFileSelect(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = ""; // Clear input value so user can re-upload the same file
@@ -56,7 +64,7 @@ const ImageUploadPreview: React.FC<ImageUploadPreviewProps> = ({ onFileSelect })
           <img src={previewSrc} className="w-full h-full object-cover" alt="Preview" />
           <button
             onClick={handleRemoveImage}
-            className="absolute -top-2 -right-2 bg-red-600 text-white w-6 h-6 flex items-center justify-center rounded-full shadow-lg hover:bg-red-700 transition"
+            className="absolute -top-2 -right-2 bg-red-600 border-none text-white w-6 h-6 flex items-center justify-center rounded-full shadow-lg hover:bg-red-700 transition"
           >
             x
           </button>

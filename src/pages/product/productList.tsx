@@ -11,6 +11,7 @@ import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useNavigate } from "react-router";
 import moment from "moment";
+import Cookies from "js-cookie";
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 const IMG_URL = import.meta.env["VITE_API_URL"];
 
@@ -40,8 +41,19 @@ const ProductListPage: FC = function () {
     }));
 
     useEffect(() =>{
+      const user = Cookies.get("role");
+      if (user === "67b388a7d593423df0e24295") {
+        setAccessList({
+          add: true,
+          view: true,
+          edit: true,
+          delete: true,
+        })
+      }
+      else {
       const userPermissions = permissionsdata && permissionsdata?.find( (item:any) => item.module_name === "Product")?.permissions;
       setAccessList(userPermissions || [])
+      }
     },[permissionsdata]);
     
   // ----------- next Button  Code Start -------------

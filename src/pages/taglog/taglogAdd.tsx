@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, lazy, useEffect, useState } from "react";
 import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { Label, Button } from "flowbite-react";
@@ -9,6 +9,8 @@ import { Form, Input, FormFeedback } from "reactstrap";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { AddTagloglist, ResetTagloglist } from "../../Store/actions";
+import { toast } from "react-toastify";
+const ToastMessage = lazy(() => import("../../components/ToastMessage"));
 
 const TaglogAddPage : FC = function () {
     const dispatch = useDispatch();
@@ -72,13 +74,16 @@ const TaglogAddPage : FC = function () {
         }));
 
         useEffect(() => {  
-            if(AddTagloglistData ?.success == true){
+            if(AddTagloglistData?.success == true){
                 dispatch(ResetTagloglist())
-                navigate(ParentLink)
+                toast.success(AddTagloglistData?.msg)
+                setTimeout(() =>{
+                    navigate(ParentLink)
+                },5000)
                 validation.resetForm();
                 setSelectedactiveid(null);
                 setSelectedactiveOption(null);
-                setValidateactive(1)
+                setValidateactive(0)
             }
         }, [AddTagloglistData ]);
     //  ------------- Get Data From Reducer Code end --------------
@@ -141,6 +146,7 @@ const TaglogAddPage : FC = function () {
                     </Form>
                 </div>
             </NavbarSidebarLayout>
+            <ToastMessage />
         </>
     );
 }

@@ -116,15 +116,10 @@ const ExampleBreadcrumb: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = funct
               </div>
               }
               
-               <div className="ml-auto flex items-center space-x-2 sm:space-x-3">
-                {/* {AcccessData && AcccessData.map((item:any) => item.value == AddAccess ? ( 
-                    <Button color="primary" onClick={() => OpenAddModel()} ><div className="flex items-center gap-x-3"> <HiPlus className="text-xl " />  Add {Name}  </div> </Button>
-                ) : null)}  */}
-
-                 {/* {AddAccess  ?  */}
-                      <Button color="primary" onClick={() => OpenAddModel()} ><div className="flex items-center gap-x-3"> <HiPlus className="text-xl " />  Add {Name}  </div> </Button>
-                 {/* : null }  */}
-
+              <div className="ml-auto flex items-center space-x-2 sm:space-x-3">
+                {AddAccess  ? 
+                  <Button color="primary" onClick={() => OpenAddModel()} ><div className="flex items-center gap-x-3"> <HiPlus className="text-xl " />  Add {Name}  </div> </Button>
+                : null } 
               </div>
             </div>
           </div>

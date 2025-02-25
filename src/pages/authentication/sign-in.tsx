@@ -71,12 +71,14 @@ const SignInPage: FC = function () {
       validation.resetForm();
       if( LoginRols == "67b1195be442284118ab89bf"){
         navigation("/sales-crm");
+        location.reload();
       }
       else{
         navigation("/dashboard");
+        location.reload();
       }
     }
-    dispatch(resetinsertlogin());
+    // dispatch(resetinsertlogin());
   }, [Login]); 
 
   //--------------  if User Alredy login redirect to their page code start --------------

@@ -11,6 +11,7 @@ import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useNavigate } from "react-router";
 import moment from "moment";
 import { FaExclamationCircle } from "react-icons/fa";
+import Cookies from "js-cookie";
 const IMG_URL = import.meta.env["VITE_API_URL"];
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 
@@ -40,8 +41,19 @@ const CategoryListPage: FC = function () {
     }));
 
     useEffect(() =>{
-      const userPermissions = permissionsdata && permissionsdata?.find( (item:any) => item.module_name === "Category")?.permissions;
-      setAccessList(userPermissions || [])
+      const user = Cookies.get("role");
+      if (user === "67b388a7d593423df0e24295") {
+        setAccessList({
+          add: true,
+          view: true,
+          edit: true,
+          delete: true,
+        })
+      }
+      else {
+        const userPermissions = permissionsdata && permissionsdata?.find((item: any) => item.module_name === "Category")?.permissions;
+        setAccessList(userPermissions || []);
+      }
     },[permissionsdata]);
     
   // ----------- next Button  Code Start -------------

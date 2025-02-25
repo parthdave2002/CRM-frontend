@@ -8,17 +8,16 @@ import RoleSaga from "./Roles/saga";
 import RoleAccessSaga from "./RoleAccess/saga";
 import PackingSaga from "./Packing/Packing/saga";
 import PackingTypeSaga from "./Packing/Packing type/saga";
-
 import CategorySaga from "./Category/saga";
 import CompanySaga from "./Company/saga";
 import OrderSaga from "./Order/saga";
 import ProductSaga from "./Product/saga";
 import BannerSaga from "./Banner/saga";
 import TaglogSaga from "./Taglog/saga";
-
 import ExportDataSaga from "./ExportData/saga";
 import CustomerSaga from "./Customer/saga";
 import CropSaga from "./Crop/saga";
+import LeadSaga from "./Lead/saga";
 
 export default function* rootSaga() {
   yield all([
@@ -38,6 +37,7 @@ export default function* rootSaga() {
     fork(TaglogSaga),
     fork(CustomerSaga),
     fork(ExportDataSaga),
-    fork(CropSaga)
+    fork(CropSaga),
+    fork(LeadSaga)
   ]);
 }

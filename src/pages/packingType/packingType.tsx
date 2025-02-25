@@ -11,6 +11,7 @@ import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useNavigate } from "react-router";
 import { FaExclamationCircle } from "react-icons/fa";
+import Cookies from "js-cookie";
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 
 const PackinTypeListPage: FC = function () {
@@ -39,8 +40,19 @@ const PackinTypeListPage: FC = function () {
     }));
 
     useEffect(() =>{
-      const userPermissions = permissionsdata && permissionsdata?.find( (item:any) => item.module_name === "Packing Type")?.permissions;
-      setAccessList(userPermissions || [])
+      const user = Cookies.get("role");
+      if (user === "67b388a7d593423df0e24295") {
+        setAccessList({
+          add: true,
+          view: true,
+          edit: true,
+          delete: true,
+        })
+      }
+      else {
+        const userPermissions = permissionsdata && permissionsdata?.find((item: any) => item.module_name === "Packing Type")?.permissions;
+        setAccessList(userPermissions || [])
+      }
     },[permissionsdata]);
 
   // ----------- next Button  Code Start -------------

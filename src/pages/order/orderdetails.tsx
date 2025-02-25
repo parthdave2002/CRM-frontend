@@ -24,13 +24,13 @@ const OrdererDetailsPage: FC = function () {
   },[id])
 
   const [UserDataList, setUserDataList] = useState([]);
-  const { Customerlist } = useSelector((state: any) => ({
-    Customerlist: state.Customer.Customerlist,
+  const { Orderlist } = useSelector((state: any) => ({
+    Orderlist: state.Order.Orderlist,
   }));
 
   useEffect(() => {
-    setUserDataList(Customerlist. pulledData ? Customerlist. pulledData  : null);
-  }, [Customerlist]);
+    // setUserDataList(Orderlist ? Orderlist?.data[0] : null);
+  }, [Orderlist]);
   //  ------------- Get User Data From Reducer Code Start --------------
 
   const invoiceData = {

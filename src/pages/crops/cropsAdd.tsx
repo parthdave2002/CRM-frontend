@@ -73,9 +73,9 @@ const AddCropsPage : FC = function () {
             if(AddCropdatalist?.success == true){
                 dispatch(ResetCroplist())
                 toast.success(AddCropdatalist?.message);
-                // setTimeout(() =>{
+                setTimeout(() =>{
                     navigate("/crop/list")
-                // },5000)
+                },5000)
                 validation.resetForm();
                 initialValues.name = "";
                 setSelectedactiveid(null);

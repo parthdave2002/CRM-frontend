@@ -215,7 +215,6 @@ const AddUserPage : FC = function () {
             if (file) {
                 formData.append("user_pic", file); 
             }
-            console.log("createdAt", formData);
             dispatch(AddUserlist(formData));
         },
     });
@@ -235,11 +234,11 @@ const AddUserPage : FC = function () {
      useEffect(() =>{
         if(UserAddedList?.success == true){
             validation.resetForm();
-            setTimeout(() =>{
-                toast.success("User added successfully");
-            },5000)
+            toast.success(UserAddedList?.msg);
             dispatch(ResetUserdatalist());
-            navigate("/users/list")
+            setTimeout(() =>{
+            navigate(ParentLink)
+            },5000)
         }
      },[UserAddedList])
  //  -------------- Get Role Data list -------------------
@@ -585,7 +584,7 @@ const AddUserPage : FC = function () {
 
                         <div className="flex gap-x-3 justify-end mt-[3rem]">
                             <Button className="bg-addbutton hover:bg-addbutton dark:bg-addbutton dark:hover:bg-addbutton" type="submit"> Add User </Button>
-                            <Button className="bg-deletebutton hover:bg-deletebutton dark:bg-deletebutton dark:hover:bg-deletebutton" onClick={() => navigate("/users/list")}>  Close </Button>
+                            <Button className="bg-deletebutton hover:bg-deletebutton dark:bg-deletebutton dark:hover:bg-deletebutton" onClick={() => navigate(ParentLink)}>  Close </Button>
                         </div>
                     </Form>
                 </div>
