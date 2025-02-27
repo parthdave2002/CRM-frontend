@@ -10,6 +10,7 @@ import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useNavigate } from "react-router";
 import moment from "moment";
+import Cookies from "js-cookie";
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 
 const CompanyListPage: FC = function () {
@@ -38,8 +39,19 @@ const CompanyListPage: FC = function () {
     }));
 
     useEffect(() =>{
-      const userPermissions = permissionsdata && permissionsdata?.find( (item:any) => item.module_name === "Company")?.permissions;
-      setAccessList(userPermissions || [])
+      const user = Cookies.get("role");
+      if (user === "67b388a7d593423df0e24295") {
+        setAccessList({
+          add: true,
+          view: true,
+          edit: true,
+          delete: true,
+        })
+      }
+      else {
+        const userPermissions = permissionsdata && permissionsdata?.find((item: any) => item.module_name === "Company")?.permissions;
+        setAccessList(userPermissions || [])
+      }
     },[permissionsdata]);
     
   // ----------- next Button  Code Start -------------
@@ -47,7 +59,7 @@ const CompanyListPage: FC = function () {
     const [CurrentUserListSize, setCurrentUserListSize] = useState();
     const [CurrentPageNo, setCurrentPageNo] = useState(0);
     const [PageNo, setPageNo] = useState(1);
-    const [RoePerPage, setRoePerPage] = useState(5);
+    const [RoePerPage, setRoePerPage] = useState(10);
 
     const RowPerPage = (value: any) => { setRoePerPage(value)};
     const PageDataList = (data:any) =>{ setPageNo(data)}
@@ -67,11 +79,11 @@ const CompanyListPage: FC = function () {
         size: RoePerPage,
         search: searchData
       };
-      dispatch(getCompanylist());
+      dispatch(getCompanylist(requserdata));
     }, [dispatch, PageNo, RoePerPage, searchData]);
 
     useEffect(() => {        
-      setPackingTypeList(Companylist?.pulledData);
+      setPackingTypeList(Companylist? Companylist : []);
       setTotalListData(TotalCompanyData ? TotalCompanyData : 0);
       setCurrentUserListSize(CompanylistSize ? CompanylistSize : 0);
       setCurrentPageNo(CurrentPage ? CurrentPage : 1);

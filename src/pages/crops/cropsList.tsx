@@ -11,7 +11,6 @@ import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useNavigate } from "react-router";
 import { FaExclamationCircle } from "react-icons/fa";
-import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 const ToastMessage = lazy(() => import("../../components/ToastMessage"));
@@ -155,9 +154,9 @@ const CropsListPage: FC = function () {
                           <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0"> {moment(item.createdAt).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
                           <Table.Cell className="space-x-2 whitespace-nowrap py-0">
                             <div className="flex items-center gap-x-3">
-                                {/* {AccessList?.delete ? */}
+                                {AccessList?.delete ?
                                   <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete </div> </Button>
-                                {/* : null} */}
+                                : null} 
 
                                <Button  gradientDuoTone="purpleToBlue" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <FaExclamationCircle className="text-lg" /> Detail Crop  </div> </Button> 
                             </div>

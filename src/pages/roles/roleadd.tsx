@@ -9,6 +9,7 @@ import Select from "react-select";
 import { Form, Input, FormFeedback } from "reactstrap";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const AddRolePage : FC = function () {
     const dispatch = useDispatch()
@@ -74,11 +75,11 @@ const AddRolePage : FC = function () {
             useEffect(() => {  
                 if(AddRolesDatalist?.success == true){
                     dispatch(ResetRoleslist())
+                    toast.success(AddRolesDatalist?.msg)
                     navigate(ParentLink)
                     validation.resetForm();
                     setSelectedStatusid(null);
                     setSelectedStatusOption(null);
-                    // setValidateactive(1)
                 }
             }, [AddRolesDatalist]);
     //  ------------- Get Data From Reducer Code end --------------

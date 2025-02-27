@@ -57,7 +57,7 @@ const User = (state = INIT_STATE, action) => {
         case GET_USER_LIST:
           return {
             ...state,
-            UserList: action.payload.data.data,
+            UserList: action.payload.data,
             UserListSize: action.payload.data.size,
             TotalUserListData: action.payload.data.totalData,
             CurrentPage: action.payload.data.page,

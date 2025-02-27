@@ -100,73 +100,81 @@ const ReportPage: FC = function () {
   let Name = "Report Page";
 
   return (
-    <div className="min-h-screen">
+    <>
       <NavbarSidebarLayout
         isFooter={false}
         isSidebar={true}
         isNavbar={true}
         isRightSidebar={true}
       >
-        <ExampleBreadcrumb Name={Name} />
-        <div className="bg-white dark:bg-gray-800 p-4 flex gap-x-4 mt-[3rem]">
-          <div className="relative">
-            <DatePicker
-              selectsRange
-              startDate={startDate}
-              endDate={endDate}
-              onChange={handleDateChange}
-              isClearable
-              maxDate={new Date()}
-              popperPlacement="bottom"
-              className="w-full pl-10 py-2 px-5 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-300 text-gray-700 dark:bg-gray-800 dark:text-gray-200"
-              placeholderText="Select Date Range"
+        <div className="min-h-screen">
+          <ExampleBreadcrumb Name={Name} />
+          <div className="bg-white dark:bg-gray-800 p-4 flex gap-x-4 ">
+            <div className="relative">
+              <DatePicker
+                selectsRange
+                startDate={startDate}
+                endDate={endDate}
+                onChange={handleDateChange}
+                isClearable
+                maxDate={new Date()}
+                popperPlacement="bottom-start"
+                popperModifiers={[
+                  {
+                    name: 'preventOverflow',
+                    options: {
+                      boundary: 'viewport',
+                    },
+                  },
+                ] as any}          
+                className="w-full pl-10 py-2 px-5 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-300 text-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                placeholderText="Select Date Range"
+              />
+              <IoCalendarNumberSharp className="absolute left-3 top-2.5 w-5 h-5 text-gray-400" />
+            </div>
+
+            <Select
+              className="w-[15rem] dark:text-white"
+              classNames={{
+                control: () => "react-select__control",
+                singleValue: () => "react-select__single-value",
+                menu: () => "react-select__menu",
+                option: ({ isSelected }) =>
+                  isSelected
+                    ? "react-select__option--is-selected"
+                    : "react-select__option",
+                placeholder: () => "react-select__placeholder",
+              }}
+              value={selectedStatusOption}
+              onChange={(e) => {
+                IsActivedata(e);
+              }}
+              options={isactiveoption}
+              isClearable={true}
             />
-            <IoCalendarNumberSharp className="absolute left-3 top-2.5 w-5 h-5 text-gray-400" />
+
+            {selectedStatusid != "" &&
+            startDateData != null &&
+            endDate != null ? (
+              <Button
+                gradientDuoTone="purpleToPink"
+                onClick={() => GetdataCall()}
+              >
+                <div className="flex items-center gap-x-3 w-[5rem] text-center">
+                  <FaSearch /> Submit
+                </div>
+              </Button>
+            ) : null}
+
+            {showReportData ? (
+              <div className="flex-1 justify-items-end self-center">
+                <Suspense fallback={<div>Loading...</div>}>
+                  <ExportDataModal data={Exportdata} name={selectedStatusid} />
+                </Suspense>
+              </div>
+            ) : null}
           </div>
 
-          <Select
-            className="w-[15rem] dark:text-white"
-            classNames={{
-              control: () => "react-select__control",
-              singleValue: () => "react-select__single-value",
-              menu: () => "react-select__menu",
-              option: ({ isSelected }) =>
-                isSelected
-                  ? "react-select__option--is-selected"
-                  : "react-select__option",
-              placeholder: () => "react-select__placeholder",
-            }}
-            value={selectedStatusOption}
-            onChange={(e) => {
-              IsActivedata(e);
-            }}
-            options={isactiveoption}
-            isClearable={true}
-          />
-
-          {selectedStatusid != "" &&
-          startDateData != null &&
-          endDate != null ? (
-            <Button
-              gradientDuoTone="purpleToPink"
-              onClick={() => GetdataCall()}
-            >
-              <div className="flex items-center gap-x-3 w-[5rem] text-center">
-                <FaSearch /> Submit
-              </div>
-            </Button>
-          ) : null}
-
-          {showReportData ? (
-            <div className="flex-1 justify-items-end self-center">
-              <Suspense fallback={<div>Loading...</div>}>
-                <ExportDataModal data={Exportdata} name={selectedStatusid} />
-              </Suspense>
-            </div>
-          ) : null}
-        </div>
-
-        {showReportData ? (
           <div className="mt-[2rem] bg-white dark:bg-gray-800 p-4">
             {showReportData && selectedStatusid == "user" ? (
               <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
@@ -319,9 +327,9 @@ const ReportPage: FC = function () {
               </Table>
             ) : null}
           </div>
-        ) : null}
+        </div>
       </NavbarSidebarLayout>
-    </div>
+    </>
   );
 };
 

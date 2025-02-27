@@ -17,6 +17,7 @@ import {
   RESET_CATEGORY_LIST
 } from "./actionType";
 import { CategorylistApi, AddCategorylistApi, DelCategorylistApi,} from "../../helper/Demo_helper";
+import { toast } from "react-toastify";
 
 function* onGetCategoryList({ payload: requstuser }) {
   try {
@@ -42,6 +43,7 @@ function* onDelCategoryList({ payload: requstuser }) {
     yield put(DeleteCategorylistSuccess(DELETE_CATEGORY_LIST, response));
      
     if(response.success === true || response.success === "true"){
+      toast.success(response?.msg)
       const newresponse = yield call(CategorylistApi);
       yield put(getCategorylistSuccess(GET_CATEGORY_LIST, newresponse));
     }

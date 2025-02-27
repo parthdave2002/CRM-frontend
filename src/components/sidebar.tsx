@@ -6,7 +6,7 @@ import { TbReportSearch } from "react-icons/tb";
 import { GiWheat } from "react-icons/gi";
 import { FaUser, FaTags  } from "react-icons/fa";
 import { FaSackDollar } from "react-icons/fa6";
-import { BsCloudArrowUpFill  } from "react-icons/bs";
+import { BsCloudArrowUpFill, BsBuildingsFill } from "react-icons/bs";
 import { BiCategoryAlt } from "react-icons/bi";
 import type { FC, PropsWithChildren } from "react";
 import { NavLink } from "react-router-dom";
@@ -95,11 +95,11 @@ const LeftSidebar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = function ()
     //   icon:  LuPackageOpen,
     //   to: "/packing/list",
     // },
-    // {
-    //   name: "Company",
-    //   icon:  BsBuildingsFill,
-    //   to: "/company/list",
-    // },
+    {
+      name: "Company",
+      icon:  BsBuildingsFill,
+      to: "/company/list",
+    },
     {
       name: "Category",
       icon:  BiCategoryAlt,
@@ -122,10 +122,8 @@ const LeftSidebar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = function ()
     },
   ]
 
-  const filteredSidebarData =
-  user === "67b388a7d593423df0e24295"
-    ? SidebarData
-    : SidebarData.filter((item:any) => AccessList.includes(item.name));
+  const filteredSidebarData = user === "67b388a7d593423df0e24295" ? SidebarData : SidebarData.filter((item:any) => AccessList.includes(item.name));
+  const filteredSubMasterMenu = user === "67b388a7d593423df0e24295" ? SubMasterMenu : SubMasterMenu.filter((item:any) => AccessList.includes(item.name));
 
 
   return (
@@ -140,18 +138,16 @@ const LeftSidebar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = function ()
             ))}
           </Sidebar.ItemGroup>
 
-          {user == "67b388a7d593423df0e24295"  ?
-            <Sidebar.ItemGroup>
+          <Sidebar.ItemGroup>
             <h4 className="dark:text-gray-400"> Master:</h4>
             <Sidebar.Collapse icon={HiShoppingBag} label="Master">
-              {SubMasterMenu.map((item, k) => (
+              {filteredSubMasterMenu.map((item, k) => (
                 <NavLink to={item.to} key={k}>
                   <Sidebar.Item icon={item.icon}  className={item.to === currentPage ? "dark:bg-gray-700" : ""} >  {item.name} </Sidebar.Item>
                 </NavLink>
               ))}
             </Sidebar.Collapse>
-            </Sidebar.ItemGroup>
-          : null }
+          </Sidebar.ItemGroup>
           
           {/* <Sidebar.ItemGroup>
             <h4 className={"dark:text-white"}>Design View only:</h4>

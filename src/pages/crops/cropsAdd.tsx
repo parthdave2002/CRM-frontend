@@ -66,16 +66,13 @@ const AddCropsPage : FC = function () {
     // ------------- Get  Data From Reducer Code Start --------------
         const { AddCropdatalist } = useSelector((state: any) => ({
             AddCropdatalist: state.Crop.AddCropdatalist,
-
         }));
 
         useEffect(() => {  
             if(AddCropdatalist?.success == true){
                 dispatch(ResetCroplist())
-                toast.success(AddCropdatalist?.message);
-                setTimeout(() =>{
-                    navigate("/crop/list")
-                },5000)
+                toast.success(AddCropdatalist?.msg);
+                navigate("/crop/list")
                 validation.resetForm();
                 initialValues.name = "";
                 setSelectedactiveid(null);

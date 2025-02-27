@@ -34,7 +34,7 @@ const Order = (state = INIT_STATE, action) => {
         case GET_UPDATE_ORDER_LIST:
           return {
             ...state,
-            Orderlist: action.payload.data.data,
+            Orderlist: action.payload.data,
             OrderlistSize: action.payload.data.size,
             TotalOrderData: action.payload.data.totalData,
             CurrentPage: action.payload.data.page,

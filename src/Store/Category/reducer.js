@@ -21,6 +21,7 @@ const INIT_STATE = {
   CategorylistSize:0,
   TotalCategoryData:0,
   CurrentPage:1,
+  AddCategorylist: [],
   error: {},
 };
 
@@ -54,7 +55,7 @@ const Category = (state = INIT_STATE, action) => {
         case ADD_CATEGORY_LIST:
           return {
             ...state,
-            Categorylist: action.payload.data,
+            AddCategorylist: action.payload.data,
           };
       }
     case ADD_CATEGORY_LIST_ERROR:
@@ -97,6 +98,7 @@ const Category = (state = INIT_STATE, action) => {
               CategorylistSize:0,
               TotalCategoryData:0,
               CurrentPage:1,
+              AddCategorylist:[],
               error: {},
             };
         }

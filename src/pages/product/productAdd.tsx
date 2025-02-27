@@ -9,7 +9,9 @@ import { HiTrash} from "react-icons/hi";
 import { Form, Input, FormFeedback } from "reactstrap";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { AddCompanylist, ResetCompanylist } from "../../Store/actions";
+import { AddProductlist, getCategorylist, getCompanylist, getPackingTypelist, ResetCompanylist, ResetProductlist } from "../../Store/actions";
+import MultiImageUploadPreview from "../../components/multiimageuploader";
+import { toast } from "react-toastify";
 
 interface KeyValue {
     id: number;
@@ -22,11 +24,109 @@ interface KeyValue {
 const ProductAddPage : FC = function () {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [file, setFile] = useState<File[] | null>(null);
 
-    const [inputs, setInputs] = useState<KeyValue[]>([
-        { id: 1, gujaratiHeader: "", englishHeader: "", gujaratiValue: "", englishValue: "" }
-    ]);
+    // ------------- Company Get Data From Reducer Code Start --------------
+        const [ CompanyListData, setCompanyListData] = useState([]);
+        const { Companylist} = useSelector((state: any) => ({
+            Companylist: state.Company.Companylist,
+        }));
 
+        const CallCompanyList = () => {
+            if(CompanyListData.length == 0) dispatch(getCompanylist()); 
+        }
+  
+        useEffect(() => {        
+            setCompanyListData(Companylist? Companylist : []);
+        },[Companylist]);
+
+        const companyoption = CompanyListData && CompanyListData.map((item:any) => ({ label: item.name, value: item._id }) );
+
+        const [selectedCompanyOption, setSelectedCompanyOption] = useState(null);
+        const [selectedCompanyid, setSelectedCompanyid] = useState("");
+        const [validateCompany, setValidateCompany] = useState(0);
+      
+        const IsCompanydata = (data: any) => {
+          if (!data) {
+            setSelectedCompanyid("");
+            setSelectedCompanyOption(null);
+            setValidateCompany(1)
+          } else {
+            setSelectedCompanyid(data.value);
+            setSelectedCompanyOption(data);
+            setValidateCompany(0)
+          }
+        };
+    //  ------------- Company Get Data From Reducer Code end --------------
+  
+    // ------------- Packing Type Get Data From Reducer Code Start --------------
+        const [PackingTypeListData, setPackingTypeListData] = useState([]);
+        const { Packingtypelist } = useSelector((state: any) => ({
+            Packingtypelist: state.PackingType.Packingtypelist,
+        }));
+
+        const CallPackingTypeList = () => {
+            if (PackingTypeListData.length == 0) dispatch(getPackingTypelist());
+        }
+
+        useEffect(() => {
+            setPackingTypeListData(Packingtypelist ? Packingtypelist : []);
+        }, [Packingtypelist]);
+
+        const packingtypeoption = PackingTypeListData && PackingTypeListData.map((item: any) => ({ label: item.type, value: item._id }))
+
+        const [selectedpackingTypeOption, setSelectedpackingTypeOption] = useState(null);
+        const [selectedpackingTypeid, setSelectedpackingTypeid] = useState("");
+        const [validatepackingType, setValidatepackingType] = useState(0);
+      
+        const IspackingTypedata = (data: any) => {
+          if (!data) {
+            setSelectedpackingTypeid("");
+            setSelectedpackingTypeOption(null);
+            setValidatepackingType(1)
+          } else {
+            setSelectedpackingTypeid(data.value);
+            setSelectedpackingTypeOption(data);
+            setValidatepackingType(0)
+          }
+        };
+    //  ------------- Packing Type Get Data From Reducer Code end --------------
+
+    // ------------- Category Get Data From Reducer Code Start --------------
+        const [CategoryListData, setCategoryListData] = useState([]);
+        const { Categorylist } = useSelector((state: any) => ({
+            Categorylist: state.Category.Categorylist,
+        }));
+
+        const CallCategoryList = () => {
+            if (CategoryListData.length == 0) dispatch(getCategorylist());
+        }
+
+        useEffect(() => {
+            setCategoryListData(Categorylist ? Categorylist : []);
+        }, [Categorylist]);
+
+        const categoryoption = CategoryListData && CategoryListData.map((item: any) => ({ label: item.name, value: item._id }));
+
+        const [selectedCategoryOption, setSelectedCategoryOption] = useState(null);
+        const [selectedCategoryid, setSelectedCategoryid] = useState("");
+        const [validateCategory, setValidateCategory] = useState(0);
+      
+        const IsCategorydata = (data: any) => {
+          if (!data) {
+            setSelectedCategoryid("");
+            setSelectedCategoryOption(null);
+            setValidateCategory(1)
+          } else {
+            setSelectedCategoryid(data.value);
+            setSelectedCategoryOption(data);
+            setValidateCategory(0)
+          }
+        };
+//  ------------- Category Get Data From Reducer Code end --------------
+
+    // -------------------- product description code start -----------------
+    const [inputs, setInputs] = useState<KeyValue[]>([   { id: 1, gujaratiHeader: "", englishHeader: "", gujaratiValue: "", englishValue: "" }]);
     const handleChange = (id: number, field: keyof KeyValue, newValue: string) => {
         setInputs((prev) =>
             prev.map((item) => (item.id === id ? { ...item, [field]: newValue } : item))
@@ -40,17 +140,16 @@ const ProductAddPage : FC = function () {
     const handleRemoveField = (id: number) => {
         setInputs((prev) => prev.filter((item) => item.id !== id));
     };
-
-    console.log("inputs", );
+    // -------------------- product description code end -----------------
 
     // ------ status code start ------
     const [selectedactiveOption, setSelectedactiveOption] = useState(null);
-    const [selectedactiveid, setSelectedactiveid] = useState(0);
+    const [selectedactiveid, setSelectedactiveid] = useState("");
     const [validateactive, setValidateactive] = useState(0);
   
     const IsActivedata = (data: any) => {
       if (!data) {
-        setSelectedactiveid(0);
+        setSelectedactiveid("");
         setSelectedactiveOption(null);
         setValidateactive(1)
       } else {
@@ -93,25 +192,34 @@ const ProductAddPage : FC = function () {
         }),
         
         onSubmit: (values) => {
-          {selectedactiveid == 0 ? setValidateactive(1) : setValidateactive(0) }
+          {selectedactiveid == "" ? setValidateactive(1) : setValidateactive(0) }
+          {selectedCategoryid == "" ? setValidateCategory(1) : setValidateCategory(0) }
+          {selectedpackingTypeid == "" ? setValidatepackingType(1) : setValidatepackingType(0) }
+          {selectedCompanyid == "" ? setValidateCompany(1) : setValidateCompany(0) }
 
-          let requserdata = {
-            name: values?.name,
-            tech_name: values?.tech_name,
-            packing: values?.packing,
-            avl_qty : values.qty,
-            price: values.price,
-            discount: values?.discount,
-            batch_number : values?.batch_number,
-            hsn_code : values?.hsn_code,
-            cgst: values?.cgst,
-            sgst: values?.sgst,
-            is_active: selectedactiveid,
-            description : inputs
-          };
-          console.log("requserdata", requserdata);
-          
-        //   dispatch(AddCompanylist(requserdata));
+
+            const formData = new FormData();
+            formData.append("name", values?.name);
+            formData.append("tech_name", values?.tech_name);
+            formData.append("packaging", values?.packing);
+            formData.append("price", values?.price);
+            formData.append("discount",values?.discount);
+            formData.append("packagingtype", selectedpackingTypeid);
+            formData.append("company", selectedCompanyid);
+            formData.append("categories", selectedCategoryid);
+            formData.append("batch_number", values?.batch_number);
+            formData.append("hsn_code", values?.hsn_code);
+            formData.append("cgst", values?.cgst);
+            formData.append("sgst", values?.sgst);
+            formData.append("avl_qty", values?.qty);
+            formData.append("description", JSON.stringify(inputs));
+            formData.append("is_active", selectedactiveid);
+            if (file) {
+                file.forEach((f) => {
+                    formData.append("product_pics", f);
+                });
+            }
+          dispatch(AddProductlist(formData));
         },
     });
 
@@ -122,15 +230,16 @@ const ProductAddPage : FC = function () {
 
     // ------------- Get  Data From Reducer Code Start --------------
         const { AddCompanyDatalist } = useSelector((state: any) => ({
-            AddCompanyDatalist: state.Company.AddCompanylist,
+            AddCompanyDatalist: state.Product.AddProductlist,
         }));
 
         useEffect(() => {  
             if(AddCompanyDatalist?.success == true){
-                dispatch(ResetCompanylist())
+                dispatch(ResetProductlist())
+                toast.success(AddCompanyDatalist?.msg)
                 navigate(ParentLink)
                 validation.resetForm();
-                setSelectedactiveid(0);
+                setSelectedactiveid("");
                 setSelectedactiveOption(null);
                 setValidateactive(1)
             }
@@ -147,6 +256,8 @@ const ProductAddPage : FC = function () {
                 <ExampleBreadcrumb  Name={Name} ParentName={ParentName} ParentLink={ParentLink}  />
                 <div className="mt-[2rem] bg-white dark:bg-gray-800 p-4">
                     <Form onSubmit={(e) => { e.preventDefault(); validation.handleSubmit(); return false; }} >
+
+                        <MultiImageUploadPreview onFileSelect={setFile} />
                         
                         <div className="md:flex gap-x-[2rem]">
                             <div className="flex-1 mt-[1rem] ">
@@ -198,14 +309,14 @@ const ProductAddPage : FC = function () {
                                             isSelected ? "react-select__option--is-selected" : "react-select__option",
                                         placeholder: () => "react-select__placeholder",
                                     }}
-                                
-                                    value={selectedactiveOption}
-                                    onChange={(e) => { IsActivedata(e) }}
-                                    options={isactiveoption}
+                                    onFocus={ () => CallCompanyList()}
+                                    value={selectedCompanyOption}
+                                    onChange={(e) => { IsCompanydata(e) }}
+                                    options={companyoption}
                                     isClearable={true}
                                 />
-                                {validateactive == 1 ? (
-                                    <FormFeedback type="invalid" className="text-Red text-sm"> Please Select status </FormFeedback>
+                                {validateCompany == 1 ? (
+                                    <FormFeedback type="invalid" className="text-Red text-sm"> Please Select company  </FormFeedback>
                                 ) : null}
                                 </div>
                             </div>
@@ -243,14 +354,14 @@ const ProductAddPage : FC = function () {
                                             isSelected ? "react-select__option--is-selected" : "react-select__option",
                                         placeholder: () => "react-select__placeholder",
                                     }}
-                                
-                                    value={selectedactiveOption}
-                                    onChange={(e) => { IsActivedata(e) }}
-                                    options={isactiveoption}
+                                    onFocus={ () => CallPackingTypeList()}
+                                    value={selectedpackingTypeOption}
+                                    onChange={(e) => { IspackingTypedata(e) }}
+                                    options={packingtypeoption}
                                     isClearable={true}
                                 />
-                                {validateactive == 1 ? (
-                                    <FormFeedback type="invalid" className="text-Red text-sm"> Please Select status </FormFeedback>
+                                {validatepackingType == 1 ? (
+                                    <FormFeedback type="invalid" className="text-Red text-sm"> Please Select packing type </FormFeedback>
                                 ) : null}
                                 </div>
                             </div>
@@ -268,14 +379,14 @@ const ProductAddPage : FC = function () {
                                             isSelected ? "react-select__option--is-selected" : "react-select__option",
                                         placeholder: () => "react-select__placeholder",
                                     }}
-                                
-                                    value={selectedactiveOption}
-                                    onChange={(e) => { IsActivedata(e) }}
-                                    options={isactiveoption}
+                                    onFocus={ () => CallCategoryList()}
+                                    value={selectedCategoryOption}
+                                    onChange={(e) => { IsCategorydata(e) }}
+                                    options={categoryoption}
                                     isClearable={true}
                                 />
-                                {validateactive == 1 ? (
-                                    <FormFeedback type="invalid" className="text-Red text-sm"> Please Select status </FormFeedback>
+                                {validateCategory == 1 ? (
+                                    <FormFeedback type="invalid" className="text-Red text-sm"> Please Select category </FormFeedback>
                                 ) : null}
                                 </div>
                             </div>
@@ -327,7 +438,7 @@ const ProductAddPage : FC = function () {
                                     name="discount"
                                     className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
                                     placeholder="Product discount"
-                                    type="text"
+                                    type="number"
                                     onChange={validation.handleChange}
                                     onBlur={validation.handleBlur}
                                     value={validation.values.discount || ""}

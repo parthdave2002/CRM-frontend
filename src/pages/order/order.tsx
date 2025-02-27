@@ -16,7 +16,7 @@ const OrderListPage : FC = function () {
       const [UserDataList, setUserDataList] = useState([]);
       const [TotalPage, setTotalPage] = useState(0);
       const [PageNo, setPageNo] = useState(1);
-      const [RoePerPage, setRoePerPage] = useState(5);
+      const [RoePerPage, setRoePerPage] = useState(10);
     
       const RowPerPage = (value: any) => { setRoePerPage(value)};
       const PageDataList = (data:any) =>{ setPageNo(data)}
@@ -51,7 +51,7 @@ const OrderListPage : FC = function () {
       const [CurrentPageNo, setCurrentPageNo] = useState(0);
       
       useEffect(() => {
-        setUserDataList(Orderlist ? Orderlist  : null);
+        setUserDataList(Orderlist?.data ? Orderlist?.data  : Orderlist);
         setTotalListData(TotalOrderData ? TotalOrderData : 0);
         setCurrentUserListSize(OrderlistSize ? OrderlistSize : 0);
         setCurrentPageNo(CurrentPage ? CurrentPage : 1);
@@ -81,20 +81,21 @@ const OrderListPage : FC = function () {
                         <Table.HeadCell> <Checkbox id="select-all" name="select-all" /> </Table.HeadCell>
                         <Table.HeadCell>Order id</Table.HeadCell>
                         <Table.HeadCell>Advisor Name </Table.HeadCell>
-                        <Table.HeadCell>Created At</Table.HeadCell>
-                        {/* <Table.HeadCell>COD Amt</Table.HeadCell> */}
+                        <Table.HeadCell>COD Amt</Table.HeadCell>
                         <Table.HeadCell>Status</Table.HeadCell>
+                        <Table.HeadCell>Created At</Table.HeadCell>
                     </Table.Head>
 
                     <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
                         {UserDataList && UserDataList.map((item: any, k:number) => (
                             <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
                                 <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item._id} onClick={() => {CheckData(item._id)}}/>  </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => OrderDetailsCall(item._id)}>  {item._id} </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.email} </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {moment(item.createdAt).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
-                                {/* <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.totalAmount} </Table.Cell> */}
+                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => OrderDetailsCall(item._id)}>  {item.order_id} </Table.Cell>
+                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.advisor_name?.name} </Table.Cell>
+                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">₹ {item.total_amount} </Table.Cell>
                                 <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.status} </Table.Cell>
+                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {moment(item.createdAt).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
+
                             </Table.Row>
                         ))}
                     </Table.Body>

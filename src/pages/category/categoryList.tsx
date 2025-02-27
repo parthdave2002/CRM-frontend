@@ -14,12 +14,13 @@ import { FaExclamationCircle } from "react-icons/fa";
 import Cookies from "js-cookie";
 const IMG_URL = import.meta.env["VITE_API_URL"];
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
+const ToastMessage = lazy(() => import("../../components/ToastMessage"));
 
 const CategoryListPage: FC = function () {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isOpenDelteModel, setisOpenDelteModel] = useState(false);
-  const [PackingTypeList, setPackingTypeList] = useState([]);
+  const [Categorylistdata, setCategorylistdata] = useState([]);
   
   //------------ Access Data Code start------------
   interface AccessData{
@@ -61,7 +62,7 @@ const CategoryListPage: FC = function () {
     const [CurrentUserListSize, setCurrentUserListSize] = useState();
     const [CurrentPageNo, setCurrentPageNo] = useState(0);
     const [PageNo, setPageNo] = useState(1);
-    const [RoePerPage, setRoePerPage] = useState(5);
+    const [RoePerPage, setRoePerPage] = useState(10);
 
     const RowPerPage = (value: any) => { setRoePerPage(value)};
     const PageDataList = (data:any) =>{ setPageNo(data)}
@@ -84,8 +85,8 @@ const CategoryListPage: FC = function () {
       dispatch(getCategorylist(requserdata));
     }, [dispatch, PageNo, RoePerPage, searchData]);
 
-    useEffect(() => {        
-      setPackingTypeList(Categorylist? Categorylist : []);
+    useEffect(() => {     
+      setCategorylistdata(Categorylist? Categorylist : []);
       setTotalListData(TotalCategoryData ? TotalCategoryData : 0);
       setCurrentUserListSize(CategorylistSize ? CategorylistSize : 0);
       setCurrentPageNo(CurrentPage ? CurrentPage : 1);
@@ -141,7 +142,7 @@ const CategoryListPage: FC = function () {
               </Table.Head>
 
               <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
-                  {PackingTypeList && PackingTypeList.map((item: any, k) => (
+                  {Categorylistdata && Categorylistdata.map((item: any, k) => (
                         <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
                           <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item._id} onClick={() => {CheckData(item._id)}}/>  </Table.Cell>
 
@@ -149,7 +150,7 @@ const CategoryListPage: FC = function () {
                               <img
                                 src={`${IMG_URL}/public/category/${item.category_pic}`}
                                 alt="Category"
-                                className="h-16 w-32 object-cover rounded"
+                                className="h-28 w-28 object-cover rounded-full"
                               />  
                           </Table.Cell>
                           <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {item.name} </Table.Cell>
@@ -182,7 +183,8 @@ const CategoryListPage: FC = function () {
             <DeleteModalPage  isOpenDelteModel={isOpenDelteModel}  name={"Category"} setisOpenDelteModel={setisOpenDelteModel}  DelCall={DeleteCategoryData} />
           </Suspense>
         )}
-                  
+
+        <ToastMessage />     
     </>
   );
 };

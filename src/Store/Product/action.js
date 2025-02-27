@@ -14,6 +14,10 @@ import {
   DELETE_PRODUCT_LIST,
   DELETE_PRODUCT_LIST_SUCCESS,
   DELETE_PRODUCT_LIST_ERROR,
+
+  RESET_PRODUCT_LIST,
+  RESET_PRODUCT_LIST_ERROR,
+  RESET_PRODUCT_LIST_SUCCESS
 } from "./actionType";
 
 export const getRelatedProductlist = (requserdata) => ({
@@ -75,5 +79,20 @@ export const DeleteProductlistSuccess = (actionType, data) => ({
 
 export const DeleteProductlistFail = (actionType, error) => ({
   type: DELETE_PRODUCT_LIST_ERROR,
+  payload: { actionType, error },
+});
+
+export const ResetProductlist = (requserdata) => ({
+  type: RESET_PRODUCT_LIST,
+  payload: requserdata,
+});
+
+export const ResetProductlistSuccess = (actionType, data) => ({
+  type: RESET_PRODUCT_LIST_SUCCESS,
+  payload: { actionType, data },
+});
+
+export const ResetProductlistFail = (actionType, error) => ({
+  type: RESET_PRODUCT_LIST_ERROR,
   payload: { actionType, error },
 });

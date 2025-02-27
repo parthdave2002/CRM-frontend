@@ -9,6 +9,7 @@ import { Form, Input, FormFeedback } from "reactstrap";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { AddPackingTypelist, ResetPackingTypelist } from "../../Store/actions";
+import { toast } from "react-toastify";
 
 const AddpackingTypePage : FC = function () {
     const dispatch = useDispatch();
@@ -69,7 +70,8 @@ const AddpackingTypePage : FC = function () {
         useEffect(() => {  
             if(AddPackingtypelist?.success == true){
                 dispatch(ResetPackingTypelist())
-                navigate("/packing-type/list")
+                toast.success(AddPackingtypelist?.msg);
+                navigate(ParentLink)
                 validation.resetForm();
                 initialValues.packing_type = "";
                 setSelectedactiveid(null);
@@ -142,7 +144,7 @@ const AddpackingTypePage : FC = function () {
 
                         <div className="flex gap-x-3 justify-end">
                             <Button className="bg-addbutton hover:bg-addbutton dark:bg-addbutton dark:hover:bg-addbutton" type="submit" > Add packing type </Button>
-                            <Button className="bg-deletebutton hover:bg-deletebutton dark:bg-deletebutton dark:hover:bg-deletebutton" onClick={() => navigate("/packing-type/list")}>  Close </Button>
+                            <Button className="bg-deletebutton hover:bg-deletebutton dark:bg-deletebutton dark:hover:bg-deletebutton" onClick={() => navigate(ParentLink)}>  Close </Button>
                         </div>
                     </Form>
                 </div>
