@@ -42,6 +42,7 @@ const LeadListPage = lazy(() => import("./pages/lead/lead"));
 const TaglogListPage = lazy(() => import("./pages/taglog/taglogList"));
 const TaglogAddPage = lazy(() => import("./pages/taglog/taglogAdd"));
 const TaglogDetailsPage = lazy(() => import("./pages/taglog/taglogDetails"));
+const SubTaglogAddPage = lazy(() => import("./pages/taglog/subTaglogAdd"));
 const ReportPage = lazy(() => import("./pages/report/report"));
 const CropsListPage = lazy(() => import("./pages/crops/cropsList"));
 const AddCropsPage = lazy(() => import("./pages/crops/cropsAdd"));
@@ -100,6 +101,7 @@ const App: FC = function () {
             <Route path="/taglog/add" element={<TaglogAddPage />} />
             <Route path="/taglog/:id" element={<TaglogAddPage />} />
             <Route path="/taglog/details/:id" element={<TaglogDetailsPage />} />
+            <Route path="/taglog/add/:id" element={<SubTaglogAddPage />} />
             <Route path="/product/list" element={<ProductListPage />} />
             <Route path="/product/add" element={<ProductAddPage />} />
             <Route path="/product/:id" element={<ProductAddPage />} />

@@ -42,7 +42,7 @@ function* onDelCropList({ payload: requstuser }) {
     yield put(DeleteCroplistSuccess(DELETE_CROP_LIST, response));
      
     if(response.success === true || response.success === "true"){
-      toast.success(response.msg);
+      toast.success(response?.msg);
       const newresponse = yield call(CroplistApi);
       yield put(getCroplistSuccess(GET_CROP_LIST, newresponse));
     }

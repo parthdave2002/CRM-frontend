@@ -16,6 +16,7 @@ import {
   REST_TAGLOG_LIST
 } from "./actionType";
 import { TagloglistApi, AddTagloglistApi, DelTagloglistApi,} from "../../helper/Demo_helper";
+import { toast } from "react-toastify";
 
 function* onGetTaglogList({ payload: requstuser }) {
   try {
@@ -41,6 +42,7 @@ function* onDelTaglogList({ payload: requstuser }) {
     yield put(DeleteTagloglistSuccess(DELETE_TAGLOG_LIST, response));
 
     if(response.success === true || response.success === "true"){
+       toast.success(response?.msg);
       const newresponse = yield call(TagloglistApi);
       yield put(getTagloglistSuccess(GET_TAGLOG_LIST, newresponse));
     }

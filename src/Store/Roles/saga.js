@@ -39,6 +39,7 @@ import {
   UpdatelistApi,
   DelRolelistApi,
 } from "../../helper/Demo_helper";
+import { toast } from "react-toastify";
 
 function* onGetRolesList({ payload: requstuser }) {
   try {
@@ -84,8 +85,9 @@ function* onDelRolesList({ payload: requstuser }) {
     const reponse = yield call(DelRolelistApi, requstuser);
     yield put(DeleteRoleslistSuccess(DELETE_ROLES_LIST, reponse));
     if(reponse.success == true){
-      const reponse = yield call(RolelistApi);
-      yield put(getRoleslistSuccess(GET_ROLES_LIST, reponse));
+      toast.success(reponse?.msg)
+      const newreponse = yield call(RolelistApi);
+      yield put(getRoleslistSuccess(GET_ROLES_LIST, newreponse));
     }
   } catch (error) {
     yield put(DeleteRoleslistFail(error));

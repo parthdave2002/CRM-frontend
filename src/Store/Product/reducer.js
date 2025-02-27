@@ -15,6 +15,10 @@ import {
   DELETE_PRODUCT_LIST,
   DELETE_PRODUCT_LIST_SUCCESS,
   DELETE_PRODUCT_LIST_ERROR,
+
+  RESET_PRODUCT_LIST,
+  RESET_PRODUCT_LIST_SUCCESS,
+  RESET_PRODUCT_LIST_ERROR,
 } from "./actionType";
 
 const INIT_STATE = {
@@ -23,6 +27,7 @@ const INIT_STATE = {
   TotalProductData:0,
   CurrentPage:1,
   DeleteProductlist:[],
+  AddProductlist:[],
   error: {},
 };
 
@@ -80,7 +85,7 @@ const Product = (state = INIT_STATE, action) => {
         case ADD_PRODUCT_LIST:
           return {
             ...state,
-            Productlist: action.payload.data,
+            AddProductlist: action.payload.data,
           };
       }
     case ADD_PRODUCT_LIST_ERROR:
@@ -112,6 +117,31 @@ const Product = (state = INIT_STATE, action) => {
         default:
           return { ...state };
       }
+
+      case RESET_PRODUCT_LIST_SUCCESS:
+        switch (action.payload.actionType) {
+          case RESET_PRODUCT_LIST:
+            return {
+              ...state,
+              Productlist: [],
+              ProductlistSize:0,
+              TotalProductData:0,
+              CurrentPage:1,
+              DeleteProductlist:[],
+              AddProductlist:[],
+              error: {},
+            };
+        }
+      case RESET_PRODUCT_LIST_ERROR:
+        switch (action.payload.actionType) {
+          case RESET_PRODUCT_LIST:
+            return {
+              ...state,
+              error: action.payload,
+            };
+          default:
+            return { ...state };
+        }
  
     default:
       return state;

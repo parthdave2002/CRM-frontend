@@ -13,6 +13,7 @@ import { useNavigate } from "react-router";
 import { FaExclamationCircle } from "react-icons/fa";
 import Cookies from "js-cookie";
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
+const ToastMessage = lazy(() => import("../../components/ToastMessage"));
 
 const PackinTypeListPage: FC = function () {
   const dispatch = useDispatch();
@@ -85,8 +86,6 @@ const PackinTypeListPage: FC = function () {
 
     useEffect(() => {  
       setPackingTypeList(Packingtypelist ? Packingtypelist : null);
-      // setAccessList(UserList.AccessData ? UserList.AccessData.list : []);
-      // setAccessCommon(UserList.AccessData ? UserList.AccessData.common : []);
       setTotalListData(TotalPackingtypeData ? TotalPackingtypeData : 0);
       setCurrentUserListSize(PackingtypelistSize ? PackingtypelistSize : 0);
       setCurrentPageNo(CurrentPage ? CurrentPage : 1);
@@ -172,7 +171,8 @@ const PackinTypeListPage: FC = function () {
             <DeleteModalPage  isOpenDelteModel={isOpenDelteModel}  name={"packing type"} setisOpenDelteModel={setisOpenDelteModel}  DelCall={DeletepackingType} />
           </Suspense>
         )}
-                  
+
+      <ToastMessage />       
     </>
   );
 };

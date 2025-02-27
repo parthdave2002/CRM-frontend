@@ -14,6 +14,7 @@ import { FaExclamationCircle } from "react-icons/fa";
 import Cookies from "js-cookie";
 const IMG_URL = import.meta.env["VITE_API_URL"];
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
+const ToastMessage = lazy(() => import("../../components/ToastMessage"));
 
 const BannerListPage: FC = function () {
   const dispatch = useDispatch();
@@ -179,6 +180,7 @@ const BannerListPage: FC = function () {
             <DeleteModalPage  isOpenDelteModel={isOpenDelteModel}  name={"Banner"} setisOpenDelteModel={setisOpenDelteModel}  DelCall={DeletepackingType} />
           </Suspense>
         )}
+        <ToastMessage />
                   
     </>
   );

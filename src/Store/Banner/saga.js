@@ -17,6 +17,7 @@ import {
   REST_BANNER_LIST
 } from "./actionType";
 import { BannerlistApi, AddBannerlistApi, DelBannerlistApi,} from "../../helper/Demo_helper";
+import { toast } from "react-toastify";
 
 function* onGetBannerList({ payload: requstuser }) {
   try {
@@ -42,6 +43,7 @@ function* onDelBannerList({ payload: requstuser }) {
     yield put(DeleteBannerlistSuccess(DELETE_BANNER_LIST, response));
 
     if(response.success === true || response.success === "true"){
+      toast.success(response?.msg);
       const newresponse = yield call(BannerlistApi);
       yield put(getBannerlistSuccess(GET_BANNER_LIST, newresponse));
     }

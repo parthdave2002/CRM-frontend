@@ -8,14 +8,19 @@ import {
   AddProductlistFail,
   DeleteProductlistSuccess,
   DeleteProductlistFail,
+  ResetProductlist,
+  ResetProductlistSuccess,
+  ResetProductlistFail
 } from "./action";
 import {
   GET_RELATED_PRODUCT_LIST,
   GET_PRODUCT_LIST,
   ADD_PRODUCT_LIST,
   DELETE_PRODUCT_LIST,
+  RESET_PRODUCT_LIST
 } from "./actionType";
 import { RelatedProductlistApi,ProductlistApi,  AddProductlistApi, DelProductlistApi,} from "../../helper/Demo_helper";
+import { toast } from "react-toastify";
 
 
 function* onGetRelatedProductList({ payload: requstuser }) {
@@ -51,6 +56,7 @@ function* onDelProductList({ payload: requstuser }) {
     yield put(DeleteProductlistSuccess(DELETE_PRODUCT_LIST, response));
 
     if(response.success === true || response.success === "true"){
+      toast.success(response?.msg)
       const newresponse = yield call(ProductlistApi);
       yield put(getProductlistSuccess(GET_PRODUCT_LIST, newresponse));
     }
@@ -59,10 +65,16 @@ function* onDelProductList({ payload: requstuser }) {
   }
 }
 
+function* onResetProductList() {
+  const response = yield call(ResetProductlist);
+  yield put(ResetProductlistSuccess(RESET_PRODUCT_LIST, response));
+}
+
 function* ProductSaga() {
   yield takeEvery(GET_RELATED_PRODUCT_LIST, onGetRelatedProductList);
   yield takeEvery(GET_PRODUCT_LIST, onGetProductList);
   yield takeEvery(ADD_PRODUCT_LIST, onAddProductlist);
   yield takeEvery(DELETE_PRODUCT_LIST, onDelProductList);
+  yield takeEvery(RESET_PRODUCT_LIST, onResetProductList);
 }
 export default ProductSaga;

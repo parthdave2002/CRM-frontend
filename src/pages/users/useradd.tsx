@@ -233,16 +233,20 @@ const AddUserPage : FC = function () {
 
      useEffect(() =>{
         if(UserAddedList?.success == true){
-            validation.resetForm();
             toast.success(UserAddedList?.msg);
             dispatch(ResetUserdatalist());
-            setTimeout(() =>{
             navigate(ParentLink)
-            },5000)
+            validation.resetForm();
         }
      },[UserAddedList])
  //  -------------- Get Role Data list -------------------
 
+    // const minDate = new Date();
+    // minDate.setFullYear(minDate.getFullYear() - 18);
+
+    const today = new Date();
+    const minDate = new Date(today.setFullYear(today.getFullYear() - 18));
+    const formattedMinDate = minDate.toISOString().split("T")[0]; // Format to yyyy-mm-dd=  
 
     let Name = "User Add";
     let ParentName = "User List";
@@ -418,6 +422,7 @@ const AddUserPage : FC = function () {
                                     className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
                                     placeholder="date_of_birth"
                                     type="date"
+                                    max={formattedMinDate}
                                     onChange={validation.handleChange}
                                     onBlur={validation.handleBlur}
                                     value={validation.values.date_of_birth || ""}

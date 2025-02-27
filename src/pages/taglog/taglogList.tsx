@@ -11,8 +11,10 @@ import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useNavigate } from "react-router";
 import moment from "moment";
 import { FaExclamationCircle } from "react-icons/fa";
+import { BiSolidAddToQueue } from "react-icons/bi";
 import Cookies from "js-cookie";
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
+const ToastMessage = lazy(() => import("../../components/ToastMessage"));
 
 const TaglogListPage: FC = function () {
   const dispatch = useDispatch();
@@ -59,7 +61,7 @@ const TaglogListPage: FC = function () {
     const [CurrentUserListSize, setCurrentUserListSize] = useState();
     const [CurrentPageNo, setCurrentPageNo] = useState(0);
     const [PageNo, setPageNo] = useState(1);
-    const [RoePerPage, setRoePerPage] = useState(5);
+    const [RoePerPage, setRoePerPage] = useState(10);
 
     const RowPerPage = (value: any) => { setRoePerPage(value)};
     const PageDataList = (data:any) =>{ setPageNo(data)}
@@ -119,7 +121,6 @@ const TaglogListPage: FC = function () {
   }
 
   const getEditTaglogData = (id:any) =>{
-    console.log("Edit calll");
     navigate(`/taglog/add/${id}`)
   }
 
@@ -153,8 +154,8 @@ const TaglogListPage: FC = function () {
                           <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0"> {moment(item.createdAt).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
                           <Table.Cell className="space-x-2 whitespace-nowrap py-0">
                             <div className="flex items-center gap-x-3">
-                              {AccessList?.edit ?  <Button gradientDuoTone="greenToBlue" onClick={() => getEditTaglogData(item._id)} > <div className="flex items-center gap-x-2">  <HiOutlinePencilAlt className="text-lg" />  Edit Taglog  </div></Button> : null}
                               {AccessList?.delete ?  <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete Taglog </div> </Button> : null } 
+                              {AccessList?.add ?  <Button gradientDuoTone="greenToBlue" onClick={() => getEditTaglogData(item._id)} > <div className="flex items-center gap-x-2">  <BiSolidAddToQueue className="text-lg" />  Add Sub-Taglog  </div></Button> : null}
                               <Button  gradientDuoTone="purpleToBlue" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <FaExclamationCircle className="text-lg" /> Detail Taglog  </div> </Button>
                             </div>
                           </Table.Cell>
@@ -171,7 +172,8 @@ const TaglogListPage: FC = function () {
             <DeleteModalPage  isOpenDelteModel={isOpenDelteModel}  name={"taglog"} setisOpenDelteModel={setisOpenDelteModel}  DelCall={DeletepackingType} />
           </Suspense>
         )}
-                  
+
+      <ToastMessage />      
     </>
   );
 };

@@ -10,6 +10,7 @@ import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { AddBannerlist, ResetBannerlist } from "../../Store/actions";
 import ImageUploadPreview from "../../components/imageuploader";
+import { toast } from "react-toastify";
 
 const BannerAddPage : FC = function () {
     const dispatch = useDispatch();
@@ -76,7 +77,8 @@ const BannerAddPage : FC = function () {
 
         useEffect(() => {  
             if(AddBannerDatalist?.success == true){
-                dispatch(ResetBannerlist())
+                dispatch(ResetBannerlist());
+                toast.success(AddBannerDatalist?.msg)
                 navigate(ParentLink)
                 validation.resetForm();
                 setSelectedactiveid(null);

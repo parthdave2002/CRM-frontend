@@ -10,7 +10,6 @@ import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { AddTagloglist, ResetTagloglist } from "../../Store/actions";
 import { toast } from "react-toastify";
-const ToastMessage = lazy(() => import("../../components/ToastMessage"));
 
 const TaglogAddPage : FC = function () {
     const dispatch = useDispatch();
@@ -76,10 +75,9 @@ const TaglogAddPage : FC = function () {
         useEffect(() => {  
             if(AddTagloglistData?.success == true){
                 dispatch(ResetTagloglist())
-                toast.success(AddTagloglistData?.msg)
-                setTimeout(() =>{
-                    navigate(ParentLink)
-                },5000)
+                toast.success(AddTagloglistData?.msg);
+               
+                navigate(ParentLink)
                 validation.resetForm();
                 setSelectedactiveid(null);
                 setSelectedactiveOption(null);
@@ -146,7 +144,6 @@ const TaglogAddPage : FC = function () {
                     </Form>
                 </div>
             </NavbarSidebarLayout>
-            <ToastMessage />
         </>
     );
 }

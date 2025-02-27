@@ -12,8 +12,9 @@ import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useNavigate } from "react-router";
 import moment from "moment";
 import Cookies from "js-cookie";
-const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 const IMG_URL = import.meta.env["VITE_API_URL"];
+const ToastMessage = lazy(() => import("../../components/ToastMessage"));
+const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 
 const ProductListPage: FC = function () {
   const dispatch = useDispatch();
@@ -86,8 +87,6 @@ const ProductListPage: FC = function () {
 
     useEffect(() => {        
       setProductList(Productlist ? Productlist  :[]);
-      // setAccessList(UserList.AccessData ? UserList.AccessData.list : []);
-      // setAccessCommon(UserList.AccessData ? UserList.AccessData.common : []);
       setTotalListData(TotalProductData ? TotalProductData : 0);
       setCurrentUserListSize(ProductlistSize ? ProductlistSize : 0);
       setCurrentPageNo(CurrentPage ? CurrentPage : 1);
@@ -134,9 +133,8 @@ const ProductListPage: FC = function () {
           <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
               <Table.Head className="bg-gray-100 dark:bg-gray-700">
                 <Table.HeadCell> <Checkbox id="select-all" name="select-all" /> </Table.HeadCell>
-                <Table.HeadCell>Image</Table.HeadCell>
                 <Table.HeadCell>Name</Table.HeadCell>
-                <Table.HeadCell>Description</Table.HeadCell>
+                {/* <Table.HeadCell>Description</Table.HeadCell> */}
                 <Table.HeadCell>Category</Table.HeadCell>
                 <Table.HeadCell>Avl Qty</Table.HeadCell>
                 <Table.HeadCell>price</Table.HeadCell>
@@ -149,16 +147,9 @@ const ProductListPage: FC = function () {
                   {ProductList && ProductList.map((item: any, k) => (
                         <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
                           <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item._id} onClick={() => {CheckData(item._id)}}/>  </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  
-                            <img
-                              src={`${IMG_URL}/public/product/${item.product_pic}`}
-                              alt="product"
-                              className="h-16 w-32 object-cover rounded"
-                            />
-                           </Table.Cell>
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.name} </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap overflow-hidden text-ellipsis max-w-[400px] text-base font-medium text-gray-900 dark:text-white py-0">  {item.description}</Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.category} </Table.Cell>
+                          {/* <Table.Cell className="whitespace-nowrap overflow-hidden text-ellipsis max-w-[400px] text-base font-medium text-gray-900 dark:text-white py-0">  {item.description}</Table.Cell> */}
+                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.categories?.name} </Table.Cell> 
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.avl_qty} </Table.Cell>
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.price} Rs.</Table.Cell>
                           <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white">
@@ -186,7 +177,7 @@ const ProductListPage: FC = function () {
             <DeleteModalPage  isOpenDelteModel={isOpenDelteModel}  name={"Product"} setisOpenDelteModel={setisOpenDelteModel}  DelCall={Deleteproduct} />
           </Suspense>
         )}
-                  
+        <ToastMessage />
     </>
   );
 };

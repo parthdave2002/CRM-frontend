@@ -51,8 +51,8 @@ function* onDelOrderList({ payload: requstuser }) {
     yield put(DeleteOrderlistSuccess(DELETE_ORDER_LIST, response));
 
     if(response.success === true || response.success === "true"){
-      const newresponse = yield call(OrderlistApi);
-      yield put(getOrderlistSuccess(GET_ORDER_LIST, newresponse));
+      const response = yield call(OrderlistApi);
+      yield put(getOrderlistSuccess(GET_ORDER_LIST, response));
     }
   } catch (error) {
     yield put(DeleteOrderlistFail(error));

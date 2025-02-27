@@ -9,6 +9,7 @@ import ExamplePagination from "../../components/pagination";
 import { useNavigate } from "react-router-dom";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import Cookies from "js-cookie";
+const ToastMessage = lazy(() => import("../../components/ToastMessage"));
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 
 const RolesPage: FC = function () {
@@ -156,9 +157,9 @@ const RolesPage: FC = function () {
                       </div>
                     </Table.Cell>
                     <Table.Cell>  
-                      {/* {AccessList?.edit ?  */}
+                      {AccessList?.add ? 
                         <Button color="primary" className="whitespace-nowrap text-base font-normal text-gray-900 dark:text-dark"  onClick={() => ModuleListFuncall(item._id)}> <div className="flex items-center gap-x-2"> <HiKey className="text-lg" /> Role Access List </div>  </Button>  
-                      {/* : null}    */}
+                      : null}    
                     </Table.Cell>
                   </Table.Row>
               ))}
@@ -167,11 +168,12 @@ const RolesPage: FC = function () {
         <ExamplePagination PageData={PageDataList} RowPerPage={RowPerPage}  PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData}/>
       </NavbarSidebarLayout>
 
-            {isOpenDelteModel && (
-              <Suspense fallback={<div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50"> <div className="text-white">Loading...</div> </div> }>
-                <DeleteModalPage  isOpenDelteModel={isOpenDelteModel}  name={"role"} setisOpenDelteModel={setisOpenDelteModel}  DelCall={DelRole} />
-              </Suspense>
-            )}
+      {isOpenDelteModel && (
+        <Suspense fallback={<div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50"> <div className="text-white">Loading...</div> </div>}>
+          <DeleteModalPage isOpenDelteModel={isOpenDelteModel} name={"role"} setisOpenDelteModel={setisOpenDelteModel} DelCall={DelRole} />
+        </Suspense>
+      )}
+      <ToastMessage />
     </>
   );
 };

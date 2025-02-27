@@ -1,6 +1,7 @@
 import { Badge, Dropdown, Table, useTheme } from "flowbite-react";
 import { useEffect, useState, type FC } from "react";
-import { FaUser, FaTags  } from "react-icons/fa";
+import { FaUser, FaRupeeSign  } from "react-icons/fa";
+import { FaHandHoldingDollar } from "react-icons/fa6";
 import Chart from "react-apexcharts";
 import NavbarSidebarLayout from "../layouts/navbar-sidebar";
 import { useNavigate } from "react-router";
@@ -73,65 +74,67 @@ const DashboardPage: FC = function () {
 
         <div>
           <div className="md:flex flex-wrap gap-3">
-            <div className="w-[calc(33%-6px)] md:w-[32%] w-full mt-[1.5rem] md:mt-0">
-              <div className="h-20 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-red-200 dark:bg-gray-800 dark:text-gray-50">
-                <div className="flex w-full justify-between items-start">
-                  <div className="p-3 rounded-full bg-purple-500">
-                    <FaTags className="text-white w-6 h-6" />
-                  </div>
-                  <div>
-                    <select className="border border-gray-300 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily"    onChange={(e) => UserDropDownCall(e)}>
-                      <option value="daily">Daily</option>
-                      <option value="weekly">Weekly</option>
-                      <option value="monthly">Monthly</option>
-                    </select>
-                  </div>
-                  <div className="text-center self-center">
-                    <p className="text-sm font-semibold">Total User</p>
-                    <p className="text-lg font-bold text-center">{ selectedUserframe == "weekly" ? total_userData?.weekly   : selectedUserframe == "monthly" ?  total_userData?.monthly :    total_userData?.daily}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+          
 
             <div className="w-[calc(33%-6px)] md:w-[32%] w-full mt-[1.5rem] md:mt-0">
-              <div className="h-20 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-red-200 dark:bg-gray-800 dark:text-gray-50">
+              <div className="h-24 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-red-200 dark:bg-gray-800 dark:text-gray-50">
                 <div className="flex w-full justify-between items-start">
-                  <div className="p-3 rounded-full bg-purple-500">
-                    <FaTags className="text-white w-6 h-6" />
+                  <div className="p-3 rounded-full bg-purple-500 self-center">
+                    <FaHandHoldingDollar className="text-white w-6 h-6" />
                   </div>
-                  <div>
+                  <div className="self-center">
                     <select className="border border-gray-300 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily" onChange={(e) => OrderDropDownCall(e)}>
                       <option value="daily">Daily</option>
                       <option value="weekly">Weekly</option>
                       <option value="monthly">Monthly</option>
                     </select>
                   </div>
-                  <div className="text-center self-center">
-                    <p className="text-sm font-semibold">Total Order</p>
-                    <p className="text-lg font-bold text-center">{ selectedOrderframe == "weekly" ? total_orderData?.weekly   : selectedOrderframe == "monthly" ?  total_orderData?.monthly :    total_orderData?.daily}</p>
+               
+                  <div className="text-center self-center items-start ">
+                    <p className="text-md font-bold">Total Order</p>
+                    <p className="text-lg font-bold text-center mt-2">{ selectedOrderframe == "weekly" ? total_orderData?.weekly   : selectedOrderframe == "monthly" ?  total_orderData?.monthly :    total_orderData?.daily}</p>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Third Card - Total Revenue */}
             <div className="w-[calc(33%-6px)] md:w-[32%] w-full mt-[1.5rem] md:mt-0">
-              <div className="h-20 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-red-200 dark:bg-gray-800 dark:text-gray-50">
+              <div className="h-24 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-red-200 dark:bg-gray-800 dark:text-gray-50">
                 <div className="flex w-full justify-between items-start">
-                  <div className="p-3 rounded-full bg-purple-500">
-                    <FaUser className="text-white w-6 h-6" />
+                  <div className="p-3 rounded-full bg-purple-500 self-center">
+                    <FaRupeeSign className="text-white w-6 h-6" />
                   </div>
-                  <div>
+                  <div className="self-center">
                     <select className="border border-gray-300 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily"  onChange={(e) => revenueDropDownCall(e)}>
                       <option value="daily">Daily</option>
                       <option value="weekly">Weekly</option>
                       <option value="monthly">Monthly</option>
                     </select>
                   </div>
-                  <div className="text-center self-center">
-                    <p className="text-sm font-semibold">Total Revenue</p>
-                    <p className="text-lg font-bold text-center">{ selectedrevenueframe == "weekly" ? total_revenueData?.weekly   : selectedrevenueframe == "monthly" ?  total_revenueData?.monthly :    total_revenueData?.daily}</p>
+                  <div className="text-center self-center items-start">
+                    <p className="text-md font-bold">Total Revenue</p>
+                    <p className="text-lg font-bold text-center mt-2">{ selectedrevenueframe == "weekly" ? total_revenueData?.weekly   : selectedrevenueframe == "monthly" ?  total_revenueData?.monthly :    total_revenueData?.daily}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="w-[calc(33%-6px)] md:w-[32%] w-full mt-[1.5rem] md:mt-0">
+              <div className="h-24 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-red-200 dark:bg-gray-800 dark:text-gray-50">
+                <div className="flex w-full justify-between items-start">
+                  <div className="p-3 rounded-full bg-purple-500 self-center">
+                    <FaUser className="text-white w-6 h-6" />
+                  </div>
+                  <div className="self-center">
+                    <select className="border border-gray-300 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily"    onChange={(e) => UserDropDownCall(e)}>
+                      <option value="daily">Daily</option>
+                      <option value="weekly">Weekly</option>
+                      <option value="monthly">Monthly</option>
+                    </select>
+                  </div>
+                  <div className="text-center self-center items-start">
+                    <p className="text-md font-bold">Total User</p>
+                    <p className="text-lg font-bold text-center mt-2">{ selectedUserframe == "weekly" ? total_userData?.weekly   : selectedUserframe == "monthly" ?  total_userData?.monthly :    total_userData?.daily}</p>
                   </div>
                 </div>
               </div>

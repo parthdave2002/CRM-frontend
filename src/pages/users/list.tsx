@@ -10,7 +10,6 @@ import { lazy, useEffect, useState, Suspense  } from "react";
 import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useNavigate } from "react-router";
-import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 const ToastMessage = lazy(() => import("../../components/ToastMessage"));
@@ -32,7 +31,7 @@ const UserListPage: FC = function () {
 
   // Access Data Code end
   const { UserList,  UserListSize, TotalUserListData, CurrentPage, permissionsdata } = useSelector((state: any) => ({
-      UserList: state.User.UserList,
+      UserList: state.User.UserList?.data,
       UserListSize: state.User.UserListSize,
       TotalUserListData: state.User.TotalUserListData,
       CurrentPage: state.User.CurrentPage,
@@ -58,7 +57,7 @@ const UserListPage: FC = function () {
   // ----------- next Button  Code Start -------------
   const [TotalPage, setTotalPage] = useState(0);
   const [PageNo, setPageNo] = useState(1);
-  const [RoePerPage, setRoePerPage] = useState(5);
+  const [RoePerPage, setRoePerPage] = useState(10);
 
   const RowPerPage = (value: any) => { setRoePerPage(value)};
   const PageDataList = (data:any) =>{ setPageNo(data)}
@@ -86,7 +85,7 @@ const UserListPage: FC = function () {
   const [CurrentUserListSize, setCurrentUserListSize] = useState();
   const [CurrentPageNo, setCurrentPageNo] = useState(0);
   
-  useEffect(() => {
+  useEffect(() => { 
     setUserDataList(UserList ? UserList  : null);
     setTotalListData(TotalUserListData ? TotalUserListData : 0);
     setCurrentUserListSize(UserListSize ? UserListSize : 0);

@@ -108,13 +108,9 @@ function* onGetAdduserList({ payload: requstuser }) {
     const reponse = yield call(AddUserlistApi, requstuser);
     yield put(AddUserlistSuccess(ADD_USER_LIST, reponse));
 
-    if (reponse.success == true) {
-      toast.success(reponse.message, {});
-      let requserdata = { page: 1, size: 5, search: null};
-      const reponse = yield call(UserlistApi, requserdata);
-      yield put(getUserlistSuccess(GET_USER_LIST, reponse));
+    if (reponse.success == false) {
+      toast.error(reponse?.msg)
     } 
-    else{ toast.error(reponse.msg, {}); }
   } catch (error) {
     yield put(AddUserlistFail(error));
   }
@@ -124,11 +120,11 @@ function* onGetDeleteuserList({ payload: requstuser }) {
   try {
     const reponse = yield call(DelUserlistApi, requstuser);
     yield put(DeleteUserlistSuccess(DELETE_USER_LIST, reponse));
-
-    if (reponse.success == true) {
+    if (reponse?.success === true || reponse?.success === "true") {
+      toast.success(reponse?.msg);
       let requserdata = {  page: 1,  size: 10 };
-      const reponse = yield call(UserlistApi, requserdata);
-      yield put(getUserlistSuccess(GET_USER_LIST, reponse));
+      const newreponse = yield call(UserlistApi);
+      yield put(getUserlistSuccess(GET_USER_LIST, newreponse));
     }
   } catch (error) {
     yield put(DeleteUserlistFail(error));

@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, lazy, useEffect, useState } from "react";
 import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { Label, Button } from "flowbite-react";
@@ -8,15 +8,12 @@ import Select from "react-select";
 import { Form, Input, FormFeedback } from "reactstrap";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { AddCategorylist, ResetCategorylist } from "../../Store/actions";
-import ImageUploadPreview from "../../components/imageuploader";
+import { AddTagloglist, ResetTagloglist } from "../../Store/actions";
 import { toast } from "react-toastify";
 
-const CategoryAddPage : FC = function () {
+const SubTaglogAddPage : FC = function () {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
-    const [file, setFile] = useState<File | null>(null);
 
     // ------ status code start ------
     const [selectedactiveOption, setSelectedactiveOption] = useState(null);
@@ -38,7 +35,6 @@ const CategoryAddPage : FC = function () {
 
     const [initialValues, setinitialValues] = useState({
         name: "",
-        description:"",
         status: "",
     });
 
@@ -47,51 +43,52 @@ const CategoryAddPage : FC = function () {
         initialValues: initialValues,
     
         validationSchema: Yup.object({
-          name: Yup.string().required("Please enter category name"),
-          description: Yup.string().required("Please enter category description")
+          name: Yup.string().required("Please enter taglog name"),
         }),
         
         onSubmit: (values) => {
-          if(selectedactiveid == null) return setValidateactive(1);
-          const formData = new FormData();
-          formData.append("name", values.name);
-          formData.append("description", values.description);
-          formData.append("is_active", JSON.stringify(selectedactiveid));
-          if (file) {
-            formData.append("category_pic", file); 
-          }
-          dispatch(AddCategorylist(formData));
+          if(selectedactiveid == null) return setValidateactive(1)
+          let requserdata = {
+            taglog_name: values?.name,
+            is_active: selectedactiveid,
+          };
+          dispatch(AddTagloglist(requserdata));
         },
     });
 
     const isactiveoption =[
-        {  label :"Active",  value : true  },
-        {  label :"Inactive", value : false }
+        {
+            label :"Active",
+            value : true
+        },
+        {
+            label :"Inactive",
+            value : false
+        }
     ]
 
     // ------------- Get  Data From Reducer Code Start --------------
-        const { AddCategoryDatalist } = useSelector((state: any) => ({
-            AddCategoryDatalist: state.Category.AddCategorylist,
+        const { AddTagloglistData  } = useSelector((state: any) => ({
+            AddTagloglistData : state.Taglog.AddTagloglist,
         }));
 
         useEffect(() => {  
-            console.log("AddCategoryDatalist",AddCategoryDatalist );
-            
-            if(AddCategoryDatalist?.success == true){
-                dispatch(ResetCategorylist());
-                toast.success(AddCategoryDatalist?.msg);
+            if(AddTagloglistData?.success == true){
+                dispatch(ResetTagloglist())
+                toast.success(AddTagloglistData?.msg);
+               
                 navigate(ParentLink)
                 validation.resetForm();
                 setSelectedactiveid(null);
                 setSelectedactiveOption(null);
-                setValidateactive(1)
+                setValidateactive(0)
             }
-        }, [AddCategoryDatalist]);
+        }, [AddTagloglistData ]);
     //  ------------- Get Data From Reducer Code end --------------
 
-    let Name = "Category Add";
-    let ParentName = "Category List";
-    let ParentLink = "/category/list";
+    let Name = "Sub-Taglog Add";
+    let ParentName = "Taglog List";
+    let ParentLink = "/taglog/list";
 
     return (
         <>  
@@ -99,9 +96,6 @@ const CategoryAddPage : FC = function () {
                 <ExampleBreadcrumb  Name={Name} ParentName={ParentName} ParentLink={ParentLink}  />
                 <div className="mt-[2rem] bg-white dark:bg-gray-800 p-4">
                     <Form onSubmit={(e) => { e.preventDefault(); validation.handleSubmit(); return false; }} >
-
-                        <ImageUploadPreview onFileSelect={setFile}/>
-
                         <div>
                             <Label htmlFor="Name">Name</Label>
                             <div className="mt-1">
@@ -109,7 +103,7 @@ const CategoryAddPage : FC = function () {
                                 id="name"
                                 name="name"
                                 className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
-                                placeholder="Category name"
+                                placeholder="Sub-Taglog name"
                                 type="text"
                                 onChange={validation.handleChange}
                                 onBlur={validation.handleBlur}
@@ -117,24 +111,6 @@ const CategoryAddPage : FC = function () {
                                 invalid={ validation.touched.name && validation.errors.name ? true : false}
                             />
                             {validation.touched.name && validation.errors.name ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.name} </FormFeedback> ) : null}
-                            </div>
-                        </div>
-
-                        <div className="mt-[1rem]">
-                            <Label htmlFor="Description">Description</Label>
-                            <div className="mt-1">
-                            <Input
-                                id="description"
-                                name="description"
-                                className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
-                                placeholder="description"
-                                type="text"
-                                onChange={validation.handleChange}
-                                onBlur={validation.handleBlur}
-                                value={validation.values.description || ""}
-                                invalid={ validation.touched.description && validation.errors.description ? true : false}
-                            />
-                            {validation.touched.description && validation.errors.description ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.description} </FormFeedback> ) : null}
                             </div>
                         </div>
 
@@ -151,7 +127,6 @@ const CategoryAddPage : FC = function () {
                                         isSelected ? "react-select__option--is-selected" : "react-select__option",
                                     placeholder: () => "react-select__placeholder",
                                 }}
-                              
                                 value={selectedactiveOption}
                                 onChange={(e) => { IsActivedata(e) }}
                                 options={isactiveoption}
@@ -162,7 +137,7 @@ const CategoryAddPage : FC = function () {
                         </div>
 
                         <div className="flex gap-x-3 justify-end mt-[1rem]">
-                            <Button className="bg-addbutton hover:bg-addbutton dark:bg-addbutton dark:hover:bg-addbutton" type="submit" > Add Category </Button>
+                            <Button className="bg-addbutton hover:bg-addbutton dark:bg-addbutton dark:hover:bg-addbutton" type="submit" > Add Sub-Taglog </Button>
                             <Button className="bg-deletebutton hover:bg-deletebutton dark:bg-deletebutton dark:hover:bg-deletebutton" onClick={() => navigate(ParentLink)}>  Close </Button>
                         </div>
                     </Form>
@@ -172,4 +147,4 @@ const CategoryAddPage : FC = function () {
     );
 }
 
-export default CategoryAddPage;
+export default SubTaglogAddPage;
