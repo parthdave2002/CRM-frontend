@@ -108,14 +108,16 @@ const OrdererDetailsPage: FC = function () {
                 <p className="text-gray-500">Shop-1, Ravi Shopping Center,</p>
                 <p className="text-gray-500">Opp. New bus stand</p>
                 <p className="text-gray-500">  Kapadwanj, Kehda, Gujarat, 387620 </p>
-                <p className="text-gray-500">  Contact : 9621696200, 9621696200  </p>
-                <p className="text-gray-500">Email ID:agribharat2023@gmil.com </p>
+                <p className="text-gray-500">  GST : 24ABCDE1234FZP1Z1 </p>
+
               </div>
 
-              <div className="flex-1 text-right">
+              <div className="flex-1 text-right align-end self-end">
                 <p className="text-gray-500 text-sm"><strong> Pesticide Lic No: </strong>   KHF/FP1240001586/2024-2025 </p>
                 <p className="text-gray-500 text-sm"><strong> Seeds Lic No: </strong> KHF/FSR240001647/2024-2025 </p>
                 <p className="text-gray-500 text-sm"> <strong> Ferlitizer Lic No: </strong> KHF/FFR240001682/2024-2025 </p>
+                <p className="text-gray-500 text-sm">  Contact : 9621696200, 9621696200  </p>
+                <p className="text-gray-500 text-sm">agribharat2023@gmil.com </p>
               </div>
             </div>
 

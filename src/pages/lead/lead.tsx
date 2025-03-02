@@ -186,7 +186,7 @@ const LeadListPage : FC = function () {
                           <Table.Row key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
                             <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox value={item._id} onClick={() => { CheckData(item._id) }} />  </Table.Cell>
                             <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.name} </Table.Cell>
-                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.phone} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.mobile_number} </Table.Cell>
                             <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.taglog} </Table.Cell>
                             <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {moment(item.added_at).format("DD-MM-YYYY hh:ss:mm")} </Table.Cell>
                             <Table.Cell className="space-x-2 whitespace-nowrap py-0">

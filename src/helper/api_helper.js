@@ -6,6 +6,7 @@ axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
 // content type
 axios.defaults.headers.post["Content-Type"] = "application/json";
+
 // intercepting to capture errors
 axios.interceptors.response.use(
   function (response) {
@@ -39,13 +40,7 @@ const setAuthorization = (token) => {
 };
 
 class APIClient {
-  /**
-   * Fetches data from given url
-   */
-
-  //  get = (url, params) => {
-  //   return axios.get(url, params);
-  // };
+  /* Fetches data from given url */
   get = (url, params ) => {
     let response;
 
@@ -65,21 +60,18 @@ class APIClient {
 
     return response;
   }
-  /**
-   * post given data to url
-   */
+
+  /* post given data to url */
   create = (url, data) => {
     return axios.post(url, data);
   };
-  /**
-   * Updates data
-   */
+
+  /* Updates data */
   update = (url, data) => {
     return axios.put(url, data);
   };
-  /**
-   * Delete
-   */
+
+  /* Delete data*/
   delete = (url,params) => {
     let response;
     let paramKeys = [];
