@@ -56,30 +56,6 @@ const CustomerDetailsPage: FC = function () {
   
   //  ------------- Get User Data From Reducer Code Start --------------
 
-  const SingleUserDataList = [
-    {
-      "is_active": true,
-      "_id": "67ab2c70371d4b1e04ef3514",
-      "customer_name": "serus",
-      "mobile_number": 858,
-      "alternate_number" : 12356,
-      "smart_phone": true,
-      "land_area" : 5,
-      "land_type": 'acre',
-      "irrigation_source": "barwell",
-      "irrigation_type": "flood",
-      "crops":[],
-      "heard_about_agribharat":"newspaper",
-      "address":  "demo address",
-      "district":  "demo district",
-      "taluka":  "demo taluka",
-      "village": "demo village",
-      "pincode": "123456890",
-      "created_at": "1997-01-12",
-      "created_by": "Demo Sales executive",
-    }
-  ]
-
   let Name = "Customer Details";
   let ParentName = "Customer List";
   let ParentLink = "/customer/list";
@@ -169,7 +145,7 @@ const CustomerDetailsPage: FC = function () {
                 <div className="p-4 dark:bg-gray-800 rounded-lg">
                   <h3 className="text-gray-600 dark:text-gray-300 font-semibold">Created By</h3>
                   <p className="text-gray-900 dark:text-white">
-                    {data?.created_by || "N/A"}
+                    {data?.created_by?.name || "N/A"}
                   </p>
                 </div>
 

@@ -159,12 +159,14 @@ const ProductAddPage : FC = function () {
     // ------ status code end ------
 
     const [initialValues, setinitialValues] = useState({
-        name: "",
-        tech_name:"",
+        eng_name:"",
+        guj_name: "",
+        tech_name_eng:"",
+        tech_name_guj:"",
         packing: "",
         qty: "",
         price: "",
-        discount:"",
+        discount: 0,
         batch_number: "",
         hsn_code: "",
         cgst:"",
@@ -177,8 +179,10 @@ const ProductAddPage : FC = function () {
         initialValues: initialValues,
     
         validationSchema: Yup.object({
-          name: Yup.string().required("Please enter product name"),
-          tech_name: Yup.string().required("Please enter product technical name"),
+          eng_name: Yup.string().required("Please enter english product name"),
+          guj_name: Yup.string().required("Please enter gujarati product name"),
+          tech_name_eng: Yup.string().required("Please enter english product technical name"),
+          tech_name_guj: Yup.string().required("Please enter gujarati product technical name"),
           packing: Yup.string().required("Please enter product packing"),
           qty: Yup.string().required("Please enter product qty"),
           price: Yup.string().required("Please enter product price"),
@@ -190,6 +194,8 @@ const ProductAddPage : FC = function () {
         }),
         
         onSubmit: (values) => {
+            console.log("calllll", values);
+            
           {selectedactiveid == "" ? setValidateactive(1) : setValidateactive(0) }
           {selectedCategoryid == "" ? setValidateCategory(1) : setValidateCategory(0) }
           {selectedpackingTypeid == "" ? setValidatepackingType(1) : setValidatepackingType(0) }
@@ -197,18 +203,20 @@ const ProductAddPage : FC = function () {
 
 
             const formData = new FormData();
-            formData.append("name", values?.name);
-            formData.append("tech_name", values?.tech_name);
+            formData.append("name[gujaratiname]", values?.guj_name);
+            formData.append("name[englishname]", values?.eng_name);
+            formData.append("tech_name[gujarati_tech_name]", values?.tech_name_guj);
+            formData.append("tech_name[english_tech_name]", values?.tech_name_eng);
             formData.append("packaging", values?.packing);
             formData.append("price", values?.price);
-            formData.append("discount",values?.discount);
+            formData.append("discount", values?.discount?.toString() ?? "0");
             formData.append("packagingtype", selectedpackingTypeid);
             formData.append("company", selectedCompanyid);
             formData.append("categories", selectedCategoryid);
-            formData.append("batch_number", values?.batch_number);
+            formData.append("batch_no", values?.batch_number);
             formData.append("hsn_code", values?.hsn_code);
-            formData.append("cgst", values?.cgst);
-            formData.append("sgst", values?.sgst);
+            formData.append("c_gst", values?.cgst);
+            formData.append("s_gst", values?.sgst);
             formData.append("avl_qty", values?.qty);
             formData.append("description", JSON.stringify(inputs));
             formData.append("is_active", selectedactiveid);
@@ -253,69 +261,90 @@ const ProductAddPage : FC = function () {
             <NavbarSidebarLayout isFooter={false}  isSidebar={true} isNavbar={true} isRightSidebar={true}>
                 <ExampleBreadcrumb  Name={Name} ParentName={ParentName} ParentLink={ParentLink}  />
                 <div className="mt-[2rem] bg-white dark:bg-gray-800 p-4">
-                    <Form onSubmit={(e) => { e.preventDefault(); validation.handleSubmit(); return false; }} >
-
-                        <MultiImageUploadPreview onFileSelect={setFile} />
+                    <Form onSubmit={(e) => { e.preventDefault(); 
+                        validation.handleSubmit(); 
+                        return false; 
+                        }} >
                         
-                        <div className="md:flex gap-x-[2rem]">
-                            <div className="flex-1 mt-[1rem] ">
-                                <Label htmlFor="Name">Name</Label>
-                                <div className="mt-1">
-                                <Input
-                                    id="name"
-                                    name="name"
-                                    className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
-                                    placeholder="Product name"
-                                    type="text"
-                                    onChange={validation.handleChange}
-                                    onBlur={validation.handleBlur}
-                                    value={validation.values.name || ""}
-                                    invalid={ validation.touched.name && validation.errors.name ? true : false}
-                                />
-                                {validation.touched.name && validation.errors.name ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.name} </FormFeedback> ) : null}
+                        <div>
+                            <label className="dark:text-gray-100 text-[1.2rem]"> Product Image : </label>
+                            <MultiImageUploadPreview onFileSelect={setFile} />
+                        </div>
+                        
+                        <div className="md:flex gap-x-[2rem] mt-[3rem]">
+                            <div  className="dark:bg-gray-800 flex-1 p-4 rounded-lg ring ring-gray-300  dark:ring-gray-500 space-y-3 mb-4">
+                                <div className="flex-1 mt-[1rem] ">
+                                    <Label htmlFor="Name">Name ( Eng )</Label>
+                                    <div className="mt-1">
+                                    <Input
+                                        id="eng_name"
+                                        name="eng_name"
+                                        className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
+                                        placeholder="Product english name"
+                                        type="text"
+                                        onChange={validation.handleChange}
+                                        onBlur={validation.handleBlur}
+                                        value={validation.values.eng_name || ""}
+                                        invalid={ validation.touched.eng_name && validation.errors.eng_name ? true : false}
+                                    />
+                                    {validation.touched.eng_name && validation.errors.eng_name ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.eng_name} </FormFeedback> ) : null}
+                                    </div>
+                                </div>
+
+                                <div className="flex-1 mt-[1rem] ">
+                                    <Label htmlFor="Name">Name ( Guj )</Label>
+                                    <div className="mt-1">
+                                    <Input
+                                        id="guj_name"
+                                        name="guj_name"
+                                        className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
+                                        placeholder="Product gujarati name"
+                                        type="text"
+                                        onChange={validation.handleChange}
+                                        onBlur={validation.handleBlur}
+                                        value={validation.values.guj_name || ""}
+                                        invalid={ validation.touched.guj_name && validation.errors.guj_name ? true : false}
+                                    />
+                                    {validation.touched.guj_name && validation.errors.guj_name ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.guj_name} </FormFeedback> ) : null}
+                                    </div>
                                 </div>
                             </div>
-
-                            <div className="flex-1 mt-[1rem] ">
-                                <Label htmlFor="tech_name">Technical Name</Label>
-                                <div className="mt-1">
-                                <Input
-                                    id="tech_name"
-                                    name="tech_name"
-                                    className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
-                                    placeholder="Product technical name"
-                                    type="text"
-                                    onChange={validation.handleChange}
-                                    onBlur={validation.handleBlur}
-                                    value={validation.values.tech_name || ""}
-                                    invalid={ validation.touched.tech_name && validation.errors.tech_name ? true : false}
-                                />
-                                {validation.touched.tech_name && validation.errors.tech_name ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.tech_name} </FormFeedback> ) : null}
+                            
+                            <div  className="dark:bg-gray-800  flex-1 p-4 rounded-lg ring ring-gray-300  dark:ring-gray-500 space-y-3 mb-4">
+                                <div className="flex-1 mt-[1rem] ">
+                                    <Label htmlFor="tech_name">Technical Name ( Eng )</Label>
+                                    <div className="mt-1">
+                                    <Input
+                                        id="tech_name_eng"
+                                        name="tech_name_eng"
+                                        className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
+                                        placeholder="Product technical name"
+                                        type="text"
+                                        onChange={validation.handleChange}
+                                        onBlur={validation.handleBlur}
+                                        value={validation.values.tech_name_eng || ""}
+                                        invalid={ validation.touched.tech_name_eng && validation.errors.tech_name_eng ? true : false}
+                                    />
+                                    {validation.touched.tech_name_eng && validation.errors.tech_name_eng ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.tech_name_eng} </FormFeedback> ) : null}
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div className="flex-1 mt-[1rem] ">
-                                <Label htmlFor="Status">Company</Label>
-                                <div className="mt-1">
-                                <Select
-                                    className="w-full dark:text-white"
-                                    classNames={{
-                                        control: () => "react-select__control",
-                                        singleValue: () => "react-select__single-value",
-                                        menu: () => "react-select__menu",
-                                        option: ({ isSelected }) =>
-                                            isSelected ? "react-select__option--is-selected" : "react-select__option",
-                                        placeholder: () => "react-select__placeholder",
-                                    }}
-                                    onFocus={ () => CallCompanyList()}
-                                    value={selectedCompanyOption}
-                                    onChange={(e) => { IsCompanydata(e) }}
-                                    options={companyoption}
-                                    isClearable={true}
-                                />
-                                {validateCompany == 1 ? (
-                                    <FormFeedback type="invalid" className="text-Red text-sm"> Please Select company  </FormFeedback>
-                                ) : null}
+                                <div className="flex-1 mt-[1rem] ">
+                                    <Label htmlFor="Name">Technical Name ( Guj )</Label>
+                                    <div className="mt-1">
+                                    <Input
+                                        id="tech_name_guj"
+                                        name="tech_name_guj"
+                                        className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
+                                        placeholder="Product technical  name"
+                                        type="text"
+                                        onChange={validation.handleChange}
+                                        onBlur={validation.handleBlur}
+                                        value={validation.values.tech_name_guj || ""}
+                                        invalid={ validation.touched.tech_name_guj && validation.errors.tech_name_guj ? true : false}
+                                    />
+                                    {validation.touched.tech_name_guj && validation.errors.tech_name_guj ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.tech_name_guj} </FormFeedback> ) : null}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -329,10 +358,10 @@ const ProductAddPage : FC = function () {
                                     name="packing"
                                     className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
                                     placeholder="Product packing"
-                                    type="text"
+                                    type="number"
                                     onChange={validation.handleChange}
                                     onBlur={validation.handleBlur}
-                                    value={validation.values.packing || ""}
+                                    value={validation.values.packing ?? ""}
                                     invalid={ validation.touched.packing && validation.errors.packing ? true : false}
                                 />
                                 {validation.touched.packing && validation.errors.packing ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.packing} </FormFeedback> ) : null}
@@ -401,9 +430,10 @@ const ProductAddPage : FC = function () {
                                     className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
                                     placeholder="Product QTY"
                                     type="number"
+                                    min="0"
                                     onChange={validation.handleChange}
                                     onBlur={validation.handleBlur}
-                                    value={validation.values.qty || ""}
+                                    value={validation.values.qty ?? ""}
                                     invalid={ validation.touched.qty && validation.errors.qty ? true : false}
                                 />
                                 {validation.touched.qty && validation.errors.qty ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.qty} </FormFeedback> ) : null}
@@ -419,9 +449,10 @@ const ProductAddPage : FC = function () {
                                     className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
                                     placeholder="Product Price"
                                     type="number"
+                                    min="0"
                                     onChange={validation.handleChange}
                                     onBlur={validation.handleBlur}
-                                    value={validation.values.price || ""}
+                                    value={validation.values.price ?? ""}
                                     invalid={ validation.touched.price && validation.errors.price ? true : false}
                                 />
                                 {validation.touched.price && validation.errors.price ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.price} </FormFeedback> ) : null}
@@ -437,18 +468,45 @@ const ProductAddPage : FC = function () {
                                     className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
                                     placeholder="Product discount"
                                     type="number"
+                                    min="0" 
                                     onChange={validation.handleChange}
                                     onBlur={validation.handleBlur}
-                                    value={validation.values.discount || ""}
+                                    value={validation.values.discount ?? ""}
                                     invalid={ validation.touched.discount && validation.errors.discount ? true : false}
                                 />
-                                {validation.touched.discount && validation.errors.name ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.discount} </FormFeedback> ) : null}
+                                {validation.touched.discount && validation.errors.discount ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.discount} </FormFeedback> ) : null}
                                 </div>
                             </div>
 
                         </div>
 
                         <div className="md:flex gap-x-[2rem]">
+
+                            <div className="flex-1 mt-[1rem] ">
+                                <Label htmlFor="Status">Company</Label>
+                                <div className="mt-1">
+                                <Select
+                                    className="w-full dark:text-white"
+                                    classNames={{
+                                        control: () => "react-select__control",
+                                        singleValue: () => "react-select__single-value",
+                                        menu: () => "react-select__menu",
+                                        option: ({ isSelected }) =>
+                                            isSelected ? "react-select__option--is-selected" : "react-select__option",
+                                        placeholder: () => "react-select__placeholder",
+                                    }}
+                                    onFocus={ () => CallCompanyList()}
+                                    value={selectedCompanyOption}
+                                    onChange={(e) => { IsCompanydata(e) }}
+                                    options={companyoption}
+                                    isClearable={true}
+                                />
+                                {validateCompany == 1 ? (
+                                    <FormFeedback type="invalid" className="text-Red text-sm"> Please Select company  </FormFeedback>
+                                ) : null}
+                                </div>
+                            </div>
+
                             <div className="flex-1 mt-[1rem]">
                                 <Label htmlFor="batch_number"> Batch No</Label>
                                 <div className="mt-1">
@@ -499,7 +557,7 @@ const ProductAddPage : FC = function () {
                                     type="number"
                                     onChange={validation.handleChange}
                                     onBlur={validation.handleBlur}
-                                    value={validation.values.cgst || ""}
+                                    value={validation.values.cgst ?? ""}
                                     invalid={ validation.touched.cgst && validation.errors.cgst ? true : false}
                                 />
                                 {validation.touched.cgst && validation.errors.cgst ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.cgst} </FormFeedback> ) : null}
@@ -514,10 +572,10 @@ const ProductAddPage : FC = function () {
                                     name="sgst"
                                     className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
                                     placeholder="Product SGST"
-                                    type="text"
+                                    type="number"
                                     onChange={validation.handleChange}
                                     onBlur={validation.handleBlur}
-                                    value={validation.values.sgst || ""}
+                                    value={validation.values.sgst ?? ""}
                                     invalid={ validation.touched.sgst && validation.errors.sgst ? true : false}
                                 />
                                 {validation.touched.sgst && validation.errors.sgst ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.sgst} </FormFeedback> ) : null}

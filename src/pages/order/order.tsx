@@ -80,7 +80,7 @@ const OrderListPage : FC = function () {
                     <Table.Head className="bg-gray-100 dark:bg-gray-700">
                         <Table.HeadCell> <Checkbox id="select-all" name="select-all" /> </Table.HeadCell>
                         <Table.HeadCell>Order id</Table.HeadCell>
-                        <Table.HeadCell>Advisor Name </Table.HeadCell>
+                        <Table.HeadCell> Sales Executive </Table.HeadCell>
                         <Table.HeadCell>COD Amt</Table.HeadCell>
                         <Table.HeadCell>Status</Table.HeadCell>
                         <Table.HeadCell>Created At</Table.HeadCell>
