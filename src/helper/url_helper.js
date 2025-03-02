@@ -13,7 +13,7 @@ export const GET_REPORT_DATA_LIST = "/api/dashboard/report";
 
 // User Api
 export const GET_USER_LIST = "/api/user/get-user";
-export const GET_USER_VIEW = "/api/user/detailview";
+export const GET_USER_VIEW = "/api/user/get-user";
 export const ADD_USER_LIST = "/api/user/add-user";
 export const DELETE_USER_LIST = "/api/user/deluser";
 export const UPDATE_USER_DATA_LIST = "/api/user/update";
@@ -78,9 +78,10 @@ export const DELETE_TAGLOG_LIST = "/api/taglog/remove-taglog";
 export const GET_EXPORT_DATA_LIST = "/api/export/export-data";
 
 // Customer
-export const GET_CUSTOMER_DATA_LIST = "/api/customer/get-customer";
+export const GET_CUSTOMER_DATA_LIST = "/api/customer/get-customers";
 export const ADD_CUSTOMER_DATA_LIST = "/api/customer/add-customer";
 export const DELETE_CUSTOMER_DATA_LIST = "/api/customer/remove-customer";
+export const BLOCK_CUSTOMER_DATA_LIST = "/api/customer/change-status";
 
 export const GET_CROP_LIST = "/api/crop/get-crop";
 export const ADD_CROP_LIST = "/api/crop/add-crop";

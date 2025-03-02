@@ -11,6 +11,10 @@ import {
   DELETE_CUSTOMER_DATA_LIST_SUCCESS,
   DELETE_CUSTOMER_DATA_LIST_ERROR,
 
+  BLOCK_CUSTOMER_DATA_LIST,
+  BLOCK_CUSTOMER_DATA_LIST_SUCCESS,
+  BLOCK_CUSTOMER_DATA_LIST_ERROR,
+
   REST_CUSTOMER_DATA_LIST,
   REST_CUSTOMER_DATA_LIST_SUCCESS,
   REST_CUSTOMER_DATA_LIST_ERROR
@@ -23,6 +27,7 @@ const INIT_STATE = {
   CurrentPage:1,
   AddCustomerlist: [],
   DeleteCustomerlist: [],
+  BlockCustomerlist:[],
   error: {},
 };
 
@@ -50,7 +55,7 @@ const Customer = (state = INIT_STATE, action) => {
         default:
           return { ...state };
       }
-    
+
     case ADD_CUSTOMER_DATA_LIST_SUCCESS:
       switch (action.payload.actionType) {
         case ADD_CUSTOMER_DATA_LIST:
@@ -89,31 +94,50 @@ const Customer = (state = INIT_STATE, action) => {
           return { ...state };
       }
 
-      case REST_CUSTOMER_DATA_LIST_SUCCESS:
-        switch (action.payload.actionType) {
-          case REST_CUSTOMER_DATA_LIST:
-            return {
-              ...state,
-              Customerlist: [],
-              CustomerlistSize:0,
-              TotalCustomerData:0,
-              CurrentPage:1,
-              AddCustomerlist: [],
-              DeleteCustomerlist: [],
-              error: {},
-            };
-        }
-      case REST_CUSTOMER_DATA_LIST_ERROR:
-        switch (action.payload.actionType) {
-          case REST_CUSTOMER_DATA_LIST:
-            return {
-              ...state,
-              error: action.payload,
-            };
-          default:
-            return { ...state };
-        }
- 
+    case REST_CUSTOMER_DATA_LIST_SUCCESS:
+      switch (action.payload.actionType) {
+        case REST_CUSTOMER_DATA_LIST:
+          return {
+            ...state,
+            Customerlist: [],
+            CustomerlistSize: 0,
+            TotalCustomerData: 0,
+            CurrentPage: 1,
+            AddCustomerlist: [],
+            DeleteCustomerlist: [],
+            error: {},
+          };
+      }
+    case REST_CUSTOMER_DATA_LIST_ERROR:
+      switch (action.payload.actionType) {
+        case REST_CUSTOMER_DATA_LIST:
+          return {
+            ...state,
+            error: action.payload,
+          };
+        default:
+          return { ...state };
+      }
+
+    case BLOCK_CUSTOMER_DATA_LIST_SUCCESS:
+      switch (action.payload.actionType) {
+        case BLOCK_CUSTOMER_DATA_LIST:
+          return {
+            ...state,
+            BlockCustomerlist: action.payload.data,
+          };
+      }
+    case BLOCK_CUSTOMER_DATA_LIST_ERROR:
+      switch (action.payload.actionType) {
+        case BLOCK_CUSTOMER_DATA_LIST:
+          return {
+            ...state,
+            error: action.payload,
+          };
+        default:
+          return { ...state };
+      }
+
     default:
       return state;
   }

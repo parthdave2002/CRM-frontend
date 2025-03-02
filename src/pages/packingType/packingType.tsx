@@ -61,7 +61,7 @@ const PackinTypeListPage: FC = function () {
     const [CurrentUserListSize, setCurrentUserListSize] = useState();
     const [CurrentPageNo, setCurrentPageNo] = useState(0);
     const [PageNo, setPageNo] = useState(1);
-    const [RoePerPage, setRoePerPage] = useState(5);
+    const [RoePerPage, setRoePerPage] = useState(10);
 
     const RowPerPage = (value: any) => { setRoePerPage(value)};
     const PageDataList = (data:any) =>{ setPageNo(data)}
@@ -152,10 +152,10 @@ const PackinTypeListPage: FC = function () {
                           <Table.Cell className="space-x-2 whitespace-nowrap py-0">
                             <div className="flex items-center gap-x-3">
                                 {AccessList?.delete ?
-                                  <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete </div> </Button>
+                                  <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete Packing </div> </Button>
                                 : null}
 
-                               <Button  gradientDuoTone="purpleToBlue" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <FaExclamationCircle className="text-lg" /> Detail PackingType  </div> </Button> 
+                               {/* <Button  gradientDuoTone="purpleToBlue" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <FaExclamationCircle className="text-lg" /> Detail PackingType  </div> </Button>  */}
                             </div>
                           </Table.Cell>
                         </Table.Row>

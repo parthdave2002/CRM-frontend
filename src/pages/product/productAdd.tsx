@@ -40,7 +40,7 @@ const ProductAddPage : FC = function () {
             setCompanyListData(Companylist? Companylist : []);
         },[Companylist]);
 
-        const companyoption = CompanyListData && CompanyListData.map((item:any) => ({ label: item.name, value: item._id }) );
+        const companyoption = CompanyListData ?.filter((item: any) => item.is_active)  .map((item: any) => ({ label: item.name, value: item._id }));
 
         const [selectedCompanyOption, setSelectedCompanyOption] = useState(null);
         const [selectedCompanyid, setSelectedCompanyid] = useState("");
@@ -73,8 +73,7 @@ const ProductAddPage : FC = function () {
             setPackingTypeListData(Packingtypelist ? Packingtypelist : []);
         }, [Packingtypelist]);
 
-        const packingtypeoption = PackingTypeListData && PackingTypeListData.map((item: any) => ({ label: item.type, value: item._id }))
-
+        const packingtypeoption = PackingTypeListData && PackingTypeListData ?.filter((item: any) => item.is_active)  .map((item: any) => ({ label: item.type, value: item._id }));
         const [selectedpackingTypeOption, setSelectedpackingTypeOption] = useState(null);
         const [selectedpackingTypeid, setSelectedpackingTypeid] = useState("");
         const [validatepackingType, setValidatepackingType] = useState(0);
@@ -106,8 +105,7 @@ const ProductAddPage : FC = function () {
             setCategoryListData(Categorylist ? Categorylist : []);
         }, [Categorylist]);
 
-        const categoryoption = CategoryListData && CategoryListData.map((item: any) => ({ label: item.name, value: item._id }));
-
+        const categoryoption = CategoryListData && CategoryListData ?.filter((item: any) => item.is_active)  .map((item: any) => ({ label: item.name, value: item._id }));
         const [selectedCategoryOption, setSelectedCategoryOption] = useState(null);
         const [selectedCategoryid, setSelectedCategoryid] = useState("");
         const [validateCategory, setValidateCategory] = useState(0);

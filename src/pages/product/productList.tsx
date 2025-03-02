@@ -86,7 +86,7 @@ const ProductListPage: FC = function () {
     }, [dispatch, PageNo, RoePerPage, searchData]);
 
     useEffect(() => {        
-      setProductList(Productlist ? Productlist  :[]);
+      setProductList(Productlist ? Productlist?.data  :[]);
       setTotalListData(TotalProductData ? TotalProductData : 0);
       setCurrentUserListSize(ProductlistSize ? ProductlistSize : 0);
       setCurrentPageNo(CurrentPage ? CurrentPage : 1);
@@ -147,7 +147,7 @@ const ProductListPage: FC = function () {
                   {ProductList && ProductList.map((item: any, k) => (
                         <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
                           <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item._id} onClick={() => {CheckData(item._id)}}/>  </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.name} </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => DetailsPageCall(item._id)}>  {item.name} </Table.Cell>
                           {/* <Table.Cell className="whitespace-nowrap overflow-hidden text-ellipsis max-w-[400px] text-base font-medium text-gray-900 dark:text-white py-0">  {item.description}</Table.Cell> */}
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.categories?.name} </Table.Cell> 
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.avl_qty} </Table.Cell>

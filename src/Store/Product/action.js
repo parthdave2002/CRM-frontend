@@ -7,6 +7,10 @@ import {
   GET_PRODUCT_LIST_SUCCESS,
   GET_PRODUCT_LIST_ERROR,
 
+  GET_PRODUCT_VIEW_LIST,
+  GET_PRODUCT_VIEW_LIST_SUCCESS,
+  GET_PRODUCT_VIEW_LIST_ERROR,
+
   ADD_PRODUCT_LIST,
   ADD_PRODUCT_LIST_SUCCESS,
   ADD_PRODUCT_LIST_ERROR,
@@ -94,5 +98,20 @@ export const ResetProductlistSuccess = (actionType, data) => ({
 
 export const ResetProductlistFail = (actionType, error) => ({
   type: RESET_PRODUCT_LIST_ERROR,
+  payload: { actionType, error },
+});
+
+export const GetProductViewlist = (requserdata) => ({
+  type: GET_PRODUCT_VIEW_LIST,
+  payload: requserdata,
+});
+
+export const GetProductViewlistSuccess = (actionType, data) => ({
+  type: GET_PRODUCT_VIEW_LIST_SUCCESS,
+  payload: { actionType, data },
+});
+
+export const GetProductViewlistFail = (actionType, error) => ({
+  type: GET_PRODUCT_VIEW_LIST_ERROR,
   payload: { actionType, error },
 });

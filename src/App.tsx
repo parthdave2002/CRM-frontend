@@ -91,7 +91,7 @@ const App: FC = function () {
             <Route path="/category/:id" element={<CategoryAddPage />} />
             <Route path="/category/details/:id" element={<CategoryDetailsPage />} />
             <Route path="/customer/list" element={<CustomerListPage />} />
-            <Route path="/customer/details" element={<CustomerDetailsPage />} />
+            <Route path="/customer/details/:id" element={<CustomerDetailsPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/banner/list" element={<BannerListPage />} />
             <Route path="/banner/add" element={<BannerAddPage />} />

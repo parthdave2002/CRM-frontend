@@ -11,6 +11,8 @@ import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useNavigate } from "react-router";
 import moment from "moment";
 import Cookies from "js-cookie";
+import { FaExclamationCircle } from "react-icons/fa";
+const ToastMessage = lazy(() => import("../../components/ToastMessage"));
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 
 const CompanyListPage: FC = function () {
@@ -151,8 +153,9 @@ const CompanyListPage: FC = function () {
                           <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0"> {moment(item.createdAt).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
                           <Table.Cell className="space-x-2 whitespace-nowrap py-0">
                             <div className="flex items-center gap-x-3">
-                              {AccessList?.delete ?  <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete </div> </Button> : null }  
-                              <Button  gradientDuoTone="pinkToOrange" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Details </div> </Button>
+                              {AccessList?.delete ?  <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete Company</div> </Button> : null }  
+                              {/* <Button  gradientDuoTone="purpleToBlue" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <FaExclamationCircle className="text-lg" /> Detail Company  </div> </Button> */}
+                              
                             </div>
                           </Table.Cell>
                         </Table.Row>
@@ -168,7 +171,8 @@ const CompanyListPage: FC = function () {
             <DeleteModalPage  isOpenDelteModel={isOpenDelteModel}  name={"Company"} setisOpenDelteModel={setisOpenDelteModel}  DelCall={DeletepackingType} />
           </Suspense>
         )}
-                  
+        
+        <ToastMessage />
     </>
   );
 };

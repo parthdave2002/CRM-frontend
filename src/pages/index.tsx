@@ -34,11 +34,13 @@ const DashboardPage: FC = function () {
   const [selectedrevenueframe, setSelectedrevenueframe] = useState("");
 
   const [CustomerData , setCustomerData] = useState([]);
+  const [OrderData , setOrderData] = useState([]);
   const [UserData , setUserData] = useState([]);
   const [ProductData, setProductData] =useState([]);
   
   useEffect(() =>{
     setCustomerData(DashboardDataList?.data?.customers);
+    setOrderData(DashboardDataList?.data?.orders);
     setUserData(DashboardDataList?.data?.users);
     setProductData(DashboardDataList?.data?.products);
     set_total_revenueData(DashboardDataList?.data?.totalCustomers);
@@ -144,7 +146,47 @@ const DashboardPage: FC = function () {
         </div>
 
         <div className="my-6 lg:grid  grid-flow-row gap-4 flex flex-col"> <SalesThisWeek /> </div>
-        <div className="my-6 "> <LatestTransactions />  </div>
+        <div className="my-6 ">
+          <div className="rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6 xl:p-8">
+            <div className="mb-4 flex items-center justify-between">
+              <div>
+                <div className="mb-2 text-md lg:text-xl font-bold text-gray-900 dark:text-white"> Latest Transactions </div>
+                <span className="text-base font-normal text-gray-600 dark:text-gray-400 hidden md:block"> This is a list of latest transactions </span>
+              </div>
+                <div className="inline-flex items-center rounded-lg p-2 text-sm font-medium text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700 cursor-pointer" onClick={() => ViewAllCall("order")}>  View all </div>
+            </div>
+            <div className="mt-8 flex flex-col">
+              <div className="overflow-x-auto rounded-lg">
+                <div className="inline-block min-w-full align-middle">
+                  <div className="overflow-hidden shadow sm:rounded-lg">
+                    <Table   striped  className="min-w-full divide-y divide-gray-200 dark:divide-gray-600"  >
+                      <Table.Head className="bg-gray-50 dark:bg-gray-700">
+                        <Table.HeadCell>Order id</Table.HeadCell>
+                        <Table.HeadCell>Date &amp; Time</Table.HeadCell>
+                        <Table.HeadCell>Customer Name</Table.HeadCell>
+                        <Table.HeadCell>Sales  Executive </Table.HeadCell>
+                        <Table.HeadCell>Amount</Table.HeadCell>
+                        <Table.HeadCell>Status</Table.HeadCell>
+                      </Table.Head>
+                      <Table.Body className="bg-white dark:bg-gray-800">
+                          {OrderData && OrderData.map((item:any, k:any) =>(
+                            <Table.Row>
+                            <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 dark:text-gray-200">   <span className="font-semibold">{ item.order_id}</span> </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-200">  {moment(item.added_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-gray-200"> {item?.customer?.customer_name}</Table.Cell>
+                            <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-gray-200"> {item?.advisor_name?.name} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-gray-200"> ₹ { item?.total_amount}</Table.Cell>
+                            <Table.Cell className="flex whitespace-nowrap p-4"> <Badge color="success">{item?.status}</Badge> </Table.Cell>
+                          </Table.Row>
+                          ))}
+                      </Table.Body>
+                    </Table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         
         <div className="my-6 lg:grid grid-cols-2 grid-flow-row gap-4">
           {/* Customer Data */}
@@ -162,8 +204,11 @@ const DashboardPage: FC = function () {
                           <p className="truncate text-sm font-medium text-gray-900 dark:text-white"> {item.customer_name} </p>
                           <p className="truncate text-sm text-gray-500 dark:text-gray-400"> {item.taluka}  </p>
                         </div>
-                        <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">{item.mobile_number}</div>
-                        <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white ">{item.village}</div>
+                        {/* <div className="inline-flex items-center text-sm font-normal text-gray-900 dark:text-gray-300 text-center">{item.village}</div> */}
+                        <div className="inline-flex items-center text-md font-normal text-gray-900 dark:text-gray-200">{item.mobile_number}</div>
+                        <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-400">{item.is_deleted == false ?  <Badge color="success">Active</Badge>  :  <Badge color="danger">Deactive</Badge>}</div>
+
+                        
                       </div>
                       </li>
                     ))}
@@ -189,7 +234,7 @@ const DashboardPage: FC = function () {
                         <p className="truncate text-sm font-medium text-gray-900 dark:text-white"> {item.name} </p>
                         <p className="truncate text-sm text-gray-500 dark:text-gray-400"> {item.email}  </p>
                       </div>
-                      <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">{item.is_active == true ? "Active" : "Deactive"}</div>
+                      <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-400">{item.is_active == true ?  <Badge color="success">Active</Badge>  :  <Badge color="danger">Deactive</Badge>}</div>
                     </div>
                     </li>
                   ))}
@@ -218,6 +263,8 @@ const DashboardPage: FC = function () {
                       <Table.HeadCell>Name</Table.HeadCell>
                       <Table.HeadCell>Category</Table.HeadCell>
                       <Table.HeadCell>Qty</Table.HeadCell>
+                      <Table.HeadCell>HSN</Table.HeadCell>
+                      <Table.HeadCell>Batch</Table.HeadCell>
                       <Table.HeadCell>Price</Table.HeadCell>
                       <Table.HeadCell>Date &amp; Time</Table.HeadCell>
                     </Table.Head>
@@ -225,10 +272,12 @@ const DashboardPage: FC = function () {
                         {ProductData && ProductData.map((item:any ,k:number) =>(
                           <Table.Row key={k}>
                           <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 dark:text-white"><span className="font-semibold">{item.name}</span>  </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400"> {item.category} </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white"> {item.avl_qty}  </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white"> {item.price}  </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white">   {moment(item.createdAt).format("DD-MM-YYYY hh:mm:ss")}   </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-300"> { item?.categories ? item?.categories?.name : "N/A"}  </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-gray-300"> {item.avl_qty}  </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-gray-300"> {item.hsn_code}  </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-gray-300"> {item.batch_no}  </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-gray-300"> {item.price}  </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-gray-300">   {moment(item.createdAt).format("DD-MM-YYYY hh:mm:ss")}   </Table.Cell>
                           </Table.Row>
                         ))}
                     </Table.Body>
@@ -413,196 +462,5 @@ const SalesChart: FC = function () {
   return <Chart height={420} options={options} series={series} type="area" />;
 };
 
-const LatestTransactions: FC = function () {
-  return (
-    <div className="rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6 xl:p-8">
-      <div className="mb-4 flex items-center justify-between">
-        <div>
-          <div className="mb-2 text-md lg:text-xl font-bold text-gray-900 dark:text-white"> Latest Transactions </div>
-          <span className="text-base font-normal text-gray-600 dark:text-gray-400 hidden md:block"> This is a list of latest transactions </span>
-        </div>
-        <div className="shrink-0">
-          <a href="#" className="rounded-lg p-2 text-sm font-medium text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700" > View all  </a>
-        </div>
-      </div>
-      <div className="mt-8 flex flex-col">
-        <div className="overflow-x-auto rounded-lg">
-          <div className="inline-block min-w-full align-middle">
-            <div className="overflow-hidden shadow sm:rounded-lg">
-              <Table
-                striped
-                className="min-w-full divide-y divide-gray-200 dark:divide-gray-600"
-              >
-                <Table.Head className="bg-gray-50 dark:bg-gray-700">
-                  <Table.HeadCell>Transaction</Table.HeadCell>
-                  <Table.HeadCell>Date &amp; Time</Table.HeadCell>
-                  <Table.HeadCell>Amount</Table.HeadCell>
-                  <Table.HeadCell>Status</Table.HeadCell>
-                </Table.Head>
-                <Table.Body className="bg-white dark:bg-gray-800">
-                  <Table.Row>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 dark:text-white">
-                      Payment from{" "}
-                      <span className="font-semibold">Bonnie Green</span>
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400">
-                      Apr 23, 2021
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white">
-                      $2300
-                    </Table.Cell>
-                    <Table.Cell className="flex whitespace-nowrap p-4">
-                      <Badge color="success">Completed</Badge>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 dark:text-white">
-                      Payment refund to{" "}
-                      <span className="font-semibold">#00910</span>
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400">
-                      Apr 23, 2021
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white">
-                      -$670
-                    </Table.Cell>
-                    <Table.Cell className="flex whitespace-nowrap p-4">
-                      <Badge color="success">Completed</Badge>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 dark:text-white">
-                      Payment failed from{" "}
-                      <span className="font-semibold">#087651</span>
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400">
-                      Apr 18, 2021
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white">
-                      $234
-                    </Table.Cell>
-                    <Table.Cell className="flex whitespace-nowrap p-4">
-                      <Badge color="failure">Cancelled</Badge>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 dark:text-white">
-                      Payment from{" "}
-                      <span className="font-semibold">Lana Byrd</span>
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400">
-                      Apr 15, 2021
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white">
-                      $5000
-                    </Table.Cell>
-                    <Table.Cell className="flex whitespace-nowrap p-4">
-                      <span className="mr-2 rounded-md bg-purple-100 py-0.5 px-2.5 text-xs font-medium text-purple-800 dark:bg-purple-200">
-                        In progress
-                      </span>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 dark:text-white">
-                      Payment from{" "}
-                      <span className="font-semibold">Jese Leos</span>
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400">
-                      Apr 15, 2021
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white">
-                      $2300
-                    </Table.Cell>
-                    <Table.Cell className="flex whitespace-nowrap p-4">
-                      <Badge color="success">Completed</Badge>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 dark:text-white">
-                      Payment from{" "}
-                      <span className="font-semibold">THEMESBERG LLC</span>
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400">
-                      Apr 11, 2021
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white">
-                      $560
-                    </Table.Cell>
-                    <Table.Cell className="flex whitespace-nowrap p-4">
-                      <Badge color="success">Completed</Badge>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 dark:text-white">
-                      Payment from{" "}
-                      <span className="font-semibold">Lana Lysle</span>
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400">
-                      Apr 6, 2021
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white">
-                      $1437
-                    </Table.Cell>
-                    <Table.Cell className="flex whitespace-nowrap p-4">
-                      <Badge color="success">Completed</Badge>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 dark:text-white">
-                      Payment to{" "}
-                      <span className="font-semibold">Joseph Mcfall</span>
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400">
-                      Apr 1, 2021
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white">
-                      $980
-                    </Table.Cell>
-                    <Table.Cell className="flex whitespace-nowrap p-4">
-                      <Badge color="success">Completed</Badge>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 dark:text-white">
-                      Payment from{" "}
-                      <span className="font-semibold">Alphabet LLC</span>
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400">
-                      Mar 23, 2021
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white">
-                      $11,436
-                    </Table.Cell>
-                    <Table.Cell className="flex whitespace-nowrap p-4">
-                      <span className="mr-2 rounded-md bg-purple-100 py-0.5 px-2.5 text-xs font-medium text-purple-800 dark:bg-purple-200">
-                        In progress
-                      </span>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 dark:text-white">
-                      Payment from{" "}
-                      <span className="font-semibold">Bonnie Green</span>
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400">
-                      Mar 23, 2021
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white">
-                      $560
-                    </Table.Cell>
-                    <Table.Cell className="flex whitespace-nowrap p-4">
-                      <Badge color="success">Completed</Badge>
-                    </Table.Cell>
-                  </Table.Row>
-                </Table.Body>
-              </Table>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-    </div>
-  );
-};
 
 export default DashboardPage;

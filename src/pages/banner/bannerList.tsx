@@ -164,7 +164,7 @@ const BannerListPage: FC = function () {
                             <div className="flex items-center gap-x-3">
                              
                               {AccessList?.delete ?    <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete  Banner </div> </Button> : null }
-                              <Button  gradientDuoTone="pinkToOrange" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <FaExclamationCircle className="text-lg" />  Details Banner </div> </Button>
+                              {/* <Button  gradientDuoTone="pinkToOrange" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <FaExclamationCircle className="text-lg" />  Details Banner </div> </Button> */}
                             </div>
                           </Table.Cell>
                         </Table.Row>
