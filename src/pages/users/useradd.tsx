@@ -241,9 +241,6 @@ const AddUserPage : FC = function () {
      },[UserAddedList])
  //  -------------- Get Role Data list -------------------
 
-    // const minDate = new Date();
-    // minDate.setFullYear(minDate.getFullYear() - 18);
-
     const today = new Date();
     const minDate = new Date(today.setFullYear(today.getFullYear() - 18));
     const formattedMinDate = minDate.toISOString().split("T")[0]; // Format to yyyy-mm-dd=  

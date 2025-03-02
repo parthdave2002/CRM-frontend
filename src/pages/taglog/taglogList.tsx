@@ -156,7 +156,7 @@ const TaglogListPage: FC = function () {
                             <div className="flex items-center gap-x-3">
                               {AccessList?.delete ?  <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete Taglog </div> </Button> : null } 
                               {AccessList?.add ?  <Button gradientDuoTone="greenToBlue" onClick={() => getEditTaglogData(item._id)} > <div className="flex items-center gap-x-2">  <BiSolidAddToQueue className="text-lg" />  Add Sub-Taglog  </div></Button> : null}
-                              <Button  gradientDuoTone="purpleToBlue" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <FaExclamationCircle className="text-lg" /> Detail Taglog  </div> </Button>
+                              {/* <Button  gradientDuoTone="purpleToBlue" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <FaExclamationCircle className="text-lg" /> Detail Taglog  </div> </Button> */}
                             </div>
                           </Table.Cell>
                         </Table.Row>

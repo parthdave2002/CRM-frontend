@@ -23,168 +23,55 @@ const OrdererDetailsPage: FC = function () {
     }
   },[id])
 
-  const [UserDataList, setUserDataList] = useState([]);
+  interface CustomerData {
+    address: string;
+    customer_name : string;
+    district: string;
+    mobile_number : number;
+    alternate_number : number;
+    pincode : string;
+    taluka:string;
+    village : string;
+  }
+
+  interface ProductData {
+    name: string ; 
+    hsn_code : number;
+    discount :number;
+    batch_no : number;
+    price : number;
+    c_gst : number;
+    s_gst : number;
+    quantity : number;
+  }
+  
+  interface OrderDetailsType {
+    added_at : string;
+    order_id: string
+    customer: CustomerData;
+    products :  ProductData[];
+    status: string;
+    total_amount : number;
+  }
+
+  const [UserDataList, setUserDataList] = useState<OrderDetailsType | null>( null);
   const { Orderlist } = useSelector((state: any) => ({
     Orderlist: state.Order.Orderlist,
   }));
 
   useEffect(() => {
-    // setUserDataList(Orderlist ? Orderlist?.data[0] : null);
+    setUserDataList(Orderlist ? Orderlist[0] : null);
   }, [Orderlist]);
   //  ------------- Get User Data From Reducer Code Start --------------
 
-
- 
-const SingleData ={
-    "success": true,
-    "data": [
-        {
-            "_id": "67bf3fdd5cf3d06048080a1c",
-            "products": [
-                {
-                    "quantity": 1,
-                    "_id": "67bf3fdd5cf3d06048080a1d",
-                    "id": {
-                        "price": 1200,
-                        "discount": 0,
-                        "product_pic": null,
-                        "batch_no": 0,
-                        "hsn_code": 12345,
-                        "s_gst": 0,
-                        "c_gst": 0,
-                        "avl_qty": 100,
-                        "rating": 4,
-                        "is_active": true,
-                        "is_deleted": false,
-                        "_id": "67b18c3c3345464ef8cee4bf",
-                        "name": "AgroStar Sayani F1 Okra",
-                        "description": "The information offered here is for reference only and depends exclusively on soil type and climatic conditions. Always refer to product labels and accompanying leaflets for complete product details and directions for use.",
-                        "category": "67a6f5174a86d30a58c36be4",
-                        "packaging": "6790b6d1de33ca5aa7416fc1",
-                        "tech_name": "test",
-                        "__v": 0,
-                        "added_at": "2025-02-15T06:57:00.864Z"
-                    }
-                },
-                {
-                    "quantity": 1,
-                    "_id": "67bf3fdd5cf3d06048080a1e",
-                    "id": {
-                        "price": 1200,
-                        "discount": 0,
-                        "product_pic": null,
-                        "batch_no": 0,
-                        "hsn_code": 12345,
-                        "s_gst": 0,
-                        "c_gst": 0,
-                        "avl_qty": 100,
-                        "rating": 4,
-                        "is_active": true,
-                        "is_deleted": false,
-                        "_id": "67bcb98426bff3245039919d",
-                        "name": "AgroStar Sayani F1 Okra test2",
-                        "description": "The information offered here is for reference only and depends exclusively on soil type and climatic conditions. Always refer to product labels and accompanying leaflets for complete product details and directions for use.",
-                        "category": "67a6f5174a86d30a58c36be4",
-                        "packaging": "6790b6d1de33ca5aa7416fc1",
-                        "tech_name": "test1",
-                        "added_at": "2025-02-24T18:25:08.446Z",
-                        "__v": 0
-                    }
-                }
-            ],
-            "customer": {
-                "_id": "67b37415073f664ec018d91e",
-                "customer_name": "Test"
-            },
-            "advisor_name": {
-                "_id": "67b389afd593423df0e242a8",
-                "name": "Akki kadiya"
-            },
-            "total_amount": 2400,
-            "status": "confirmed",
-            "order_id": "#AB-250226-0003",
-            "added_at": "2025-02-26T16:22:53.707Z"
-        }
-    ],
-    "msg": "Order data retrieved successfully"
-}
-
-  const invoiceData = {
-    customerName: "Nagjibhai bhurabhai Chavda",
-    customerAddress1: "9 sector-22A Aadarshnagar society,",
-    customerAddress2 :"Gandhinagar, Gandhinagar, Ahmedabad, Gujarat, 381524",
-    customercontact_no : "6351857907",
-    invoiceNumber: "#AB-250226-0003",
-    invoiceDate: "24-02-2025",
-    dueDate: "Sep 04, 2021",
-    // items: [
-    //   {  description: "AgroStar Sayani F1 Okra test2", quantity: 2, gst:18 , rate: 1000, batch_no: 0, hsn_code: 12345, discount : 0  },
-    //   {  description: "AgroStar Sayani F1 Okra test2", quantity: 1, gst: 18,  rate: 500, batch_no: 1000, hsn_code: 12345, discount : 1000 },
-    // ],
-    products: [
-                {
-                    "quantity": 1,
-                    "_id": "67bf3fdd5cf3d06048080a1d",
-                    "id": {
-                        "price": 1200,
-                        "discount": 100,
-                        "product_pic": null,
-                        "batch_no": 0,
-                        "hsn_code": 12345,
-                        "s_gst": 0,
-                        "c_gst": 18,
-                        "avl_qty": 100,
-                        "rating": 4,
-                        "is_active": true,
-                        "is_deleted": false,
-                        "_id": "67b18c3c3345464ef8cee4bf",
-                        "name": "AgroStar Sayani F1 Okra",
-                        "description": "The information offered here is for reference only and depends exclusively on soil type and climatic conditions. Always refer to product labels and accompanying leaflets for complete product details and directions for use.",
-                        "category": "67a6f5174a86d30a58c36be4",
-                        "packaging": "6790b6d1de33ca5aa7416fc1",
-                        "tech_name": "test",
-                        "__v": 0,
-                        "added_at": "2025-02-15T06:57:00.864Z"
-                    }
-                },
-                {
-                    "quantity": 1,
-                    "_id": "67bf3fdd5cf3d06048080a1e",
-                    "id": {
-                        "price": 1200,
-                        "discount": 0,
-                        "product_pic": null,
-                        "batch_no": 0,
-                        "hsn_code": 12345,
-                        "s_gst": 0,
-                        "c_gst": 18,
-                        "avl_qty": 100,
-                        "rating": 4,
-                        "is_active": true,
-                        "is_deleted": false,
-                        "_id": "67bcb98426bff3245039919d",
-                        "name": "AgroStar Sayani F1 Okra test2",
-                        "description": "The information offered here is for reference only and depends exclusively on soil type and climatic conditions. Always refer to product labels and accompanying leaflets for complete product details and directions for use.",
-                        "category": "67a6f5174a86d30a58c36be4",
-                        "packaging": "6790b6d1de33ca5aa7416fc1",
-                        "tech_name": "test1",
-                        "added_at": "2025-02-24T18:25:08.446Z",
-                        "__v": 0
-                    }
-                }
-    ],
-  
-  };
-
-  const finalsubtotal = invoiceData.products.reduce((sum, item) => sum + item.quantity * item?.id?.price , 0);
-  const finaldiscount = invoiceData.products.reduce((sum, item) => sum +  item?.id?.discount , 0);
-  const finalgst = invoiceData.products.reduce((sum, item) => sum +  (item?.quantity * item?.id?.price-item?.id?.discount)*(item?.id?.c_gst/100)  , 0);
-  const total = finalsubtotal + finalgst;
+  const finalsubtotal = (UserDataList?.products ?? []).reduce( (sum, item:any) => sum + item?.quantity * item?.id?.price,  0 );
+  const finaldiscount = (UserDataList?.products ?? []).reduce( (sum, item:any) => sum + item?.id?.discount,  0 );
+  const finalgst = (UserDataList?.products ?? []).reduce( (sum, item:any) => sum + (item?.quantity * item?.id?.price - item?.id?.discount) * ((item?.id?.c_gst * 2) / 100), 0 );
+  const total = finalsubtotal - finaldiscount + finalgst;
 
   let Name = "Order Details";
   let ParentName = "Order List";
   let ParentLink = "/order/list";
-
 
   const downloadPDF = async () => {
     const input = invoiceRef.current;
@@ -198,40 +85,52 @@ const SingleData ={
     const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
     pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-    pdf.save(`Invoice_${invoiceData.invoiceNumber}.pdf`);
+    pdf.save(`Invoice_${UserDataList?.order_id}.pdf`);
   };
 
   return (
     <>
-      <NavbarSidebarLayout isFooter={false}  isSidebar={true} isNavbar={true} isRightSidebar={true}>
-        <ExampleBreadcrumb  Name={Name} ParentName={ParentName} ParentLink ={ParentLink} />
-        <div className="mt-[2rem] bg-gray-100 dark:bg-gray-800 p-4" >
-        <div className="mb-4 flex justify-end">  <Button color="primary"  onClick={downloadPDF}>  <MdFileDownload  className="w-6 h-6"/> Download PDF </Button> </div>
-          <div className="max-w-3xl min-h-[11.69rem] max-h-min-h-[11.69rem] mx-auto bg-white shadow-lg py-6 px-3 rounded-lg  font-sans" ref={invoiceRef}>
-            <div className="flex justify-between items-center mb-6 border-b pb-4">
+      <NavbarSidebarLayout isFooter={false}  isSidebar={true} isNavbar={true}     isRightSidebar={true}  >
+        <ExampleBreadcrumb  Name={Name}  ParentName={ParentName}  ParentLink={ParentLink}  />
+        <div className="mt-[2rem] bg-gray-100 dark:bg-gray-800 p-4">
+          <div className="mb-4 flex justify-end">
+            <Button color="primary" onClick={downloadPDF}>   <MdFileDownload className="w-6 h-6" /> Download PDF  </Button>
+          </div>
+          <div  className="max-w-3xl min-h-[11.69rem] max-h-min-h-[11.69rem] mx-auto bg-white shadow-lg p-6 rounded-lg  font-sans"  ref={invoiceRef} >
+              <div className="flex">
+                    <div className="flex-1">  <img src={logo} alt="Company Logo" className="w-24" />  </div>
+                    <div className="flex-1 text-right">  <h1 className="text-3xl font-bold text-gray-800 ">INVOICE</h1> </div>
+              </div>
+           
+            <div className="flex justify-between items-center mb-6  border-b pb-4">
               <div>
-                <img src={logo} alt="Company Logo" className="w-24" />
                 <h2 className="text-xl font-bold mt-2">Agri Bharat</h2>
                 <p className="text-gray-500">Shop-1, Ravi Shopping Center,</p>
                 <p className="text-gray-500">Opp. New bus stand</p>
-                <p className="text-gray-500">Kapadwanj, Kehda, Gujarat, 387620</p>
-                <p className="text-gray-500">Contact : 9621696200, 9621696200</p>
+                <p className="text-gray-500">  Kapadwanj, Kehda, Gujarat, 387620 </p>
+                <p className="text-gray-500">  Contact : 9621696200, 9621696200  </p>
+                <p className="text-gray-500">Email ID:agribharat2023@gmil.com </p>
               </div>
-              <h1 className="text-3xl font-bold text-gray-800">INVOICE</h1>
+
+              <div className="flex-1 text-right">
+                <p className="text-gray-500 text-sm"><strong> Pesticide Lic No: </strong>   KHF/FP1240001586/2024-2025 </p>
+                <p className="text-gray-500 text-sm"><strong> Seeds Lic No: </strong> KHF/FSR240001647/2024-2025 </p>
+                <p className="text-gray-500 text-sm"> <strong> Ferlitizer Lic No: </strong> KHF/FFR240001682/2024-2025 </p>
+              </div>
             </div>
 
             {/* Billing Information */}
             <div className="mb-6 grid grid-cols-2 gap-4">
               <div>
                 <p className="font-semibold">Bill To:</p>
-                <p>{invoiceData.customerName}</p>
-                <p className="text-gray-600">{invoiceData.customerAddress1}</p>
-                <p className="text-gray-600">{invoiceData.customerAddress2}</p>
-                <p className="text-gray-600">Contact :{invoiceData.customercontact_no}</p>
+                <p>{UserDataList?.customer?.customer_name}</p>
+                <p className="text-gray-600">  {UserDataList?.customer?.address}   </p>
+                <p className="text-gray-600">  {UserDataList?.customer?.district},{UserDataList?.customer?.taluka},{UserDataList?.customer?.village}  </p>
+                <p className="text-gray-600">  Contact : {UserDataList?.customer?.mobile_number}, {UserDataList?.customer?.alternate_number} </p>
               </div>
               <div className="text-right">
-                <p><strong>Invoice#:</strong> {invoiceData.invoiceNumber}</p>
-                <p><strong>Invoice Date:</strong> {invoiceData.invoiceDate}</p>
+                <p> <strong>Invoice :</strong> {UserDataList?.order_id}  </p>
+                <p> <strong>Invoice Date:</strong>  {moment(UserDataList?.added_at).format("DD-MM-YYYY")} </p>
                 {/* <p><strong>Due Date:</strong> {invoiceData.dueDate}</p> */}
               </div>
             </div>
@@ -240,52 +139,54 @@ const SingleData ={
             <table className="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
               <thead>
                 <tr className="bg-gray-700 text-white">
-                  <th className="border p-2 text-left">Item Description</th>
-                  <th className="border p-2">HSN</th>
-                  <th className="border p-2">Batch</th>
-                  <th className="border p-2">Rate</th>
-                  <th className="border p-2">Qty</th>
-                  <th className="border p-2">Amount</th>
-                  <th className="border p-2">Dis.</th>
-                  <th className="border p-2">GST</th>
-                  <th className="border p-2">Total</th>
+                  <th className="border p-2 text-[0.9rem] text-left">Item Description</th>
+                  <th className="border p-2 text-[0.9rem]">HSN</th>
+                  <th className="border p-2 text-[0.9rem]">Batch</th>
+                  <th className="border p-2 text-[0.9rem]">Rate</th>
+                  <th className="border p-2 text-[0.9rem]">Qty</th>
+                  <th className="border p-2 text-[0.9rem]">Amount</th>
+                  <th className="border p-2 text-[0.9rem]">Discount</th>
+                  <th className="border p-2 text-[0.9rem]">GST</th>
+                  <th className="border p-2 text-[0.9rem]">Total</th>
                 </tr>
               </thead>
               <tbody>
-                {invoiceData.products.map((item:any, k:number) => (
-                  <tr key={k} className="border text-center bg-gray-50 hover:bg-gray-100 transition-all">
-                    <td className="border p-2 text-left w-[25rem] max-w-[25rem] whitespace-normal break-words">{item?.id?.name}</td>
-                    <td className="border p-2">{item?.id?.hsn_code}</td>
-                    <td className="border p-2">{item?.id?.batch_no}</td>
-                    <td className="border p-2">{item?.id?.price}</td>
-                    <td className="border p-2">{item?.quantity}</td>
-                    <td className="border p-2">{(item?.quantity * item?.id?.price)}</td>
-                    <td className="border p-2">{item?.id?.discount}</td>
-                    <td className="border p-2">{(item?.quantity * item?.id?.price-item?.id?.discount)*(item?.id?.c_gst/100) }</td>
-                    <td className="border p-2">₹{(item?.quantity * item?.id?.price) +  (item?.quantity * item?.id?.price-item?.id?.discount)*(item?.id?.c_gst/100)}</td>
+                {(UserDataList?.products ?? []).map((item: any, k: number) => (
+                  <tr  key={k} className="border text-center bg-gray-50 hover:bg-gray-100 transition-all"  >
+                    <td className="border p-2 text-[0.8rem] text-left w-[18rem] max-w-[18rem] whitespace-normal break-words"> {item?.id?.name} </td>
+                    <td className="border p-2 text-[0.8rem]">{item?.id?.hsn_code}</td>
+                    <td className="border p-2 text-[0.8rem]">{item?.id?.batch_no}</td>
+                    <td className="border p-2 text-[0.8rem]">{item?.id?.price}</td>
+                    <td className="border p-2 text-[0.8rem]">{item?.quantity}</td>
+                    <td className="border p-2 text-[0.8rem]"> {item?.quantity * item?.id?.price}  </td>
+                    <td className="border p-2 text-[0.8rem]">{item?.id?.discount}</td>
+                    <td className="border p-2 text-[0.8rem]"> {(item?.quantity * item?.id?.price - item?.id?.discount) *  (item?.id?.c_gst*2 / 100)} </td>
+                    <td className="border p-2 text-[0.8rem]"> {item?.quantity * item?.id?.price -item?.id?.discount   + (item?.quantity * item?.id?.price -  item?.id?.discount) *  (item?.id?.c_gst*2 / 100)} </td>
                   </tr>
                 ))}
               </tbody>
             </table>
 
-            <div className="mt-6 text-right text-gray-700">
-              <p className="text-lg"><strong>Sub Total: </strong> ₹{finalsubtotal.toFixed(2)}</p>
-              <p className="text-lg"><strong>Total Discount:</strong> ₹{finaldiscount.toFixed(2)}</p>
-              <p className="text-lg"><strong>Total gst :</strong> ₹{finalgst.toFixed(2)}</p>
-              <p className="text-2xl font-bold bg-gray-700 text-white p-3 mt-3">Grand Total: ₹{total.toFixed(2)}</p>
+            <div className="mt-6  text-gray-700 flex ">
+                <div className="flex-1">
+                    <p className="text-[0.8rem]"> A/c Holder : AGRI BHARAT</p>   
+                    <p className="text-[0.8rem]"> A/c No: 50200102495365   </p> 
+                    <p className="text-[0.8rem]"> Bank: HDFC BANK   Branch: KAPADWANJ GUJARAT  </p>
+                    <p className="text-[0.8rem]"> IFSC Code: HDFC0000748 </p>
+                </div>
+                <div className="flex-1 text-right">
+                  <p className="text-lg">  <strong>Total Amout: </strong> ₹{finalsubtotal?.toFixed(2) ?? "0.00"}  </p>
+                  <p className="text-lg"> <strong>Total Discount:</strong> ₹{finaldiscount?.toFixed(2) ?? "0.00"} </p>
+                  <p className="text-lg"> <strong>Total gst :</strong> ₹{finalgst ? finalgst.toFixed(2): 0} </p>
+                </div>
             </div>
+            <p className="text-2xl font-bold bg-gray-700 text-white p-3 mt-3 text-right self-center"> Grand Total: ₹{total?.toFixed(2) ?? "0.00"}  </p>
 
             <div className="mt-6 text-left text-gray-700">
-              <p className="text-md"><strong>Terms & Condition:</strong></p>
-              <p className="text-[0.8rem]">(1) Pesticides and seeds are for agriculture use only.</p>
-              <p className="text-[0.8rem]">(1) Pesticides and seeds are for agriculture use only.</p>
-              <p className="text-[0.8rem]">(1) Pesticides and seeds are for agriculture use only.</p>
-              <p className="text-[0.8rem]">(1) Pesticides and seeds are for agriculture use only.</p>
-              <p className="text-[0.8rem]">(1) Pesticides and seeds are for agriculture use only.</p>
-
-
-             
-             
+              <p className="text-md">   <strong>Terms & Condition:</strong>  </p>
+              <p className="text-[0.8rem]">  (1) Pesticides and seeds are for agricultural use only.  </p>
+              <p className="text-[0.8rem]">  (2) Crop success depends on many factors, many of which are beyond our control.We have no liability whatsoever for the  production or quality of any drug or crop produced from seeds sold by us, therefore financial compensation in the event of any  complaint. Note that we will not give. </p>
+              <p className="text-[0.8rem]">  (3) The battery pump and battery torch will have a warranty of 6  months. Only the battery will have a warranty, the company will  not be responsible for any other part. Do not turn on the front light and side light of the battery torch while charging. Do not use any other charging adapter for charging, it may damage the battery. Do not charge the battery pump or battery torch during low voltage, as it may damage the battery pump or battery torch. Do not overcharge the battery pump or battery torch.  </p>
             </div>
           </div>
         </div>

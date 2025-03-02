@@ -8,6 +8,10 @@ import {
   GET_PRODUCT_LIST_SUCCESS,
   GET_PRODUCT_LIST_ERROR,
 
+  GET_PRODUCT_VIEW_LIST,
+  GET_PRODUCT_VIEW_LIST_SUCCESS,
+  GET_PRODUCT_VIEW_LIST_ERROR,
+
   ADD_PRODUCT_LIST,
   ADD_PRODUCT_LIST_SUCCESS,
   ADD_PRODUCT_LIST_ERROR,
@@ -28,6 +32,7 @@ const INIT_STATE = {
   CurrentPage:1,
   DeleteProductlist:[],
   AddProductlist:[],
+  singleProductlist:[],
   error: {},
 };
 
@@ -62,7 +67,7 @@ const Product = (state = INIT_STATE, action) => {
         case GET_PRODUCT_LIST:
           return {
             ...state,
-            Productlist: action.payload.data.data,
+            Productlist: action.payload.data,
             ProductlistSize: action.payload.data.size,
             TotalProductData: action.payload.data.totalData,
             CurrentPage: action.payload.data.page,
@@ -79,6 +84,26 @@ const Product = (state = INIT_STATE, action) => {
         default:
           return { ...state };
       }
+
+      case GET_PRODUCT_VIEW_LIST_SUCCESS:
+        switch (action.payload.actionType) {
+          case GET_PRODUCT_VIEW_LIST:
+            return {
+              ...state,
+              singleProductlist: action.payload.data,
+            };
+        }
+      case GET_PRODUCT_VIEW_LIST_ERROR:
+        switch (action.payload.actionType) {
+          case GET_PRODUCT_VIEW_LIST:
+            return {
+              ...state,
+              error: action.payload,
+            };
+  
+          default:
+            return { ...state };
+        }
     
     case ADD_PRODUCT_LIST_SUCCESS:
       switch (action.payload.actionType) {
@@ -129,6 +154,7 @@ const Product = (state = INIT_STATE, action) => {
               CurrentPage:1,
               DeleteProductlist:[],
               AddProductlist:[],
+              singleProductlist:[],
               error: {},
             };
         }

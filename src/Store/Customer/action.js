@@ -11,6 +11,10 @@ import {
   DELETE_CUSTOMER_DATA_LIST_SUCCESS,
   DELETE_CUSTOMER_DATA_LIST_ERROR,
 
+  BLOCK_CUSTOMER_DATA_LIST,
+  BLOCK_CUSTOMER_DATA_LIST_SUCCESS,
+  BLOCK_CUSTOMER_DATA_LIST_ERROR,
+
   REST_CUSTOMER_DATA_LIST,
   REST_CUSTOMER_DATA_LIST_SUCCESS,
   REST_CUSTOMER_DATA_LIST_ERROR
@@ -74,5 +78,20 @@ export const ResetCustomerDatalistSuccess = (actionType, data) => ({
 
 export const ResetCustomerDatalistFail = (actionType, error) => ({
   type: REST_CUSTOMER_DATA_LIST_ERROR,
+  payload: { actionType, error },
+});
+
+export const BlockCustomer = (requserdata) => ({
+  type: BLOCK_CUSTOMER_DATA_LIST,
+  payload: requserdata,
+});
+
+export const BlockCustomerSuccess = (actionType, data) => ({
+  type: BLOCK_CUSTOMER_DATA_LIST_SUCCESS,
+  payload: { actionType, data },
+});
+
+export const BlockCustomerFail = (actionType, error) => ({
+  type: BLOCK_CUSTOMER_DATA_LIST_ERROR,
   payload: { actionType, error },
 });

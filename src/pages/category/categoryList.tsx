@@ -164,10 +164,8 @@ const CategoryListPage: FC = function () {
                             <div className="flex items-center gap-x-3">
                              
                             {AccessList?.delete ?  <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete Category </div> </Button> : null }  
-                            <Button  gradientDuoTone="purpleToBlue" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <FaExclamationCircle className="text-lg" /> Detail Category  </div> </Button> 
-                               {/* {AccessDataList &&  AccessDataList.map((data) =>  data.value === "user-delete" ? (  */}
-                                  {/* <Button  gradientDuoTone="pinkToOrange" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Details </div> </Button> */}
-                              {/* ) : null )}   */}
+                            {/* <Button  gradientDuoTone="purpleToBlue" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <FaExclamationCircle className="text-lg" /> Detail Category  </div> </Button>  */}
+                           
                             </div>
                           </Table.Cell>
                         </Table.Row>

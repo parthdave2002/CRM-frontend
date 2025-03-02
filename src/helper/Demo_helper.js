@@ -141,7 +141,7 @@ export const RelatedProductlistApi = (requserdata) => api.get(url.GET_RELATED_PR
 export const ProductlistApi = (requserdata) => api.get(url.GET_PRODUCT_LIST, requserdata);
 export const AddProductlistApi = async (requserdata) => await api.postMultipart(url.ADD_PRODUCT_LIST, requserdata);
 export const DelProductlistApi = async (requserdata) => await api.delete(url.DELETE_PRODUCT_LIST, requserdata);
-
+export const DetailProductlistApi = (requserdata) => api.get(url.GET_PRODUCT_LIST, requserdata);
 
 // Order API
 export const UpdateOrderlistApi = (requserdata) => api.get(url.GET_UPDATE_ORDER_LIST, requserdata);
@@ -166,6 +166,7 @@ export const ExportDatalistApi = async (requserdata,name) => await api.get(url.G
 export const CustomerlistApi = (requserdata) => api.get(url.GET_CUSTOMER_DATA_LIST, requserdata);
 export const AddCustomerlistApi = async (requserdata) => await api.create(url.ADD_CUSTOMER_DATA_LIST, requserdata);
 export const DelCustomerlistApi = async (requserdata) => await api.delete(url.DELETE_CUSTOMER_DATA_LIST, requserdata);
+export const BlockCustomerlistApi = async (requserdata) => await api.update(url.BLOCK_CUSTOMER_DATA_LIST, requserdata);
 
 // Crops API
 export const CroplistApi = (requserdata) => api.get(url.GET_CROP_LIST, requserdata);

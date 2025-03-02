@@ -153,26 +153,13 @@ const ReportPage: FC = function () {
               isClearable={true}
             />
 
-            {selectedStatusid != "" &&
-            startDateData != null &&
-            endDate != null ? (
-              <Button
-                gradientDuoTone="purpleToPink"
-                onClick={() => GetdataCall()}
-              >
-                <div className="flex items-center gap-x-3 w-[5rem] text-center">
-                  <FaSearch /> Submit
-                </div>
-              </Button>
-            ) : null}
+            {selectedStatusid != "" &&  startDateData != null && endDate != null ? 
+              <Button  gradientDuoTone="purpleToPink"  onClick={() => GetdataCall()} > <div className="flex items-center gap-x-3 w-[5rem] text-center"> <FaSearch /> Submit </div>  </Button>
+             : null}
 
-            {showReportData ? (
-              <div className="flex-1 justify-items-end self-center">
-                <Suspense fallback={<div>Loading...</div>}>
-                  <ExportDataModal data={Exportdata} name={selectedStatusid} />
-                </Suspense>
-              </div>
-            ) : null}
+            {selectedStatusid != "" &&  startDateData != null && endDate != null ? 
+              <div className="flex-1 justify-items-end self-center">  <Suspense fallback={<div>Loading...</div>}>  <ExportDataModal data={Exportdata} name={selectedStatusid} />  </Suspense>  </div>
+            : null}
           </div>
 
           <div className="mt-[2rem] bg-white dark:bg-gray-800 p-4">
@@ -199,7 +186,7 @@ const ReportPage: FC = function () {
                         <Table.Cell className="w-4 py-0"  style={{ paddingTop: "1", paddingBottom: "1" }}> <Checkbox /> </Table.Cell>
                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.name} </Table.Cell>
                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.email}  </Table.Cell>
-                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.role} </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.role?.role_title} </Table.Cell>
                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.gender} </Table.Cell>
                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.mobile_no}</Table.Cell>
                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.date_of_joining}  </Table.Cell>
@@ -211,7 +198,7 @@ const ReportPage: FC = function () {
                           : <div className="flex items-center"><div className="mr-2 h-2.5 w-2.5 rounded-full bg-Red"></div>  Deactive  </div>
                         }
                       </Table.Cell>
-                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {moment(item.added_at).format("DD-MM-YYYY")}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {moment(item.added_at).format("DD-MM-YYYY hh:mm:ss")}  </Table.Cell>
                       </Table.Row>
                     ))}
                 </Table.Body>
@@ -237,7 +224,7 @@ const ReportPage: FC = function () {
                         <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0"> {item.address}  </Table.Cell>
                         <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0"> {item.village}  </Table.Cell>
                         <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {item.taluka} </Table.Cell>
-                        <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {moment(item.added_at).format("DD-MM-YYYY")}   </Table.Cell>
+                        <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {moment(item.added_at).format("DD-MM-YYYY hh:mm:ss")}   </Table.Cell>
                       </Table.Row>
                     ))}
                 </Table.Body>
@@ -247,6 +234,7 @@ const ReportPage: FC = function () {
                 <Table.Head className="bg-gray-100 dark:bg-gray-700">
                   <Table.HeadCell> <Checkbox id="select-all" name="select-all" /> </Table.HeadCell>
                   <Table.HeadCell>Name</Table.HeadCell>
+                  <Table.HeadCell>Company</Table.HeadCell>
                   <Table.HeadCell>Qty</Table.HeadCell>
                   <Table.HeadCell>cgst</Table.HeadCell>
                   <Table.HeadCell>sgst</Table.HeadCell>
@@ -262,13 +250,14 @@ const ReportPage: FC = function () {
                       <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700"  >
                         <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }} >  <Checkbox /> </Table.Cell>
                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.name}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.company?.name}  </Table.Cell>
                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.avl_qty} </Table.Cell>
-                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.cgst}  </Table.Cell>
-                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.sgst} </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.c_gst}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.s_gst} </Table.Cell>
                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.price}  </Table.Cell>
                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">   {item.discount}  </Table.Cell>
-                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">    {item.caetgory}  </Table.Cell>
-                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item.added_at).format("DD-MM-YYYY")} </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">    {item.categories?.name}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item.added_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
                       </Table.Row>
                     ))}
                 </Table.Body>
@@ -276,51 +265,24 @@ const ReportPage: FC = function () {
             ) : showReportData && selectedStatusid == "order" ? (
               <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
                 <Table.Head className="bg-gray-100 dark:bg-gray-700">
-                  <Table.HeadCell>
-                   
-                    <Checkbox id="select-all" name="select-all" />
-                  </Table.HeadCell>
-                  <Table.HeadCell>Title</Table.HeadCell>
-                  <Table.HeadCell>Description</Table.HeadCell>
+                  {/* <Table.HeadCell>  <Checkbox id="select-all" name="select-all" />  </Table.HeadCell> */}
+                  <Table.HeadCell>Order Date</Table.HeadCell>
+                  <Table.HeadCell>Order id</Table.HeadCell>
+                  <Table.HeadCell>Customer Name</Table.HeadCell>
+                  <Table.HeadCell> Amount </Table.HeadCell>
                   <Table.HeadCell>Status</Table.HeadCell>
                 </Table.Head>
 
                 <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
                   {Orderdata &&
                     Orderdata.map((item: any, k: any) => (
-                      <Table.Row
-                        key={k}
-                        className="hover:bg-gray-100 dark:hover:bg-gray-700"
-                      >
-                        <Table.Cell
-                          className="w-4 py-0"
-                          style={{ paddingTop: "1", paddingBottom: "1" }}
-                        >
-                         
-                          <Checkbox />
-                        </Table.Cell>
-                        <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">
-                         
-                          {item.role_title}
-                        </Table.Cell>
-                        <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">
-                         
-                          {item.description}
-                        </Table.Cell>
-                        <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white">
-                          {item.is_active == true ? (
-                            <div className="flex items-center">
-                              <div className="mr-2 h-2.5 w-2.5 rounded-full bg-green-400"></div>
-                              Active
-                            </div>
-                          ) : (
-                            <div className="flex items-center">
-                             
-                              <div className="mr-2 h-2.5 w-2.5 rounded-full bg-Red"></div>
-                              Deactive
-                            </div>
-                          )}
-                        </Table.Cell>
+                      <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700"  >
+                        {/* <Table.Cell  className="w-4 py-0"  style={{ paddingTop: "1", paddingBottom: "1" }} >   <Checkbox />   </Table.Cell> */}
+                        <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {moment (item.added_at).format("DD-MM-YYYY hh:mm:ss")}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {item.order_id}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {item?.customer?.customer_name}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white"> { item?.total_amount} </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white"> { item?.status} </Table.Cell>
                       </Table.Row>
                     ))}
                 </Table.Body>
