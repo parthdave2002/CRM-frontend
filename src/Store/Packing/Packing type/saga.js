@@ -35,8 +35,8 @@ function* onAddPackingTypeList({ payload: requstuser }) {
   try {
     const response = yield call(AddPackingTypelistApi, requstuser);
     yield put(AddPackingTypelistSuccess(ADD_PACKING_TYPE_LIST, response));
-    
   } catch (error) {
+    toast.error(error?.msg);
     yield put(AddPackingTypelistFail(error));
   }
 }

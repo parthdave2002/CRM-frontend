@@ -12,6 +12,7 @@ import { AddUserlist, getRoleslist, ResetUserdatalist } from "../../Store/action
 import { toast } from "react-toastify";
 import ImageUploadPreview from "../../components/imageuploader";
 import moment from "moment";
+import ToastMessage from "../../components/ToastMessage";
 
 const AddUserPage : FC = function () {
 
@@ -591,6 +592,8 @@ const AddUserPage : FC = function () {
                     </Form>
                 </div>
             </NavbarSidebarLayout>
+
+            <ToastMessage />
         </>
     );
 }

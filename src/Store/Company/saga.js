@@ -17,6 +17,7 @@ import {
   REST_COMPANY_LIST
 } from "./actionType";
 import { CompanylistApi, AddCompanylistApi, DelCompanylistApi,} from "../../helper/Demo_helper";
+import { toast } from "react-toastify";
 
 function* onGetCompanyList({ payload: requstuser }) {
   try {
@@ -32,6 +33,7 @@ function* onAddCompanyList({ payload: requstuser }) {
     const response = yield call(AddCompanylistApi, requstuser);
     yield put(AddCompanylistSuccess(ADD_COMPANY_LIST, response));
   } catch (error) {
+    toast.error(error?.msg);
     yield put(AddCompanylistFail(error));
   }
 }

@@ -37,7 +37,8 @@ const CategoryAddPage : FC = function () {
     // ------ status code end ------
 
     const [initialValues, setinitialValues] = useState({
-        name: "",
+        name_guj: "",
+        name_eng : "",
         description:"",
         status: "",
     });
@@ -47,14 +48,16 @@ const CategoryAddPage : FC = function () {
         initialValues: initialValues,
     
         validationSchema: Yup.object({
-          name: Yup.string().required("Please enter category name"),
-          description: Yup.string().required("Please enter category description")
+            name_guj: Yup.string().required("Please enter category name in english"),
+            name_eng: Yup.string().required("Please enter category name in gujarati"),
+            description: Yup.string().required("Please enter category description")
         }),
         
         onSubmit: (values) => {
           if(selectedactiveid == null) return setValidateactive(1);
           const formData = new FormData();
-          formData.append("name", values.name);
+          formData.append("name_eng", values.name_eng);
+          formData.append("name_guj", values.name_guj);
           formData.append("description", values.description);
           formData.append("is_active", JSON.stringify(selectedactiveid));
           if (file) {
@@ -75,8 +78,6 @@ const CategoryAddPage : FC = function () {
         }));
 
         useEffect(() => {  
-            console.log("AddCategoryDatalist",AddCategoryDatalist );
-            
             if(AddCategoryDatalist?.success == true){
                 dispatch(ResetCategorylist());
                 toast.success(AddCategoryDatalist?.msg);
@@ -102,21 +103,41 @@ const CategoryAddPage : FC = function () {
 
                         <ImageUploadPreview onFileSelect={setFile}/>
 
-                        <div>
-                            <Label htmlFor="Name">Name</Label>
-                            <div className="mt-1">
-                            <Input
-                                id="name"
-                                name="name"
-                                className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
-                                placeholder="Category name"
-                                type="text"
-                                onChange={validation.handleChange}
-                                onBlur={validation.handleBlur}
-                                value={validation.values.name || ""}
-                                invalid={ validation.touched.name && validation.errors.name ? true : false}
-                            />
-                            {validation.touched.name && validation.errors.name ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.name} </FormFeedback> ) : null}
+                        <div className="flex gap-x-[2rem] my-[1rem]">
+                            <div className="flex-1">
+                                <Label htmlFor="Name">Category Name ( Eng )</Label>
+                                <div className="mt-1">
+                                <Input
+                                    id="name_eng"
+                                    name="name_eng"
+                                    className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
+                                    placeholder="Enter category name in eng"
+                                    type="text"
+                                    onChange={validation.handleChange}
+                                    onBlur={validation.handleBlur}
+                                    value={validation.values.name_eng || ""}
+                                    invalid={ validation.touched.name_eng && validation.errors.name_eng ? true : false}
+                                />
+                                {validation.touched.name_eng && validation.errors.name_eng ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.name_eng} </FormFeedback> ) : null}
+                                </div>
+                            </div>
+
+                            <div className="flex-1">
+                                <Label htmlFor="Name">Category Name ( Guj )</Label>
+                                <div className="mt-1">
+                                <Input
+                                    id="name_guj"
+                                    name="name_guj"
+                                    className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
+                                    placeholder="Enter category name in guj"
+                                    type="text"
+                                    onChange={validation.handleChange}
+                                    onBlur={validation.handleBlur}
+                                    value={validation.values.name_guj || ""}
+                                    invalid={ validation.touched.name_guj && validation.errors.name_guj ? true : false}
+                                />
+                                {validation.touched.name_guj && validation.errors.name_guj ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.name_guj} </FormFeedback> ) : null}
+                                </div>
                             </div>
                         </div>
 

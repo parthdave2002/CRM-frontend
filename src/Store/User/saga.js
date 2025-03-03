@@ -112,6 +112,7 @@ function* onGetAdduserList({ payload: requstuser }) {
       toast.error(reponse?.msg)
     } 
   } catch (error) {
+    toast.error(error)
     yield put(AddUserlistFail(error));
   }
 }
