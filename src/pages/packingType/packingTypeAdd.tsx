@@ -10,6 +10,7 @@ import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { AddPackingTypelist, ResetPackingTypelist } from "../../Store/actions";
 import { toast } from "react-toastify";
+import ToastMessage from "../../components/ToastMessage";
 
 const AddpackingTypePage : FC = function () {
     const dispatch = useDispatch();
@@ -34,7 +35,8 @@ const AddpackingTypePage : FC = function () {
     // ------ status code end ------
 
     const [initialValues, setinitialValues] = useState({
-        packing_type: "",
+        packing_type_eng:"",
+        packing_type_guj: "",
         status: "",
     });
 
@@ -43,13 +45,15 @@ const AddpackingTypePage : FC = function () {
         initialValues: initialValues,
     
         validationSchema: Yup.object({
-          packing_type: Yup.string().required("Please enter packing type"),
+            packing_type_eng: Yup.string().required("Please enter english packing type"),
+            packing_type_guj: Yup.string().required("Please enter gujarati packing type"),
         }),
         
         onSubmit: (values) => {
           if(selectedactiveid == null) return setValidateactive(1);
           let requserdata = {
-            type: values?.packing_type,
+            type_eng: values?.packing_type_eng,
+            type_guj: values?.packing_type_guj,
             is_active: selectedactiveid,
           };
           dispatch(AddPackingTypelist(requserdata));
@@ -73,7 +77,6 @@ const AddpackingTypePage : FC = function () {
                 toast.success(AddPackingtypelist?.msg);
                 navigate(ParentLink)
                 validation.resetForm();
-                initialValues.packing_type = "";
                 setSelectedactiveid(null);
                 setSelectedactiveOption(null);
                 setValidateactive(1)
@@ -91,31 +94,42 @@ const AddpackingTypePage : FC = function () {
                 <ExampleBreadcrumb  Name={Name} ParentName={ParentName} ParentLink={ParentLink}  />
                 <div className="mt-[2rem] bg-white dark:bg-gray-800 p-4">
                     <Form onSubmit={(e) => { e.preventDefault(); validation.handleSubmit(); return false; }} >
-                        <div>
-                            <Label htmlFor="PackingType">Packing Type</Label>
-                            <div className="mt-1">
-                            <Input
-                                id="packing_type"
-                                name="packing_type"
-                                className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
-                                placeholder="Packing Type"
-                                type="text"
-                                onChange={validation.handleChange}
-                                onBlur={validation.handleBlur}
-                                value={validation.values.packing_type || ""}
-                                invalid={
-                                validation.touched.packing_type &&
-                                validation.errors.packing_type
-                                    ? true
-                                    : false
-                                }
-                            />
-                            {validation.touched.packing_type &&
-                            validation.errors.packing_type ? (
-                                <FormFeedback type="invalid" className="text-Red text-sm">
-                                {validation.errors.packing_type}
-                                </FormFeedback>
-                            ) : null}
+                        
+                        <div className="flex gap-x-[2rem] ">
+                            <div className="flex-1">
+                                <Label htmlFor="PackingType">Packing Type ( Eng )</Label>
+                                <div className="mt-1">
+                                <Input
+                                    id="packing_type_eng"
+                                    name="packing_type_eng"
+                                    className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
+                                    placeholder="Enter packing type in eng "
+                                    type="text"
+                                    onChange={validation.handleChange}
+                                    onBlur={validation.handleBlur}
+                                    value={validation.values.packing_type_eng || ""}
+                                    invalid={ validation.touched.packing_type_eng && validation.errors.packing_type_eng ? true : false}
+                                />
+                                {validation.touched.packing_type_eng && validation.errors.packing_type_eng ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.packing_type_eng} </FormFeedback> ) : null}
+                                </div>
+                            </div>
+
+                            <div className="flex-1">
+                                <Label htmlFor="PackingType">Packing Type ( Guj )</Label>
+                                <div className="mt-1">
+                                <Input
+                                    id="packing_type_guj"
+                                    name="packing_type_guj"
+                                    className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
+                                    placeholder="Enter packing type in guj "
+                                    type="text"
+                                    onChange={validation.handleChange}
+                                    onBlur={validation.handleBlur}
+                                    value={validation.values.packing_type_guj || ""}
+                                    invalid={ validation.touched.packing_type_guj && validation.errors.packing_type_guj  ? true : false }
+                                />
+                                {validation.touched.packing_type_guj && validation.errors.packing_type_guj ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.packing_type_guj}  </FormFeedback> ) : null}
+                                </div>
                             </div>
                         </div>
 
@@ -149,6 +163,7 @@ const AddpackingTypePage : FC = function () {
                     </Form>
                 </div>
             </NavbarSidebarLayout>
+            <ToastMessage />
         </>
     );
 }

@@ -272,7 +272,7 @@ const ProductAddPage : FC = function () {
                         </div>
                         
                         <div className="md:flex gap-x-[2rem] mt-[3rem]">
-                            <div  className="dark:bg-gray-800 flex-1 p-4 rounded-lg ring ring-gray-300  dark:ring-gray-500 space-y-3 mb-4">
+                            <div  className="dark:bg-gray-800 flex-1 p-4 rounded-lg border border-gray-300 dark:border-gray-500 space-y-3 mb-4">
                                 <div className="flex-1 mt-[1rem] ">
                                     <Label htmlFor="Name">Name ( Eng )</Label>
                                     <div className="mt-1">
@@ -310,7 +310,7 @@ const ProductAddPage : FC = function () {
                                 </div>
                             </div>
                             
-                            <div  className="dark:bg-gray-800  flex-1 p-4 rounded-lg ring ring-gray-300  dark:ring-gray-500 space-y-3 mb-4">
+                            <div  className="dark:bg-gray-800  flex-1 p-4 rounded-lg border border-gray-300  dark:border-gray-500 space-y-3 mb-4">
                                 <div className="flex-1 mt-[1rem] ">
                                     <Label htmlFor="tech_name">Technical Name ( Eng )</Label>
                                     <div className="mt-1">

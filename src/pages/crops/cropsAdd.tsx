@@ -34,8 +34,10 @@ const AddCropsPage : FC = function () {
     // ------ status code end ------
 
     const [initialValues, setinitialValues] = useState({
-        name: "",
-        description:"",
+        name_eng: "",
+        name_guj: "",
+        description_eng:"",
+        description_guj:"",
         status: "",
     });
 
@@ -44,14 +46,19 @@ const AddCropsPage : FC = function () {
         initialValues: initialValues,
     
         validationSchema: Yup.object({
-          name: Yup.string().required("Please enter Crop"),
+            name_eng: Yup.string().required("Please enter crop name in english"),
+            name_guj: Yup.string().required("Please enter crop name in gujarati"),
+            description_eng: Yup.string().required("Please enter crop description in english"),
+            description_guj: Yup.string().required("Please enter crop description in gujarati"),
         }),
         
         onSubmit: (values) => {
           if(selectedactiveid == null) return setValidateactive(1);
           let requserdata = {
-            name: values?.name,
-            description : values?.description,
+            name_eng: values?.name_eng,
+            name_guj: values?.name_guj,
+            description_guj:values?.description_guj,
+            description_eng : values?.description_eng,
             is_active: selectedactiveid,
           };
           dispatch(AddCroplist(requserdata));
@@ -74,7 +81,6 @@ const AddCropsPage : FC = function () {
                 toast.success(AddCropdatalist?.msg);
                 navigate("/crop/list")
                 validation.resetForm();
-                initialValues.name = "";
                 setSelectedactiveid(null);
                 setSelectedactiveOption(null);
                 setValidateactive(1)
@@ -92,49 +98,82 @@ const AddCropsPage : FC = function () {
                 <ExampleBreadcrumb  Name={Name} ParentName={ParentName} ParentLink={ParentLink}  />
                 <div className="mt-[2rem] bg-white dark:bg-gray-800 p-4">
                     <Form onSubmit={(e) => { e.preventDefault(); validation.handleSubmit(); return false; }} >
-                        <div>
-                            <Label htmlFor="name">Crop</Label>
-                            <div className="mt-1">
-                            <Input
-                                id="name"
-                                name="name"
-                                className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
-                                placeholder="Crop name"
-                                type="text"
-                                onChange={validation.handleChange}
-                                onBlur={validation.handleBlur}
-                                value={validation.values.name || ""}
-                                invalid={
-                                validation.touched.name &&
-                                validation.errors.name
-                                    ? true
-                                    : false
-                                }
-                            />
-                            {validation.touched.name &&
-                            validation.errors.name ? (
-                                <FormFeedback type="invalid" className="text-Red text-sm">
-                                {validation.errors.name}
-                                </FormFeedback>
-                            ) : null}
+                        <div className="flex gap-x-[2rem]">
+                            <div className="flex-1">
+                                <Label htmlFor="name">Crop Name ( Eng )</Label>
+                                <div className="mt-1">
+                                <Input
+                                    id="name_eng"
+                                    name="name_eng"
+                                    className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
+                                    placeholder="Enter crop name in eng"
+                                    type="text"
+                                    onChange={validation.handleChange}
+                                    onBlur={validation.handleBlur}
+                                    value={validation.values.name_eng || ""}
+                                    invalid={
+                                    validation.touched.name_eng &&
+                                    validation.errors.name_eng ? true  : false  }
+                                />
+                                {validation.touched.name_eng &&  validation.errors.name_eng ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.name_eng}  </FormFeedback>
+                                ) : null}
+                                </div>
                             </div>
-                        </div>
 
-                        <div className="my-[1rem]">
-                            <Label htmlFor="name">Description</Label>
-                            <div className="mt-1">
-                            <Input
-                                id="description"
-                                name="description"
-                                className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
-                                placeholder="Crop description"
-                                type="textarea"
-                                onChange={validation.handleChange}
-                                onBlur={validation.handleBlur}
-                                value={validation.values.description || ""}
-                            />
+                            <div className="flex-1">
+                                <Label htmlFor="name">Crop Name ( Guj )</Label>
+                                <div className="mt-1">
+                                <Input
+                                    id="name_guj"
+                                    name="name_guj"
+                                    className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
+                                    placeholder="Enter crop name in guj"
+                                    type="text"
+                                    onChange={validation.handleChange}
+                                    onBlur={validation.handleBlur}
+                                    value={validation.values.name_guj || ""}
+                                    invalid={ validation.touched.name_guj &&  validation.errors.name_guj ? true  : false}
+                                />
+                                {validation.touched.name_guj && validation.errors.name_guj ? (  <FormFeedback type="invalid" className="text-Red text-sm">   {validation.errors.name_guj}  </FormFeedback> ) : null}
+                                </div>
                             </div>
                         </div>
+                        
+                        <div className="flex gap-x-[2rem] my-[1rem]">
+                           
+                            <div className="flex-1">
+                                <Label htmlFor="name">Description ( Eng )</Label>
+                                <div className="mt-1">
+                                <Input
+                                    id="description_eng"
+                                    name="description_eng"
+                                    className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
+                                    placeholder="Enter crop description in eng"
+                                    type="textarea"
+                                    onChange={validation.handleChange}
+                                    onBlur={validation.handleBlur}
+                                    value={validation.values.description_eng || ""}
+                                />
+                                </div>
+                            </div>
+
+                            <div className="flex-1">
+                                <Label htmlFor="name">Description ( Guj )</Label>
+                                <div className="mt-1">
+                                <Input
+                                    id="description_guj"
+                                    name="description_guj"
+                                    className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
+                                    placeholder="Enter crop description in guj"
+                                    type="textarea"
+                                    onChange={validation.handleChange}
+                                    onBlur={validation.handleBlur}
+                                    value={validation.values.description_guj || ""}
+                                />
+                                </div>
+                            </div>
+                        </div>
+                       
 
                         <div className="my-[1rem]">
                             <Label htmlFor="Status">Status</Label>

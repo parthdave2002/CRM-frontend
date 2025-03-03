@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, lazy, useEffect, useState } from "react";
 import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { Label, Button } from "flowbite-react";
@@ -9,6 +9,7 @@ import { Form, Input, FormFeedback } from "reactstrap";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { AddCompanylist, ResetCompanylist } from "../../Store/actions";
+const ToastMessage = lazy(() => import("../../components/ToastMessage"));
 
 const CompanyAddPage : FC = function () {
     const dispatch = useDispatch();
@@ -33,7 +34,8 @@ const CompanyAddPage : FC = function () {
     // ------ status code end ------
 
     const [initialValues, setinitialValues] = useState({
-        name: "",
+        name_guj: "",
+        name_eng : "",
         description:"",
         status: "",
     });
@@ -43,7 +45,8 @@ const CompanyAddPage : FC = function () {
         initialValues: initialValues,
     
         validationSchema: Yup.object({
-          name: Yup.string().required("Please enter company name"),
+            name_eng: Yup.string().required("Please enter company name in english"),
+            name_guj: Yup.string().required("Please enter company name gujarati"),
           description: Yup.string().required("Please enter company description")
         }),
         
@@ -51,7 +54,8 @@ const CompanyAddPage : FC = function () {
           {selectedactiveid == 0 ? setValidateactive(1) : setValidateactive(0) }
 
           let requserdata = {
-            name: values?.name,
+            name_eng: values?.name_eng,
+            name_guj : values?.name_guj,
             description: values?.description,
             is_active: selectedactiveid,
           };
@@ -97,21 +101,42 @@ const CompanyAddPage : FC = function () {
                 <ExampleBreadcrumb  Name={Name} ParentName={ParentName} ParentLink={ParentLink}  />
                 <div className="mt-[2rem] bg-white dark:bg-gray-800 p-4">
                     <Form onSubmit={(e) => { e.preventDefault(); validation.handleSubmit(); return false; }} >
-                        <div>
-                            <Label htmlFor="Name">Name</Label>
-                            <div className="mt-1">
-                            <Input
-                                id="name"
-                                name="name"
-                                className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
-                                placeholder="Company name"
-                                type="text"
-                                onChange={validation.handleChange}
-                                onBlur={validation.handleBlur}
-                                value={validation.values.name || ""}
-                                invalid={ validation.touched.name && validation.errors.name ? true : false}
-                            />
-                            {validation.touched.name && validation.errors.name ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.name} </FormFeedback> ) : null}
+                        
+                        <div className="flex gap-x-[2rem]">
+                            <div className="flex-1">
+                                <Label htmlFor="Name">Company Name ( Eng )</Label>
+                                <div className="mt-1">
+                                <Input
+                                    id="name_eng"
+                                    name="name_eng"
+                                    className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
+                                    placeholder="Enter company name in eng"
+                                    type="text"
+                                    onChange={validation.handleChange}
+                                    onBlur={validation.handleBlur}
+                                    value={validation.values.name_eng || ""}
+                                    invalid={ validation.touched.name_eng && validation.errors.name_eng ? true : false}
+                                />
+                                {validation.touched.name_eng && validation.errors.name_eng ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.name_eng} </FormFeedback> ) : null}
+                                </div>
+                            </div>
+
+                            <div className="flex-1">
+                                <Label htmlFor="Name">Company Name ( Guj )</Label>
+                                <div className="mt-1">
+                                <Input
+                                    id="name_guj"
+                                    name="name_guj"
+                                    className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
+                                    placeholder="Enter company name in guj"
+                                    type="text"
+                                    onChange={validation.handleChange}
+                                    onBlur={validation.handleBlur}
+                                    value={validation.values.name_guj || ""}
+                                    invalid={ validation.touched.name_guj && validation.errors.name_guj ? true : false}
+                                />
+                                {validation.touched.name_guj && validation.errors.name_guj ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.name_guj} </FormFeedback> ) : null}
+                                </div>
                             </div>
                         </div>
 
@@ -165,6 +190,7 @@ const CompanyAddPage : FC = function () {
                     </Form>
                 </div>
             </NavbarSidebarLayout>
+            <ToastMessage />
         </>
     );
 }

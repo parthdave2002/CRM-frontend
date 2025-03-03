@@ -260,7 +260,8 @@ const DashboardPage: FC = function () {
                 <div className="overflow-hidden shadow sm:rounded-lg">
                   <Table striped className="min-w-full divide-y divide-gray-200 dark:divide-gray-600" >
                     <Table.Head className="bg-gray-50 dark:bg-gray-700">
-                      <Table.HeadCell>Name</Table.HeadCell>
+                      <Table.HeadCell>Eng Name</Table.HeadCell>
+                      <Table.HeadCell>Guj Name</Table.HeadCell>
                       <Table.HeadCell>Category</Table.HeadCell>
                       <Table.HeadCell>Qty</Table.HeadCell>
                       <Table.HeadCell>HSN</Table.HeadCell>
@@ -271,7 +272,8 @@ const DashboardPage: FC = function () {
                     <Table.Body className="bg-white dark:bg-gray-800">
                         {ProductData && ProductData.map((item:any ,k:number) =>(
                           <Table.Row key={k}>
-                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 dark:text-white"><span className="font-semibold">{item.name}</span>  </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 dark:text-white"><span className="font-semibold">{item?.name?.englishname}</span>  </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 dark:text-white"><span className="font-semibold">{item?.name?.gujaratiname}</span>  </Table.Cell>
                           <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-300"> { item?.categories ? item?.categories?.name : "N/A"}  </Table.Cell>
                           <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-gray-300"> {item.avl_qty}  </Table.Cell>
                           <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-gray-300"> {item.hsn_code}  </Table.Cell>
