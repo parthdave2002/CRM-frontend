@@ -6,19 +6,75 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Select from "react-select";
 import { Form, Input, FormFeedback } from "reactstrap";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { AddUserlist, getRoleslist, ResetUserdatalist } from "../../Store/actions";
+import { AddUserlist, getRoleslist, getUserView, ResetUserdatalist, UpdateProfileUserdatalist } from "../../Store/actions";
 import { toast } from "react-toastify";
 import ImageUploadPreview from "../../components/imageuploader";
 import moment from "moment";
 import ToastMessage from "../../components/ToastMessage";
+const IMG_URL = import.meta.env["VITE_API_URL"];
 
 const AddUserPage : FC = function () {
 
+    const { id } = useParams();
     const dispatch = useDispatch();
     const [file, setFile] = useState<File | null>(null);
 
+    interface UserData {
+        aadhar_card: boolean | "";
+        // added_at: string;
+        address: string;
+        bank_passbook: boolean | null;
+        date_of_birth: string;
+        date_of_joining: string;
+        email: string;
+        emergency_contact_person: string | "";
+        emergency_mobile_no: number | "";
+        gender: string;
+        is_active: boolean | "";
+        mobile_no: number | "";
+        name: string;
+        pan_card: boolean | "";
+        password: string;
+        role: string;
+        user_pic: string;
+    }
+
+    // ---------- get default users list ----------
+    useEffect(() => {
+       dispatch(ResetUserdatalist())
+        
+        if(id){
+            let requserdata = {  id: id };
+            dispatch(getUserView(requserdata))
+        } 
+        else{
+            validation.values.name=  "";
+            validation.values.email=  "";
+            validation.values.gender = "";
+            validation.values.mobile_no = "";
+            validation.values.address=  "";
+            validation.values.date_of_birth=  "";
+            validation.values.date_of_joining=  "";
+            validation.values.emergency_mobile_no="";
+            validation.values.emergency_contact_person=  "";
+            validation.values.aadhar_card=  "";
+            validation.values.pan_card=  "";
+            validation.values.bank_passbook= null; 
+        }   
+    },[id])
+
+      const [UserDataList, setUserDataList] = useState<UserData>();
+      const { UserView } = useSelector((state: any) => ({
+        UserView: state.User.UserView,
+      }));
+    
+      useEffect(() => {
+        setUserDataList(UserView ? UserView.data  : null);
+      }, [UserView]);
+    // ---------- get default users list ----------
+    
     //---------------- Role option code start ----------------
         const [selectedRoleOption, setSelectedRoleOption] = useState(null);
         const [selectedRoleid, setSelectedRoleid] = useState<string | null>(null);;
@@ -55,7 +111,7 @@ const AddUserPage : FC = function () {
     ]
 
     //---------------- Gender option code start ----------------
-        const [selectedGenderOption, setSelectedGenderOption] = useState(null);
+        const [selectedGenderOption, setSelectedGenderOption] = useState<{ label: string; value: string } | null>(null);
         const [selectedGenderid, setSelectedGenderid] = useState<string | null>(null);
         const [ValidateGenderid, setValidateGenderid] = useState(0);
 
@@ -73,7 +129,7 @@ const AddUserPage : FC = function () {
     //---------------- Gender option code end ----------------
 
     //---------------- Satus option code start ----------------
-        const [selectedStatusOption, setSelectedStatusOption] = useState(null);
+        const [selectedStatusOption, setSelectedStatusOption] = useState<{ label: string; value: boolean } | null>(null);
         const [selectedStatusid, setSelectedStatusid] = useState<boolean | null>(null);
         const [ValidateStatusid, setValidateStatusid] = useState(0);
 
@@ -145,22 +201,23 @@ const AddUserPage : FC = function () {
     //---------------- Bank passbook option code end ----------------
 
     const navigate = useNavigate();
-    const [initialValues, setinitialValues] = useState({
-        user_name: "",
+    const [initialValues, setinitialValues] = useState<UserData>({
+        name: "",
         email:"",
         gender:"",
         role:"",
         password:"",
-        mobile_no:"",
+        mobile_no: "",
         address:"",
         date_of_birth:"",
         date_of_joining:"",
-        is_active:"",
+        is_active: "",
         emergency_mobile_no:"",
         emergency_contact_person:"",
         aadhar_card:"",
         pan_card:"",
-        bank_passbook :""
+        bank_passbook : null,
+        user_pic : ""
     });
     
     const validation = useFormik({
@@ -168,17 +225,30 @@ const AddUserPage : FC = function () {
         initialValues: initialValues,
         
         validationSchema: Yup.object({
-            user_name: Yup.string().required("Please Enter User Name"),
+            name: Yup.string().required("Please Enter User Name"),
             email: Yup.string().required("Please Enter Email")
             .matches(/^[^@]+@[^@]+$/, "Email must contain exactly one '@'") // Ensures exactly one '@'
             .matches(/@[^@]+\.[^@]+$/, "Email must contain exactly one '.' after '@'") // Ensures '.' after '@'
             .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email format"), // General email validation,
-            password: Yup.string().required("Please Enter Password")
-            .min(5, "Password must be at least 5 characters long")
-            .max(10, "Password must be at most 10 characters long")
-            .matches(/[A-Z]/, "Password must contain at least one uppercase letter (A-Z)")
-            .matches(/\d/, "Password must contain at least one numeric digit (0-9)")
-            .matches(/[@$!%*?&]/, "Password must contain at least one special character (@$!%*?&)"),
+            // password: Yup.string().required("Please Enter Password")
+            // .min(5, "Password must be at least 5 characters long")
+            // .max(10, "Password must be at most 10 characters long")
+            // .matches(/[A-Z]/, "Password must contain at least one uppercase letter (A-Z)")
+            // .matches(/\d/, "Password must contain at least one numeric digit (0-9)")
+            // .matches(/[@$!%*?&]/, "Password must contain at least one special character (@$!%*?&)"),
+           
+            password: Yup.string()
+                .when([], {
+                    is: () => !id, // If `id` does NOT exist, apply validation
+                    then: (schema) =>
+                        schema.required("Please Enter Password")
+                            .min(5, "Password must be at least 5 characters long")
+                            .max(10, "Password must be at most 10 characters long")
+                            .matches(/[A-Z]/, "Password must contain at least one uppercase letter (A-Z)")
+                            .matches(/\d/, "Password must contain at least one numeric digit (0-9)")
+                            .matches(/[@$!%*?&]/, "Password must contain at least one special character (@$!%*?&)"),
+                    otherwise: (schema) => schema.notRequired(), // If `id` exists, make it optional
+                }),
             mobile_no: Yup.string().required("Please Enter Mobile Number")
             .matches(/^\d{10}$/, "Mobile number must be 10 digits"),
             address: Yup.string().required("Please Enter Address"),
@@ -198,14 +268,14 @@ const AddUserPage : FC = function () {
             if (selectedBankPassbookid  == null) return setValidatePassbookStatusid(1);
 
             const formData = new FormData();
-            formData.append("name", values.user_name);
+            formData.append("name", values.name);
             formData.append("email", values.email);
-            formData.append("password", values.password);
+            if(!id) formData.append("password", values.password);
             formData.append("gender", selectedGenderid);
-            formData.append("mobile_no", values.mobile_no);
+            formData.append("mobile_no", String(values.mobile_no));
             formData.append("date_of_joining", moment(values?.date_of_joining).format("DD-MM-YYYY"));
             formData.append("date_of_birth", moment(values.date_of_birth).format("DD-MM-YYYY"));
-            formData.append("emergency_mobile_no", values.emergency_mobile_no);
+            formData.append("emergency_mobile_no", String(values.emergency_mobile_no));
             formData.append("emergency_contact_person", values.emergency_contact_person);
             formData.append("address", values.address);
             formData.append("aadhar_card", JSON.stringify(selectedAadharid));
@@ -213,10 +283,15 @@ const AddUserPage : FC = function () {
             formData.append("bank_passbook",JSON.stringify(selectedBankPassbookid));
             formData.append("is_active", JSON.stringify(selectedStatusid));
             formData.append("role", selectedRoleid);
-            if (file) {
-                formData.append("user_pic", file); 
+            if (file) formData.append("user_pic", file); 
+            
+            if(id){
+                formData.append("id", id);
+                dispatch(UpdateProfileUserdatalist(formData));
             }
-            dispatch(AddUserlist(formData));
+            else{
+                dispatch(AddUserlist(formData));
+            }
         },
     });
 
@@ -230,23 +305,77 @@ const AddUserPage : FC = function () {
     //  -------------- Get Role Data list -------------------
 
      //  -------------- Get Role Data list -------------------
-     const UserAddedList = useSelector((state: any) => state.User.AddUserlistdata || []);
+     const {UserAddedList} = useSelector((state: any) => state.User.AddUserlistdata || []);
+     const UpdateProfileuserdata  = useSelector((state: any) => state.User.UpdateProfileuserdata || []);
 
      useEffect(() =>{
-        if(UserAddedList?.success == true){
-            toast.success(UserAddedList?.msg);
+        if(UserAddedList?.success == true || UpdateProfileuserdata?.success == true){
+            if(UpdateProfileuserdata){
+                toast.success(UpdateProfileuserdata?.msg);
+            }else{
+                toast.success(UserAddedList?.msg);
+            }
             dispatch(ResetUserdatalist());
             navigate(ParentLink)
             validation.resetForm();
         }
-     },[UserAddedList])
+     },[UserAddedList, UpdateProfileuserdata])
  //  -------------- Get Role Data list -------------------
+
+ useEffect(() => { 
+    validation.values.name= UserDataList?.name ?? "";
+    validation.values.email= UserDataList?.email ?? "";
+    validation.values.gender = UserDataList?.gender ?? "";
+    validation.values.mobile_no =UserDataList?.mobile_no ?? "";
+    validation.values.address= UserDataList?.address ?? "";
+    validation.values.date_of_birth= UserDataList?.date_of_birth ? moment(UserDataList.date_of_birth).format("YYYY-DD-MM") : "";
+    validation.values.date_of_joining= UserDataList?.date_of_joining ? moment(UserDataList.date_of_joining).format("YYYY-DD-MM") : "";
+    validation.values.emergency_mobile_no= UserDataList?.emergency_mobile_no ?? "";
+    validation.values.emergency_contact_person= UserDataList?.emergency_contact_person ?? "";
+    validation.values.aadhar_card= UserDataList?.aadhar_card ?? "";
+    validation.values.pan_card= UserDataList?.pan_card ?? "";
+    validation.values.bank_passbook= UserDataList?.bank_passbook ?? null;    
+    if (UserDataList?.role && roleoption.length > 0) {
+        const selectedRole = roleoption.find((role:any) => role.value === UserDataList.role);
+        setSelectedRoleOption(selectedRole || null);
+        setSelectedRoleid(selectedRole?.value);
+    }
+    if (UserDataList?.gender && genderoption.length > 0) {
+        const selectedGender = genderoption.find((gender:any) => gender.value === UserDataList.gender);
+        setSelectedGenderOption(selectedGender || null);
+        setSelectedGenderid(selectedGender ? String(selectedGender.value) : "");
+    }
+
+    if (UserDataList?.is_active && isactiveoption.length > 0) {
+        const selectedSatus :any = isactiveoption.find((gender:any) => gender.value === UserDataList.is_active);
+        setSelectedStatusOption(selectedSatus);
+        setSelectedStatusid(selectedSatus?.value ?? null);
+    }
+
+    if (UserDataList?.aadhar_card !== undefined && UserDataList?.aadhar_card !== null && Dropdownoption.length > 0) {
+        const selectedAadhar :any = Dropdownoption.find((dropdown:any) => dropdown.value === UserDataList.aadhar_card);
+        setSelectedAadharOption(selectedAadhar || null);
+        setSelectedAadharid(selectedAadhar?.value);
+    }
+
+    if (UserDataList?.pan_card !== undefined && UserDataList?.pan_card !== null && Dropdownoption.length > 0) {
+        const selectedPan :any = Dropdownoption.find((dropdown:any) => dropdown.value === UserDataList.pan_card);
+        setSelectedpancardOption(selectedPan || null);
+        setSelectedPancardid(selectedPan?.value);
+    }
+
+    if (UserDataList?.bank_passbook !== undefined && UserDataList?.bank_passbook !== null &&  Dropdownoption.length > 0) {
+        const selectedSatus :any = Dropdownoption.find((dropdown:any) => dropdown.value === UserDataList.bank_passbook);
+        setSelectedBankPassbookOption(selectedSatus);
+        setSelectedBankPassbookid(selectedSatus?.value ?? null);
+    }
+  }, [UserDataList]);
 
     const today = new Date();
     const minDate = new Date(today.setFullYear(today.getFullYear() - 18));
     const formattedMinDate = minDate.toISOString().split("T")[0]; // Format to yyyy-mm-dd=  
 
-    let Name = "User Add";
+    let Name =  id ? "User Update" : "User Add" ;
     let ParentName = "User List";
     let ParentLink = "/users/list";
 
@@ -255,28 +384,27 @@ const AddUserPage : FC = function () {
             <NavbarSidebarLayout isFooter={false}  isSidebar={true} isNavbar={true} isRightSidebar={true}>
                 <ExampleBreadcrumb  Name={Name} ParentName={ParentName} ParentLink={ParentLink}  />
                 <div className="mt-[2rem] bg-white dark:bg-gray-800 p-4">
-                    <Form onSubmit={(e) => { e.preventDefault(); validation.handleSubmit(); return false; }} >
-                       
+                    <Form onSubmit={(e) => {  e.preventDefault();  validation.handleSubmit(); return false; }}>
 
-                        <ImageUploadPreview onFileSelect={setFile}/>
+                        <ImageUploadPreview onFileSelect={setFile}  defaultImage={UserDataList?.user_pic ? `${IMG_URL}/public/user/${UserDataList?.user_pic}` : ""}/>
 
                         <div className="md:flex gap-x-[2rem]">
                             <div className="flex-1 mt-[1rem]">
                                 <Label htmlFor="UserName">User Name</Label>
                                 <div className="mt-1">
                                 <Input
-                                    id="user_name"
-                                    name="user_name"
+                                    id="name"
+                                    name="name"
                                     className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
                                     placeholder="User Name"
                                     type="text"
                                     onChange={validation.handleChange}
                                     onBlur={validation.handleBlur}
-                                    value={validation.values.user_name || ""}
-                                    invalid={validation.touched.user_name && validation.errors.user_name ? true : false }
+                                    value={validation.values.name || ""}
+                                    invalid={validation.touched.name && validation.errors.name ? true : false }
                                 />
-                                {validation.touched.user_name && validation.errors.user_name ? (
-                                    <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.user_name}  </FormFeedback>
+                                {validation.touched.name && validation.errors.name ? (
+                                    <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.name}  </FormFeedback>
                                 ) : null}
                                 </div>
                             </div>
@@ -586,7 +714,7 @@ const AddUserPage : FC = function () {
                         </div>
 
                         <div className="flex gap-x-3 justify-end mt-[3rem]">
-                            <Button className="bg-addbutton hover:bg-addbutton dark:bg-addbutton dark:hover:bg-addbutton" type="submit"> Add User </Button>
+                            <Button className="bg-addbutton hover:bg-addbutton dark:bg-addbutton dark:hover:bg-addbutton" type="submit">  {id ? "Update User" : " Add User"} </Button>
                             <Button className="bg-deletebutton hover:bg-deletebutton dark:bg-deletebutton dark:hover:bg-deletebutton" onClick={() => navigate(ParentLink)}>  Close </Button>
                         </div>
                     </Form>

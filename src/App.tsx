@@ -5,6 +5,7 @@ import PrivateRoute from "./routes/PrivateRoute";
 import LoaderPage from "./components/loader";
 
 const DashboardPage = lazy(() => import("./pages"));
+const ManagerDashboardPage = lazy(() => import("./pages/mdashboard/dashoboard"));
 const SignInPage = lazy(() => import("./pages/authentication/sign-in"));
 const ResetPasswordPage = lazy(() => import("./pages/authentication/reset-password"));
 const UserListPage = lazy(() => import("./pages/users/list"));
@@ -65,9 +66,10 @@ const App: FC = function () {
 
           {/* Admin Routes */}
             <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/manager-dashboard" element={<ManagerDashboardPage />} />
             <Route path="/users/list" element={<UserListPage />} />
             <Route path="/users/add" element={<AddUserPage />} />
-            <Route path="/users/:id" element={<AddUserPage />} />
+            <Route path="/users/edit/:id" element={<AddUserPage />} />
             <Route path="/users/details/:id" element={<UserDetailsPage />} />
             <Route path="/roles/list" element={<RolesPage />} />
             <Route path="/roles/add" element={<AddRolePage />} />

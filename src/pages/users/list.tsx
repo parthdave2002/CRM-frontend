@@ -95,7 +95,7 @@ const UserListPage: FC = function () {
 
   // ------------- Get User Data Code Start --------------
   const getUserData = (id: any) => {
-   console.log(id);
+   navigate(`/users/edit/${id}`);
   };
   // -----------Get Module Data Code End -------------------
 

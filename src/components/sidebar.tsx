@@ -138,16 +138,19 @@ const LeftSidebar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = function ()
             ))}
           </Sidebar.ItemGroup>
 
-          <Sidebar.ItemGroup>
-            <h4 className="dark:text-gray-400"> Master:</h4>
-            <Sidebar.Collapse icon={HiShoppingBag} label="Master">
-              {filteredSubMasterMenu.map((item, k) => (
-                <NavLink to={item.to} key={k}>
-                  <Sidebar.Item icon={item.icon}  className={item.to === currentPage ? "dark:bg-gray-700" : ""} >  {item.name} </Sidebar.Item>
-                </NavLink>
-              ))}
-            </Sidebar.Collapse>
-          </Sidebar.ItemGroup>
+          {filteredSubMasterMenu.length > 0 &&
+            <Sidebar.ItemGroup>
+              <h4 className="dark:text-gray-400"> Master:</h4>
+              <Sidebar.Collapse icon={HiShoppingBag} label="Master">
+                {filteredSubMasterMenu.map((item, k) => (
+                  <NavLink to={item.to} key={k}>
+                    <Sidebar.Item icon={item.icon} className={item.to === currentPage ? "dark:bg-gray-700" : ""} >  {item.name} </Sidebar.Item>
+                  </NavLink>
+                ))}
+              </Sidebar.Collapse>
+            </Sidebar.ItemGroup>
+          }
+         
           
           {/* <Sidebar.ItemGroup>
             <h4 className={"dark:text-white"}>Design View only:</h4>
