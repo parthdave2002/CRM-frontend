@@ -96,48 +96,49 @@ const OrdererDetailsPage: FC = function () {
           <div className="mb-4 flex justify-end">
             <Button color="primary" onClick={downloadPDF}>   <MdFileDownload className="w-6 h-6" /> Download PDF  </Button>
           </div>
-          <div  className="max-w-3xl min-h-[11.69rem] max-h-min-h-[11.69rem] mx-auto bg-white shadow-lg p-6 rounded-lg  font-sans"  ref={invoiceRef} >
-              <div className="flex">
-                    <div className="flex-1">  <img src={logo} alt="Company Logo" className="w-24" />  </div>
-                    <div className="flex-1 text-right">  <h1 className="text-3xl font-bold text-gray-800 ">INVOICE</h1> </div>
-              </div>
+
+
+          <div className="w-[794px] h-[1123px] mx-auto bg-white shadow-lg p-6 rounded-lg flex flex-col justify-between  font-sans"  ref={invoiceRef} >
+              <div className="flex flex-col">
+                <div className="flex-1">  <img src={logo} alt="Company Logo" className="w-24" />  </div>
+                <div className="flex-1 text-right">  <h1 className="text-3xl font-bold text-gray-800 ">INVOICE</h1> </div>
            
-            <div className="flex justify-between items-center mb-6  border-b pb-4">
-              <div>
-                <h2 className="text-xl font-bold mt-2">Agri Bharat</h2>
-                <p className="text-gray-500">Shop-1, Ravi Shopping Center,</p>
-                <p className="text-gray-500">Opp. New bus stand</p>
-                <p className="text-gray-500">  Kapadwanj, Kehda, Gujarat, 387620 </p>
-                <p className="text-gray-500">  GST : 24ABCDE1234FZP1Z1 </p>
+                <div className="flex justify-between items-center mb-6  border-b pb-4">
+                  <div>
+                    <h2 className="text-xl font-bold mt-2">Agri Bharat</h2>
+                    <p className="text-gray-500">Shop-1, Ravi Shopping Center,</p>
+                    <p className="text-gray-500">Opp. New bus stand</p>
+                    <p className="text-gray-500">  Kapadwanj, Kehda, Gujarat, 387620 </p>
+                    <p className="text-gray-500">  GST : 24ABCDE1234FZP1Z1 </p>
 
-              </div>
+                  </div>
 
-              <div className="flex-1 text-right align-end self-end">
-                <p className="text-gray-500 text-sm"><strong> Pesticide Lic No: </strong>   KHF/FP1240001586/2024-2025 </p>
-                <p className="text-gray-500 text-sm"><strong> Seeds Lic No: </strong> KHF/FSR240001647/2024-2025 </p>
-                <p className="text-gray-500 text-sm"> <strong> Ferlitizer Lic No: </strong> KHF/FFR240001682/2024-2025 </p>
-                <p className="text-gray-500 text-sm">  Contact : 9621696200, 9621696200  </p>
-                <p className="text-gray-500 text-sm">agribharat2023@gmil.com </p>
-              </div>
+                  <div className="flex-1 text-right align-end self-end">
+                    <p className="text-gray-500 text-sm"><strong> Pesticide Lic No: </strong>   KHF/FP1240001586/2024-2025 </p>
+                    <p className="text-gray-500 text-sm"><strong> Seeds Lic No: </strong> KHF/FSR240001647/2024-2025 </p>
+                    <p className="text-gray-500 text-sm"> <strong> Ferlitizer Lic No: </strong> KHF/FFR240001682/2024-2025 </p>
+                    <p className="text-gray-500 text-sm">  Contact : 9621696200, 9621696200  </p>
+                    <p className="text-gray-500 text-sm">agribharat2023@gmil.com </p>
+                  </div>
+                </div>
+
+                <div className="mb-6 grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="font-semibold">Bill To:</p>
+                    <p>{UserDataList?.customer?.customer_name}</p>
+                    <p className="text-gray-600">  {UserDataList?.customer?.address}   </p>
+                    <p className="text-gray-600">  {UserDataList?.customer?.district},{UserDataList?.customer?.taluka},{UserDataList?.customer?.village}  </p>
+                    <p className="text-gray-600">  Contact : {UserDataList?.customer?.mobile_number}, {UserDataList?.customer?.alternate_number} </p>
+                  </div>
+                  <div className="text-right">
+                    <p> <strong>Invoice :</strong> {UserDataList?.order_id}  </p>
+                    <p> <strong>Invoice Date:</strong>  {moment(UserDataList?.added_at).format("DD-MM-YYYY")} </p>
+                    {/* <p><strong>Due Date:</strong> {invoiceData.dueDate}</p> */}
+                  </div>
+                </div>
             </div>
 
-            {/* Billing Information */}
-            <div className="mb-6 grid grid-cols-2 gap-4">
-              <div>
-                <p className="font-semibold">Bill To:</p>
-                <p>{UserDataList?.customer?.customer_name}</p>
-                <p className="text-gray-600">  {UserDataList?.customer?.address}   </p>
-                <p className="text-gray-600">  {UserDataList?.customer?.district},{UserDataList?.customer?.taluka},{UserDataList?.customer?.village}  </p>
-                <p className="text-gray-600">  Contact : {UserDataList?.customer?.mobile_number}, {UserDataList?.customer?.alternate_number} </p>
-              </div>
-              <div className="text-right">
-                <p> <strong>Invoice :</strong> {UserDataList?.order_id}  </p>
-                <p> <strong>Invoice Date:</strong>  {moment(UserDataList?.added_at).format("DD-MM-YYYY")} </p>
-                {/* <p><strong>Due Date:</strong> {invoiceData.dueDate}</p> */}
-              </div>
-            </div>
-
-            {/* Items Table */}
+            <div>
             <table className="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
               <thead>
                 <tr className="bg-gray-700 text-white">
@@ -183,6 +184,7 @@ const OrdererDetailsPage: FC = function () {
                 </div>
             </div>
             <p className="text-2xl font-bold bg-gray-700 text-white p-3 mt-3 text-right self-center"> Grand Total: ₹{total?.toFixed(2) ?? "0.00"}  </p>
+            </div>
 
             <div className="mt-6 text-left text-gray-700">
               <p className="text-md">   <strong>Terms & Condition:</strong>  </p>
@@ -191,6 +193,7 @@ const OrdererDetailsPage: FC = function () {
               <p className="text-[0.8rem]">  (3) The battery pump and battery torch will have a warranty of 6  months. Only the battery will have a warranty, the company will  not be responsible for any other part. Do not turn on the front light and side light of the battery torch while charging. Do not use any other charging adapter for charging, it may damage the battery. Do not charge the battery pump or battery torch during low voltage, as it may damage the battery pump or battery torch. Do not overcharge the battery pump or battery torch.  </p>
             </div>
           </div>
+
         </div>
       </NavbarSidebarLayout>
     </>

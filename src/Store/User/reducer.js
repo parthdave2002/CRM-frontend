@@ -46,6 +46,7 @@ const INIT_STATE = {
   UpdateUserList: [],
   CheckUserList:[],
   Profileuserdata:[],
+  UpdateProfileuserdata:[],
   error: {},
 };
 
@@ -139,10 +140,10 @@ const User = (state = INIT_STATE, action) => {
     case UPDATE_USER_DATA_LIST_SUCCESS:
       switch (action.payload.actionType) {
         case UPDATE_USER_DATA_LIST:
-          // console.log("UserList Search =====>", action.payload.data);
+         
           return {
             ...state,
-            UpdateUserList: action.payload.data.data,
+            UpdateUserList: action.payload.data,
           };
       }
     case UPDATE_USER_DATA_LIST_ERROR:
@@ -169,6 +170,7 @@ const User = (state = INIT_STATE, action) => {
             UserView: [],
             AddUserlistdata:[],
             UpdateUserList: [],
+            UpdateProfileuserdata:[],
             CheckUserList:[],
             error: {},
           };
