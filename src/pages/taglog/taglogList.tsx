@@ -4,13 +4,13 @@ import type { FC } from "react";
 import { HiOutlinePencilAlt, HiTrash} from "react-icons/hi";
 import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
 import { useDispatch, useSelector } from "react-redux";
-import { DeleteTagloglist,  getTagloglist } from "../../Store/actions";
+import { ChangeStatusTagloglist, DeleteTagloglist,  getTagloglist } from "../../Store/actions";
 import { lazy, Suspense, useEffect, useState } from "react";
 import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useNavigate } from "react-router";
 import moment from "moment";
-import { FaExclamationCircle } from "react-icons/fa";
+import { FaExchangeAlt, FaExclamationCircle } from "react-icons/fa";
 import { BiSolidAddToQueue } from "react-icons/bi";
 import Cookies from "js-cookie";
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
@@ -120,6 +120,11 @@ const TaglogListPage: FC = function () {
     navigate(`/taglog/details/${id}`)
   }
 
+  const ChangestatusFuncall = (id: any) => {
+    let rqeuserdata = { id: id };
+    dispatch(ChangeStatusTagloglist(rqeuserdata))
+  }
+
   const getEditTaglogData = (id:any) =>{
     navigate(`/taglog/add/${id}`)
   }
@@ -154,6 +159,7 @@ const TaglogListPage: FC = function () {
                           <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0"> {moment(item.createdAt).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
                           <Table.Cell className="space-x-2 whitespace-nowrap py-0">
                             <div className="flex items-center gap-x-3">
+                              {AccessList?.edit ? <Button  gradientDuoTone="greenToBlue" onClick={() => ChangestatusFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton min-w-[5rem] text-center font-semibold"> <FaExchangeAlt className="text-lg font-semibold" />  Change status </div> </Button> : null}
                               {AccessList?.delete ?  <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete Taglog </div> </Button> : null } 
                               {AccessList?.add ?  <Button gradientDuoTone="greenToBlue" onClick={() => getEditTaglogData(item._id)} > <div className="flex items-center gap-x-2">  <BiSolidAddToQueue className="text-lg" />  Add Sub-Taglog  </div></Button> : null}
                               {/* <Button  gradientDuoTone="purpleToBlue" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <FaExclamationCircle className="text-lg" /> Detail Taglog  </div> </Button> */}

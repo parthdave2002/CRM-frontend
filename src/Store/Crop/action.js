@@ -6,6 +6,10 @@ import {
   ADD_CROP_LIST,
   ADD_CROP_LIST_SUCCESS,
   ADD_CROP_LIST_ERROR,
+
+  CHANGE_STATUS_CROP_LIST,
+  CHANGE_STATUS_CROP_LIST_ERROR,
+  CHANGE_STATUS_CROP_LIST_SUCCESS,
   
   DELETE_CROP_LIST,
   DELETE_CROP_LIST_SUCCESS,
@@ -58,6 +62,22 @@ export const DeleteCroplistSuccess = (actionType, data) => ({
 
 export const DeleteCroplistFail = (actionType, error) => ({
   type: DELETE_CROP_LIST_ERROR,
+  payload: { actionType, error },
+});
+
+
+export const ChangestatusCroplist = (requserdata) => ({
+  type: CHANGE_STATUS_CROP_LIST,
+  payload: requserdata,
+});
+
+export const ChangestatusCroplistSuccess = (actionType, data) => ({
+  type: CHANGE_STATUS_CROP_LIST_SUCCESS,
+  payload: { actionType, data },
+});
+
+export const ChangestatusCroplistFail = (actionType, error) => ({
+  type: CHANGE_STATUS_CROP_LIST_ERROR,
   payload: { actionType, error },
 });
 

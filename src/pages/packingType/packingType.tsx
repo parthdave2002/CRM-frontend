@@ -5,7 +5,7 @@ import moment from "moment";
 import { HiTrash} from "react-icons/hi";
 import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
 import { useDispatch, useSelector } from "react-redux";
-import { getPackingTypelist, DeletePackingTypelist } from "../../Store/actions";
+import { getPackingTypelist, DeletePackingTypelist, ChangeStatusPackingTypelist } from "../../Store/actions";
 import { lazy, Suspense, useEffect, useState } from "react";
 import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
@@ -121,8 +121,8 @@ const PackinTypeListPage: FC = function () {
   }
 
   const ChangestatusFuncall = (id:any) =>{
-  console.log("callll");
-  
+    let rqeuserdata = { id: id };
+    dispatch(ChangeStatusPackingTypelist(rqeuserdata))
   }
 
   let Name = "Packing Type List";

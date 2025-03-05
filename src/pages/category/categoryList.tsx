@@ -4,13 +4,13 @@ import type { FC } from "react";
 import { HiTrash} from "react-icons/hi";
 import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
 import { useDispatch, useSelector } from "react-redux";
-import { DeleteCategorylist,  getCategorylist } from "../../Store/actions";
+import { ChangeStatusCategorylist, DeleteCategorylist,  getCategorylist } from "../../Store/actions";
 import { lazy, Suspense, useEffect, useState } from "react";
 import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useNavigate } from "react-router";
 import moment from "moment";
-import { FaExclamationCircle } from "react-icons/fa";
+import { FaExchangeAlt, FaExclamationCircle } from "react-icons/fa";
 import Cookies from "js-cookie";
 const IMG_URL = import.meta.env["VITE_API_URL"];
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
@@ -121,6 +121,11 @@ const CategoryListPage: FC = function () {
     navigate(`/category/details/${id}`)
   }
 
+  const ChangestatusFuncall = (id: any) =>{
+    let requserdata = { id: id};
+    dispatch(ChangeStatusCategorylist(requserdata)); 
+  }
+
   let Name = "Category List";
   let Searchplaceholder = "Search For Category (Name)";
   let AddAccess = AccessList?.add;
@@ -148,12 +153,8 @@ const CategoryListPage: FC = function () {
                         <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
                           <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item._id} onClick={() => {CheckData(item._id)}}/>  </Table.Cell>
 
-                          <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0"> 
-                              <img
-                                src={`${IMG_URL}/public/category/${item.category_pic}`}
-                                alt="Category"
-                                className="h-28 w-28 object-cover rounded-full"
-                              />  
+                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0" style={{padding: "10px"}}> 
+                              <img  src={`${IMG_URL}/public/category/${item.category_pic}`}   alt="Category" className="h-16 w-16 object-cover rounded-full"  />  
                           </Table.Cell>
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.name_eng} </Table.Cell>
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.name_guj} </Table.Cell>
@@ -162,10 +163,10 @@ const CategoryListPage: FC = function () {
                             {item.is_active == true ? <div className="flex items-center">  <div className="mr-2 h-2.5 w-2.5 rounded-full bg-green-400"></div> Active  </div>
                             : <div className="flex items-center">  <div className="mr-2 h-2.5 w-2.5 rounded-full bg-Red"></div> Deactive  </div>}
                           </Table.Cell>
-                          <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0"> {moment(item.createdAt).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item.createdAt).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
                           <Table.Cell className="space-x-2 whitespace-nowrap py-0">
                             <div className="flex items-center gap-x-3">
-                             
+                             {AccessList?.edit ? <Button  gradientDuoTone="greenToBlue" onClick={() => ChangestatusFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton min-w-[5rem] text-center font-semibold"> <FaExchangeAlt className="text-lg font-semibold" />  Change status </div> </Button> : null} 
                             {AccessList?.delete ?  <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete Category </div> </Button> : null }  
                             {/* <Button  gradientDuoTone="purpleToBlue" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <FaExclamationCircle className="text-lg" /> Detail Category  </div> </Button>  */}
                            

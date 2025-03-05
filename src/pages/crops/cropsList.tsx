@@ -5,12 +5,12 @@ import moment from "moment";
 import { HiTrash} from "react-icons/hi";
 import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
 import { useDispatch, useSelector } from "react-redux";
-import { getCroplist, DeleteCroplist } from "../../Store/actions";
+import { getCroplist, DeleteCroplist, ChangestatusCroplist } from "../../Store/actions";
 import { lazy, Suspense, useEffect, useState } from "react";
 import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useNavigate } from "react-router";
-import { FaExclamationCircle } from "react-icons/fa";
+import { FaExchangeAlt, FaExclamationCircle } from "react-icons/fa";
 import Cookies from "js-cookie";
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 const ToastMessage = lazy(() => import("../../components/ToastMessage"));
@@ -120,6 +120,10 @@ const CropsListPage: FC = function () {
   const DetailsPageCall = (id:any) =>{
     navigate(`/crop/details/${id}`)
   }
+  const ChangestatusFuncall = (id:any) =>{
+      let rqeuserdata = { id: id };
+      dispatch(ChangestatusCroplist(rqeuserdata))
+  }
 
   let Name = "Crop List";
   let Searchplaceholder = "Search For Crops (Name)";
@@ -158,9 +162,8 @@ const CropsListPage: FC = function () {
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item.createdAt).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
                           <Table.Cell className="space-x-2 whitespace-nowrap py-0">
                             <div className="flex items-center gap-x-3">
-                                {AccessList?.delete ?
-                                  <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete Crop</div> </Button>
-                                : null} 
+                                {AccessList?.edit ? <Button  gradientDuoTone="greenToBlue" onClick={() => ChangestatusFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton min-w-[5rem] text-center font-semibold"> <FaExchangeAlt className="text-lg font-semibold" />  Change status </div> </Button> : null}
+                                {AccessList?.delete ? <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete Crop</div> </Button> : null} 
 
                                {/* <Button  gradientDuoTone="purpleToBlue" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <FaExclamationCircle className="text-lg" /> Detail Crop  </div> </Button>  */}
                             </div>

@@ -4,7 +4,7 @@ import type { FC } from "react";
 import { HiTrash} from "react-icons/hi";
 import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
 import { useDispatch, useSelector } from "react-redux";
-import { DeleteCompanylist,  getCompanylist } from "../../Store/actions";
+import { ChangeStatusCompanylist, DeleteCompanylist,  getCompanylist } from "../../Store/actions";
 import { lazy, Suspense, useEffect, useState } from "react";
 import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
@@ -121,7 +121,8 @@ const CompanyListPage: FC = function () {
   }
 
   const ChangestatusFuncall = (id:any) =>{
-    console.log("calllll");  
+    let requserdata = { id: id};
+    dispatch(ChangeStatusCompanylist(requserdata)); 
   }
 
   let Name = "Company List";

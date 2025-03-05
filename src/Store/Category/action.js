@@ -6,6 +6,10 @@ import {
   ADD_CATEGORY_LIST,
   ADD_CATEGORY_LIST_SUCCESS,
   ADD_CATEGORY_LIST_ERROR,
+
+  CHANGE_STATUS_CATEGORY_LIST,
+  CHANGE_STATUS_CATEGORY_LIST_SUCCESS,
+  CHANGE_STATUS_CATEGORY_LIST_ERROR,
   
   DELETE_CATEGORY_LIST,
   DELETE_CATEGORY_LIST_SUCCESS,
@@ -61,6 +65,20 @@ export const DeleteCategorylistFail = (actionType, error) => ({
   payload: { actionType, error },
 });
 
+export const ChangeStatusCategorylist = (requserdata) => ({
+  type: CHANGE_STATUS_CATEGORY_LIST,
+  payload: requserdata,
+});
+
+export const ChangeStatusCategorylistSuccess = (actionType, data) => ({
+  type: CHANGE_STATUS_CATEGORY_LIST_SUCCESS,
+  payload: { actionType, data },
+});
+
+export const ChangeStatusCategorylistFail = (actionType, error) => ({
+  type: CHANGE_STATUS_CATEGORY_LIST_ERROR,
+  payload: { actionType, error },
+});
 
 export const ResetCategorylist = (requserdata) => ({
   type: RESET_CATEGORY_LIST,

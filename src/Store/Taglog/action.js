@@ -6,6 +6,10 @@ import {
   ADD_TAGLOG_LIST,
   ADD_TAGLOG_LIST_SUCCESS,
   ADD_TAGLOG_LIST_ERROR,
+
+  CHANGE_STATUS_TAGLOG_LIST,
+  CHANGE_STATUS_TAGLOG_LIST_SUCCESS,
+  CHANGE_STATUS_TAGLOG_LIST_ERROR,
   
   DELETE_TAGLOG_LIST,
   DELETE_TAGLOG_LIST_SUCCESS,
@@ -61,6 +65,20 @@ export const DeleteTagloglistFail = (actionType, error) => ({
   payload: { actionType, error },
 });
 
+export const ChangeStatusTagloglist = (requserdata) => ({
+  type: CHANGE_STATUS_TAGLOG_LIST,
+  payload: requserdata,
+});
+
+export const ChangeStatusTagloglistSuccess = (actionType, data) => ({
+  type: CHANGE_STATUS_TAGLOG_LIST_SUCCESS,
+  payload: { actionType, data },
+});
+
+export const ChangeStatusTagloglistFail = (actionType, error) => ({
+  type: CHANGE_STATUS_TAGLOG_LIST_ERROR,
+  payload: { actionType, error },
+});
 
 export const ResetTagloglist = (requserdata) => ({
   type: REST_TAGLOG_LIST,
