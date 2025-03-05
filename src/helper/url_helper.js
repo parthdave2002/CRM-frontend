@@ -37,7 +37,7 @@ export const SAVE_ROLES_ACCESS_LIST = "/api/role/access/role";
 export const GET_PACKING_TYPE_LIST = "/api/packing-type";
 export const ADD_PACKING_TYPE_LIST = "/api/packing-type/add-packing-type";
 export const DELETE_PACKING_TYPE_LIST = "/api/packing-type/remove-packing-type";
-
+export const CHANGE_STATUS_PACKING_TYPE_LIST = "/api/packing-type/status-packing-type";
 // Packing
 export const GET_PACKING_LIST = "/api/packing/get-packing";
 export const ADD_PACKING_LIST = "/api/packing/add-packing";
@@ -47,11 +47,13 @@ export const DELETE_PACKING_LIST = "/api/packing/remove-packing";
 export const GET_CATEGORY_LIST = "/api/category/get-category";
 export const ADD_CATEGORY_LIST = "/api/category/add-category";
 export const DELETE_CATEGORY_LIST = "/api/category/remove-category";
+export const CHANGE_STATUS_CATEGORY_LIST = "/api/category/status-category";
 
 // Company
 export const GET_COMPANY_LIST = "/api/company/get-company-list";
 export const ADD_COMPANY_LIST = "/api/company/add-company-list";
 export const DELETE_COMPANY_LIST = "/api/company/remove-company-list";
+export const CHANGE_STATUS_COMPANY_LIST = "/api/company/status-company-list";
 
 // Product
 export const GET_PRODUCT_LIST = "/api/product/get-product";
@@ -74,6 +76,7 @@ export const DELETE_BANNER_LIST = "/api/banner/remove-banner";
 export const GET_TAGLOG_LIST = "/api/taglog/get-taglog";
 export const ADD_TAGLOG_LIST = "/api/taglog/add-taglog";
 export const DELETE_TAGLOG_LIST = "/api/taglog/remove-taglog";
+export const CHANGE_STATUS_TAGLOG_LIST = "/api/taglog/status-taglog";
 
 export const GET_EXPORT_DATA_LIST = "/api/export/export-data";
 
@@ -86,6 +89,7 @@ export const BLOCK_CUSTOMER_DATA_LIST = "/api/customer/change-status";
 export const GET_CROP_LIST = "/api/crop/get-crop";
 export const ADD_CROP_LIST = "/api/crop/add-crop";
 export const DELETE_CROP_LIST = "/api/crop/remove-crop";
+export const CHANGE_STATUS_CROP_LIST = "/api/crop/status-crop";
 
 export const GET_LEAD_LIST = "/api/lead/get-lead";
 export const ADD_LEAD_LIST = "/api/lead/add-lead";

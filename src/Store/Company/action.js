@@ -6,6 +6,10 @@ import {
   ADD_COMPANY_LIST,
   ADD_COMPANY_LIST_SUCCESS,
   ADD_COMPANY_LIST_ERROR,
+
+  CHANGE_STATUS_COMPANY_LIST,
+  CHANGE_STATUS_COMPANY_LIST_SUCCESS,
+  CHANGE_STATUS_COMPANY_LIST_ERROR,
   
   DELETE_COMPANY_LIST,
   DELETE_COMPANY_LIST_SUCCESS,
@@ -58,6 +62,22 @@ export const DeleteCompanylistSuccess = (actionType, data) => ({
 
 export const DeleteCompanylistFail = (actionType, error) => ({
   type: DELETE_COMPANY_LIST_ERROR,
+  payload: { actionType, error },
+});
+
+
+export const ChangeStatusCompanylist = (requserdata) => ({
+  type: CHANGE_STATUS_COMPANY_LIST,
+  payload: requserdata,
+});
+
+export const ChangeStatusCompanylistSuccess = (actionType, data) => ({
+  type: CHANGE_STATUS_COMPANY_LIST_SUCCESS,
+  payload: { actionType, data },
+});
+
+export const ChangeStatusCompanylistFail = (actionType, error) => ({
+  type: CHANGE_STATUS_COMPANY_LIST_ERROR,
   payload: { actionType, error },
 });
 

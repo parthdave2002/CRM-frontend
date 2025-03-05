@@ -156,7 +156,7 @@ const OrdererDetailsPage: FC = function () {
               <tbody>
                 {(UserDataList?.products ?? []).map((item: any, k: number) => (
                   <tr  key={k} className="border text-center bg-gray-50 hover:bg-gray-100 transition-all"  >
-                    <td className="border p-2 text-[0.8rem] text-left w-[18rem] max-w-[18rem] whitespace-normal break-words"> {item?.id?.name} </td>
+                    <td className="border p-2 text-[0.8rem] text-left w-[18rem] max-w-[18rem] whitespace-normal break-words"> <p> {item?.id?.name?.englishname} </p> <p> {item?.id?.name?.gujaratiname} </p> </td>
                     <td className="border p-2 text-[0.8rem]">{item?.id?.hsn_code}</td>
                     <td className="border p-2 text-[0.8rem]">{item?.id?.batch_no}</td>
                     <td className="border p-2 text-[0.8rem]">{item?.id?.price}</td>

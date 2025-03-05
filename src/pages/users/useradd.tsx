@@ -346,7 +346,7 @@ const AddUserPage : FC = function () {
         setSelectedGenderid(selectedGender ? String(selectedGender.value) : "");
     }
 
-    if (UserDataList?.is_active && isactiveoption.length > 0) {
+    if (UserDataList?.is_active !== undefined && UserDataList?.is_active !== null &&  isactiveoption.length > 0) {
         const selectedSatus :any = isactiveoption.find((gender:any) => gender.value === UserDataList.is_active);
         setSelectedStatusOption(selectedSatus);
         setSelectedStatusid(selectedSatus?.value ?? null);

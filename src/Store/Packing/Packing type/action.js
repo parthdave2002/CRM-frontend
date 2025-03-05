@@ -6,6 +6,10 @@ import {
   ADD_PACKING_TYPE_LIST,
   ADD_PACKING_TYPE_LIST_SUCCESS,
   ADD_PACKING_TYPE_LIST_ERROR,
+
+  CHANGE_STATUS_PACKING_TYPE_LIST,
+  CHANGE_STATUS_PACKING_TYPE_LIST_ERROR,
+  CHANGE_STATUS_PACKING_TYPE_LIST_SUCCESS,
   
   DELETE_PACKING_TYPE_LIST,
   DELETE_PACKING_TYPE_LIST_SUCCESS,
@@ -61,6 +65,22 @@ export const DeletePackingTypelistFail = (actionType, error) => ({
   payload: { actionType, error },
 });
 
+
+
+export const ChangeStatusPackingTypelist = (requserdata) => ({
+  type: CHANGE_STATUS_PACKING_TYPE_LIST,
+  payload: requserdata,
+});
+
+export const ChangeStatusPackingTypelistSuccess = (actionType, data) => ({
+  type: CHANGE_STATUS_PACKING_TYPE_LIST_SUCCESS,
+  payload: { actionType, data },
+});
+
+export const ChangeStatusPackingTypelistFail = (actionType, error) => ({
+  type: CHANGE_STATUS_PACKING_TYPE_LIST_ERROR,
+  payload: { actionType, error },
+});
 
 export const ResetPackingTypelist = (requserdata) => ({
   type: RESET_PACKING_TYPE_LIST,

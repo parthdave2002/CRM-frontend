@@ -120,6 +120,7 @@ export const PostRoleAccesslistApi = async (requserdata) => await api.create(url
 export const PackingTypelistApi = (requserdata) => api.get(url.GET_PACKING_TYPE_LIST, requserdata);
 export const AddPackingTypelistApi = async (requserdata) => await api.create(url.ADD_PACKING_TYPE_LIST, requserdata);
 export const DelPackingTypelistApi = async (requserdata) => await api.delete(url.DELETE_PACKING_TYPE_LIST, requserdata);
+export const StatusPackingTypelistApi = async (requserdata) => await api.delete(url.CHANGE_STATUS_PACKING_TYPE_LIST, requserdata);
 
 // Packing API
 export const PackinglistApi = (requserdata) => api.get(url.GET_PACKING_LIST, requserdata);
@@ -130,11 +131,13 @@ export const DelPackinglistApi = async (requserdata) => await api.delete(url.DEL
 export const CategorylistApi = (requserdata) => api.get(url.GET_CATEGORY_LIST, requserdata);
 export const AddCategorylistApi = async (requserdata) => await api.postMultipart(url.ADD_CATEGORY_LIST, requserdata);
 export const DelCategorylistApi = async (requserdata) => await api.delete(url.DELETE_CATEGORY_LIST, requserdata);
+export const StatusCategorylistApi = async (requserdata) => await api.delete(url.CHANGE_STATUS_CATEGORY_LIST, requserdata);
 
 // Company API
 export const CompanylistApi = (requserdata) => api.get(url.GET_COMPANY_LIST, requserdata);
 export const AddCompanylistApi = async (requserdata) => await api.create(url.ADD_COMPANY_LIST, requserdata);
 export const DelCompanylistApi = async (requserdata) => await api.delete(url.DELETE_COMPANY_LIST, requserdata);
+export const StatusCompanylistApi = async (requserdata) => await api.delete(url.CHANGE_STATUS_COMPANY_LIST, requserdata);
 
 // Product API
 export const RelatedProductlistApi = (requserdata) => api.get(url.GET_RELATED_PRODUCT_LIST, requserdata);
@@ -159,6 +162,7 @@ export const DelBannerlistApi = async (requserdata) => await api.delete(url.DELE
 export const TagloglistApi = (requserdata) => api.get(url.GET_TAGLOG_LIST, requserdata);
 export const AddTagloglistApi = async (requserdata) => await api.create(url.ADD_TAGLOG_LIST, requserdata);
 export const DelTagloglistApi = async (requserdata) => await api.delete(url.DELETE_TAGLOG_LIST, requserdata);
+export const StatusTagloglistApi = async (requserdata) => await api.delete(url.CHANGE_STATUS_TAGLOG_LIST, requserdata);
 
 export const ExportDatalistApi = async (requserdata,name) => await api.get(url.GET_EXPORT_DATA_LIST, requserdata,name);
 
@@ -172,6 +176,7 @@ export const BlockCustomerlistApi = async (requserdata) => await api.update(url.
 export const CroplistApi = (requserdata) => api.get(url.GET_CROP_LIST, requserdata);
 export const AddCroplistApi = async (requserdata) => await api.create(url.ADD_CROP_LIST, requserdata);
 export const DelCroplistApi = async (requserdata) => await api.delete(url.DELETE_CROP_LIST, requserdata);
+export const StatusCroplistApi = async (requserdata) => await api.delete(url.CHANGE_STATUS_CROP_LIST, requserdata);
 
 // Lead API
 export const LeadlistApi = (requserdata) => api.get(url.GET_LEAD_LIST, requserdata);
