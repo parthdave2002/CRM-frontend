@@ -140,6 +140,7 @@ const UserListPage: FC = function () {
                 <Table.HeadCell> <Checkbox id="select-all" name="select-all" /> </Table.HeadCell>
                 <Table.HeadCell>User Name</Table.HeadCell>
                 <Table.HeadCell>Email</Table.HeadCell>
+                <Table.HeadCell> Role </Table.HeadCell>
                 <Table.HeadCell>gender</Table.HeadCell>
                 <Table.HeadCell>Mobile No</Table.HeadCell>
                 <Table.HeadCell>date of joining</Table.HeadCell>
@@ -151,11 +152,12 @@ const UserListPage: FC = function () {
                   {UserDataList && UserDataList.map((item: any, k) => (
                         <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
                           <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item._id} onClick={() => {CheckData(item._id)}}/>  </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => DetailsUserCall(item._id)}>  {item.name} </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.email} </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.gender} </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.mobile_no} </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.date_of_joining} </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => DetailsUserCall(item?._id)}>  {item?.name} </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.email} </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.role?.role_title} </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.gender} </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.mobile_no} </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.date_of_joining} </Table.Cell>
                           <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white">
                             {item.is_active == true ? <div className="flex items-center">  <div className="mr-2 h-2.5 w-2.5 rounded-full bg-green-400"></div> Active  </div>
                             : <div className="flex items-center">  <div className="mr-2 h-2.5 w-2.5 rounded-full bg-Red"></div> Deactive  </div>}

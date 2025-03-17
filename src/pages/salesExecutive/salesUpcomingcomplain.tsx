@@ -3,12 +3,13 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 import { FaArrowLeft } from "react-icons/fa6";
 import  userimage from "../../img/group.jpg"
 
+interface PropsData{
+    setDatactive :any;
+}
 
-const SalesUpcomingComplainPage : FC = function () {
+const SalesUpcomingComplainPage : FC <PropsData> = function ({ setDatactive})  {
+    const DashboardCall = (data:string) => setDatactive(data)
 
-    const DashboardCall =() => {
-        console.log("callll");
-    }
 
     const ComplainData = [
         {
@@ -72,17 +73,17 @@ const SalesUpcomingComplainPage : FC = function () {
     return (
         <>  
             <div >
-                <div className="text-[0.9rem] text-blue-500 flex gap-x-3 cursor-pointer w-fit " onClick={() => DashboardCall()}> <FaArrowLeft style={{alignSelf:"center"}} /> Back to Dashboard</div>
-                <div className="text-[2rem] font-semibold text-gray-900 dark:text-gray-100"> Upcoming Complain (10) </div>
+                <div className="text-[0.9rem] text-blue-500 flex gap-x-3 cursor-pointer w-fit " onClick={() => DashboardCall("Dashboard")}> <FaArrowLeft style={{alignSelf:"center"}} /> Back to Dashboard</div>
+                <div className="text-[2rem] font-semibold text-gray-900 dark:text-gray-100"> Total Complain (10) </div>
             </div>
 
-            <div className="md:grid grid-cols-2 gap-4 mt-[2rem]">
+            <div className="grid md:grid-cols-2 gap-4 mt-[2rem]">
                 {ComplainData && ComplainData.map((item:any) =>(
                     <div className=" bg-white dark:bg-gray-700 dark:hover:bg-gray-600 p-4 rounded-xl relative">
                         <div> {item.type && <div className={`absolute left-3 top-4 bottom-4 w-1 rounded-md ${item.type === "high" ? "bg-red-400" :  item.type === "medium" ? "bg-yellow-400" :  item.type === "low" ? "bg-blue-400" : ""}`} />} </div>
                         
                         <div className="pl-3 lg:flex justify-between">
-                            <div className="truncate flex-1 text-gray-500 dark:text-gray-50"> {item.product} </div>
+                            <div className="flex-1 overflow-hidden text-gray-500 dark:text-gray-50 truncate whitespace-nowrap"> {item.product} </div>
                             <div className="lg:flex justify-end flex-1">
                             <div className="text-[0.7rem] xl:text-[0.8rem] text-gray-500 dark:text-gray-50"> {item.name} | {item.mobile} </div>
                             </div>
@@ -99,8 +100,6 @@ const SalesUpcomingComplainPage : FC = function () {
                     </div>
                 ))}
             </div>
-            
-           
         </>
     );
 }
