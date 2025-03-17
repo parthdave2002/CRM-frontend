@@ -76,8 +76,6 @@ const DashboardPage: FC = function () {
 
         <div>
           <div className="md:flex flex-wrap gap-3">
-          
-
             <div className="w-[calc(33%-6px)] md:w-[32%] w-full mt-[1.5rem] md:mt-0">
               <div className="h-24 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-red-200 dark:bg-gray-800 dark:text-gray-50">
                 <div className="flex w-full justify-between items-start">
@@ -141,7 +139,6 @@ const DashboardPage: FC = function () {
                 </div>
               </div>
             </div>
-
           </div>
         </div>
 
@@ -189,7 +186,6 @@ const DashboardPage: FC = function () {
         </div>
         
         <div className="my-6 lg:grid grid-cols-2 grid-flow-row gap-4">
-          {/* Customer Data */}
             <div className="mb-4 h-full rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6">
                 <div className="mb-4 flex items-center justify-between">
                   <h3 className="text-xl font-bold leading-none text-gray-900 dark:text-white"> Latest Customers </h3>
@@ -207,8 +203,6 @@ const DashboardPage: FC = function () {
                         {/* <div className="inline-flex items-center text-sm font-normal text-gray-900 dark:text-gray-300 text-center">{item.village}</div> */}
                         <div className="inline-flex items-center text-md font-normal text-gray-900 dark:text-gray-200">{item.mobile_number}</div>
                         <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-400">{item.is_deleted == false ?  <Badge color="success">Active</Badge>  :  <Badge color="danger">Deactive</Badge>}</div>
-
-                        
                       </div>
                       </li>
                     ))}

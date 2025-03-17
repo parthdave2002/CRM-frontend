@@ -7,12 +7,14 @@ import { FaLayerGroup, FaUser, FaOpencart   } from "react-icons/fa";
 import { DarkThemeToggle } from "flowbite-react";
 import { BiShocked, BiWalk } from "react-icons/bi";
 
-const SalesHeaderPage : FC = function () {
+interface PropsData{
+  setDatactive :any;
+  active : string;
+}
+
+const SalesHeaderPage : FC<PropsData> = function ({ active, setDatactive}) {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
-
-
-    const [active, setActive] = useState("Dashboard");
 
     const menuItems = [
       { name: "Dashboard", icon: <MdGridView size={20}  /> },
@@ -24,7 +26,7 @@ const SalesHeaderPage : FC = function () {
 
     useEffect(() => {
             const handleClickOutside = (event: MouseEvent) => {
-            // If the click is outside the dropdown menu, close it
+         
             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
                 setIsOpen(false);
             }
@@ -46,11 +48,8 @@ const SalesHeaderPage : FC = function () {
     return (
       <div className="flex justify-end gap-x-[8rem]">
         <div className=" flex  gap-x-4  justify-center"  >
-            {menuItems.map((item) => (
-              <li  key={item.name}
-                className={`relative flex items-center gap-3 py-2 px-4 rounded-lg cursor-pointer transition-all font-medium text-sm ${ active === item.name  ? "bg-blue-100 text-blue-600"   : "text-gray-600 dark:text-gray-100 dark:hover:text-blue-600 hover:bg-blue-100"  }`}
-                onClick={() => setActive(item.name)}
-              >
+            {menuItems.map((item:any) => (
+              <li  key={item.name}  className={`relative flex items-center gap-3 py-2 px-4 rounded-lg cursor-pointer transition-all font-medium text-sm ${ active === item.name  ? "bg-blue-100 text-blue-600"   : "text-gray-600 dark:text-gray-100 dark:hover:text-blue-600 hover:bg-blue-100"  }`}   onClick={() => setDatactive(item.name)}   >
                 {item.icon}
                 <span className="text-[1rem]">{item.name}</span>
               </li>

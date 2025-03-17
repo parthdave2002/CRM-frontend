@@ -40,7 +40,7 @@ const ProductAddPage : FC = function () {
             setCompanyListData(Companylist? Companylist : []);
         },[Companylist]);
 
-        const companyoption = CompanyListData ?.filter((item: any) => item.is_active)  .map((item: any) => ({ label: item.name, value: item._id }));
+        const companyoption = CompanyListData ?.filter((item: any) => item.is_active)  .map((item: any) => ({ label: item.name_eng, value: item._id }));
 
         const [selectedCompanyOption, setSelectedCompanyOption] = useState(null);
         const [selectedCompanyid, setSelectedCompanyid] = useState("");
@@ -73,7 +73,7 @@ const ProductAddPage : FC = function () {
             setPackingTypeListData(Packingtypelist ? Packingtypelist : []);
         }, [Packingtypelist]);
 
-        const packingtypeoption = PackingTypeListData && PackingTypeListData ?.filter((item: any) => item.is_active)  .map((item: any) => ({ label: item.type, value: item._id }));
+        const packingtypeoption = PackingTypeListData && PackingTypeListData ?.filter((item: any) => item.is_active)  .map((item: any) => ({ label: item.type_eng, value: item._id }));
         const [selectedpackingTypeOption, setSelectedpackingTypeOption] = useState(null);
         const [selectedpackingTypeid, setSelectedpackingTypeid] = useState("");
         const [validatepackingType, setValidatepackingType] = useState(0);
@@ -105,7 +105,7 @@ const ProductAddPage : FC = function () {
             setCategoryListData(Categorylist ? Categorylist : []);
         }, [Categorylist]);
 
-        const categoryoption = CategoryListData && CategoryListData ?.filter((item: any) => item.is_active)  .map((item: any) => ({ label: item.name, value: item._id }));
+        const categoryoption = CategoryListData && CategoryListData ?.filter((item: any) => item.is_active)  .map((item: any) => ({ label: item.name_eng, value: item._id }));
         const [selectedCategoryOption, setSelectedCategoryOption] = useState(null);
         const [selectedCategoryid, setSelectedCategoryid] = useState("");
         const [validateCategory, setValidateCategory] = useState(0);
@@ -618,16 +618,6 @@ const ProductAddPage : FC = function () {
                                 <div key={item.id} className="dark:bg-gray-800 p-4 rounded-lg ring ring-gray-300  dark:ring-gray-500 space-y-3 mb-4">
                                     <div className="grid lg:grid-cols-2 gap-4">
                                         <div>
-                                            <label className="block text-sm font-medium mb-1 dark:text-gray-100 text-gray-700">Gujarati Header</label>
-                                            <Input
-                                                type="text"
-                                                placeholder="Header"
-                                                value={item.gujaratiHeader}
-                                                onChange={(e) => handleChange(item.id, "gujaratiHeader", e.target.value)}
-                                                className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white  bg-gray-200 text-gray-700"
-                                            />
-                                        </div>
-                                        <div>
                                             <label className="block text-sm font-medium mb-1 dark:text-gray-100 text-gray-700">English Header</label>
                                             <Input
                                                 type="text"
@@ -637,26 +627,38 @@ const ProductAddPage : FC = function () {
                                                 className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white  bg-gray-200 text-gray-700"
                                             />
                                         </div>
+
+                                        <div>
+                                            <label className="block text-sm font-medium mb-1 dark:text-gray-100 text-gray-700">Gujarati Header</label>
+                                            <Input
+                                                type="text"
+                                                placeholder="Header"
+                                                value={item.gujaratiHeader}
+                                                onChange={(e) => handleChange(item.id, "gujaratiHeader", e.target.value)}
+                                                className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white  bg-gray-200 text-gray-700"
+                                            />
+                                        </div>  
                                     </div>
 
                                     <div className="grid lg:grid-cols-2 gap-4">
                                         <div>
-                                            <label className="block text-sm font-medium mb-1">Gujarati Value</label>
-                                            <Input
-                                                type="textarea"
-                                                placeholder="Value"
-                                                value={item.gujaratiValue}
-                                                onChange={(e) => handleChange(item.id, "gujaratiValue", e.target.value)}
-                                                className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white bg-gray-200 text-gray-800"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium mb-1">English Value</label>
+                                            <label className="block text-sm font-medium mb-1 dark:text-gray-100 text-gray-700">English Value</label>
                                             <Input
                                                 type="textarea"
                                                 placeholder="Value"
                                                 value={item.englishValue}
                                                 onChange={(e) => handleChange(item.id, "englishValue", e.target.value)}
+                                                className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white bg-gray-200 text-gray-800"
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-sm font-medium mb-1 dark:text-gray-100 text-gray-700">Gujarati Value</label>
+                                            <Input
+                                                type="textarea"
+                                                placeholder="Value"
+                                                value={item.gujaratiValue}
+                                                onChange={(e) => handleChange(item.id, "gujaratiValue", e.target.value)}
                                                 className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white bg-gray-200 text-gray-800"
                                             />
                                         </div>
