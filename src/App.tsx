@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 import PrivateRoute from "./routes/PrivateRoute";
 import LoaderPage from "./components/loader";
+import { useSelector } from "react-redux";
 
 const DashboardPage = lazy(() => import("./pages"));
 const ManagerDashboardPage = lazy(() => import("./pages/mdashboard/dashoboard"));
@@ -51,18 +52,13 @@ const CropsDetailsPage = lazy(() => import("./pages/crops/cropsDetails"));
 const SalesCRMPage = lazy(() => import("./pages/salesExecutive"));
 
 const App: FC = function () {
-  const [isAuthenticate, setIsAuthenticate] = useState<boolean>(true);
-
-  // useEffect(() => {
-  //   const token = localStorage.getItem("authToken"); // Assuming token is stored
-  //   setIsAuthenticate(!!token);
-  // }, []);
-
+  const isAuthenticated = useSelector((state: any) => state.Login.Logincode?.success);
+  
   return (
     <Suspense fallback={<div> <LoaderPage /> </div>}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<PrivateRoute isAuthenticated={isAuthenticate} />}>
+          <Route path="/" element={<PrivateRoute isAuthenticated={isAuthenticated} />}>
 
           {/* Admin Routes */}
             <Route path="/dashboard" element={<DashboardPage />} />

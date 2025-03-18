@@ -23,7 +23,7 @@ const SalesCRMPage : FC = function () {
                         : active ===  "Farmer" ? 
                             <div> <SalesFarmerDetailsPage setDatactive={ActiveData}  /></div>
                         : active ===  "Products" ? 
-                            <div> <SalesProduct   setDatactive={ActiveData}  /></div>
+                            <div> <SalesProduct setDatactive={ActiveData}  /></div>
                         : active ===  "Order" ? 
                             <div> <SalesOrder  setDatactive={ActiveData}  /></div>
                         : active ===  "Complain" ? 
