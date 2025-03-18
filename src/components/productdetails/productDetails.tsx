@@ -1,4 +1,6 @@
 import React, { FC, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { getProductlist } from '../../Store/actions';
 
 interface PropsData{
     ProductDetails : string
@@ -6,6 +8,21 @@ interface PropsData{
 
 const ProductDetailData : FC<PropsData> = ({ProductDetails}) => {
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [ productData, setProductData  ] = useState(null)
+    const dispatch = useDispatch()
+
+//     useEffect(() => {
+//        let requserdata ={ id : ProductDetails}
+//          dispatch(getProductlist(requserdata));
+//    }, [dispatch, ProductDetails]);
+
+//    const  Productlist  = useSelector((state: any) => state.Product.Productlist );
+//    useEffect(() => {
+//     console.log("Productlist", Productlist);
+//        setProductData(Productlist?.data);
+//    }, [Productlist]);
+   
+    
     const Product_data =
     {
         "name": {

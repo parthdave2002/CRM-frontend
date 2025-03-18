@@ -49,12 +49,14 @@ const SalesProduct : FC <PropsData> = function ({ setDatactive})  {
 
           <div className="md:grid grid-cols-3 gap-4 mt-[2rem]">
             {ProductData && ProductData.map((item: any, k: any) => (
-              <div key={k} className='bg-white dark:bg-gray-700 dark:hover:bg-gray-600 p-4 rounded-xl cursor-pointer dark:hover:text-gray-50 h-[25rem] mt-3' onClick={() => ProductDetailsCall(item._id)}>
-                <div className='flex flex-col'>
-                  <div className='h-[18rem]'> <ProductCarousel /> </div>
+              <div key={k} className='bg-white dark:bg-gray-700 dark:hover:bg-gray-600 p-4 rounded-xl cursor-pointer dark:hover:text-gray-50 h-[25rem] mt-3'>
+                <div className='flex flex-col' onClick={() => ProductDetailsCall(item._id)}>
+                  <div className='h-[18rem]'> <ProductCarousel  data={item?.product_pics} /> </div>
+                  <div className='flex flex-col'  >
                   <span className='dark:text-gray-100 md:text-[1rem] text-[0.8rem] '> {item?.name?.englishname}  ( {item?.name?.gujaratiname})</span>
                   <span className='dark:text-gray-100 md:text-[1rem] text-[0.8rem]'> {item?.categories?.name_eng}   ( {item?.categories?.name_guj} ) </span>
                   <span className='dark:text-gray-100 font-bold md:text-[1.2rem]   text-[0.8rem]'> ₹ {item?.price} </span>
+                  </div>
                 </div>
               </div>
             ))}

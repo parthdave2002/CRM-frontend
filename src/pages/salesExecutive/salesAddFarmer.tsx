@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Button, Modal } from "flowbite-react";
 
 const SalesAddFarmer = () => {
+  const [openModal, setOpenModal] = useState(true);
   return (
-    <div>SalesAddFarmer</div>
+   <>
+      Add Farmer
+   </>
   )
 }
 
