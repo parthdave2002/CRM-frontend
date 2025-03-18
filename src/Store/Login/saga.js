@@ -46,7 +46,7 @@ function* onInsertLogin({ payload: requstuser }) {
       Cookies.set('role',reponse?.data?.roles, { expires: 7 });
     }
   } catch (error) {
-    toast.error("Password incorrect")
+    toast.error(error?.msg)
     yield put(insertloginFail(error));
   }
 }

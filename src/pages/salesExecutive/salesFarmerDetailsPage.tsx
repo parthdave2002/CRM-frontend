@@ -1,33 +1,19 @@
 import { FC, useState } from "react";
 import  farmerimage from "../../../public/images/users/farmer-2.png"
-import { Button, Input } from "reactstrap";
 import { FaArrowLeft } from "react-icons/fa";
 import SalesFarmerDashboard from "./salesFarmerDashboard";
 import { toast } from "react-toastify";
 import ToastMessage from "../../components/ToastMessage";
+import SalesMobileInput from "../../components/input/salesMobileInput";
 
 interface PropsData{
     setDatactive :any;
 }
 const SalesFarmerDetailsPage : FC  <PropsData> = function ({ setDatactive})  {
-    const [ Mobile_number, setMobile_number] = useState("");
+    const [ Mobile_number, setMobile_number] = useState<string>("");
     const DashboardCall = (data:string) => setDatactive(data)
     const [ openProfile, setOpenProfile] = useState(false);
 
-    const PhoneCall = () =>{    
-        if(!Mobile_number){
-            toast.error("Please enter mobile number");
-        } 
-        else if(Mobile_number &&  Mobile_number.length != 10 ){
-            toast.error("Please enter valid mobile number");
-        } 
-        else{
-            setOpenProfile(true);  
-        }
-    }
-    const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === "Enter")   PhoneCall();
-    };
     const Farmerdata =[
         {
             name : "Kisharbhai kishorbhai ",
@@ -87,17 +73,39 @@ const SalesFarmerDetailsPage : FC  <PropsData> = function ({ setDatactive})  {
         }
     ]
 
+    const handleClickCall = () => {
+        console.log(typeof Mobile_number);
+        if (!Mobile_number) {
+            toast.error("Please enter mobile number");
+        }
+        else if (Mobile_number && Mobile_number.length != 10) {
+            toast.error("Please enter valid mobile number");
+        }
+        else {
+            setOpenProfile(true);
+        }
+    }
+
+    const CallBackCall = (data :string) => {
+        setMobile_number(data);
+        // handleClickCall()
+    }
+
+    const CloseProfileCall = () => {
+        setOpenProfile(false);
+        setMobile_number("");
+    }
+
+    const handleChange = (data :string) =>  setMobile_number(data)
+
     return (
       <>
         {openProfile == true ? 
-                <SalesFarmerDashboard  setOpenProfile={setOpenProfile} />
+                <SalesFarmerDashboard  setOpenProfile={CloseProfileCall} />
          : 
             <>
-                <div className="flex self-center my-[2rem] justify-end gap-x-3 border-0">
-                        <Input className="py-2 px-6 border-0  rounded-full text-[2rem] text-gray-500 font-bold relative shadow-xl dark:shadow-xl  shadow-inner shadow-indigo-200  dark:shadow-gray-500/50 dark:bg-gray-700 dark:text-gray-100" placeholder="Enter mobile numer" onChange={(e) => setMobile_number(e.target.value) }   onKeyUp={handleKeyUp} /> 
-                        <Button className="px-[2rem] py-4 rounded-r-full bg-blue-600 text-gray-50 absolute" onClick={() => PhoneCall()}>    Go   </Button> 
-                </div>
-        
+              
+                <SalesMobileInput datatype='number' placeholder="Enter mobile number" value={Mobile_number} handleChange={(data) =>handleChange(data)} handleClickCall={handleClickCall}  />
                 <div>
                     <div  className="text-[0.9rem] text-blue-500 flex gap-x-3 cursor-pointer w-fit "  onClick={() => DashboardCall("Dashboard")}  >  <FaArrowLeft style={{ alignSelf: "center" }} /> Back to Dashboard  </div>
                     <div className="text-[2rem] font-semibold text-gray-900 dark:text-gray-100">  Callbacks  (09)    </div>
@@ -122,7 +130,7 @@ const SalesFarmerDetailsPage : FC  <PropsData> = function ({ setDatactive})  {
                         <div className="text-gray-700 dark:text-gray-100 text-[1rem] truncate flex-1">   {item.name}  </div>
                         <div className="text-gray-700 dark:text-gray-100  text-[1rem] text-end flex-1 ">   {item.mobile}   </div>
                         </div>
-                        <div className="text-gray-500 mt-3 text-[1.2rem] text-center border border-gray-500 rounded-md size-fit px-2 cursor-pointer self-center px-[4rem]">   Call    </div>
+                        <div className="text-gray-500 mt-3 text-[1.2rem] text-center border border-gray-500 rounded-md size-fit px-2 cursor-pointer self-center px-[4rem]" onClick={() => CallBackCall(item.mobile) }>   Call    </div>
                         </div>
 
                         <div className="py-[0.5rem] rounded-xl flex justify-around">
