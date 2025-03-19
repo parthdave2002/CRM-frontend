@@ -17,6 +17,7 @@ import ExportData from "./ExportData/reducer";
 import Customer from "./Customer/reducer";
 import Crop from "./Crop/reducer";
 import Lead from "./Lead/reducer";
+import Complain from "./Complain/reducer";
 
 const rootReducer = combineReducers({
     // public
@@ -37,7 +38,8 @@ const rootReducer = combineReducers({
     ExportData,
     Customer,
     Crop,
-    Lead
+    Lead,
+    Complain
 });
 
 export default rootReducer;

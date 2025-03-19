@@ -8,11 +8,12 @@ import SalesMobileInput from "../../components/input/salesMobileInput";
 
 interface PropsData{
     setDatactive :any;
+    openProfile : boolean;
+    setOpenProfile : (value : boolean) => void;
 }
-const SalesFarmerDetailsPage : FC  <PropsData> = function ({ setDatactive})  {
+const SalesFarmerDetailsPage : FC  <PropsData> = function ({ setDatactive, openProfile,setOpenProfile })  {
     const [ Mobile_number, setMobile_number] = useState<string>("");
     const DashboardCall = (data:string) => setDatactive(data)
-    const [ openProfile, setOpenProfile] = useState(false);
 
     const Farmerdata =[
         {
@@ -74,7 +75,6 @@ const SalesFarmerDetailsPage : FC  <PropsData> = function ({ setDatactive})  {
     ]
 
     const handleClickCall = () => {
-        console.log(typeof Mobile_number);
         if (!Mobile_number) {
             toast.error("Please enter mobile number");
         }
@@ -104,11 +104,12 @@ const SalesFarmerDetailsPage : FC  <PropsData> = function ({ setDatactive})  {
                 <SalesFarmerDashboard  setOpenProfile={CloseProfileCall} />
          : 
             <>
-              
-                <SalesMobileInput datatype='number' placeholder="Enter mobile number" value={Mobile_number} handleChange={(data) =>handleChange(data)} handleClickCall={handleClickCall}  />
-                <div>
-                    <div  className="text-[0.9rem] text-blue-500 flex gap-x-3 cursor-pointer w-fit "  onClick={() => DashboardCall("Dashboard")}  >  <FaArrowLeft style={{ alignSelf: "center" }} /> Back to Dashboard  </div>
-                    <div className="text-[2rem] font-semibold text-gray-900 dark:text-gray-100">  Callbacks  (09)    </div>
+                <div className="flex justify-between">
+                    <div className="flex flex-col self-center">
+                        <div  className="text-[0.9rem] text-blue-500 flex gap-x-3 cursor-pointer w-fit "  onClick={() => DashboardCall("Dashboard")}  >  <FaArrowLeft style={{ alignSelf: "center" }} /> Back to Dashboard  </div>
+                        <div className="text-[2rem] font-semibold text-gray-900 dark:text-gray-100">  Callbacks (09) </div>
+                    </div>
+                    <SalesMobileInput datatype='number' className="py-2 px-6 border-0  rounded-full text-[2rem] text-gray-500 font-bold relative shadow-xl dark:shadow-xl  shadow-inner shadow-indigo-200  dark:shadow-gray-500/50 dark:bg-gray-700 dark:text-gray-100" placeholder="Enter mobile number" value={Mobile_number} handleChange={(data) =>handleChange(data)} handleClickCall={handleClickCall}  />
                 </div>
 
                 <div className="grid  xl:grid-cols-4 md:grid-cols-2 lg:grid-cols-3 gap-4">

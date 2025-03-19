@@ -10,7 +10,7 @@ import { useNavigate, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { AddUserlist, getRoleslist, getUserView, ResetUserdatalist, UpdateProfileUserdatalist } from "../../Store/actions";
 import { toast } from "react-toastify";
-import ImageUploadPreview from "../../components/imageuploader";
+import ImageUploadPreview from "../../components/input/imageuploader";
 import moment from "moment";
 import ToastMessage from "../../components/ToastMessage";
 const IMG_URL = import.meta.env["VITE_API_URL"];

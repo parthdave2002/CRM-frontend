@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getProductlist } from '../../Store/actions';
 import ProductCarousel from '../../components/carousel/carousel';
 import ProductDetailData from '../../components/productdetails/productDetails';
+import SalesMobileInput from '../../components/input/salesMobileInput';
 interface PropsData{
     setDatactive :any;
 }
@@ -12,11 +13,15 @@ const SalesProduct : FC <PropsData> = function ({ setDatactive})  {
     const dispatch =useDispatch();
     const [ProductDetails, setProductDetails] = useState<null | string>(null);
     const [ProductData, setProductData] = useState([]);
-    const [searchData, setSearchData] = useState(null);
-    const Changename = (data:any) => setSearchData(data)
+    const [searchData, setSearchData] = useState("");
+    const handleChange = (data:any) => setSearchData(data)
     
      useEffect(() => {
-        let requserdata ={ searchData : searchData}
+      let requserdata: any = {};
+
+       if (searchData) {
+        requserdata.searchData = searchData;
+       }
           dispatch(getProductlist(requserdata));
     }, [dispatch, searchData]);
 
@@ -28,6 +33,10 @@ const SalesProduct : FC <PropsData> = function ({ setDatactive})  {
   const ProductDetailsCall = (data:string) =>  setProductDetails(data);
   const ProductCLoseCall = () => setProductDetails(null);
   const DashboardCall = (data:string) => setDatactive(data)
+
+  const handleClickCall = () => {
+    console.log("callll");
+  }
 
   return (
     <>
@@ -42,11 +51,15 @@ const SalesProduct : FC <PropsData> = function ({ setDatactive})  {
         </>
       :
         <>
-          <div>
-            <div className="text-[0.9rem] text-blue-500 flex gap-x-3 cursor-pointer w-fit " onClick={() => DashboardCall("Dashboard")}  >  <FaArrowLeft style={{ alignSelf: "center" }} /> Back to Dashboard  </div>
-            <div className="text-[2rem] font-semibold text-gray-900 dark:text-gray-100"> Products   </div>
-          </div>
 
+          <div className='flex justify-between'>
+            <div className='flex flex-col self-center'>
+              <div className="text-[0.9rem] text-blue-500 flex gap-x-3 cursor-pointer w-fit " onClick={() => DashboardCall("Dashboard")}  >  <FaArrowLeft style={{ alignSelf: "center" }} /> Back to Dashboard  </div>
+              <div className="text-[2rem] font-semibold text-gray-900 dark:text-gray-100"> Products   </div>
+            </div>
+            <SalesMobileInput datatype='text' className="py-2 px-6 border-0  rounded-full text-[2rem] text-gray-500 font-bold relative shadow-xl dark:shadow-xl  shadow-inner shadow-indigo-200  dark:shadow-gray-500/50 dark:bg-gray-700 dark:text-gray-100"  value={searchData} handleChange={(data) =>handleChange(data)} handleClickCall={handleClickCall} placeholder="Search Product"  />
+          </div>
+          
           <div className="md:grid grid-cols-3 gap-4 mt-[2rem]">
             {ProductData && ProductData.map((item: any, k: any) => (
               <div key={k} className='bg-white dark:bg-gray-700 dark:hover:bg-gray-600 p-4 rounded-xl cursor-pointer dark:hover:text-gray-50 h-[25rem] mt-3'>

@@ -55,6 +55,12 @@ export const ADD_COMPANY_LIST = "/api/company/add-company-list";
 export const DELETE_COMPANY_LIST = "/api/company/remove-company-list";
 export const CHANGE_STATUS_COMPANY_LIST = "/api/company/status-company-list";
 
+// Complain
+export const GET_COMPLAIN_LIST = "/api/complain/get-complain";
+export const ADD_COMPLAIN_LIST = "/api/complain/add-complain";
+export const DELETE_COMPLAIN_LIST = "/api/complain/update-complain";
+export const UPDATE_COMPLAIN_LIST = "/api/complain/remove-complain";
+
 // Product
 export const GET_PRODUCT_LIST = "/api/product/get-product";
 export const ADD_PRODUCT_LIST = "/api/product/add-product";
@@ -85,6 +91,7 @@ export const GET_CUSTOMER_DATA_LIST = "/api/customer/get-customers";
 export const ADD_CUSTOMER_DATA_LIST = "/api/customer/add-customer";
 export const DELETE_CUSTOMER_DATA_LIST = "/api/customer/remove-customer";
 export const BLOCK_CUSTOMER_DATA_LIST = "/api/customer/change-status";
+export const CHECK_CUSTOMER_EXIST_LIST = "/api/customer/matchnumber";
 
 export const GET_CROP_LIST = "/api/crop/get-crop";
 export const ADD_CROP_LIST = "/api/crop/add-crop";

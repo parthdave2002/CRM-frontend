@@ -9,7 +9,7 @@ import { Form, Input, FormFeedback } from "reactstrap";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { AddCategorylist, ResetCategorylist } from "../../Store/actions";
-import ImageUploadPreview from "../../components/imageuploader";
+import ImageUploadPreview from "../../components/input/imageuploader";
 import { toast } from "react-toastify";
 
 const CategoryAddPage : FC = function () {

@@ -15,6 +15,10 @@ import {
   BLOCK_CUSTOMER_DATA_LIST_SUCCESS,
   BLOCK_CUSTOMER_DATA_LIST_ERROR,
 
+  CHECK_CUSTOMER_EXIST_LIST,
+  CHECK_CUSTOMER_EXIST_LIST_ERROR,
+  CHECK_CUSTOMER_EXIST_LIST_SUCCESS,
+
   REST_CUSTOMER_DATA_LIST,
   REST_CUSTOMER_DATA_LIST_SUCCESS,
   REST_CUSTOMER_DATA_LIST_ERROR
@@ -28,6 +32,7 @@ const INIT_STATE = {
   AddCustomerlist: [],
   DeleteCustomerlist: [],
   BlockCustomerlist:[],
+  CheckCustomerExistlist:[],
   error: {},
 };
 
@@ -130,6 +135,25 @@ const Customer = (state = INIT_STATE, action) => {
     case BLOCK_CUSTOMER_DATA_LIST_ERROR:
       switch (action.payload.actionType) {
         case BLOCK_CUSTOMER_DATA_LIST:
+          return {
+            ...state,
+            error: action.payload,
+          };
+        default:
+          return { ...state };
+      }
+    
+    case CHECK_CUSTOMER_EXIST_LIST_SUCCESS:
+      switch (action.payload.actionType) {
+        case CHECK_CUSTOMER_EXIST_LIST:
+          return {
+            ...state,
+            CheckCustomerExistlist: action.payload.data,
+          };
+      }
+    case CHECK_CUSTOMER_EXIST_LIST_ERROR:
+      switch (action.payload.actionType) {
+        case CHECK_CUSTOMER_EXIST_LIST:
           return {
             ...state,
             error: action.payload,

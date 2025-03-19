@@ -15,6 +15,10 @@ import {
   BLOCK_CUSTOMER_DATA_LIST_SUCCESS,
   BLOCK_CUSTOMER_DATA_LIST_ERROR,
 
+  CHECK_CUSTOMER_EXIST_LIST,
+  CHECK_CUSTOMER_EXIST_LIST_ERROR,
+  CHECK_CUSTOMER_EXIST_LIST_SUCCESS,
+
   REST_CUSTOMER_DATA_LIST,
   REST_CUSTOMER_DATA_LIST_SUCCESS,
   REST_CUSTOMER_DATA_LIST_ERROR
@@ -93,5 +97,21 @@ export const BlockCustomerSuccess = (actionType, data) => ({
 
 export const BlockCustomerFail = (actionType, error) => ({
   type: BLOCK_CUSTOMER_DATA_LIST_ERROR,
+  payload: { actionType, error },
+});
+
+
+export const CheckCustomerExist = (requserdata) => ({
+  type: CHECK_CUSTOMER_EXIST_LIST,
+  payload: requserdata,
+});
+
+export const CheckCustomerExistSuccess = (actionType, data) => ({
+  type: CHECK_CUSTOMER_EXIST_LIST_SUCCESS,
+  payload: { actionType, data },
+});
+
+export const CheckCustomerExistFail = (actionType, error) => ({
+  type: CHECK_CUSTOMER_EXIST_LIST_ERROR,
   payload: { actionType, error },
 });

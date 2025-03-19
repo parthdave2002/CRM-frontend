@@ -3,7 +3,7 @@ import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 const IMG_URL = import.meta.env["VITE_API_URL"];
 import { useDispatch, useSelector } from "react-redux";
-import ImageUploadPreview from "../../components/imageuploader";
+import ImageUploadPreview from "../../components/input/imageuploader";
 import {ProfileUserdatalist, UpdateProfileUserdatalist }  from "../../Store/actions"
 const ProfilePage : FC = function () {
     const dispatch =useDispatch()

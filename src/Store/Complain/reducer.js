@@ -1,0 +1,122 @@
+import {
+  GET_COMPLAIN_LIST,
+  GET_COMPLAIN_LIST_SUCCESS,
+  GET_COMPLAIN_LIST_ERROR,
+
+  ADD_COMPLAIN_LIST,
+  ADD_COMPLAIN_LIST_SUCCESS,
+  ADD_COMPLAIN_LIST_ERROR,
+  
+  DELETE_COMPLAIN_LIST,
+  DELETE_COMPLAIN_LIST_SUCCESS,
+  DELETE_COMPLAIN_LIST_ERROR,
+
+  REST_COMPLAIN_LIST,
+  REST_COMPLAIN_LIST_SUCCESS,
+  REST_COMPLAIN_LIST_ERROR
+} from "./actionType";
+
+const INIT_STATE = {
+  Complainlist: [],
+  ComplainlistSize:0,
+  TotalComplainData:0,
+  CurrentPage:1,
+  AddComplainlist: [],
+  DeleteComplainlist: [],
+  error: {},
+};
+
+const Complain = (state = INIT_STATE, action) => {
+  switch (action.type) {
+    case GET_COMPLAIN_LIST_SUCCESS:
+      switch (action.payload.actionType) {
+        case GET_COMPLAIN_LIST:
+          return {
+            ...state,
+            Complainlist: action.payload.data.data,
+            ComplainlistSize: action.payload.data.size,
+            TotalComplainData: action.payload.data.totalData,
+            CurrentPage: action.payload.data.page,
+          };
+      }
+    case GET_COMPLAIN_LIST_ERROR:
+      switch (action.payload.actionType) {
+        case GET_COMPLAIN_LIST:
+          return {
+            ...state,
+            error: action.payload,
+          };
+
+        default:
+          return { ...state };
+      }
+    
+    case ADD_COMPLAIN_LIST_SUCCESS:
+      switch (action.payload.actionType) {
+        case ADD_COMPLAIN_LIST:
+          return {
+            ...state,
+            AddComplainlist: action.payload.data,
+          };
+      }
+    case ADD_COMPLAIN_LIST_ERROR:
+      switch (action.payload.actionType) {
+        case ADD_COMPLAIN_LIST:
+          return {
+            ...state,
+            error: action.payload,
+          };
+        default:
+          return { ...state };
+      }
+
+    case DELETE_COMPLAIN_LIST_SUCCESS:
+      switch (action.payload.actionType) {
+        case DELETE_COMPLAIN_LIST:
+          return {
+            ...state,
+            DeleteComplainlist: action.payload.data,
+          };
+      }
+    case DELETE_COMPLAIN_LIST_ERROR:
+      switch (action.payload.actionType) {
+        case DELETE_COMPLAIN_LIST:
+          return {
+            ...state,
+            error: action.payload,
+          };
+        default:
+          return { ...state };
+      }
+
+      case REST_COMPLAIN_LIST_SUCCESS:
+        switch (action.payload.actionType) {
+          case REST_COMPLAIN_LIST:
+            return {
+              ...state,
+              Complainlist: [],
+              ComplainlistSize:0,
+              TotalComplainData:0,
+              CurrentPage:1,
+              AddComplainlist: [],
+              DeleteComplainlist: [],
+              error: {},
+            };
+        }
+      case REST_COMPLAIN_LIST_ERROR:
+        switch (action.payload.actionType) {
+          case REST_COMPLAIN_LIST:
+            return {
+              ...state,
+              error: action.payload,
+            };
+          default:
+            return { ...state };
+        }
+ 
+    default:
+      return state;
+  }
+};
+
+export default Complain;

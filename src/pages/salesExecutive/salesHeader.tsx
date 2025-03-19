@@ -2,19 +2,26 @@ import { FC, useEffect, useRef, useState } from "react";
 import userphoto from "../../img/profile-picture-3.jpg";
 import {  FaAccessibleIcon, FaAngleDown, FaCapsules } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
-import { MdGridView, MdEventNote  } from "react-icons/md";
-import { FaLayerGroup, FaUser, FaOpencart   } from "react-icons/fa";
+import { MdGridView  } from "react-icons/md";
+import {  FaOpencart   } from "react-icons/fa";
 import { DarkThemeToggle } from "flowbite-react";
-import { BiShocked, BiWalk } from "react-icons/bi";
+import { BiShocked } from "react-icons/bi";
+import { useDispatch } from "react-redux";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router";
+import { resetinsertlogin } from "../../Store/actions";
 
 interface PropsData{
   setDatactive :any;
+  openProfile: boolean;
   active : string;
 }
 
-const SalesHeaderPage : FC<PropsData> = function ({ active, setDatactive}) {
+const SalesHeaderPage : FC<PropsData> = function ({ active, setDatactive, openProfile}) {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const menuItems = [
       { name: "Dashboard", icon: <MdGridView size={20}  /> },
@@ -24,35 +31,53 @@ const SalesHeaderPage : FC<PropsData> = function ({ active, setDatactive}) {
       { name: "Complain", icon: <BiShocked   size={20}  /> },
     ];
 
-    useEffect(() => {
-            const handleClickOutside = (event: MouseEvent) => {
-         
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-                setIsOpen(false);
-            }
-            };
-
-            document.addEventListener("mousedown", handleClickOutside);
-            return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-            };
-    }, []);
-
-    const handleClick = () => {
-            const darkModeButton = document.querySelector('[data-testid="dark-theme-toggle"]') as HTMLButtonElement;
-            if (darkModeButton) {
-            darkModeButton.click(); 
-            }
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
     };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleClick = () => {
+    const darkModeButton = document.querySelector('[data-testid="dark-theme-toggle"]') as HTMLButtonElement;
+    if (darkModeButton) {
+      darkModeButton.click();
+    }
+  };
+
+  const Logoutfun = () => {
+    Cookies.remove("token");
+    Cookies.remove("username");
+    Cookies.remove("access");
+    Cookies.remove("role");
+    navigate("/login");
+    dispatch(resetinsertlogin());
+  };
 
     return (
       <div className="flex justify-end gap-x-[8rem]">
         <div className=" flex  gap-x-4  justify-center"  >
             {menuItems.map((item:any) => (
-              <li  key={item.name}  className={`relative flex items-center gap-3 py-2 px-4 rounded-lg cursor-pointer transition-all font-medium text-sm ${ active === item.name  ? "bg-blue-100 text-blue-600"   : "text-gray-600 dark:text-gray-100 dark:hover:text-blue-600 hover:bg-blue-100"  }`}   onClick={() => setDatactive(item.name)}   >
-                {item.icon}
-                <span className="text-[1rem]">{item.name}</span>
-              </li>
+              <>
+              {openProfile ?
+                <li  key={item.name}  className={`relative flex items-center gap-3 py-2 px-4 rounded-lg cursor-pointer transition-all font-medium text-sm ${ active === item.name  ? "bg-blue-100 text-blue-600"   : "text-gray-300 dark:text-gray-500 dark:hover:text-gray-600  dark:hover:bg-gray-800"  }`} >
+                  {item.icon}
+                  <span className="text-[1rem]">{item.name}</span>
+                </li>
+                :
+                  <li key={item.name} className={`relative flex items-center gap-3 py-2 px-4 rounded-lg cursor-pointer transition-all font-medium text-sm ${active === item.name ? "bg-blue-100 text-blue-600" : "text-gray-600 dark:text-gray-100 dark:hover:text-blue-600 hover:bg-blue-100"}`}   onClick={() => setDatactive(item.name)}  >
+                    {item.icon}
+                    <span className="text-[1rem]">{item.name}</span>
+                  </li>
+              }
+              </>
+              
             ))}
         </div>
 
@@ -71,7 +96,7 @@ const SalesHeaderPage : FC<PropsData> = function ({ active, setDatactive}) {
                     <div className="self-center">Dark mode</div>
                     </div>
 
-                    <div className="cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white flex gap-x-2">
+                    <div className="cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white flex gap-x-2" onClick={() => { Logoutfun()}}>
                         <FiLogOut   size={20}   className="text-gray-600 dark:text-gray-400"   />
                     <div className="self-center"> Sign out </div>
                     </div>
