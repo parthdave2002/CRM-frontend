@@ -105,8 +105,8 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive})  {
               <div className="text-[2.5rem] font-semibold text-gray-900 dark:text-gray-100">  Dashboard </div>
             </div>
 
-            <div className="md:flex flex-wrap gap-3 my-[2rem]">
-              <div className="w-[calc(33%-6px)] md:w-[32%] w-full mt-[1.5rem] md:mt-0">
+            <div className="md:flex  flex-wrap gap-3 my-[2rem]">
+              <div className="flex-1  mt-[1.5rem] md:mt-0">
                 <div className="h-24 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-red-200 dark:bg-gray-700 dark:text-gray-50">
                   <div className="flex w-full justify-between items-start">
                     <div className="p-3 rounded-full bg-purple-500 self-center">
@@ -120,14 +120,35 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive})  {
                       </select>
                     </div>
                     <div className="text-center self-center items-start">
-                      <p className="text-md font-bold">Total Revenue</p>
+                      <p className="text-md font-bold"> Revenue</p>
+                      <p className="text-lg font-bold text-center mt-2"> 50,000</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+ 
+              <div className="flex-1  mt-[1.5rem] md:mt-0">
+                <div className="h-24 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-red-200 dark:bg-gray-700 dark:text-gray-50">
+                  <div className="flex w-full justify-between items-start">
+                    <div className="p-3 rounded-full bg-purple-500 self-center">
+                      <FaRupeeSign className="text-white w-6 h-6" />
+                    </div>
+                    <div className="self-center">
+                      <select className="border border-gray-300 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily">
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                      </select>
+                    </div>
+                    <div className="text-center self-center items-start">
+                      <p className="text-md font-bold"> Future Order</p>
                       <p className="text-lg font-bold text-center mt-2"> 50,000</p>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="w-[calc(33%-6px)] md:w-[32%] w-full mt-[1.5rem] md:mt-0">
+              <div className="flex-1  mt-[1.5rem] md:mt-0">
                 <div className="h-24 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-red-200 dark:bg-gray-700 dark:text-gray-50">
                   <div className="flex w-full justify-around items-start">
                     <div className="p-3 rounded-full bg-purple-500 self-center">
@@ -142,14 +163,14 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive})  {
                     </div>
 
                     <div className="text-center self-center items-start ">
-                      <p className="text-md font-bold">Total Order</p>
+                      <p className="text-md font-bold"> Order</p>
                       <p className="text-lg font-bold text-center mt-2"> 5</p>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="w-[calc(33%-6px)] md:w-[32%] w-full mt-[1.5rem] md:mt-0">
+              <div className="flex-1  mt-[1.5rem] md:mt-0">
                 <div className="h-24 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-red-200 dark:bg-gray-700 dark:text-gray-50">
                   <div className="flex w-full justify-between items-start">
                     <div className="p-3 rounded-full bg-purple-500 self-center">
@@ -163,7 +184,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive})  {
                       </select>
                     </div>
                     <div className="text-center self-center items-start">
-                      <p className="text-md font-bold">Total Return order</p>
+                      <p className="text-md font-bold"> Return order</p>
                       <p className="text-lg font-bold text-center mt-2">2</p>
                     </div>
                   </div>
