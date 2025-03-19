@@ -1,8 +1,7 @@
 import { FC, useState } from "react";
-import { MdKeyboardArrowRight } from "react-icons/md";
 import { FaArrowLeft } from "react-icons/fa6";
-import  userimage from "../../img/group.jpg"
 import SalesFarmerDashboard from "./salesFarmerDashboard";
+import SalesMobileInput from "../../components/input/salesMobileInput";
 
 interface PropsData{
     setDatactive :any;
@@ -80,20 +79,29 @@ const SalesUpcomingComplainPage : FC <PropsData> = function ({ setDatactive})  {
         setOpenProfile(true)
     }
 
+      const [ searchComplainData, setSearchComplainData] = useState<string>("");
+      const handleChange = (data :string) =>  setSearchComplainData(data);
+      const handleClickCall = () => {
+        console.log("callll");
+      }
+
     return (
         <>  
             {openProfile == true ?
                 <SalesFarmerDashboard setOpenProfile={CloseProfileCall} />
                 : 
                 <>
-                    <div >
-                        <div className="text-[0.9rem] text-blue-500 flex gap-x-3 cursor-pointer w-fit " onClick={() => DashboardCall("Dashboard")}> <FaArrowLeft style={{ alignSelf: "center" }} /> Back to Dashboard</div>
-                        <div className="text-[2rem] font-semibold text-gray-900 dark:text-gray-100"> Total Complain (10) </div>
+                    <div className='flex justify-between'>
+                        <div className='flex flex-col self-center'>
+                            <div className="text-[0.9rem] text-blue-500 flex gap-x-3 cursor-pointer w-fit " onClick={() => DashboardCall("Dashboard")}> <FaArrowLeft style={{ alignSelf: "center" }} /> Back to Dashboard</div>
+                            <div className="text-[2rem] font-semibold text-gray-900 dark:text-gray-100"> Total Complain (10) </div>
+                        </div>
+                        <SalesMobileInput placeholder="Search Complain" className="py-2 px-6 border-0  rounded-full text-[2rem] text-gray-500 font-bold relative shadow-xl dark:shadow-xl  shadow-inner shadow-indigo-200  dark:shadow-gray-500/50 dark:bg-gray-700 dark:text-gray-100" value={searchComplainData} handleClickCall={handleClickCall} handleChange={handleChange} />
                     </div>
 
                     <div className="grid md:grid-cols-2 gap-4 mt-[2rem]">
-                        {ComplainData && ComplainData.map((item: any) => (
-                            <div className=" bg-white dark:bg-gray-700 dark:hover:bg-gray-600 p-4 rounded-xl relative">
+                        {ComplainData && ComplainData.map((item: any, k:number) => (
+                            <div className=" bg-white dark:bg-gray-700 dark:hover:bg-gray-600 p-4 rounded-xl relative" key={k}>
                                 <div> {item.type && <div className={`absolute left-3 top-4 bottom-4 w-1 rounded-md ${item.type === "high" ? "bg-red-400" : item.type === "medium" ? "bg-yellow-400" : item.type === "low" ? "bg-blue-400" : ""}`} />} </div>
 
                                 <div className="pl-3 lg:flex justify-between">

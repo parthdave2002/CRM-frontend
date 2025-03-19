@@ -11,16 +11,20 @@ import {
   ResetCustomerDatalistFail,
   BlockCustomer,
   BlockCustomerSuccess,
-  BlockCustomerFail
+  BlockCustomerFail,
+  CheckCustomerExist,
+  CheckCustomerExistSuccess,
+  CheckCustomerExistFail
 } from "./action";
 import {
   GET_CUSTOMER_DATA_LIST,
   ADD_CUSTOMER_DATA_LIST,
   DELETE_CUSTOMER_DATA_LIST,
   REST_CUSTOMER_DATA_LIST,
-  BLOCK_CUSTOMER_DATA_LIST
+  BLOCK_CUSTOMER_DATA_LIST,
+  CHECK_CUSTOMER_EXIST_LIST
 } from "./actionType";
-import { CustomerlistApi, AddCustomerlistApi, DelCustomerlistApi, BlockCustomerlistApi} from "../../helper/Demo_helper";
+import { CustomerlistApi, AddCustomerlistApi, DelCustomerlistApi, BlockCustomerlistApi, CheckCustomerApi} from "../../helper/Demo_helper";
 import { toast } from "react-toastify";
 
 function* onGetCustomerDatalist({ payload: requstuser }) {
@@ -76,11 +80,22 @@ function* onBlockCustomerList({ payload: requstuser }) {
   }
 }
 
+function* onCheckCustomerList({ payload: requstuser }) {
+  try {
+    const response = yield call(CheckCustomerApi, requstuser);
+    yield put(CheckCustomerExistSuccess(CHECK_CUSTOMER_EXIST_LIST, response));
+  } catch (error) {
+    yield put(CheckCustomerExistFail(error));
+  }
+}
+
 function* CustomerSaga() {
   yield takeEvery(GET_CUSTOMER_DATA_LIST, onGetCustomerDatalist);
   yield takeEvery(ADD_CUSTOMER_DATA_LIST, onAddCustomerList);
   yield takeEvery(DELETE_CUSTOMER_DATA_LIST, onDelCustomerList);
   yield takeEvery(REST_CUSTOMER_DATA_LIST, onResetCustomerList);
   yield takeEvery(BLOCK_CUSTOMER_DATA_LIST, onBlockCustomerList);
+  yield takeEvery(CHECK_CUSTOMER_EXIST_LIST, onCheckCustomerList);
+
 }
 export default CustomerSaga;

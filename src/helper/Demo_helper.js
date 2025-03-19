@@ -139,6 +139,12 @@ export const AddCompanylistApi = async (requserdata) => await api.create(url.ADD
 export const DelCompanylistApi = async (requserdata) => await api.delete(url.DELETE_COMPANY_LIST, requserdata);
 export const StatusCompanylistApi = async (requserdata) => await api.delete(url.CHANGE_STATUS_COMPANY_LIST, requserdata);
 
+// Complain API
+export const ComplainlistApi = (requserdata) => api.get(url.GET_COMPLAIN_LIST, requserdata);
+export const AddComplainlistApi = async (requserdata) => await api.create(url.ADD_COMPLAIN_LIST, requserdata);
+export const DelComplainlistApi = async (requserdata) => await api.delete(url.DELETE_COMPLAIN_LIST, requserdata);
+export const UpdateComplainlistApi = async (requserdata) => await api.update(url.UPDATE_COMPLAIN_LIST, requserdata);
+
 // Product API
 export const RelatedProductlistApi = (requserdata) => api.get(url.GET_RELATED_PRODUCT_LIST, requserdata);
 export const ProductlistApi = (requserdata) => api.get(url.GET_PRODUCT_LIST, requserdata);
@@ -171,6 +177,7 @@ export const CustomerlistApi = (requserdata) => api.get(url.GET_CUSTOMER_DATA_LI
 export const AddCustomerlistApi = async (requserdata) => await api.create(url.ADD_CUSTOMER_DATA_LIST, requserdata);
 export const DelCustomerlistApi = async (requserdata) => await api.delete(url.DELETE_CUSTOMER_DATA_LIST, requserdata);
 export const BlockCustomerlistApi = async (requserdata) => await api.update(url.BLOCK_CUSTOMER_DATA_LIST, requserdata);
+export const CheckCustomerApi = async (requserdata) => await api.get(url.CHECK_CUSTOMER_EXIST_LIST, requserdata);
 
 // Crops API
 export const CroplistApi = (requserdata) => api.get(url.GET_CROP_LIST, requserdata);

@@ -6,8 +6,7 @@ interface PropsData{
 } 
 
 const ProductCarousel: FC <PropsData>= ({data}) => {
-  console.log("data", typeof data);
-  
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const autoPlay = true;
   const intervalTime = 3000;
