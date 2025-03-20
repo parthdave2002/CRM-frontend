@@ -26,9 +26,9 @@ const SalesCRMPage : FC = function () {
                         : active ===  "Products" ? 
                             <div> <SalesProduct setDatactive={ActiveData}  /></div>
                         : active ===  "Order" ? 
-                            <div> <SalesOrder  setDatactive={ActiveData}  /></div>
+                            <div> <SalesOrder openProfile={openProfile} setOpenProfile={setOpenProfile}  setDatactive={ActiveData}  /></div>
                         : active ===  "Complain" ? 
-                            <div> <SalesUpcomingComplainPage   setDatactive={ActiveData}  /> </div>
+                            <div> <SalesUpcomingComplainPage openProfile={openProfile} setOpenProfile={setOpenProfile}   setDatactive={ActiveData}  /> </div>
                         : null
                         }
                     </div>

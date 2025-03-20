@@ -21,6 +21,20 @@ interface TechName{
   gujarati_tech_name: string;
   english_tech_name : string;
 }
+interface CompanyData{  
+  name_eng : string; 
+  name_guj :string;
+}
+
+interface Category{ 
+  name_eng: string; 
+  name_guj :string;
+}
+
+interface PackingType { 
+   type_eng: string 
+   type_guj : string;
+}
 
 interface Name{
   gujaratiname: string;
@@ -32,8 +46,8 @@ interface ProductDetails{
 avl_qty: number;
 batch_no: number;
 c_gst: number;
-categories: string;
-company: string;
+company: CompanyData;
+categories : Category;
 description: DescriptionData[];
 discount: number;
 hsn_code: number;
@@ -41,7 +55,7 @@ is_active: boolean;
 is_deleted: boolean;
 name: Name;
 packaging: number;
-packagingtype: string;
+packagingtype: PackingType;
 price: number;
 product_pics: [];
 rating: any;
@@ -80,21 +94,30 @@ const ProductDetailsPage: FC = function () {
        
           <div className="mt-[2rem] bg-white dark:bg-gray-800 p-4">
                       <div>
+                        <div className="flex gap-x-3">
+                              {ProductDatalist && ProductDatalist?.product_pics.map((item:any) =>(
+                                <img  className="w-28 h-28 rounded-xl"  src={  `${IMG_URL}/public/product/${item}`}  alt="product photo"  />
+                              ))}
+                          </div>
+                        <div className="grid grid-cols-3 gap-3 mt-[3rem]">
 
-                        {/* {ProductDatalist && ProductDatalist?.product_pics.map((item:any) =>(
-                          <img  className="w-20 h-20 rounded-full"  src={  `${IMG_URL}/public/product/${item}`}  alt="product photo"  />
-                        ))} */}
-                        
-                        <div className="grid grid-cols-3 gap-3">
+                        <div className="p-4 dark:bg-gray-800 rounded-lg">
+                            <h3 className="text-gray-600 dark:text-gray-50 font-semibold">Name </h3>
+                            <p className="text-gray-900 dark:text-gray-400">
+                              <div className="flex flex-col"></div>
+                                <div>{ProductDatalist?.name?.englishname || "N/A"}  </div>
+                                <div>({ProductDatalist?.name?.gujaratiname || "N/A"})  </div>
+                              </p>
+                          </div>
 
                           <div className="p-4 dark:bg-gray-800 rounded-lg">
                             <h3 className="text-gray-600 dark:text-gray-50 font-semibold">Technical Name ( Eng )</h3>
-                            <p className="text-gray-900 dark:text-gray-400">{ProductDatalist?.tech_name?.english_tech_name || "N/A"}Rs.</p>
+                            <p className="text-gray-900 dark:text-gray-400">{ProductDatalist?.tech_name?.english_tech_name || "N/A"}</p>
                           </div>
 
                           <div className="p-4 dark:bg-gray-800 rounded-lg">
                             <h3 className="text-gray-600 dark:text-gray-50 font-semibold">Technical Name ( Guj )</h3>
-                            <p className="text-gray-900 dark:text-gray-400">{ProductDatalist?.tech_name?.gujarati_tech_name || "N/A"}Rs.</p>
+                            <p className="text-gray-900 dark:text-gray-400">{ProductDatalist?.tech_name?.gujarati_tech_name || "N/A"}</p>
                           </div>
 
                           <div className="p-4 dark:bg-gray-800 rounded-lg">
@@ -102,14 +125,11 @@ const ProductDetailsPage: FC = function () {
                             <p className="text-gray-900 dark:text-gray-400">{ProductDatalist?.price || "N/A"} Rs.</p>
                           </div>
 
-                          <div className="p-4 dark:bg-gray-800 rounded-lg">
-                            <h3 className="text-gray-600 dark:text-gray-50 font-semibold">Name ( Eng )</h3>
-                            <p className="text-gray-900 dark:text-gray-400">{ProductDatalist?.name?.englishname || "N/A"}</p>
-                          </div>
+                          
 
                           <div className="p-4 dark:bg-gray-800 rounded-lg">
-                            <h3 className="text-gray-600 dark:text-gray-50 font-semibold">Name ( Guj )</h3>
-                            <p className="text-gray-900 dark:text-gray-400">{ProductDatalist?.name?.gujaratiname || "N/A"}</p>
+                            <h3 className="text-gray-600 dark:text-gray-50 font-semibold">Packing</h3>
+                            <p className="text-gray-900 dark:text-gray-400"> { ProductDatalist?.packaging }{ProductDatalist?.packagingtype?.type_eng || "N/A"}  ( {ProductDatalist?.packagingtype?.type_guj || "N/A"} )</p>
                           </div>
           
                           <div className="p-4 dark:bg-gray-800 rounded-lg">
@@ -128,18 +148,18 @@ const ProductDetailsPage: FC = function () {
                           </div>
 
                           <div className="p-4 dark:bg-gray-800 rounded-lg">
-                            <h3 className="text-gray-600 dark:text-gray-50 font-semibold">Discount</h3>
+                            <h3 className="text-gray-600 dark:text-gray-50 font-semibold">Discount (Rs.)</h3>
                             <p className="text-gray-900 dark:text-gray-400"> {ProductDatalist?.discount ||  0}</p>
                           </div>
 
                           <div className="p-4 dark:bg-gray-800 rounded-lg">
                             <h3 className="text-gray-600 dark:text-gray-50 font-semibold"> Category</h3>
-                            <p className="text-gray-900 dark:text-gray-400">{ProductDatalist?.categories || "N/A"} </p>
+                            <p className="text-gray-900 dark:text-gray-400">{ProductDatalist?.categories?.name_eng || "N/A"} </p>
                           </div>
 
                           <div className="p-4 dark:bg-gray-800 rounded-lg">
                             <h3 className="text-gray-600 dark:text-gray-50 font-semibold"> Company</h3>
-                            <p className="text-gray-900 dark:text-gray-400">{ProductDatalist?.company || "N/A"} </p>
+                            <p className="text-gray-900 dark:text-gray-400">{ProductDatalist?.company?.name_eng  || "N/A"} </p>
                           </div>
 
                           <div className="p-4 dark:bg-gray-800 rounded-lg">
@@ -161,9 +181,7 @@ const ProductDetailsPage: FC = function () {
           
                           <div className="p-4 dark:bg-gray-800 rounded-lg">
                             <h3 className="text-gray-600 dark:text-gray-300 font-semibold">Status</h3>
-                            <p className="text-white text-sm font-bold rounded-lg">
-                              {ProductDatalist?.is_active ? "Active" : "Inactive"}
-                            </p>
+                            <p className="text-gray-900 dark:text-gray-400">   {ProductDatalist?.is_active == true ? "Active" : "Inactive"} </p>
                           </div>
                         </div>
 
