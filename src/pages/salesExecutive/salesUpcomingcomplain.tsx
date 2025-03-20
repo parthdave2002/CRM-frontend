@@ -5,12 +5,12 @@ import SalesMobileInput from "../../components/input/salesMobileInput";
 
 interface PropsData{
     setDatactive :any;
+    openProfile : boolean;
+    setOpenProfile : (value : boolean) => void;
 }
 
-const SalesUpcomingComplainPage : FC <PropsData> = function ({ setDatactive})  {
+const SalesUpcomingComplainPage : FC <PropsData> = function ({ setDatactive, openProfile, setOpenProfile})  {
     const DashboardCall = (data:string) => setDatactive(data)
-
-    const [ openProfile, setOpenProfile] = useState(false);
     const CloseProfileCall = () => {
         setOpenProfile(false);
         setDatactive("Farmer")

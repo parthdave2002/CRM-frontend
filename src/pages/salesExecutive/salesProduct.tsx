@@ -1,10 +1,10 @@
 import React, { FC, useEffect, useState } from 'react'
 import { FaArrowLeft, FaWindowClose } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProductlist } from '../../Store/actions';
+import { getProductlist, ResetProductlist } from '../../Store/actions';
 import {  Table} from "flowbite-react";
 const IMG_URL = import.meta.env["VITE_API_URL"];
-import ProductDetailData from '../../components/productdetails/productDetails';
+import ProductDetailData from '../../components/productdetails/salesproductDetails';
 import SalesMobileInput from '../../components/input/salesMobileInput';
 interface PropsData{
     setDatactive :any;
@@ -17,24 +17,21 @@ const SalesProduct : FC <PropsData> = function ({ setDatactive})  {
     const [searchData, setSearchData] = useState("");
     const handleChange = (data:any) => setSearchData(data)
     
-    console.log("ProductData >>>>>>>>.", ProductData);
-    
-     useEffect(() => {
+  useEffect(() => {
       let requserdata: any = {};
+      if (searchData) requserdata.search = searchData;
+      dispatch(getProductlist(requserdata));
+  }, [dispatch, searchData]);
 
-       if (searchData) {
-        requserdata.search = searchData;
-       }
-          dispatch(getProductlist(requserdata));
-    }, [dispatch, searchData]);
-
-    const  Productlist  = useSelector((state: any) => state.Product.Productlist );
-    useEffect(() => {
-        setProductData(Productlist?.data);
-    }, [Productlist]);
+  const Productlist = useSelector((state: any) => state.Product.Productlist);
+  useEffect(() => {
+    setProductData(Productlist?.data);
+  }, [Productlist]);
 
   const ProductDetailsCall = (data:string) =>  setProductDetails(data);
-  const ProductCLoseCall = () => setProductDetails(null);
+  const ProductCLoseCall = () => {
+    setProductDetails(null);
+  }
   const DashboardCall = (data:string) => setDatactive(data)
 
   const handleClickCall = () => {
