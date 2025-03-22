@@ -11,7 +11,7 @@ const LogoutModal : FC <PoropsData> = ({openModal, handleClose, handleAccept}) =
   return (
     <>
      <Modal dismissible show={openModal} onClose={() => handleClose()}>
-              <Modal.Header>Terms of Service</Modal.Header>
+              <Modal.Header className='text-[1rem] font-bold'>Add Taglog</Modal.Header>
               <Modal.Body>
                 <div className="space-y-6">
                   <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
@@ -25,11 +25,9 @@ const LogoutModal : FC <PoropsData> = ({openModal, handleClose, handleAccept}) =
                   </p>
                 </div>
               </Modal.Body>
-              <Modal.Footer>
+              <Modal.Footer className='py-2'>
                 <Button onClick={() => handleAccept()}>I accept</Button>
-                <Button color="gray" onClick={() => handleClose()}>
-                  Decline
-                </Button>
+                <Button color="gray" onClick={() => handleClose()}> Decline  </Button>
               </Modal.Footer>
             </Modal>
     </>

@@ -1,11 +1,15 @@
 import React, { FC, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { getProductlist } from '../../Store/actions';
+import { GetProductViewlist } from '../../Store/actions';
 import { IoArrowRedoSharp } from "react-icons/io5";
 const IMG_URL = import.meta.env["VITE_API_URL"];
 import { SiBattledotnet } from "react-icons/si";
+import { FaWindowClose } from 'react-icons/fa';
 
-interface PropsData{  ProductDetails : string }
+interface PropsData{  
+    ProductDetails : string 
+    ProductCLoseCall : () => void;
+}
 
 interface ProductName {
     gujaratiname:string;
@@ -50,17 +54,17 @@ interface ProductData{
 }
 
 
-const SalesProductDetailData : FC<PropsData> = ({ProductDetails}) => {
+const SalesProductDetailData : FC<PropsData> = ({ProductDetails, ProductCLoseCall}) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [ Product_data, setProductData  ] = useState<ProductData>()
     const dispatch = useDispatch()
 
     useEffect(() => {
        let requserdata ={ id : ProductDetails}
-         dispatch(getProductlist(requserdata));
+        dispatch(GetProductViewlist(requserdata));
    }, [dispatch, ProductDetails]);
 
-   const  Productlist  = useSelector((state: any) => state.Product.Productlist );
+   const  Productlist  = useSelector((state: any) => state.Product.singleProductlist );
    useEffect(() => {
        setProductData(Productlist?.data);
    }, [Productlist]);
@@ -79,6 +83,11 @@ const SalesProductDetailData : FC<PropsData> = ({ProductDetails}) => {
   return (
     <>
         {/* <div>SalesProductDetailData ,{ ProductDetails }</div> */}
+        <div className='flex justify-between px-4'>
+            <div className="text-[2rem] font-semibold text-gray-900 dark:text-gray-100"> Product Details   </div>
+            <div className="text-[2rem] font-semibold text-gray-900 dark:text-gray-100 flex self-center cursor-pointer " onClick={ProductCLoseCall}> <FaWindowClose /> </div>
+        </div>
+        
         <div className='flex px-3 mt-[2rem]'>
             <div className='flex-1'>
                   <div className="relative w-full">

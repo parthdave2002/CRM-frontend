@@ -15,6 +15,10 @@ import {
   ADD_PRODUCT_LIST_SUCCESS,
   ADD_PRODUCT_LIST_ERROR,
   
+  UPDATE_PRODUCT_LIST,
+  UPDATE_PRODUCT_LIST_SUCCESS,
+  UPDATE_PRODUCT_LIST_ERROR,
+
   DELETE_PRODUCT_LIST,
   DELETE_PRODUCT_LIST_SUCCESS,
   DELETE_PRODUCT_LIST_ERROR,
@@ -113,5 +117,20 @@ export const GetProductViewlistSuccess = (actionType, data) => ({
 
 export const GetProductViewlistFail = (actionType, error) => ({
   type: GET_PRODUCT_VIEW_LIST_ERROR,
+  payload: { actionType, error },
+});
+
+export const UpdateProductlist = (requserdata) => ({
+  type: UPDATE_PRODUCT_LIST,
+  payload: requserdata,
+});
+
+export const UpdateProductlistSuccess = (actionType, data) => ({
+  type: UPDATE_PRODUCT_LIST_SUCCESS,
+  payload: { actionType, data },
+});
+
+export const UpdateProductlistFail = (actionType, error) => ({
+  type: UPDATE_PRODUCT_LIST_ERROR,
   payload: { actionType, error },
 });

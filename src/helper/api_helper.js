@@ -99,6 +99,31 @@ class APIClient {
       throw error;
     }
   };
+
+
+  putMultipart = async (url, body) => {
+    try {   
+      const token = Cookies.get("token");
+      const response = await axios.put(url, body, {
+        headers: {
+          Authorization: `${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      return response;
+    } catch (error) {
+      console.error("Error:", error);
+  
+      if (error?.response?.status === 401) {
+        Cookies.remove("token");
+        Cookies.remove("username");
+        window.location.replace("/");
+        toast.error("Token expired");
+      }
+  
+      throw error;
+    }
+  };
 }
 const getLoggedinUser = () => {
   const user = Cookies.get("token");
