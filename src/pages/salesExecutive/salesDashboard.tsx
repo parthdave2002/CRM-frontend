@@ -1,14 +1,24 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import  userimage from "../../img/group.jpg"
 import { FaHandHoldingDollar } from "react-icons/fa6";
-import { FaRupeeSign, FaUser } from "react-icons/fa";
+import { FaAngleDown, FaRupeeSign, FaUser } from "react-icons/fa";
 import SalesFarmerDashboard from "./salesFarmerDashboard";
+import { DarkThemeToggle } from "flowbite-react";
+import userphoto from "../../img/profile-picture-3.jpg";
+import { FiLogOut } from "react-icons/fi";
+import Cookies from "js-cookie";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
+import { resetinsertlogin } from "../../Store/actions";
 
 interface PropsData{
     setDatactive :any;
   }
 const SalesDashboardPage : FC <PropsData> = function ({ setDatactive})  {
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
     const ComplainData = [
         {
@@ -93,6 +103,38 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive})  {
       setOpenProfile(true);
     }
 
+    const [isOpen, setIsOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+      useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+          if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+            setIsOpen(false);
+          }
+        };
+    
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+          document.removeEventListener("mousedown", handleClickOutside);
+        };
+      }, []);
+
+
+        const handleClick = () => {
+          const darkModeButton = document.querySelector('[data-testid="dark-theme-toggle"]') as HTMLButtonElement;
+          if (darkModeButton) {
+            darkModeButton.click();
+          }
+        };
+
+
+        const Logoutfun = () => {
+          Cookies.remove("token");
+          Cookies.remove("username");
+          Cookies.remove("access");
+          Cookies.remove("role");
+          navigate("/login");
+          dispatch(resetinsertlogin());
+        };
     return (
         <> 
         
@@ -100,9 +142,35 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive})  {
           <SalesFarmerDashboard setOpenProfile={CloseProfileCall} />
           :
           <>
-            <div>
-              <div className="text-[0.9rem] text-gray-500 dark:text-gray-100 dark:text-gray-200"> Welcome back, Parth!</div>
-              <div className="text-[2.5rem] font-semibold text-gray-900 dark:text-gray-100">  Dashboard </div>
+
+            <div className="flex justify-between">
+                                <div className="flex flex-col self-center">
+                                <div className="text-[0.9rem] text-gray-500 dark:text-gray-100 dark:text-gray-200"> Welcome back, Parth!</div>
+                                <div className="text-[2.5rem] font-semibold text-gray-900 dark:text-gray-100">  Dashboard </div>
+                                </div>
+                            
+
+                                <div className="relative flex ">
+                                    <button onClick={() => setIsOpen(!isOpen)}  className="flex items-center text-sm px-3 py-0.5 font-medium text-gray-900 hover:text-blue-600 md:me-0  dark:text-white  dark:hover:text-gray-100"   type="button"  >
+                                      <img  className="w-8 h-8 me-2 rounded-full"   src={userphoto}   alt="user photo"   />
+                                      <span>Parth Dave  </span>
+                                      <FaAngleDown className="w-4 h-4 ms-3" />
+                                    </button>
+
+                                    {isOpen && (
+                                        <div   ref={dropdownRef}   className="absolute z-10 bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600 right-0 mt-[4rem]" >
+                                            <div  onClick={handleClick}  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white flex gap-x-2 cursor-pointer  text-sm text-gray-700 dark:text-gray-200"  >
+                                            <DarkThemeToggle  className="hover:bg-gray-100 dark:hover:bg-gray-700 "    style={{ padding: "0" }}  />
+                                            <div className="self-center">Dark mode</div>
+                                            </div>
+
+                                            <div className="cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white flex gap-x-2" onClick={() => Logoutfun()}>
+                                                <FiLogOut   size={20}   className="text-gray-600 dark:text-gray-400"   />
+                                            <div className="self-center"> Sign out </div>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
             </div>
 
             <div className="md:flex  flex-wrap gap-3 my-[2rem]">
@@ -122,6 +190,28 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive})  {
                     <div className="text-center self-center items-start">
                       <p className="text-md font-bold"> Revenue</p>
                       <p className="text-lg font-bold text-center mt-2"> 50,000</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex-1  mt-[1.5rem] md:mt-0">
+                <div className="h-24 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-red-200 dark:bg-gray-700 dark:text-gray-50">
+                  <div className="flex w-full justify-around items-start">
+                    <div className="p-3 rounded-full bg-purple-500 self-center">
+                      <FaHandHoldingDollar className="text-white w-6 h-6" />
+                    </div>
+                    <div className="">
+                      <select className="border border-gray-300 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily" >
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                      </select>
+                    </div>
+
+                    <div className="text-center self-center items-start ">
+                      <p className="text-md font-bold">Total Order</p>
+                      <p className="text-lg font-bold text-center mt-2"> 5</p>
                     </div>
                   </div>
                 </div>
@@ -148,27 +238,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive})  {
                 </div>
               </div>
 
-              <div className="flex-1  mt-[1.5rem] md:mt-0">
-                <div className="h-24 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-red-200 dark:bg-gray-700 dark:text-gray-50">
-                  <div className="flex w-full justify-around items-start">
-                    <div className="p-3 rounded-full bg-purple-500 self-center">
-                      <FaHandHoldingDollar className="text-white w-6 h-6" />
-                    </div>
-                    <div className="">
-                      <select className="border border-gray-300 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily" >
-                        <option value="daily">Daily</option>
-                        <option value="weekly">Weekly</option>
-                        <option value="monthly">Monthly</option>
-                      </select>
-                    </div>
-
-                    <div className="text-center self-center items-start ">
-                      <p className="text-md font-bold"> Order</p>
-                      <p className="text-lg font-bold text-center mt-2"> 5</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+             
 
               <div className="flex-1  mt-[1.5rem] md:mt-0">
                 <div className="h-24 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-red-200 dark:bg-gray-700 dark:text-gray-50">

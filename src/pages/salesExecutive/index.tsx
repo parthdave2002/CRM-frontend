@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import SalesHeaderPage from "./salesHeader";
 import SalesDashboardPage from "./salesDashboard";
 import SalesUpcomingComplainPage from "./salesUpcomingcomplain";
-import SalesFarmerDetailsPage from "./salesFarmerDetailsPage";
+import SalesFarmerDetailsPage from "./salesFarmer";
 import SalesProduct from "./salesProduct";
 import SalesOrder from "./salesOrder";
 
@@ -16,9 +16,10 @@ const SalesCRMPage : FC = function () {
 
     return (
         <>  
-            <div className="p-4 bg-[#f4f9fd] dark:bg-gray-800">
-                    <div className="flex flex-col"> 
-                        <div className="h-[3rem]"> <SalesHeaderPage openProfile={openProfile} setDatactive={ActiveData} active={active} />  </div>
+            <div className="p-3 bg-[#f4f9fd] dark:bg-gray-800 min-h-screen">
+                <div className="py-2 px-4  shadow shadow-lg shadow-indigo-400/40 rounded-xl"> <SalesHeaderPage openProfile={openProfile} setDatactive={ActiveData} active={active} />  </div>
+                    
+                    <div className="flex flex-col p-3 "> 
                         {active ===  "Dashboard" ? 
                             <div> <SalesDashboardPage setDatactive={ActiveData} /> </div>
                         : active ===  "Farmer" ? 

@@ -64,6 +64,7 @@ export const UPDATE_COMPLAIN_LIST = "/api/complain/remove-complain";
 // Product
 export const GET_PRODUCT_LIST = "/api/product/get-product";
 export const ADD_PRODUCT_LIST = "/api/product/add-product";
+export const UPDATE_PRODUCT_LIST = "/api/product/update-product";
 export const DELETE_PRODUCT_LIST = "/api/product/remove-product";
 export const GET_RELATED_PRODUCT_LIST = "/api/product/product-related";
 

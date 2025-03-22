@@ -121,6 +121,10 @@ const ProductListPage: FC = function () {
     navigate(`/product/details/${id}`)
   }
 
+  const EditPageCall = (id: any) => {
+    navigate(`/product/edit/${id}`);
+   };
+
   let Name = "Product List";
   let Searchplaceholder = "Search For Product (Name)";
   let AddAccess = AccessList?.add;;
@@ -160,7 +164,7 @@ const ProductListPage: FC = function () {
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item.createdAt).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
                           <Table.Cell className="space-x-2 whitespace-nowrap py-0">
                             <div className="flex items-center gap-x-3">
-                              {AccessList?.edit ? <Button gradientDuoTone="greenToBlue"  > <div className="flex items-center gap-x-2">  <HiOutlinePencilAlt className="text-lg" />  Edit Product  </div></Button> : null}
+                              {AccessList?.edit ? <Button gradientDuoTone="greenToBlue" onClick={() => EditPageCall(item._id)}  > <div className="flex items-center gap-x-2">  <HiOutlinePencilAlt className="text-lg" />  Edit Product  </div></Button> : null}
                               {AccessList?.delete ?  <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" /> Delete Product </div> </Button> : null}
                               <Button  gradientDuoTone="purpleToBlue" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <FaExclamationCircle className="text-lg" /> Detail Product </div> </Button>
                             </div>

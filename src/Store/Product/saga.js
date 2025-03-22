@@ -6,6 +6,8 @@ import {
   getProductlistFail,
   AddProductlistSuccess,
   AddProductlistFail,
+  UpdateProductlistSuccess,
+  UpdateProductlistFail,
   DeleteProductlistSuccess,
   DeleteProductlistFail,
   ResetProductlist,
@@ -19,11 +21,12 @@ import {
   GET_RELATED_PRODUCT_LIST,
   GET_PRODUCT_LIST,
   ADD_PRODUCT_LIST,
+  UPDATE_PRODUCT_LIST,
   DELETE_PRODUCT_LIST,
   GET_PRODUCT_VIEW_LIST,
   RESET_PRODUCT_LIST
 } from "./actionType";
-import { RelatedProductlistApi,ProductlistApi,  AddProductlistApi, DelProductlistApi, DetailProductlistApi} from "../../helper/Demo_helper";
+import { RelatedProductlistApi,ProductlistApi,  AddProductlistApi, DelProductlistApi, UpdateProductApi,  DetailProductlistApi} from "../../helper/Demo_helper";
 import { toast } from "react-toastify";
 
 
@@ -51,6 +54,19 @@ function* onAddProductlist({ payload: requstuser }) {
     yield put(AddProductlistSuccess(ADD_PRODUCT_LIST, response));
   } catch (error) {
     yield put(AddProductlistFail(error));
+  }
+}
+
+function* onUpdateProductlist({ payload: requstuser }) {
+  try {
+    const response = yield call(UpdateProductApi, requstuser);
+    yield put(UpdateProductlistSuccess(UPDATE_PRODUCT_LIST, response));
+    if(response.success === true || response.success === "true"){
+      const newresponse = yield call(ProductlistApi);
+      yield put(getProductlistSuccess(GET_PRODUCT_LIST, newresponse));
+    }
+  } catch (error) {
+    yield put(UpdateProductlistFail(error));
   }
 }
 
@@ -88,6 +104,7 @@ function* ProductSaga() {
   yield takeEvery(GET_RELATED_PRODUCT_LIST, onGetRelatedProductList);
   yield takeEvery(GET_PRODUCT_LIST, onGetProductList);
   yield takeEvery(ADD_PRODUCT_LIST, onAddProductlist);
+  yield takeEvery(UPDATE_PRODUCT_LIST, onUpdateProductlist);
   yield takeEvery(DELETE_PRODUCT_LIST, onDelProductList);
   yield takeEvery(RESET_PRODUCT_LIST, onResetProductList);
   yield takeEvery(GET_PRODUCT_VIEW_LIST, onGetProductViewList);

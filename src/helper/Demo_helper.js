@@ -149,6 +149,7 @@ export const UpdateComplainlistApi = async (requserdata) => await api.update(url
 export const RelatedProductlistApi = (requserdata) => api.get(url.GET_RELATED_PRODUCT_LIST, requserdata);
 export const ProductlistApi = (requserdata) => api.get(url.GET_PRODUCT_LIST, requserdata);
 export const AddProductlistApi = async (requserdata) => await api.postMultipart(url.ADD_PRODUCT_LIST, requserdata);
+export const UpdateProductApi = async (requserdata) => await api.update(url.UPDATE_PRODUCT_LIST, requserdata);
 export const DelProductlistApi = async (requserdata) => await api.delete(url.DELETE_PRODUCT_LIST, requserdata);
 export const DetailProductlistApi = (requserdata) => api.get(url.GET_PRODUCT_LIST, requserdata);
 

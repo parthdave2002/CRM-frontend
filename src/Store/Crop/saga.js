@@ -83,7 +83,7 @@ function* CropSaga() {
   yield takeEvery(GET_CROP_LIST, onGetCropList);
   yield takeEvery(ADD_CROP_LIST, onAddCropList);
   yield takeEvery(DELETE_CROP_LIST, onDelCropList);
-  yield takeEvery(DELETE_CROP_LIST, onDelCropList);
   yield takeEvery(CHANGE_STATUS_CROP_LIST, onChangeCropList);
+  yield takeEvery(RESET_CROP_LIST, onResetCropList);
 }
 export default CropSaga;
