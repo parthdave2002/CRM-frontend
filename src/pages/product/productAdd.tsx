@@ -54,8 +54,8 @@ import { toast } from "react-toastify";
     name: Name;
     tech_name: TechName;
     avl_qty: number | string;
-    batch_no: number | string;
-    hsn_code: number | string;
+    batch_no:  string;
+    hsn_code: string;
     c_gst: number | string;
     s_gst: number | string;
     company: CompanyData;
@@ -167,7 +167,12 @@ const ProductAddPage : FC = function () {
         };
 
         const handleAddField = () => {
-            setInputs([...inputs, { id: String(Date.now()), gujaratiHeader: "", englishHeader: "", gujaratiValue: "", englishValue: "" }]);
+            if(inputs.length !== 5 ){
+                setInputs([...inputs, { id: String(Date.now()), gujaratiHeader: "", englishHeader: "", gujaratiValue: "", englishValue: "" }]);
+            }
+            else{
+                toast.error("Only 5 description added for product")
+            }
         };
 
         const handleRemoveField = (id: string) => {
@@ -177,12 +182,12 @@ const ProductAddPage : FC = function () {
 
     // ------ status code start ------
         const [selectedactiveOption, setSelectedactiveOption] = useState(null);
-        const [selectedactiveid, setSelectedactiveid] = useState("");
+        const [selectedactiveid, setSelectedactiveid] = useState<null | boolean>(null);
         const [validateactive, setValidateactive] = useState(0);
     
         const IsActivedata = (data: any) => {
         if (!data) {
-            setSelectedactiveid("");
+            setSelectedactiveid(null);
             setSelectedactiveOption(null);
             setValidateactive(1)
         } else {
@@ -208,7 +213,13 @@ const ProductAddPage : FC = function () {
             name_eng: '',
             name_guj: ''
         },
-        description: [],
+        description: [ {
+            id: "",
+            englishHeader: "",
+            englishValue: "",
+            gujaratiHeader: "",
+            gujaratiValue: ""
+          }],
         discount: 0,
         hsn_code: '',
         is_active: true,
@@ -258,7 +269,7 @@ const ProductAddPage : FC = function () {
         }),
         
         onSubmit: (values) => {
-            if(selectedactiveid == ""){
+            if(selectedactiveid ==  null){
                 setValidateactive(1)
                 return;
             }
@@ -294,17 +305,20 @@ const ProductAddPage : FC = function () {
             formData.append("c_gst",  JSON.stringify(values?.c_gst));
             formData.append("s_gst",  JSON.stringify(values?.s_gst));
             formData.append("avl_qty",  JSON.stringify(values?.avl_qty));
-            formData.append("description", JSON.stringify(inputs));
-            formData.append("is_active", selectedactiveid);
+            inputs.forEach((item, index) => {
+                formData.append(`description[${index}][gujaratiHeader]`, item.gujaratiHeader);
+                formData.append(`description[${index}][englishHeader]`, item.englishHeader);
+                formData.append(`description[${index}][gujaratiValue]`, item.gujaratiValue);
+                formData.append(`description[${index}][englishValue]`, item.englishValue);
+            });
+            formData.append("is_active", JSON.stringify(selectedactiveid));
             if (file) {
-                file.forEach((f) => {
-                    formData.append("product_pics", f);
+                file.forEach((data) => {
+                    formData.append("product_pics", data);
                 });
             }
             if(id){
                 formData.append("id", id);
-                console.log("Calll");
-                
                 dispatch(UpdateProductlist(formData));
             }
             else{
@@ -334,7 +348,7 @@ const ProductAddPage : FC = function () {
                 dispatch(ResetProductlist())
                 navigate(ParentLink)
                 validation.resetForm();
-                setSelectedactiveid("");
+                setSelectedactiveid(null);
                 setSelectedactiveOption(null);
                 setValidateactive(1)
             }
@@ -366,8 +380,8 @@ const ProductAddPage : FC = function () {
         validation.values.avl_qty = ProductList?.avl_qty ?? "";
         validation.values.price = ProductList?.price ?? "";
         validation.values.discount = ProductList?.discount ?? 0;
-        validation.values.batch_no = ProductList?.batch_no ?? "";
-        validation.values.hsn_code = ProductList?.hsn_code ?? "";
+        validation.values.batch_no =ProductList?.batch_no ? JSON.parse(ProductList.batch_no) : "";
+        validation.values.hsn_code = ProductList?.hsn_code ? JSON.parse(ProductList.hsn_code) : ""; 
         validation.values.c_gst = ProductList?.c_gst ?? "";
         validation.values.s_gst = ProductList?.s_gst ?? "";
         if (ProductList?.description) {
@@ -381,6 +395,11 @@ const ProductAddPage : FC = function () {
       
             setInputs(formattedDescription);
         }
+
+        // if (ProductList?.product_pics) {
+        //     const formattedDescription = ProductList?.product_pics.map((desc) =>  desc );
+        //     setFile(formattedDescription);
+        // }
         if (ProductList?.company && companyoption.length > 0) {
             const selectedRole = companyoption.find((role: any) => role.value === ProductList?.company?._id);
             setSelectedCompanyOption(selectedRole || null);

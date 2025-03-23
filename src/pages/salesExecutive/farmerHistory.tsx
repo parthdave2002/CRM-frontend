@@ -20,7 +20,7 @@ const FarmerHistory = () => {
   
 
   return (
-    <div className='my-4 border dark:border-gray-600 rounded-xl w-full py-2 px-4'>
+    <div className='mt-3 border dark:border-gray-600 rounded-xl w-full py-2 px-4'>
       <div>FarmerHistory</div>
 
     </div>

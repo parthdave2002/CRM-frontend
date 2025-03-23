@@ -41,8 +41,8 @@ interface ProductData{
         s_gst: number;
         avl_qty: number;
         rating: any;
-        batch_no: number;
-        hsn_code: number;
+        batch_no: string;
+        hsn_code: string;
         is_active: boolean;
         is_deleted: boolean;
         _id: string;
@@ -114,8 +114,8 @@ const SalesProductDetailData : FC<PropsData> = ({ProductDetails, ProductCLoseCal
 
                   <div className='dark:text-gray-400 text-[1rem] mt-3 flex gap-x-3'> <div className='w-[8rem]'>Price (₹) </div> :  {Product_data?.price}</div>
                   <div className='dark:text-gray-400 text-[1rem] mt-3 flex gap-x-3'> <div className='w-[8rem]'>Discount </div> : {Product_data?.discount}</div>
-                  <div className='dark:text-gray-400 text-[1rem] mt-3 flex gap-x-3'> <div className='w-[8rem]'>Batch No </div>  : {Product_data?.batch_no}</div>
-                  <div className='dark:text-gray-400 text-[1rem] mt-3 flex gap-x-3'> <div className='w-[8rem]'> HSN Code </div> : {Product_data?.hsn_code}</div>
+                  <div className='dark:text-gray-400 text-[1rem] mt-3 flex gap-x-3'> <div className='w-[8rem]'>Batch No </div>  : {Product_data?.batch_no.replace(/"/g, '')}</div>
+                  <div className='dark:text-gray-400 text-[1rem] mt-3 flex gap-x-3'> <div className='w-[8rem]'> HSN Code </div> : {Product_data?.hsn_code.replace(/"/g, '')}</div>
                   <div className='dark:text-gray-400 text-[1rem] mt-3 flex gap-x-3'> <div className='w-[8rem]'> SGST </div> : {Product_data?.s_gst}</div>
                   <div className='dark:text-gray-400 text-[1rem] mt-3 flex gap-x-3'> <div className='w-[8rem]'> CGST </div> : {Product_data?.c_gst}</div>
 
