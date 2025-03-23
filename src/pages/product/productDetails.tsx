@@ -44,13 +44,13 @@ interface Name{
 interface ProductDetails{
   added_at: string;
 avl_qty: number;
-batch_no: number;
+batch_no: string;
 c_gst: number;
 company: CompanyData;
 categories : Category;
 description: DescriptionData[];
 discount: number;
-hsn_code: number;
+hsn_code: string;
 is_active: boolean;
 is_deleted: boolean;
 name: Name;
@@ -164,12 +164,12 @@ const ProductDetailsPage: FC = function () {
 
                           <div className="p-4 dark:bg-gray-800 rounded-lg">
                             <h3 className="text-gray-600 dark:text-gray-50 font-semibold">Batch No.</h3>
-                            <p className="text-gray-900 dark:text-gray-400"> {ProductDatalist?.batch_no || "N/A"}</p>
+                            <p className="text-gray-900 dark:text-gray-400"> {ProductDatalist?.batch_no.replace(/"/g, '') || "N/A"}</p>
                           </div>
           
                           <div className="p-4 dark:bg-gray-800 rounded-lg">
                             <h3 className="text-gray-600 dark:text-gray-50 font-semibold"> HSN Code</h3>
-                            <p className="text-gray-900 dark:text-gray-400">{ProductDatalist?.hsn_code || "N/A"} </p>
+                            <p className="text-gray-900 dark:text-gray-400">{ProductDatalist?.hsn_code.replace(/"/g, '') || "N/A"} </p>
                           </div>
           
                           <div className="p-4 dark:bg-gray-800 rounded-lg">

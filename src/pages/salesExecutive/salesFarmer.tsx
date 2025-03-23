@@ -5,6 +5,8 @@ import SalesFarmerDashboard from "./salesFarmerDashboard";
 import { toast } from "react-toastify";
 import ToastMessage from "../../components/ToastMessage";
 import SalesMobileInput from "../../components/input/salesMobileInput";
+import { useDispatch } from "react-redux";
+import { CheckCustomerExist } from "../../Store/actions";
 
 interface PropsData{
     setDatactive :any;
@@ -15,6 +17,7 @@ const SalesFarmerDetailsPage : FC  <PropsData> = function ({ setDatactive, openP
     const [ Mobile_number, setMobile_number] = useState<string>("");
     const DashboardCall = (data:string) => setDatactive(data)
 
+    const dispatch =useDispatch();
     const Farmerdata =[
         {
             name : "Kisharbhai kishorbhai ",
@@ -82,13 +85,14 @@ const SalesFarmerDetailsPage : FC  <PropsData> = function ({ setDatactive, openP
             toast.error("Please enter valid mobile number");
         }
         else {
+            let requser={   number : Mobile_number  }
+            dispatch(CheckCustomerExist(requser))
             setOpenProfile(true);
         }
     }
 
     const CallBackCall = (data :string) => {
         setMobile_number(data);
-        // handleClickCall()
     }
 
     const CloseProfileCall = () => {
