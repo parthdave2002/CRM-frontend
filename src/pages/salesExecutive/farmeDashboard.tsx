@@ -59,10 +59,7 @@ const [ data, setData] = useState<ProfileInfo>()
   return (
     <div className='mt-3 border dark:border-gray-600 rounded-xl w-full py-2 px-4 transition-all duration-800 ease-in-out'> 
         <div>
-        <div className='flex'>
-          <div className='flex-1 dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div className="w-[10rem]" > Name</div> <div> :  {data?.customer_name} </div>   </div>
-            <div className='flex-1  flex  justify-end '> <div className='border border-indigo-500 text-indigo-500 dark:text-white hover:text-gray-100 font-semibold px-6 py-2 rounded-full  gap-3 hover:bg-indigo-800 transition flex text-center w-[13rem] cursor-pointer  transition-all duration-500 ease-in-out'> <FaPencilAlt className='self-center h-5 w-5'  /> Edit  Customer </div> </div>
-          </div>
+          <div className=' dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div className="w-[10rem]" > Name</div> <div> :  {data?.customer_name} </div>   </div>
           <div className='flex'>
             <div className='flex-1 dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div className="w-[10rem]" > Mobile No</div>  <div> :  {data?.mobile_number} </div>  </div>
             <div className='flex-1 dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div > Alternate No  </div>    <div> :  {data?.alternate_number} </div>  </div>
