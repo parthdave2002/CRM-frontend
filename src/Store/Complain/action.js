@@ -3,6 +3,10 @@ import {
   GET_COMPLAIN_LIST_SUCCESS,
   GET_COMPLAIN_LIST_ERROR,
 
+  GET_COMPLAIN_DETAILS_LIST,
+  GET_COMPLAIN_DETAILS_LIST_SUCCESS,
+  GET_COMPLAIN_DETAILS_LIST_ERROR,
+
   ADD_COMPLAIN_LIST,
   ADD_COMPLAIN_LIST_SUCCESS,
   ADD_COMPLAIN_LIST_ERROR,
@@ -32,6 +36,21 @@ export const getComplainlistSuccess = (actionType, data) => ({
 
 export const getComplainlistFail = (actionType, error) => ({
   type: GET_COMPLAIN_LIST_ERROR,
+  payload: { actionType, error },
+});
+
+export const getComplainDetailslist = (requserdata) => ({
+  type: GET_COMPLAIN_DETAILS_LIST,
+  payload: requserdata,
+});
+
+export const getComplainDetailslistSuccess = (actionType, data) => ({
+  type: GET_COMPLAIN_DETAILS_LIST_SUCCESS,
+  payload: { actionType, data },
+});
+
+export const getComplainDetailslistFail = (actionType, error) => ({
+  type: GET_COMPLAIN_DETAILS_LIST_ERROR,
   payload: { actionType, error },
 });
 

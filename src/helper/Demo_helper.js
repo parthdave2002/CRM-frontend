@@ -141,6 +141,7 @@ export const StatusCompanylistApi = async (requserdata) => await api.delete(url.
 
 // Complain API
 export const ComplainlistApi = (requserdata) => api.get(url.GET_COMPLAIN_LIST, requserdata);
+export const ComplainDetailslistApi = (requserdata) => api.get(url.GET_COMPLAIN_DETAILS_LIST, requserdata);
 export const AddComplainlistApi = async (requserdata) => await api.create(url.ADD_COMPLAIN_LIST, requserdata);
 export const DelComplainlistApi = async (requserdata) => await api.delete(url.DELETE_COMPLAIN_LIST, requserdata);
 export const UpdateComplainlistApi = async (requserdata) => await api.update(url.UPDATE_COMPLAIN_LIST, requserdata);
@@ -156,6 +157,7 @@ export const DetailProductlistApi = (requserdata) => api.get(url.GET_PRODUCT_LIS
 // Order API
 export const UpdateOrderlistApi = (requserdata) => api.get(url.GET_UPDATE_ORDER_LIST, requserdata);
 export const OrderlistApi = (requserdata) => api.get(url.GET_ORDER_LIST, requserdata);
+export const OrderDetaillistApi = (requserdata) => api.get(url.GET_ORDER_DETAILS_LIST, requserdata);
 export const AddOrderlistApi = async (requserdata) => await api.create(url.ADD_ORDER_LIST, requserdata);
 export const DelOrderlistApi = async (requserdata) => await api.delete(url.DELETE_ORDER_LIST, requserdata);
 
@@ -191,3 +193,8 @@ export const LeadlistApi = (requserdata) => api.get(url.GET_LEAD_LIST, requserda
 export const AddLeadlistApi = async (requserdata) => await api.create(url.ADD_LEAD_LIST, requserdata);
 export const MarkAsReadLeadlistApi = async (requserdata) => await api.create(url.MARK_AS_READ_LEAD_LIST, requserdata);
 export const DelLeadlistApi = async (requserdata) => await api.delete(url.DELETE_LEAD_LIST, requserdata);
+
+// ==========  sales executive API =========================
+export const SalesExcutiveDashboardlistApi = (requserdata) => api.get(url.GET_SALES_DASHBOARD_DATA, requserdata);
+export const SalesExcutiveCallbacklistApi = (requserdata) => api.get(url.GET_CALLBACK_DATA, requserdata);
+

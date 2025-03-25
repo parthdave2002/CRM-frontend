@@ -1,12 +1,12 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import  farmerimage from "../../../public/images/users/farmer-2.png"
 import { FaArrowLeft } from "react-icons/fa";
 import SalesFarmerDashboard from "./salesFarmerDashboard";
 import { toast } from "react-toastify";
 import ToastMessage from "../../components/ToastMessage";
 import SalesMobileInput from "../../components/input/salesMobileInput";
-import { useDispatch } from "react-redux";
-import { CheckCustomerExist } from "../../Store/actions";
+import { useDispatch, useSelector } from "react-redux";
+import { CheckCustomerExist, getCallbackdata } from "../../Store/actions";
 
 interface PropsData{
     setDatactive :any;
@@ -18,70 +18,27 @@ const SalesFarmerDetailsPage : FC  <PropsData> = function ({ setDatactive, openP
     const DashboardCall = (data:string) => setDatactive(data)
 
     const dispatch =useDispatch();
-    const Farmerdata =[
-        {
-            name : "Kisharbhai kishorbhai ",
-            mobile : "9904764781",
-            total_order : 16.,
-            total_complain : 10,
-            total_return : 5,
-        },
-        {
-            name : "parth dave",
-            mobile : "1234567890",
-            total_order : 16.,
-            total_complain : 10,
-            total_return : 5,
-        },
-        {
-            name : "parth dave",
-            mobile : "1234567890",
-            total_order : 16.,
-            total_complain : 10,
-            total_return : 5,
-        },
-        {
-            name : "parth dave",
-            mobile : "1234567890",
-            total_order : 16.,
-            total_complain : 10,
-            total_return : 5,
-        },
-        {
-            name : "parth dave",
-            mobile : "1234567890",
-            total_order : 16.,
-            total_complain : 10,
-            total_return : 5,
-        },
-        {
-            name : "parth dave",
-            mobile : "1234567890",
-            total_order : 16.,
-            total_complain : 10,
-            total_return : 5,
-        },
-        {
-            name : "parth dave",
-            mobile : "1234567890",
-            total_order : 16.,
-            total_complain : 10,
-            total_return : 5,
-        },
-        {
-            name : "parth dave",
-            mobile : "1234567890",
-            total_order : 16.,
-            total_complain : 10,
-            total_return : 5,
-        }
-    ]
+
+    //---------    Get callback data  start--------- 
+    const [Farmerdata, setFarmerdata] = useState([])
+    const  CallBackUserList  = useSelector((state: any) => state.SalesDashboard.CallBackUserList );
+
+    useEffect(( ) => {
+        dispatch (getCallbackdata())
+    }, [])
+    
+    useEffect(() =>{
+        if(CallBackUserList){
+            setFarmerdata(CallBackUserList?.data)
+        } 
+    },[CallBackUserList])
+    //---------    Get callback data end--------- 
 
     const handleClickCall = () => {
         if (!Mobile_number) {
             toast.error("Please enter mobile number");
         }
-        else if (Mobile_number && Mobile_number.length != 10) {
+        else if (Mobile_number && Mobile_number.toString().length != 10) {
             toast.error("Please enter valid mobile number");
         }
         else {
@@ -91,7 +48,7 @@ const SalesFarmerDetailsPage : FC  <PropsData> = function ({ setDatactive, openP
         }
     }
 
-    const CallBackCall = (data :string) => {
+    const CallBackCall = (data :string) => {        
         setMobile_number(data);
     }
 
@@ -132,24 +89,24 @@ const SalesFarmerDetailsPage : FC  <PropsData> = function ({ setDatactive, openP
                             )}
                         <img   src={farmerimage}  alt=""   className=  { ` h-16 w-16 rounded-full self-center border-2 ${  k % 2 === 0 ? "border-[#ffdd85]" : "border-blue-600" }  p-1`}  />
                         <div className="flex justify-between mt-3">
-                        <div className="text-gray-700 dark:text-gray-100 text-[1rem] truncate flex-1">   {item.name}  </div>
-                        <div className="text-gray-700 dark:text-gray-100  text-[1rem] text-end flex-1 ">   {item.mobile}   </div>
+                        <div className="text-gray-700 dark:text-gray-100 text-[1rem] truncate flex-1">   {item?.customer?. customer_name}  </div>
+                        <div className="text-gray-700 dark:text-gray-100  text-[1rem] text-end flex-1 ">   {item?.customer?.mobile_number}   </div>
                         </div>
-                        <div className="text-gray-500 mt-3 text-[1.2rem] text-center border border-gray-500 rounded-md size-fit px-2 cursor-pointer self-center px-[4rem]" onClick={() => CallBackCall(item.mobile) }>   Call    </div>
+                        <div className="text-gray-500 mt-3 text-[1.2rem] text-center border border-gray-500 rounded-md size-fit px-2 cursor-pointer self-center px-[4rem]" onClick={() => CallBackCall(item?.customer?.mobile_number) }>   Call    </div>
                         </div>
 
                         <div className="py-[0.5rem] rounded-xl flex justify-around">
                         <div className="text-gray-600 dark:text-gray-100  text-center  flex flex-col">
                                 <span className="text-[1rem]"> Complain </span>
-                                <span className="text-[1.4rem] text-gray-900 dark:text-gray-100 font-bold"> {item.total_complain}   </span>
+                                <span className="text-[1.4rem] text-gray-900 dark:text-gray-100 font-bold"> {item?.totalComplain}   </span>
                             </div>
                             <div className="text-gray-600 dark:text-gray-100  text-center  flex flex-col">
                                 <span className="text-[1rem]"> Order </span>
-                                <span className="text-[1.4rem] text-gray-900 dark:text-gray-100 font-bold"> {item.total_order}   </span>
+                                <span className="text-[1.4rem] text-gray-900 dark:text-gray-100 font-bold"> {item?.totalConfirmOrders}   </span>
                             </div>
                             <div className="text-gray-600 dark:text-gray-100  text-center  flex flex-col">
                                 <span className="text-[1rem]"> Return </span>
-                                <span className="text-[1.4rem] text-gray-900 dark:text-gray-100 font-bold"> {item.total_return}   </span>
+                                <span className="text-[1.4rem] text-gray-900 dark:text-gray-100 font-bold"> {item?.totalReturnOrder}   </span>
                             </div>
                         </div>
                     </div>

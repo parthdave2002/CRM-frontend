@@ -19,6 +19,7 @@ import CustomerSaga from "./Customer/saga";
 import CropSaga from "./Crop/saga";
 import LeadSaga from "./Lead/saga";
 import ComplainSaga from "./Complain/saga";
+import SalesDashboardSaga from "./SalesExecutive/dashboard/saga";
 
 export default function* rootSaga() {
   yield all([
@@ -40,6 +41,7 @@ export default function* rootSaga() {
     fork(ExportDataSaga),
     fork(CropSaga),
     fork(LeadSaga),
-    fork(ComplainSaga)
+    fork(ComplainSaga),
+    fork(SalesDashboardSaga),
   ]);
 }

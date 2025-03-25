@@ -3,6 +3,10 @@ import {
   GET_COMPLAIN_LIST_SUCCESS,
   GET_COMPLAIN_LIST_ERROR,
 
+  GET_COMPLAIN_DETAILS_LIST,
+  GET_COMPLAIN_DETAILS_LIST_ERROR,
+  GET_COMPLAIN_DETAILS_LIST_SUCCESS,
+
   ADD_COMPLAIN_LIST,
   ADD_COMPLAIN_LIST_SUCCESS,
   ADD_COMPLAIN_LIST_ERROR,
@@ -23,6 +27,7 @@ const INIT_STATE = {
   CurrentPage:1,
   AddComplainlist: [],
   DeleteComplainlist: [],
+  SingleComplainlist: [],
   error: {},
 };
 
@@ -50,6 +55,26 @@ const Complain = (state = INIT_STATE, action) => {
         default:
           return { ...state };
       }
+
+      case GET_COMPLAIN_DETAILS_LIST_SUCCESS:
+        switch (action.payload.actionType) {
+          case GET_COMPLAIN_DETAILS_LIST:
+            return {
+              ...state,
+              SingleComplainlist: action.payload.data,
+            };
+        }
+      case GET_COMPLAIN_DETAILS_LIST_ERROR:
+        switch (action.payload.actionType) {
+          case GET_COMPLAIN_DETAILS_LIST:
+            return {
+              ...state,
+              error: action.payload,
+            };
+  
+          default:
+            return { ...state };
+        }
     
     case ADD_COMPLAIN_LIST_SUCCESS:
       switch (action.payload.actionType) {
