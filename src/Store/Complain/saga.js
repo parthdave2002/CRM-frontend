@@ -2,6 +2,8 @@ import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
 import {
   getComplainlistSuccess,
   getComplainlistFail,
+  getComplainDetailslistSuccess,
+  getComplainDetailslistFail,
   AddComplainlistSuccess,
   AddComplainlistFail,
   UpdateComplainlistSuccess,
@@ -14,12 +16,13 @@ import {
 } from "./action";
 import {
   GET_COMPLAIN_LIST,
+  GET_COMPLAIN_DETAILS_LIST,
   ADD_COMPLAIN_LIST,
   DELETE_COMPLAIN_LIST,
   REST_COMPLAIN_LIST,
   UPDATE_COMPLAIN_LIST
 } from "./actionType";
-import { ComplainlistApi, AddComplainlistApi, DelComplainlistApi, UpdateComplainlistApi } from "../../helper/Demo_helper";
+import { ComplainlistApi, AddComplainlistApi, DelComplainlistApi, UpdateComplainlistApi, ComplainDetailslistApi } from "../../helper/Demo_helper";
 import { toast } from "react-toastify";
 
 function* onGetComplainList({ payload: requstuser }) {
@@ -29,6 +32,16 @@ function* onGetComplainList({ payload: requstuser }) {
   } catch (error) {
     toast.error(error.msg);
     yield put(getComplainlistFail(error));
+  }
+}
+
+function* onGetComplainDetailsList({ payload: requstuser }) {
+  try {
+    const response = yield call(ComplainDetailslistApi, requstuser);
+    yield put(getComplainDetailslistSuccess(GET_COMPLAIN_DETAILS_LIST, response));
+  } catch (error) {
+    toast.error(error.msg);
+    yield put(getComplainDetailslistFail(error));
   }
 }
 
@@ -80,6 +93,7 @@ function* onResetComplainList() {
 
 function* ComplainSaga() {
   yield takeEvery(GET_COMPLAIN_LIST, onGetComplainList);
+  yield takeEvery(GET_COMPLAIN_DETAILS_LIST, onGetComplainDetailsList);
   yield takeEvery(ADD_COMPLAIN_LIST, onAddComplainList);
   yield takeEvery(UPDATE_COMPLAIN_LIST, onUpdateComplainList);
   yield takeEvery(DELETE_COMPLAIN_LIST, onDelComplainList);

@@ -7,6 +7,14 @@ import {
   GET_ORDER_LIST_SUCCESS,
   GET_ORDER_LIST_ERROR,
 
+  GET_ORDER_DETAILS_LIST,
+  GET_ORDER_DETAILS_LIST_SUCCESS,
+  GET_ORDER_DETAILS_LIST_ERROR,
+
+  RESET_ORDER_LIST,
+  RESET_ORDER_LIST_SUCCESS,
+  RESET_ORDER_LIST_ERROR,
+
   ADD_ORDER_LIST,
   ADD_ORDER_LIST_SUCCESS,
   ADD_ORDER_LIST_ERROR,
@@ -45,6 +53,39 @@ export const getOrderlistSuccess = (actionType, data) => ({
 
 export const getOrderlistFail = (actionType, error) => ({
   type: GET_ORDER_LIST_ERROR,
+  payload: { actionType, error },
+});
+
+
+export const getOrderlistDetails = (requserdata) => ({
+  type: GET_ORDER_DETAILS_LIST,
+  payload: requserdata,
+});
+
+export const getOrderlistDetailsSuccess = (actionType, data) => ({
+  type: GET_ORDER_DETAILS_LIST_SUCCESS,
+  payload: { actionType, data },
+});
+
+export const getOrderlistDetailsFail = (actionType, error) => ({
+  type: GET_ORDER_DETAILS_LIST_ERROR,
+  payload: { actionType, error },
+});
+
+
+
+export const ResetOrderlist = (requserdata) => ({
+  type: RESET_ORDER_LIST,
+  payload: requserdata,
+});
+
+export const ResetOrderlistSuccess = (actionType, data) => ({
+  type: RESET_ORDER_LIST_SUCCESS,
+  payload: { actionType, data },
+});
+
+export const ResetOrderlistFail = (actionType, error) => ({
+  type: RESET_ORDER_LIST_ERROR,
   payload: { actionType, error },
 });
 

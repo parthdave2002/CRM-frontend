@@ -8,6 +8,14 @@ import {
   GET_ORDER_LIST_SUCCESS,
   GET_ORDER_LIST_ERROR,
 
+  GET_ORDER_DETAILS_LIST,
+  GET_ORDER_DETAILS_LIST_SUCCESS,
+  GET_ORDER_DETAILS_LIST_ERROR,
+
+  RESET_ORDER_LIST,
+  RESET_ORDER_LIST_SUCCESS,
+  RESET_ORDER_LIST_ERROR,
+
   ADD_ORDER_LIST,
   ADD_ORDER_LIST_SUCCESS,
   ADD_ORDER_LIST_ERROR,
@@ -19,6 +27,7 @@ import {
 
 const INIT_STATE = {
   Orderlist: [],
+  SingleOrderlist:[],
   OrderlistSize:0,
   TotalOrderData:0,
   CurrentPage:1,
@@ -111,6 +120,40 @@ const Order = (state = INIT_STATE, action) => {
           };
         default:
           return { ...state };
+      }
+
+    case GET_ORDER_DETAILS_LIST_SUCCESS:
+      switch (action.payload.actionType) {
+        case GET_ORDER_DETAILS_LIST:
+          return {
+            ...state,
+            SingleOrderlist: action.payload.data,
+          };
+      }
+    case GET_ORDER_DETAILS_LIST_ERROR:
+      switch (action.payload.actionType) {
+        case GET_ORDER_DETAILS_LIST:
+          return {
+            ...state,
+            error: action.payload,
+          };
+
+        default:
+          return { ...state };
+      }
+
+    case RESET_ORDER_LIST_SUCCESS:
+      switch (action.payload.actionType) {
+        case RESET_ORDER_LIST:
+          return {
+            ...state,
+            Orderlist: [],
+            SingleOrderlist:[],
+            OrderlistSize:0,
+            TotalOrderData:0,
+            CurrentPage:1,
+            DeleteOrderlist:[],
+          };
       }
  
     default:

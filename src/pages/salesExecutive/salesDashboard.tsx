@@ -8,88 +8,76 @@ import { DarkThemeToggle } from "flowbite-react";
 import userphoto from "../../img/profile-picture-3.jpg";
 import { FiLogOut } from "react-icons/fi";
 import Cookies from "js-cookie";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { resetinsertlogin } from "../../Store/actions";
+import { getsalesDashboard, resetinsertlogin } from "../../Store/actions";
 
 interface PropsData{
     setDatactive :any;
   }
+
+  interface DashboardCount {
+    daily:number;
+    monthly:number;
+    weekly: number;
+   }
+
 const SalesDashboardPage : FC <PropsData> = function ({ setDatactive})  {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+   //---------    Get Dashboard data  start--------- 
     const ComplainData = [
-        {
-            "name": "Priyanka Thakar",
-            "type" : "high",
-            "description": "this is a demo complain.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-            "created": "17-02-2025",
-            "mobile": "1234567890",
-            "product": "Amaze-X wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-        },
-        {
-            "name": "Priyanka Thakar",
-            "type" : "medium",
-            "description": "this is a demo complain",
-            "created": "17-02-2025",
-            "mobile": "1234567890",
-            "product": "Amaze-X"
-        },
-        {
-            "name": "Priyanka Thakar",
-            "type" : "low",
-            "description": "this is a demo complain",
-            "created": "17-02-2025",
-            "mobile": "1234567890",
-            "product": "Amaze-X"
-        },
+      {
+          "name": "Priyanka Thakar",
+          "type" : "high",
+          "description": "this is a demo complain.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "created": "17-02-2025",
+          "mobile": "1234567890",
+          "product": "Amaze-X wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+      },
+      {
+          "name": "Priyanka Thakar",
+          "type" : "medium",
+          "description": "this is a demo complain",
+          "created": "17-02-2025",
+          "mobile": "1234567890",
+          "product": "Amaze-X"
+      },
+      {
+          "name": "Priyanka Thakar",
+          "type" : "low",
+          "description": "this is a demo complain",
+          "created": "17-02-2025",
+          "mobile": "1234567890",
+          "product": "Amaze-X"
+      },
     ]
 
-    const FarmerData=[
-        {
-            name : "Parth Dave",
-            number : 9907464781,
-        },
-        {
-            name : "Parth Dave",
-            number : 9907464781,
-        },
-        {
-            name : "Parth Dave",
-            number : 9907464781,
-        },
-        {
-            name : "Parth Dave",
-            number : 9907464781,
-        },
-        {
-            name : "Parth Dave",
-            number : 9907464781,
-        },
-        {
-            name : "Parth Dave",
-            number : 9907464781,
-        },
-        {
-            name : "Parth Dave",
-            number : 9907464781,
-        },
-        {
-            name : "Parth Dave",
-            number : 9907464781,
-        },
-        {
-            name : "Parth Dave",
-            number : 9907464781,
-        },
-        {
-            name : "Parth Dave",
-            number : 9907464781,
-        }
-    ]
 
+      // const [ComplainData, setComplainData] = useState([])
+      const [FarmerData, setFarmerData] = useState([])
+      const [TotalRevenue, setTotalRevenue] = useState<DashboardCount>()
+      const [TotalOrder, setTotalOrder] = useState<DashboardCount>()
+      const [TotalReturnOrder, setTotalReturnOrder] = useState<DashboardCount>()
+
+      const  DashboardDataList  = useSelector((state: any) => state.SalesDashboard.DashboardDataList?.data );
+  
+      useEffect(( ) => {
+          dispatch (getsalesDashboard())
+      }, [])
+  
+      useEffect(() =>{
+          if(DashboardDataList?.data){
+              // setComplainData(DashboardDataList?.data?.complain)
+              setFarmerData(DashboardDataList?.data?.customers);
+              setTotalRevenue(DashboardDataList?.data?.totalRevenue)
+              setTotalOrder(DashboardDataList?.data?.totalOrder)
+              setTotalReturnOrder(DashboardDataList?.data?.totalReturnOrder)
+          } 
+      },[DashboardDataList])
+    //---------    Get Dashboard data end--------- 
     const ViweAllCall = (data:string) => setDatactive(data)
 
     const [ openProfile, setOpenProfile] = useState(false);
@@ -118,14 +106,12 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive})  {
         };
       }, []);
 
-
         const handleClick = () => {
           const darkModeButton = document.querySelector('[data-testid="dark-theme-toggle"]') as HTMLButtonElement;
           if (darkModeButton) {
             darkModeButton.click();
           }
         };
-
 
         const Logoutfun = () => {
           Cookies.remove("token");
@@ -135,6 +121,22 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive})  {
           navigate("/login");
           dispatch(resetinsertlogin());
         };
+
+          const [selectedOrderframe, setSelectedOrderframe] = useState("");
+          const OrderDropDownCall =  (e:any) =>{
+            setSelectedOrderframe(e.target.value)
+          }
+
+          const [selectedRevenueframe, setSelectedRevenueframe] = useState("");
+          const RevenueDropDownCall =  (e:any) =>{
+            setSelectedRevenueframe(e.target.value)
+          }
+
+          const [selectedReturnframe, setSelectedReturnframe] = useState("");
+          const RetrunDropDownCall =  (e:any) =>{
+            setSelectedReturnframe(e.target.value)
+          }
+
     return (
         <> 
         
@@ -181,7 +183,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive})  {
                       <FaRupeeSign className="text-white w-6 h-6" />
                     </div>
                     <div className="self-center">
-                      <select className="border border-gray-300 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily">
+                      <select className="border border-gray-300 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50"defaultValue="daily" onChange={(e) =>RevenueDropDownCall(e)}>
                         <option value="daily">Daily</option>
                         <option value="weekly">Weekly</option>
                         <option value="monthly">Monthly</option>
@@ -189,7 +191,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive})  {
                     </div>
                     <div className="text-center self-center items-start">
                       <p className="text-md font-bold"> Revenue</p>
-                      <p className="text-lg font-bold text-center mt-2"> 50,000</p>
+                      <p className="text-lg font-bold text-center mt-2"> { selectedRevenueframe == "weekly" ? TotalRevenue?.weekly   : selectedRevenueframe == "monthly" ?  TotalRevenue?.monthly :    TotalRevenue?.daily}</p>
                     </div>
                   </div>
                 </div>
@@ -202,7 +204,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive})  {
                       <FaHandHoldingDollar className="text-white w-6 h-6" />
                     </div>
                     <div className="">
-                      <select className="border border-gray-300 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily" >
+                      <select className="border border-gray-300 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily" onChange={(e) => OrderDropDownCall(e)}>
                         <option value="daily">Daily</option>
                         <option value="weekly">Weekly</option>
                         <option value="monthly">Monthly</option>
@@ -211,7 +213,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive})  {
 
                     <div className="text-center self-center items-start ">
                       <p className="text-md font-bold">Total Order</p>
-                      <p className="text-lg font-bold text-center mt-2"> 5</p>
+                      <p className="text-lg font-bold text-center mt-2"> { selectedOrderframe == "weekly" ? TotalOrder?.weekly   : selectedOrderframe == "monthly" ?  TotalOrder?.monthly :    TotalOrder?.daily}</p>
                     </div>
                   </div>
                 </div>
@@ -247,7 +249,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive})  {
                       <FaUser className="text-white w-6 h-6" />
                     </div>
                     <div className="self-center">
-                      <select className="border border-gray-300 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily" >
+                      <select className="border border-gray-300 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily"  onChange={(e) => RetrunDropDownCall(e)} >
                         <option value="daily">Daily</option>
                         <option value="weekly">Weekly</option>
                         <option value="monthly">Monthly</option>
@@ -255,7 +257,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive})  {
                     </div>
                     <div className="text-center self-center items-start">
                       <p className="text-md font-bold"> Return order</p>
-                      <p className="text-lg font-bold text-center mt-2">2</p>
+                      <p className="text-lg font-bold text-center mt-2">{ selectedReturnframe == "weekly" ? TotalReturnOrder?.weekly   : selectedReturnframe == "monthly" ?  TotalReturnOrder?.monthly :    TotalReturnOrder?.daily}</p>
                     </div>
                   </div>
                 </div>
@@ -273,8 +275,8 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive})  {
                   {FarmerData && FarmerData.map((item: any, k: number) => (
                     <div className="bg-[#f4f9fd] dark:bg-gray-700 px-[2.8rem] py-3 rounded-xl flex flex-col gap-y-2" key={k}>
                       <img src={userimage} alt="" className="h-16 w-16 rounded-full self-center border-2 border-blue-600 p-1" />
-                      <div className="text-gray-500 dark:text-gray-100 text-[0.9rem] text-center"> {item.name} </div>
-                      <div className="text-gray-500 dark:text-gray-100 text-[0.9rem] text-center"> {item.number}</div>
+                      <div className="text-gray-500 dark:text-gray-100 text-[0.9rem] text-center"> {item.customer_name} </div>
+                      <div className="text-gray-500 dark:text-gray-100 text-[0.9rem] text-center"> {item.mobile_number}</div>
                       <div className="text-gray-500 dark:text-gray-100 text-[0.8rem] text-center border border-gray-500 rounded-md size-fit px-2 cursor-pointer self-center" onClick={() => handleClickCall() }> View </div>
                     </div>
                   ))}

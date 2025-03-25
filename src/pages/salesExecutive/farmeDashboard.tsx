@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { FaPencilAlt } from 'react-icons/fa';
 import { MdKeyboardArrowDown, MdKeyboardArrowRight, MdKeyboardArrowUp } from 'react-icons/md'
 import { useSelector } from 'react-redux';
 
+interface DashboardProps{
+  classData ?: string;
+}
 
 interface ProfileInfo{
     crops: [];
@@ -27,7 +30,7 @@ interface ProfileInfo{
     smart_phone: boolean;
 }
 
-const FarmeDashboard = () => {
+const FarmeDashboard : FC <DashboardProps> = ({classData}) => {
   const [expanded, setExpanded] = useState(false);
   const toggleExpand = () => {
     setExpanded(!expanded);
@@ -35,7 +38,7 @@ const FarmeDashboard = () => {
 
 
    const CheckCustomerExistlist = useSelector((state: any) =>  state.Customer.CheckCustomerExistlist);
-const [ data, setData] = useState<ProfileInfo>()
+  const [ data, setData] = useState<ProfileInfo>()
   useEffect(() =>{
     if(CheckCustomerExistlist?.data){
       setData(CheckCustomerExistlist?.data)
@@ -57,7 +60,7 @@ const [ data, setData] = useState<ProfileInfo>()
   // }
 
   return (
-    <div className='mt-3 border dark:border-gray-600 rounded-xl w-full py-2 px-4 transition-all duration-800 ease-in-out'> 
+    <div className={classData}> 
         <div>
           <div className=' dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div className="w-[10rem]" > Name</div> <div> :  {data?.customer_name} </div>   </div>
           <div className='flex'>

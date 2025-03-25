@@ -57,6 +57,7 @@ export const CHANGE_STATUS_COMPANY_LIST = "/api/company/status-company-list";
 
 // Complain
 export const GET_COMPLAIN_LIST = "/api/complain/get-complain";
+export const GET_COMPLAIN_DETAILS_LIST = "/api/complain/get-complain";
 export const ADD_COMPLAIN_LIST = "/api/complain/add-complain";
 export const DELETE_COMPLAIN_LIST = "/api/complain/update-complain";
 export const UPDATE_COMPLAIN_LIST = "/api/complain/remove-complain";
@@ -69,8 +70,9 @@ export const DELETE_PRODUCT_LIST = "/api/product/remove-product";
 export const GET_RELATED_PRODUCT_LIST = "/api/product/product-related";
 
 // Order
-export const GET_UPDATE_ORDER_LIST = "/api/order/get-order";
+export const GET_UPDATE_ORDER_LIST = "/api/order/update-order";
 export const GET_ORDER_LIST = "/api/order/get-order";
+export const GET_ORDER_DETAILS_LIST = "/api/order/get-order";
 export const DELETE_ORDER_LIST = "/api/order/remove-order";
 export const ADD_ORDER_LIST = "/api/order/add-order";
 
@@ -103,3 +105,8 @@ export const GET_LEAD_LIST = "/api/lead/get-lead";
 export const ADD_LEAD_LIST = "/api/lead/add-lead";
 export const MARK_AS_READ_LEAD_LIST = "/api/lead/mark-lead";
 export const DELETE_LEAD_LIST = "/api/lead/remove-lead";
+
+
+// ================== sales executive api =================
+export const GET_SALES_DASHBOARD_DATA = "/api/sales-executive/dashboard";
+export const GET_CALLBACK_DATA = "/api/order/get-callbacks";
