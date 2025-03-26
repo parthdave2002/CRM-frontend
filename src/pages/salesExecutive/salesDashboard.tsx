@@ -264,14 +264,14 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive})  {
               </div>
             </div>
 
-            <div className=" flex flex-col xl:flex-row gap-[1rem] xl:gap-x-6 px-3  ">
+            <div className=" flex flex-col xl:flex-row gap-[1rem] xl:gap-x-4 justify-between">
               <div className="bg-[#ffff] dark:bg-gray-900 rounded-xl p-4 ">
                 <div className="flex justify-between ">
                   <div className="text-[1.3rem] font-semibold text-gray-900 dark:text-gray-200"> Farmer Profile </div>
                   <div className="flex  self-center align-center text-blue-500 hover:text-blue-800 cursor-pointer" onClick={() => ViweAllCall("Farmer")}> <div> View all  </div>  <MdKeyboardArrowRight style={{ alignSelf: "center" }} /></div>
                 </div>
 
-                <div className="grid grid-cols-2  xl:grid-cols-5 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2  xl:grid-cols-4 md:grid-cols-3 lg:grid-cols-4 gap-4">
                   {FarmerData && FarmerData.map((item: any, k: number) => (
                     <div className="bg-[#f4f9fd] dark:bg-gray-700 px-[2.8rem] py-3 rounded-xl flex flex-col gap-y-2" key={k}>
                       <img src={userimage} alt="" className="h-16 w-16 rounded-full self-center border-2 border-blue-600 p-1" />
