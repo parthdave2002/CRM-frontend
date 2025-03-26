@@ -4,6 +4,7 @@ import { BsCartCheckFill } from 'react-icons/bs';
 import { FaRegClock } from 'react-icons/fa';
 import { MdReport } from 'react-icons/md';
 import moment from 'moment';
+import ComplainDetails from '../../components/salesComponent/complainDetails';
 
 const FarmerHistory = () => {
 
@@ -77,7 +78,15 @@ const FarmerHistory = () => {
     }
   // ----------- Tabnavbar code end --------------------
 
+  // ------------complain details page ------------------
+      const [isOpenComplainModel , setisOpenComplainModel ]  = useState(false);
+    const ComplainCall = (data: any) =>{
+      setisOpenComplainModel(true);
+    }
+  // ------------complain details page ------------------
+
   return (
+    <>
     <div className='mt-3 border dark:border-gray-600 rounded-xl w-full py-2 px-5'>
       <div className="flex items-center gap-x-6 bg-gray-100 dark:bg-gray-900 p-3 rounded-xl">
         <ul className="flex items-center gap-x-6">
@@ -130,7 +139,7 @@ const FarmerHistory = () => {
               <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
                 {ComplainData && ComplainData.map((item: any, k: number) => (
                   <Table.Row key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
-                    <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer">  {item.complain_id} </Table.Cell>
+                    <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => ComplainCall(item?.complain_id)}>  {item?.complain_id} </Table.Cell>
                     <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item.created_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
                     <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.product} </Table.Cell>
                     <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.status} </Table.Cell>
@@ -164,6 +173,9 @@ const FarmerHistory = () => {
         }
       </div>
     </div>
+
+        <ComplainDetails  setisOpenComplainModel={ () => setisOpenComplainModel(false)} isOpenComplainModel={isOpenComplainModel} />
+    </>
   )
 }
 
