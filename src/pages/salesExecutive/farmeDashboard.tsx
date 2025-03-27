@@ -62,12 +62,14 @@ const FarmeDashboard : FC <DashboardProps> = ({classData}) => {
   return (
     <div className={classData}> 
         <div>
-          <div className=' dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div className="w-[10rem]" > Name</div> <div> :  {data?.customer_name} </div>   </div>
-          <div className='flex'>
-            <div className='flex-1 dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div className="w-[10rem]" > Mobile No</div>  <div> :  {data?.mobile_number} </div>  </div>
-            <div className='flex-1 dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div > Alternate No  </div>    <div> :  {data?.alternate_number} </div>  </div>
-          </div>
+          <div className=' dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '> <div className="w-[10rem]" > Name</div> <div> :  {data?.customer_name} </div>   </div>
+          <div className='dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div className="w-[10rem]" > Mobile No</div>  <div> :  {data?.mobile_number} </div>  </div>
+          <div className='dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div className="w-[10rem]"> Alternate No  </div>  <div> :  {data?.alternate_number} </div>  </div>
           <div className='dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div className="w-[10rem]" > Address </div> <div> :    {data?.address}</div>   </div>
+          <div className='dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div className="w-[10rem]" > District </div> <div> :   {data?.district}</div>   </div>
+          <div className='dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div className="w-[10rem]" > Taluka </div> <div> :     {data?.taluka}</div>   </div>
+          <div className='dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div className="w-[10rem]" > Village </div> <div> :    {data?.village}</div>   </div>
+          <div className='dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div className="w-[10rem]" > Pincode </div> <div> :    {data?.pincode}</div>   </div>
 
           {expanded && (
             <>

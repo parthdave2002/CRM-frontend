@@ -6,7 +6,6 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
 import Select from "react-select";
-import { useParams } from 'react-router';
 
 interface ProfileData{
   isEditFarmer ?: boolean;
@@ -42,7 +41,9 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
   //  ------------- Packing Type Get Data From Reducer Code end --------------
 
   const [initialValues, setinitialValues] = useState({
-    name: "",
+    firstname: "",
+    middlename: "",
+    lastname: "",
     mobile: "",
     address:"",
     alternate_mobile_no: "",
@@ -51,13 +52,14 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
     taluka : "",
     village : "",
     pincode : "",
-    land_area : "",
+    landarea : "",
     land_type : "",
     irrigation_source : "",
     irrigation_type : "",
     smart_phone : "",
     crop : [],
-    heard_about : ""
+    heard_about : "",
+    refname : ""
   });
 
   const validation = useFormik({
@@ -65,16 +67,20 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
     initialValues: initialValues,
 
     validationSchema: Yup.object({
-      name: Yup.string().required("Please enter name"),
+      firstname: Yup.string().required("Please enter first name"),
+      lastname: Yup.string().required("Please enter last name"),
       mobile: Yup.string().required("Please enter mobile no"),
       alternate_mobile_no: Yup.string().required("Please enter alternate mobile no"),
       address: Yup.string().required("Please enter address"),
       pincode: Yup.string().required("Please enter pincode"),
+      landarea: Yup.string().required("Please enter land area"),
     }),
 
     onSubmit: (values) => {
       let requserData = {
-        name: values.name,
+        firstname: values.firstname,
+        middlename: values.middlename,
+        lastname: values.lastname,
         mobile: values.mobile,
         alternate_mobile_no: values.alternate_mobile_no,
         address: values.address,
@@ -86,6 +92,117 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
     },
   });
 
+  // -------------- Header about code start ---------
+
+  const HeardAboutOprions= [
+    { label :"Newspaper", value : "newpaper"},
+    { label :"TV Ad", value : "tv"},
+    { label :"Magazine", value : "magazine"},
+    { label :"Van campaign", value : "van campaign"},
+    { label :"Instagram", value : "instagram"},
+    { label :"Facebook", value : "facebook"},
+    { label :"What's App", value : "what's app"},
+    { label :"Linkedin", value : "linkedin"},
+    { label :"Youtube", value : "youtube"},
+    { label :"Brochure ", value : "brochure"},
+    { label :"Agro shop", value : "shop"},
+    { label :"Field office", value : "officer"},
+    { label :"Other farmer", value : "other farmer"},
+  ]
+
+  const [selectedheaderaboutOption, setSelectedheaderaboutOption] = useState<{ label: string, value: string } | null>(null);
+  const [selectedheaderaboutid, setSelectedheaderaboutid] = useState<string | null>(null);
+  const [validateheaderabout, setValidateheaderabout] = useState(0);
+
+  const Isheardaboutdata = (data: any) => {
+    if (!data) {
+      setSelectedheaderaboutid("");
+      setSelectedheaderaboutOption(null);
+      setValidateheaderabout(1)
+    } else {
+      setSelectedheaderaboutid(data.value);
+      setSelectedheaderaboutOption(data);
+      setValidateheaderabout(0)
+    }
+  };
+
+  // -------------- Header about code end ---------
+
+  // -------------- Irrigation source code start ---------
+  const IrrigationSourceOptions= [
+    { label :"Drip", value : "drip"},
+    { label :"Sprinkler", value : "sprinkler"},
+    { label :"Flood", value : "flood"},
+  ]
+
+  const [selectedirrigationsourceOption, setSelectedirrigationsourceOption] = useState<{ label: string, value: string } | null>(null);
+  const [selectedirrigationsourceid, setSelectedirrigationsourceid] = useState<string | null>(null);
+  const [validateirrigationsource, setValidateirrigationsource] = useState(0);
+
+  const Isirrigationsourcedata = (data: any) => {
+    if (!data) {
+      setSelectedirrigationsourceid("");
+      setSelectedirrigationsourceOption(null);
+      setValidateirrigationsource(1)
+    } else {
+      setSelectedirrigationsourceid(data.value);
+      setSelectedirrigationsourceOption(data);
+      setValidateirrigationsource(0)
+    }
+  };
+  
+  // -------------- Irrigation source code end ---------
+
+  // -------------- Irrigation type code start ---------
+  const IrrigationTypeOptions= [
+    { label :"Well", value : "well"},
+    { label :"Borwell", value : "borwell"},
+    { label :"Canal", value : "canal"},
+    { label :"Other", value : "other"},
+    { label :"No source", value : "no source"},
+  ]
+
+  const [selectedirrigationtypeOption, setSelectedirrigationtypeOption] = useState<{ label: string, value: string } | null>(null);
+  const [selectedirrigationtypeid, setSelectedirrigationtypeid] = useState<string | null>(null);
+  const [validateirrigationtype, setValidateirrigationtype] = useState(0);
+  
+  const Isirrigationtypedata = (data: any) => {
+    if (!data) {
+      setSelectedirrigationtypeid("");
+      setSelectedirrigationtypeOption(null);
+      setValidateirrigationtype(1)
+    } else {
+      setSelectedirrigationtypeid(data.value);
+      setSelectedirrigationtypeOption(data);
+      setValidateirrigationtype(0)
+    }
+  };
+  // -------------- Irrigation type code end ---------
+
+  // -------------- Land type code start ---------
+  const LandTypeOptions= [
+    { label :"Acre", value : "acre"},
+    { label :"Bigha", value : "bigha"},
+    { label :"Hacter", value : "hacter"},
+  ]
+
+  const [selectedlandtypeOption, setSelectedlandtypeOption] = useState<{ label: string, value: string } | null>(null);
+  const [selectedlandtypeid, setSelectedlandtypeid] = useState<string | null>(null);
+  const [validatelandtype, setValidatelandtype] = useState(0);
+  
+  const Islandypedata = (data: any) => {
+    if (!data) {
+      setSelectedlandtypeid("");
+      setSelectedlandtypeOption(null);
+      setValidatelandtype(1)
+    } else {
+      setSelectedlandtypeid(data.value);
+      setSelectedlandtypeOption(data);
+      setValidatelandtype(0)
+    }
+  };
+  // -------------- Land type code end ---------
+
   return (
    <div className='mt-[2rem]'>
       <div className='flex justify-between'>
@@ -93,28 +210,74 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
         <div className="text-[2rem] font-semibold text-gray-900 dark:text-gray-100 flex self-center cursor-pointer " onClick={() => setFarmerAdded(false)}> <FaWindowClose /> </div>
       </div>
 
-      <Form onSubmit={(e) => {  e.preventDefault(); validation.handleSubmit(); return false;  }} >
-        <div className="dark:bg-gray-800 p-4 rounded-lg border border-gray-300 dark:border-gray-500 space-y-3  md:grid grid-cols-2 gap-[1rem]">
-          <div>
-            <Label htmlFor="Name">Name </Label>
+      <Form onSubmit={(e) => {  
+        e.preventDefault(); 
+        validation.handleSubmit(); 
+
+        if (!selectedheaderaboutOption) {
+          setValidateheaderabout(1);
+        } else {
+          setValidateheaderabout(0);
+        }
+        return false;  
+        }} >
+        <div className="dark:bg-gray-800 p-4 rounded-lg border border-gray-300 dark:border-gray-500 space-y-3  md:grid grid-cols-3 gap-[1rem]">
+          <div className='mt-3'>
+            <Label htmlFor="Name"> First Name <span className='text-red-500'>*</span> </Label>
             <div className="mt-1">
               <Input
-                id="name"
-                name="name"
+                id="firstname"
+                name="firstname"
                 className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
-                placeholder="Enter name"
+                placeholder="Enter firstname"
                 type="text"
                 onChange={validation.handleChange}
                 onBlur={validation.handleBlur}
-                value={validation.values?.name|| ""}
-                invalid={validation.touched?.name && validation.errors?.name ? true : false}
+                value={validation.values?.firstname|| ""}
+                invalid={validation.touched?.firstname && validation.errors?.firstname ? true : false}
               />
-              {validation.touched.name && validation.errors?.name ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.name} </FormFeedback>) : null}
+              {validation.touched.firstname && validation.errors?.firstname ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.firstname} </FormFeedback>) : null}
             </div>
           </div>
 
-          <div >
-            <Label htmlFor="Name"> Mobile No</Label>
+          <div>
+            <Label htmlFor="middlename"> Middle Name </Label>
+            <div className="mt-1">
+              <Input
+                id="middlename"
+                name="middlename"
+                className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
+                placeholder="Enter middlename"
+                type="text"
+                onChange={validation.handleChange}
+                onBlur={validation.handleBlur}
+                value={validation.values?.middlename|| ""}
+                invalid={validation.touched?.middlename && validation.errors?.middlename ? true : false}
+              />
+              {validation.touched.middlename && validation.errors?.middlename ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.middlename} </FormFeedback>) : null}
+            </div>
+          </div>
+
+          <div>
+            <Label htmlFor="lastname"> Last Name <span className='text-red-500'>*</span></Label>
+            <div className="mt-1">
+              <Input
+                id="lastname"
+                name="lastname"
+                className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
+                placeholder="Enter lastname"
+                type="text"
+                onChange={validation.handleChange}
+                onBlur={validation.handleBlur}
+                value={validation.values?.lastname|| ""}
+                invalid={validation.touched?.lastname && validation.errors?.lastname ? true : false}
+              />
+              {validation.touched.lastname && validation.errors?.lastname ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.lastname} </FormFeedback>) : null}
+            </div>
+          </div>
+
+          <div>
+            <Label htmlFor="Name"> Mobile No <span className='text-red-500'>*</span></Label>
             <div className="mt-1">
               <Input
                 id="mobile"
@@ -132,7 +295,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
           </div>
 
           <div>
-            <Label htmlFor="alternate mobile"> Alternate Mobile No </Label>
+            <Label htmlFor="alternate mobile"> Alternate Mobile No  <span className='text-red-500'>*</span></Label>
             <div className="mt-1">
               <Input
                 id="alternate_mobile_no"
@@ -150,7 +313,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
           </div>
 
           <div>
-            <Label htmlFor="address"> Address </Label>
+            <Label htmlFor="address"> Address <span className='text-red-500'>*</span></Label>
             <div className="mt-1">
               <Input
                 id="address"
@@ -168,7 +331,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
           </div>
 
           <div>
-            <Label htmlFor="Status"> State </Label>
+            <Label htmlFor="Status"> State <span className='text-red-500'>*</span></Label>
             <div className="mt-1">
               <Select
                 className="w-full dark:text-white"
@@ -190,7 +353,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
           </div>
 
           <div>
-            <Label htmlFor="district"> District </Label>
+            <Label htmlFor="district"> District <span className='text-red-500'>*</span></Label>
             <div className="mt-1">
               <Select
                 className="w-full dark:text-white"
@@ -212,7 +375,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
           </div>
 
           <div>
-            <Label htmlFor="taluka"> Taluka </Label>
+            <Label htmlFor="taluka"> Taluka <span className='text-red-500'>*</span></Label>
             <div className="mt-1">
               <Select
                 className="w-full dark:text-white"
@@ -234,7 +397,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
           </div>
 
           <div>
-            <Label htmlFor="village"> Village </Label>
+            <Label htmlFor="village"> Village <span className='text-red-500'>*</span></Label>
             <div className="mt-1">
               <Select
                 className="w-full dark:text-white"
@@ -256,7 +419,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
           </div>
 
           <div>
-            <Label htmlFor="pincode"> Pincode </Label>
+            <Label htmlFor="pincode"> Pincode <span className='text-red-500'>*</span></Label>
             <div className="mt-1">
               <Input
                 id="pincode"
@@ -275,25 +438,25 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
 
           <div className='flex gap-x-3'>
             <div className='flex-1'>
-              <Label htmlFor="land_area"> Land Area </Label>
+              <Label htmlFor="landarea"> Land Area <span className='text-red-500'>*</span></Label>
               <div className="mt-1">
                 <Input
-                  id="land_area"
-                  name="land_area"
+                  id="landarea"
+                  name="landarea"
                   className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
                   placeholder="Enter land area"
                   type="number"
                   onChange={validation.handleChange}
                   onBlur={validation.handleBlur}
-                  value={validation.values?.land_area|| ""}
-                  invalid={validation.touched?.land_area && validation.errors?.land_area ? true : false}
+                  value={validation.values?.landarea|| ""}
+                  invalid={validation.touched?.landarea && validation.errors?.landarea ? true : false}
                 />
-                {validation.touched.land_area && validation.errors?.land_area ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.land_area} </FormFeedback>) : null}
+                {validation.touched.landarea && validation.errors?.landarea ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.landarea} </FormFeedback>) : null}
               </div>
             </div>
 
             <div className='flex-1'>
-              <Label htmlFor="land_type"> Laynd Type </Label>
+              <Label htmlFor="land_type"> Land Type <span className='text-red-500'>*</span></Label>
               <div className="mt-1">
                 <Select
                   className="w-full dark:text-white"
@@ -305,83 +468,104 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
                       isSelected ? "react-select__option--is-selected" : "react-select__option",
                     placeholder: () => "react-select__placeholder",
                   }}
-                  value={selectedpackingTypeOption}
-                  onChange={(e) => { IspackingTypedata(e) }}
-                  options={packingtypeoption}
+                  value={selectedlandtypeOption}
+                  onChange={(e) => { Islandypedata(e) }}
+                  options={LandTypeOptions}
                   isClearable={true}
                 />
-                {validatepackingType == 1 ? ( <FormFeedback type="invalid" className="text-Red text-sm"> Please Select packing type </FormFeedback> ) : null}
+                {validatelandtype == 1 ? ( <FormFeedback type="invalid" className="text-Red text-sm"> Please select land type </FormFeedback> ) : null}
               </div>
             </div>
           </div>
         
           <div>
-            <Label htmlFor="land_area"> Irrigation Source </Label>
+            <Label htmlFor="landarea"> Irrigation Source <span className='text-red-500'>*</span></Label>
+            <div className="mt-1">
+              <Select
+                className="w-full dark:text-white"
+                classNames={{
+                  control: () => "react-select__control",
+                  singleValue: () => "react-select__single-value",
+                  menu: () => "react-select__menu",
+                  option: ({ isSelected }) =>
+                    isSelected ? "react-select__option--is-selected" : "react-select__option",
+                  placeholder: () => "react-select__placeholder",
+                }}
+                value={selectedirrigationsourceOption}
+                onChange={(e) => { Isirrigationsourcedata(e) }}
+                options={IrrigationSourceOptions}
+                isClearable={true}
+              />
+              {validateirrigationsource == 1 ? (<FormFeedback type="invalid" className="text-Red text-sm"> Please select Irrigation source </FormFeedback>) : null}
+            </div>
+          </div>
+
+          <div>
+            <Label htmlFor="land_type"> Irrigation Type <span className='text-red-500'>*</span></Label>
+            <div className="mt-1">
+              <Select
+                className="w-full dark:text-white"
+                classNames={{
+                  control: () => "react-select__control",
+                  singleValue: () => "react-select__single-value",
+                  menu: () => "react-select__menu",
+                  option: ({ isSelected }) =>
+                    isSelected ? "react-select__option--is-selected" : "react-select__option",
+                  placeholder: () => "react-select__placeholder",
+                }}
+                value={selectedirrigationtypeOption}
+                onChange={(e) => { Isirrigationtypedata(e) }}
+                options={IrrigationTypeOptions}
+                isClearable={true}
+              />
+              {validateirrigationtype == 1 ? (<FormFeedback type="invalid" className="text-Red text-sm"> Please select Irrigation type </FormFeedback>) : null}
+            </div>
+          </div>
+
+          <div>
+            <Label htmlFor="heard_aboutus"> Heard Aboutus <span className='text-red-500'>*</span></Label>
+            <div className="mt-1">
+              <Select
+                className="w-full dark:text-white"
+                classNames={{
+                  control: () => "react-select__control",
+                  singleValue: () => "react-select__single-value",
+                  menu: () => "react-select__menu",
+                  option: ({ isSelected }) =>
+                    isSelected ? "react-select__option--is-selected" : "react-select__option",
+                  placeholder: () => "react-select__placeholder",
+                }}
+                value={selectedheaderaboutOption}
+                onChange={(e) => { Isheardaboutdata(e) }}
+                options={HeardAboutOprions}
+                isClearable={true}
+              />
+              {validateheaderabout == 1 ? (<FormFeedback type="invalid" className="text-Red text-sm"> Please select Heard Aboutus </FormFeedback>) : null}
+            </div>
+          </div>
+
+          <div>
+            <Label htmlFor="refname"> Refrence Name </Label>
             <div className="mt-1">
               <Input
-                id="land_area"
-                name="land_area"
+                id="refname"
+                name="refname"
                 className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
-                placeholder="Enter land area"
-                type="number"
+                placeholder="Enter refname"
+                type="text"
                 onChange={validation.handleChange}
                 onBlur={validation.handleBlur}
-                value={validation.values?.land_area || ""}
-                invalid={validation.touched?.land_area && validation.errors?.land_area ? true : false}
+                value={validation.values?.refname|| ""}
+                invalid={validation.touched?.refname && validation.errors?.refname ? true : false}
               />
-              {validation.touched.land_area && validation.errors?.land_area ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.land_area} </FormFeedback>) : null}
+              {validation.touched.refname && validation.errors?.refname ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.refname} </FormFeedback>) : null}
             </div>
           </div>
-
-          <div>
-            <Label htmlFor="land_type"> Irrigation Type </Label>
-            <div className="mt-1">
-              <Select
-                className="w-full dark:text-white"
-                classNames={{
-                  control: () => "react-select__control",
-                  singleValue: () => "react-select__single-value",
-                  menu: () => "react-select__menu",
-                  option: ({ isSelected }) =>
-                    isSelected ? "react-select__option--is-selected" : "react-select__option",
-                  placeholder: () => "react-select__placeholder",
-                }}
-                value={selectedpackingTypeOption}
-                onChange={(e) => { IspackingTypedata(e) }}
-                options={packingtypeoption}
-                isClearable={true}
-              />
-              {validatepackingType == 1 ? (<FormFeedback type="invalid" className="text-Red text-sm"> Please Select packing type </FormFeedback>) : null}
-            </div>
-          </div>
-
-          <div>
-            <Label htmlFor="heard_aboutus"> Heard Aboutus </Label>
-            <div className="mt-1">
-              <Select
-                className="w-full dark:text-white"
-                classNames={{
-                  control: () => "react-select__control",
-                  singleValue: () => "react-select__single-value",
-                  menu: () => "react-select__menu",
-                  option: ({ isSelected }) =>
-                    isSelected ? "react-select__option--is-selected" : "react-select__option",
-                  placeholder: () => "react-select__placeholder",
-                }}
-                value={selectedpackingTypeOption}
-                onChange={(e) => { IspackingTypedata(e) }}
-                options={packingtypeoption}
-                isClearable={true}
-              />
-              {validatepackingType == 1 ? (<FormFeedback type="invalid" className="text-Red text-sm"> Please Select packing type </FormFeedback>) : null}
-            </div>
-          </div>
-       
+         
         </div>
 
-        <div className="flex gap-x-3 justify-end mt-[1rem]">
-            <Button className="bg-addbutton hover:bg-addbutton dark:bg-addbutton dark:hover:bg-addbutton" type="submit" > {isEditFarmer == true ? "Update Customer" : "Add Customer"} </Button>
-            {/* <Button className="bg-deletebutton hover:bg-deletebutton dark:bg-deletebutton dark:hover:bg-deletebutton" onClick={() => navigate(ParentLink)}>  Close </Button> */}
+          <div className="flex gap-x-3 justify-end flex-end self-end mt-[1rem]">
+            <Button className="bg-gradient-to-br from-green-400 to-blue-600 text-white hover:bg-gradient-to-bl focus:ring-green-200 dark:focus:ring-green-800" type="submit" > {isEditFarmer == true ? "Update Customer" : "Add Customer"} </Button>
           </div>
       </Form>
       
