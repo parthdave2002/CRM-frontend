@@ -11,9 +11,12 @@ import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { getsalesDashboard, resetinsertlogin } from "../../Store/actions";
+import moment from "moment";
 
 interface PropsData{
     setDatactive :any;
+    openProfile : boolean;
+    setOpenProfile : (value : boolean) => void;
   }
 
   interface DashboardCount {
@@ -22,44 +25,17 @@ interface PropsData{
     weekly: number;
    }
 
-const SalesDashboardPage : FC <PropsData> = function ({ setDatactive})  {
+const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfile,setOpenProfile})  {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
    //---------    Get Dashboard data  start--------- 
-    const ComplainData = [
-      {
-          "name": "Priyanka Thakar",
-          "type" : "high",
-          "description": "this is a demo complain.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-          "created": "17-02-2025",
-          "mobile": "1234567890",
-          "product": "Amaze-X wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-      },
-      {
-          "name": "Priyanka Thakar",
-          "type" : "medium",
-          "description": "this is a demo complain",
-          "created": "17-02-2025",
-          "mobile": "1234567890",
-          "product": "Amaze-X"
-      },
-      {
-          "name": "Priyanka Thakar",
-          "type" : "low",
-          "description": "this is a demo complain",
-          "created": "17-02-2025",
-          "mobile": "1234567890",
-          "product": "Amaze-X"
-      },
-    ]
-
-
-      // const [ComplainData, setComplainData] = useState([])
+      const [ComplainData, setComplainData] = useState([])
       const [FarmerData, setFarmerData] = useState([])
       const [TotalRevenue, setTotalRevenue] = useState<DashboardCount>()
       const [TotalOrder, setTotalOrder] = useState<DashboardCount>()
+      const [TotalFutureOrder, setTotalFutureOrder] = useState<DashboardCount>()
       const [TotalReturnOrder, setTotalReturnOrder] = useState<DashboardCount>()
 
       const  DashboardDataList  = useSelector((state: any) => state.SalesDashboard.DashboardDataList?.data );
@@ -70,18 +46,17 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive})  {
   
       useEffect(() =>{
           if(DashboardDataList?.data){
-              // setComplainData(DashboardDataList?.data?.complain)
+              setComplainData(DashboardDataList?.data?.complain)
               setFarmerData(DashboardDataList?.data?.customers);
               setTotalRevenue(DashboardDataList?.data?.totalRevenue)
               setTotalOrder(DashboardDataList?.data?.totalOrder)
+              setTotalFutureOrder(DashboardDataList?.data?.totalFutureOrder)
               setTotalReturnOrder(DashboardDataList?.data?.totalReturnOrder)
           } 
       },[DashboardDataList])
     //---------    Get Dashboard data end--------- 
     const ViweAllCall = (data:string) => setDatactive(data)
 
-    const [ openProfile, setOpenProfile] = useState(false);
-    
     const CloseProfileCall = () => {
       setOpenProfile(false);
       setDatactive("Farmer")
@@ -127,6 +102,11 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive})  {
             setSelectedOrderframe(e.target.value)
           }
 
+          const [selectedfutureOrderframe, setSelectedfutureOrderframe] = useState("");
+          const FutureOrderDropDownCall =  (e:any) =>{
+            setSelectedfutureOrderframe(e.target.value)
+          }    
+
           const [selectedRevenueframe, setSelectedRevenueframe] = useState("");
           const RevenueDropDownCall =  (e:any) =>{
             setSelectedRevenueframe(e.target.value)
@@ -146,7 +126,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive})  {
           <>
 
             <div className="flex justify-between">
-                                <div className="flex flex-col self-center">
+                                <div className="flex flex-col self-center mt-3">
                                 <div className="text-[0.9rem] text-gray-500 dark:text-gray-100 dark:text-gray-200"> Welcome back, Parth!</div>
                                 <div className="text-[2.5rem] font-semibold text-gray-900 dark:text-gray-100">  Dashboard </div>
                                 </div>
@@ -226,7 +206,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive})  {
                       <FaRupeeSign className="text-white w-6 h-6" />
                     </div>
                     <div className="self-center">
-                      <select className="border border-gray-300 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily">
+                      <select className="border border-gray-300 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily"  onChange={(e) => FutureOrderDropDownCall(e)}>
                         <option value="daily">Daily</option>
                         <option value="weekly">Weekly</option>
                         <option value="monthly">Monthly</option>
@@ -234,7 +214,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive})  {
                     </div>
                     <div className="text-center self-center items-start">
                       <p className="text-md font-bold"> Future Order</p>
-                      <p className="text-lg font-bold text-center mt-2"> 50,000</p>
+                      <p className="text-lg font-bold text-center mt-2">  { selectedfutureOrderframe == "weekly" ? TotalFutureOrder?.weekly   : selectedfutureOrderframe == "monthly" ?  TotalFutureOrder?.monthly :    TotalFutureOrder?.daily}</p>
                     </div>
                   </div>
                 </div>
@@ -264,14 +244,14 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive})  {
               </div>
             </div>
 
-            <div className=" flex flex-col xl:flex-row gap-[1rem] xl:gap-x-4 justify-between">
-              <div className="bg-[#ffff] dark:bg-gray-900 rounded-xl p-4 ">
-                <div className="flex justify-between ">
-                  <div className="text-[1.3rem] font-semibold text-gray-900 dark:text-gray-200"> Farmer Profile </div>
+            <div className=" flex flex-col xl:flex-row gap-[1rem]  justify-between">
+              <div className="bg-[#ffff] dark:bg-gray-800 rounded-xl p-4 ">
+                <div className="flex gap-x-4 ">
+                  <div className="text-[1.4rem] font-semibold text-gray-900 dark:text-gray-200"> Farmer Profile </div>
                   <div className="flex  self-center align-center text-blue-500 hover:text-blue-800 cursor-pointer" onClick={() => ViweAllCall("Farmer")}> <div> View all  </div>  <MdKeyboardArrowRight style={{ alignSelf: "center" }} /></div>
                 </div>
 
-                <div className="grid grid-cols-2  xl:grid-cols-4 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2  xl:grid-cols-4 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-3">
                   {FarmerData && FarmerData.map((item: any, k: number) => (
                     <div className="bg-[#f4f9fd] dark:bg-gray-700 px-[2.8rem] py-3 rounded-xl flex flex-col gap-y-2" key={k}>
                       <img src={userimage} alt="" className="h-16 w-16 rounded-full self-center border-2 border-blue-600 p-1" />
@@ -283,7 +263,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive})  {
                 </div>
               </div>
 
-              <div className="bg-[#ffff] dark:bg-gray-900 rounded-xl py-3 px-5  ">
+              <div className="bg-[#ffff] dark:bg-gray-900 rounded-xl py-3 px-5  w-[20rem] ">
                 <div className="flex justify-between">
                   <div className="text-[1.3rem] font-semibold text-gray-900 dark:text-gray-200"> Complain </div>
                   <div className="flex  self-center align-center text-blue-500 hover:text-blue-800 cursor-pointer" onClick={() => ViweAllCall("Complain")}> <div> View all  </div>  <MdKeyboardArrowRight style={{ alignSelf: "center" }} /></div>
@@ -291,16 +271,14 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive})  {
 
                 {ComplainData && ComplainData.map((item: any, k: number) => (
                   <div className="bg-white dark:bg-gray-700 dark:hover:bg-gray-600 p-5 rounded-xl  relative my-4" key={k}>
-                    <div> {item.type && <div className={`absolute left-3 top-4 bottom-4 w-1 rounded-md ${item.type === "high" ? "bg-red-400" : item.type === "medium" ? "bg-yellow-400" : item.type === "low" ? "bg-blue-400" : ""}`} />} </div>
+                    <div> {item?.priority && <div className={`absolute left-3 top-4 bottom-4 w-1 rounded-md ${item?.priority === "high" ? "bg-red-400" : item?.priority == "medium" ? "bg-yellow-400" : item?.priority === "low" ? "bg-blue-400" : ""}`} />} </div>
 
-                    <div className="pl-3">
-                      <div className="truncate text-gray-500 dark:text-gray-100 dark:text-gray-50 lg:max-w-[15rem]"> {item.product} </div>
-                      <div className="text-[0.7rem] xl:text-[0.8rem] text-gray-500 dark:text-gray-100 dark:text-gray-50"> {item.name} | {item.mobile} </div>
-                    </div>
-
-                    <div className="pl-3 flex justify-between">
-                      <div className="text-gray-500 dark:text-gray-100 dark:text-gray-50 text-[0.8rem]  text-center self-end"> {item.created} | {item.type} </div>
-                    </div>
+                    <div className="pl-3 flex flex-col gap-y-1">
+                        <div className="truncate text-gray-500 dark:text-gray-100 dark:text-gray-50 lg:max-w-[15rem]"> {item?.title} </div>
+                        <div className="text-[0.7rem] xl:text-[0.9rem] text-gray-500 dark:text-gray-100 dark:text-gray-50"> {item?.customer_id?.customer_name}</div>
+                        <div className="text-gray-500 dark:text-gray-100 dark:text-gray-50 text-[0.9rem]"> {item?.customer_id?.mobile_number}  </div>
+                        <div className="text-gray-500 dark:text-gray-100 dark:text-gray-50 text-[0.9rem]"> {moment(item?.created_at).format("DD-MM-YYYY")}  </div>
+                    </div>       
                   </div>
                 ))}
               </div>

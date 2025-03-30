@@ -21,7 +21,7 @@ const SalesCRMPage : FC = function () {
                     
                     <div className="flex flex-col p-3 "> 
                         {active ===  "Dashboard" ? 
-                            <div> <SalesDashboardPage setDatactive={ActiveData} /> </div>
+                            <div> <SalesDashboardPage setDatactive={ActiveData}  openProfile={openProfile} setOpenProfile={setOpenProfile}/> </div>
                         : active ===  "Farmer" ? 
                             <div> <SalesFarmerDetailsPage openProfile={openProfile} setOpenProfile={setOpenProfile} setDatactive={ActiveData}  /></div>
                         : active ===  "Products" ? 

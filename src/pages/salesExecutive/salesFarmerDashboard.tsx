@@ -10,6 +10,7 @@ import ProductDetailData from '../../components/productdetails/salesproductDetai
 import SalesMobileInput from '../../components/input/salesMobileInput';
 import { useSelector } from 'react-redux';
 import CartList from './cart';
+import OrderDetails from '../../components/salesComponent/orderDetails';
 interface PropsData{
   setOpenProfile : (value: boolean) => void;
 }
@@ -63,6 +64,17 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile}) => {
     setCartOpen(true);    
   }
   // -------- Cart open/close code end ----------
+
+  // -------------- Order Details open/close code start --------------------
+    const [openDetailsmodal, setOpenDetailsmodal] = useState(false);
+    const [openDetailId, setOpenDetailId] = useState< null | string>(null)
+
+    const closeOrderDetail = () =>{
+      setOpenDetailsmodal(false)
+    }
+  // -------- Order Details open/close code end ----------
+
+
   return (
     <>
 
@@ -72,7 +84,10 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile}) => {
         <>
           {cartOpen == true ?
             <div>  <CartList setCartOpen={setCartOpen} /> </div>
-            : <div className='flex flex-col'>
+            : openDetailsmodal == true?
+              <OrderDetails orderId={openDetailId} closeOrderDetail={closeOrderDetail}  /> 
+            :
+            <div className='flex flex-col'>
               <div className='flex justify-end gap-x-[2rem] my-3'>
                 <div className="relative cursor-pointer flex gap-x-3 items-center dark:text-gray-100 font-bold text-lg" onClick={() => OpenCartCall()}>
                   <div>
@@ -86,11 +101,9 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile}) => {
                   <FaPowerOff className="h-6 w-6 dark:text-white " />
                   <div> Logout </div>
                 </div>
-
               </div>
 
               <div className="flex flex-col">
-
                 {ProductDetails != null ?
                   <ProductDetailData ProductDetails={ProductDetails} ProductCLoseCall={ProductCLoseCall} />
                   :
@@ -102,20 +115,18 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile}) => {
                     <FarmeDashboard classData="border dark:border-gray-600 rounded-xl w-full py-2 px-4 transition-all duration-800 ease-in-out" />
 
                     <div className='mt-[2rem] text-[2rem] dark:text-gray-400 font-bold'> History </div>
-                    <FarmerHistory />
+                    <FarmerHistory setOpenDetailId={setOpenDetailId}  setOpenDetailsmodal={setOpenDetailsmodal} />
 
                     <div className='flex mt-[1rem]'>
                       <div className='flex-1 self-end text-[2rem] dark:text-gray-400 font-bold'> Products Data</div>
                       <SalesMobileInput datatype='text' mainclassname="flex self-center mt-[3rem] justify-end gap-x-3 border-0" className="py-2 px-6 border-0  rounded-xl text-[1.5rem] text-gray-500 font-normal relative  dark:bg-gray-700 dark:text-gray-100" buttonCss="px-[2rem] py-[0.5rem] bg-gray-800 dark:bg-gray-700 rounded-r-full text-[1.6rem] text-gray-50 absolute  dark:text-gray-400" value={searchData} handleChange={(data) => handleChange(data)} handleClickCall={handleClickCall} placeholder="Search Product" />
                     </div>
-                    <Salesproductlist searchData={searchData} ProductDetailsCall={ProductDetailsCall} />
+                    <Salesproductlist searchData={searchData} ProductDetailsCall={ProductDetailsCall} isLoggedin={true} />
                   </>
                 }
               </div>
-
             </div>
           }
-          
 
           <LogoutModal openModal={logoutModal} handleClose={handleClose} handleAccept={handleAccept} />
         </>
