@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
-import {  Table} from "flowbite-react";
+import {  Button, Table} from "flowbite-react";
 const IMG_URL = import.meta.env["VITE_API_URL"];
 import { getProductlist } from '../../Store/actions';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,9 +7,10 @@ import { useDispatch, useSelector } from 'react-redux';
 interface PorductData  {
     searchData ?: string;
     ProductDetailsCall : (value: string ) => void;
+    isLoggedin : boolean;
 }
 
-const Salesproductlist : FC <PorductData> = ({searchData, ProductDetailsCall}) => {
+const Salesproductlist : FC <PorductData> = ({searchData, ProductDetailsCall, isLoggedin}) => {
 
     const dispatch =useDispatch();
     const [ProductData, setProductData] = useState([]);
@@ -34,12 +35,13 @@ const Salesproductlist : FC <PorductData> = ({searchData, ProductDetailsCall}) =
                                 <Table.HeadCell>price (RS.)</Table.HeadCell>
                                 <Table.HeadCell>discount (RS.)</Table.HeadCell>
                                 <Table.HeadCell>final price	</Table.HeadCell>
+                                { isLoggedin  ? <Table.HeadCell> action</Table.HeadCell> : null}
                               </Table.Head>
                 
                               <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
                                   {ProductData && ProductData.map((item: any, k) => (
-                                        <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700"  onClick={() => ProductDetailsCall(item?._id)} >
-                                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" >
+                                        <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
+                                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer"   onClick={() => ProductDetailsCall(item?._id)} >
                                               <div className='flex gap-x-2'>
                                                 <img className='w-[3rem] h-[3rem] flex self-center rounded-md' src={`${IMG_URL}/public/product/${item.product_pics?.[0]}` }alt='product' />
                                                 <div className='flex flex-col'>
@@ -52,6 +54,7 @@ const Salesproductlist : FC <PorductData> = ({searchData, ProductDetailsCall}) =
                                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.price} </Table.Cell>
                                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.discount}</Table.Cell>
                                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.price - item.discount}  </Table.Cell>
+                                          { isLoggedin  ? <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> <Button className=' bg-gradient-to-br from-green-400 to-blue-600 text-white hover:bg-gradient-to-bl focus:ring-green-200 dark:focus:ring-green-800' >Add to Cart  </Button> </Table.Cell> : null}
                                         </Table.Row>
                                   ))}
                               </Table.Body>

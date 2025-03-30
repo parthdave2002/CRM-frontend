@@ -39,7 +39,7 @@ const SalesProduct : FC <PropsData> = function ({ setDatactive})  {
           </div>
           
           <div>
-              <Salesproductlist searchData={searchData} ProductDetailsCall={ProductDetailsCall} />
+              <Salesproductlist searchData={searchData} ProductDetailsCall={ProductDetailsCall} isLoggedin={false} />
           </div>
         </>
       }

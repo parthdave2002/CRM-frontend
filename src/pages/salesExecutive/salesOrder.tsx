@@ -1,9 +1,11 @@
 import SalesMobileInput from '../../components/input/salesMobileInput';
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { FaArrowLeft } from 'react-icons/fa'
 import  farmerimage from "../../../public/images/users/farmer-2.png"
 import SalesFarmerDashboard from './salesFarmerDashboard';
 import moment from 'moment';
+import { getCallbackdata } from "../../Store/actions";
+import { useDispatch, useSelector } from 'react-redux';
 
 interface PropsData{
   setDatactive :any;
@@ -11,6 +13,7 @@ interface PropsData{
   setOpenProfile : (value : boolean) => void;
 }
 const SalesOrder : FC <PropsData> = function ({ setDatactive, openProfile,setOpenProfile })  {
+  const dispatch = useDispatch()
   const DashboardCall = (data:string) => setDatactive(data)
   const [ order_id, set_Order_id] = useState("");
 
@@ -31,26 +34,20 @@ const SalesOrder : FC <PropsData> = function ({ setDatactive, openProfile,setOpe
     set_Order_id(data);
   }
 
-  const Farmerdata = [
-    {
-      name: "Kisharbhai kishorbhai ",
-      mobile: "9904764781",
-      order_date: "2025-03-20T09:25:37.041Z",
-      future_order_date: "2025-03-20T09:25:37.041Z",
-      total_order: 16,
-      total_complain: 10,
-      total_return: 5,
-    },
-    {
-      name: "parth dave",
-      mobile: "1234567890",
-      order_date: "2025-03-20T09:25:37.041Z",
-      future_order_date: "2025-03-20T09:25:37.041Z",
-      total_order: 16.,
-      total_complain: 10,
-      total_return: 5,
-    },
-  ]
+    //---------    Get callback data  start--------- 
+  const [Farmerdata, setFarmerdata] = useState([])
+  const  CallBackUserList  = useSelector((state: any) => state.SalesDashboard.CallBackUserList );
+  
+  useEffect(( ) => {
+    dispatch(getCallbackdata())
+  }, [])
+
+  useEffect(() =>{
+    if(CallBackUserList){
+        setFarmerdata(CallBackUserList?.data)
+    } 
+  },[CallBackUserList])
+//---------    Get callback data end--------- 
 
   return (
     <>
@@ -84,8 +81,8 @@ const SalesOrder : FC <PropsData> = function ({ setDatactive, openProfile,setOpe
                           <img src={farmerimage} alt="" className={` h-16 w-16 rounded-full self-center border-2 ${k % 2 === 0 ? "border-[#ffdd85]" : "border-blue-600"}  p-1`} />
                           
                           <div className="flex justify-between mt-3">
-                            <div className="text-gray-700 dark:text-gray-100 text-[1rem] truncate flex-1">   {item.name}  </div>
-                            <div className="text-gray-700 dark:text-gray-100  text-[1rem] text-end flex-1 ">   {item.mobile}   </div>
+                            <div className="text-gray-700 dark:text-gray-100 text-[1rem] truncate flex-1">   {item?.customer?.customer_name}  </div>
+                            <div className="text-gray-700 dark:text-gray-100  text-[1rem] text-end flex-1 ">   {item?.customer?.mobile_number}   </div>
                           </div>
 
                           <div className="flex justify-between mt-2">
@@ -104,21 +101,20 @@ const SalesOrder : FC <PropsData> = function ({ setDatactive, openProfile,setOpe
                         <div className="py-[0.5rem] rounded-xl flex justify-around">
                         <div className="text-gray-600 dark:text-gray-100  text-center  flex flex-col">
                                 <span className="text-[1rem]"> Complain </span>
-                                <span className="text-[1.4rem] text-gray-900 dark:text-gray-100 font-bold"> {item.total_complain}   </span>
+                                <span className="text-[1.4rem] text-gray-900 dark:text-gray-100 font-bold"> {item?.totalComplain}   </span>
                             </div>
                             <div className="text-gray-600 dark:text-gray-100  text-center  flex flex-col">
                                 <span className="text-[1rem]"> Order </span>
-                                <span className="text-[1.4rem] text-gray-900 dark:text-gray-100 font-bold"> {item.total_order}   </span>
+                                <span className="text-[1.4rem] text-gray-900 dark:text-gray-100 font-bold"> {item?.totalConfirmOrders}   </span>
                             </div>
                             <div className="text-gray-600 dark:text-gray-100  text-center  flex flex-col">
                                 <span className="text-[1rem]"> Return </span>
-                                <span className="text-[1.4rem] text-gray-900 dark:text-gray-100 font-bold"> {item.total_return}   </span>
+                                <span className="text-[1.4rem] text-gray-900 dark:text-gray-100 font-bold"> {item?.totalReturnOrder}   </span>
                             </div>
                         </div>
                     </div>
                     ))}
-                </div>
-          
+          </div>
         </>
       }
     </>
