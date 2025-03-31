@@ -135,7 +135,7 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail}) => {
           </div>
 
           <div className='flex justify-end gap-x-4'>
-            <div className='text-center self-center  bg-[#E5D9F2] border border-indigo-500 hover:bg-[#CDC1FF] hover:border-indigo-500 rounded-lg cursor-pointer flex gap-x-2 px-4 py-2'  onClick={() => ReturnComplainCall()}  > <FaTruck className='self-center h-6 w-6' /> Return </div>
+            <div className='text-center self-center  bg-red-600 border border-red-600 hover:bg-red-600 hover:border-red-500 rounded-lg cursor-pointer flex gap-x-2 px-4 py-2 text-gray-100'  onClick={() => ReturnComplainCall()}  > <FaTruck className='self-center h-6 w-6' /> Return </div>
             <div className='text-center self-center  bg-indigo-600 hover:bg-indigo-700 text-gray-100 rounded-lg cursor-pointer  flex gap-x-2 px-4 py-2' onClick={() => CreateComplainCall()}> <FaExclamationTriangle className='self-center '  /> Complain </div>
           </div>
         </div>

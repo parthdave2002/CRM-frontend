@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
-import { FaArrowLeft, FaWindowClose } from 'react-icons/fa';
+import { FaArrowLeft } from 'react-icons/fa';
 import ProductDetailData from '../../components/productdetails/salesproductDetails';
 import SalesMobileInput from '../../components/input/salesMobileInput';
 import Salesproductlist from '../../components/productdetails/salesproductlist';
@@ -17,10 +17,8 @@ const SalesProduct : FC <PropsData> = function ({ setDatactive})  {
     setProductDetails(null);
   }
   const DashboardCall = (data:string) => setDatactive(data)
-
-  const handleClickCall = () => {
-    console.log("callll");
-  }
+  const handleClickCall = () => console.log("callll");
+  const call = () =>  console.log("Add to cart call");
 
   return (
     <>
@@ -39,7 +37,7 @@ const SalesProduct : FC <PropsData> = function ({ setDatactive})  {
           </div>
           
           <div>
-              <Salesproductlist searchData={searchData} ProductDetailsCall={ProductDetailsCall} isLoggedin={false} />
+              <Salesproductlist searchData={searchData} ProductDetailsCall={ProductDetailsCall} isLoggedin={false} AddtoCartCall={call} />
           </div>
         </>
       }
