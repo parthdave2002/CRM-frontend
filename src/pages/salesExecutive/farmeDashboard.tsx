@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 
 interface DashboardProps{
   classData ?: string;
+  viewButton : boolean;
 }
 
 interface ProfileInfo{
@@ -30,34 +31,19 @@ interface ProfileInfo{
     smart_phone: boolean;
 }
 
-const FarmeDashboard : FC <DashboardProps> = ({classData}) => {
+const FarmeDashboard : FC <DashboardProps> = ({classData, viewButton}) => {
   const [expanded, setExpanded] = useState(false);
   const toggleExpand = () => {
     setExpanded(!expanded);
   };
 
-
-   const CheckCustomerExistlist = useSelector((state: any) =>  state.Customer.CheckCustomerExistlist);
-  const [ data, setData] = useState<ProfileInfo>()
-  useEffect(() =>{
-    if(CheckCustomerExistlist?.data){
+  const CheckCustomerExistlist = useSelector((state: any) => state.Customer.CheckCustomerExistlist);
+  const [data, setData] = useState<ProfileInfo>()
+  useEffect(() => {
+    if (CheckCustomerExistlist?.data) {
       setData(CheckCustomerExistlist?.data)
     }
-  },[CheckCustomerExistlist])
-  // const data={
-  //   "name": "Parth Dave",
-  //   "mobile_no": 1234567890,
-  //   "secoundry_mobile_no": 1234567890,
-  //   "address" : "Shushil Nagar society, near indian oil petrol pump, memnagar, ahmedabad, gujarat - 380013",
-  //   "land_area" : 5,
-  //   "lany_type"  : "Acre",
-  //   "irrigation_source" : "Canal",
-  //   "irrigation_type" : "Sprinkler",
-  //   "smart_phone_user" : true,
-  //   "crops" : "Potato, Tomtao, Apple",
-  //   "my_farmer" :  true,
-  //   "heard_about_platform" : "Youtube",
-  // }
+  }, [CheckCustomerExistlist])
 
   return (
     <div className={classData}> 
@@ -82,16 +68,19 @@ const FarmeDashboard : FC <DashboardProps> = ({classData}) => {
             </>
           )}
         </div>
-
-         <div className='flex justify-end'> 
-              <div className="group  border border-indigo-500 text-indigo-500 dark:text-white hover:text-gray-100 font-semibold px-6 py-2 rounded-full  gap-2 hover:bg-indigo-800 transition flex  justify-end text-center w-[12rem] cursor-pointer  transition-all duration-500 ease-in-out"  onClick={toggleExpand}>   {expanded ? "VIEW LESS" : "VIEW MORE"}    
-                  {expanded ?  <MdKeyboardArrowUp  className="h-6 w-6 self-center " />    : 
-                    <>
-                      <MdKeyboardArrowRight className="h-6 w-6 self-center group-hover:hidden" />   <MdKeyboardArrowDown  className="h-6 w-6 self-center hidden group-hover:block" />  
-                    </>
-                  }
-              </div>
+        
+        {viewButton ?
+          <div className='flex justify-end'>
+            <div className="group  border border-indigo-500 text-indigo-500 dark:text-white hover:text-gray-100 font-semibold px-6 py-2 rounded-full  gap-2 hover:bg-indigo-800 transition flex  justify-end text-center w-[12rem] cursor-pointer  transition-all duration-500 ease-in-out" onClick={toggleExpand}>   {expanded ? "VIEW LESS" : "VIEW MORE"}
+              {expanded ?
+                <MdKeyboardArrowUp className="h-6 w-6 self-center " />
+                :
+                <> <MdKeyboardArrowRight className="h-6 w-6 self-center group-hover:hidden" />   <MdKeyboardArrowDown className="h-6 w-6 self-center hidden group-hover:block" />   </>
+              }
+            </div>
           </div>
+        : null}
+       
     </div>
   )
 }
