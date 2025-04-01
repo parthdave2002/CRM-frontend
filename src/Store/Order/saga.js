@@ -22,6 +22,7 @@ import {
   GET_ORDER_DETAILS_LIST
 } from "./actionType";
 import { UpdateOrderlistApi,OrderlistApi, AddOrderlistApi, DelOrderlistApi, OrderDetaillistApi} from "../../helper/Demo_helper";
+import { toast } from "react-toastify";
 
 
 function* onGetUpdateOrderList({ payload: requstuser }) {
@@ -56,6 +57,7 @@ function* onAddOrderlist({ payload: requstuser }) {
     const response = yield call(AddOrderlistApi, requstuser);
     yield put(AddOrderlistSuccess(ADD_ORDER_LIST, response));
   } catch (error) {
+    toast.error(error?.msg)
     yield put(AddOrderlistFail(error));
   }
 }

@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Label, Button } from "flowbite-react";
-import { FaWindowClose } from 'react-icons/fa';
+import { FaUser, FaWindowClose } from 'react-icons/fa';
 import { Form, Input, FormFeedback } from "reactstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -17,7 +17,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
 
   // ------------- Packing Type Get Data From Reducer Code Start --------------
   const [PackingTypeListData, setPackingTypeListData] = useState([]);
-  const Packingtypelist = useSelector((state: any) => state.PackingType.Packingtypelist,);
+  const Packingtypelist = useSelector((state: any) => state.PackingType.Packingtypelist);
   const packingtypeoption = PackingTypeListData && PackingTypeListData?.filter((item: any) => item.is_active).map((item: any) => ({ label: item.type_eng, value: item._id }));
   const [selectedpackingTypeOption, setSelectedpackingTypeOption] = useState<{ label: string, value: string } | null>(null);
   const [selectedpackingTypeid, setSelectedpackingTypeid] = useState<string | null>(null);
@@ -213,13 +213,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
       <Form onSubmit={(e) => {  
         e.preventDefault(); 
         validation.handleSubmit(); 
-
-        if (!selectedheaderaboutOption) {
-          setValidateheaderabout(1);
-        } else {
-          setValidateheaderabout(0);
-        }
-        return false;  
+        if (!selectedheaderaboutOption) setValidateheaderabout(1) 
         }} >
         <div className="dark:bg-gray-800 p-4 rounded-lg border border-gray-300 dark:border-gray-500 space-y-3  md:grid grid-cols-3 gap-[1rem]">
           <div className='mt-3'>
@@ -565,7 +559,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
         </div>
 
           <div className="flex gap-x-3 justify-end flex-end self-end mt-[1rem]">
-            <Button className="bg-gradient-to-br from-green-400 to-blue-600 text-white hover:bg-gradient-to-bl focus:ring-green-200 dark:focus:ring-green-800" type="submit" > {isEditFarmer == true ? "Update Customer" : "Add Customer"} </Button>
+            <Button className="bg-gradient-to-br from-green-400 to-blue-600 text-white hover:bg-gradient-to-bl  border-0" type="submit" ><div className="flex items-center gap-x-3 text-[1.2rem]"> <FaUser className="text-xl" />  {isEditFarmer == true ? "Update Customer" : "Add Customer"} </div> </Button>
           </div>
       </Form>
       

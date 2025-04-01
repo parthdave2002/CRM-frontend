@@ -59,8 +59,8 @@ export const CHANGE_STATUS_COMPANY_LIST = "/api/company/status-company-list";
 export const GET_COMPLAIN_LIST = "/api/complain/get-complain";
 export const GET_COMPLAIN_DETAILS_LIST = "/api/complain/get-complain";
 export const ADD_COMPLAIN_LIST = "/api/complain/add-complain";
-export const DELETE_COMPLAIN_LIST = "/api/complain/update-complain";
-export const UPDATE_COMPLAIN_LIST = "/api/complain/remove-complain";
+export const DELETE_COMPLAIN_LIST = "/api/complain/remove-complain";
+export const UPDATE_COMPLAIN_LIST = "/api/complain/update-complain";
 
 // Product
 export const GET_PRODUCT_LIST = "/api/product/get-product";

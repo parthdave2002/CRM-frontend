@@ -1,6 +1,6 @@
 import { Badge, Button } from 'flowbite-react';
 import React, { FC, useState } from 'react'
-import { FaExclamationTriangle, FaPhoneVolume, FaTruck, FaUserAlt, FaWindowClose } from 'react-icons/fa';
+import { FaExclamationTriangle, FaPhoneVolume, FaSeedling, FaTruck, FaUserAlt, FaWindowClose } from 'react-icons/fa';
 import ComplainCreate from './complainCreate';
 import ReturnOrderModalPage from '../../components/modal/returnOrderModal';
 const IMG_URL = import.meta.env["VITE_API_URL"];
@@ -17,17 +17,12 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail}) => {
 
   const orderData=[
     {
-      customer: {
-         _id: "67c0b0e7749eda2a24d948d4",
-          customer_name: "Jaydev Panchal"
-      },
       product_id  : "67dfc02665d4b8493051f2e0",
-      product_img : "",
+      product_img : "1739819438429-1480216168955.jpg",
       product_name : {
         englishname : "Agrostart Pump",
         gujaratiname : "એગ્રોસ્ટાર્ટ પંપ"
       },
-      category_name : "Agrostart Pump",
       tech_name :{
         gujarati_tech_name : "This is a tech name in guj",
         english_tech_name : "This is a tech name in English"
@@ -35,6 +30,21 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail}) => {
       amount : 500,
       qty : 2,
       totalamount : 1000,
+    },
+    {
+      product_id  : "67eb83b07c74dded8c98be2d",
+      product_img : "1739819438429-1480216168955.jpg",
+      product_name : {
+        englishname : "Agrostart Tadpatri",
+        gujaratiname : "એગ્રોસ્ટાર્ટ Tadpatri"
+      },
+      tech_name :{
+        gujarati_tech_name : "This is new tech name in guj",
+        english_tech_name : "This is new tech name in guj"
+      },
+      amount : 1000,
+      qty : 2,
+      totalamount : 2000,
     }
   ]
 
@@ -51,14 +61,15 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail}) => {
     orderDate : "2022-03-15",
   }
 
+  const packingtypeoption = orderData && orderData.map((item: any) => ({ label: item?.product_name?.englishname, value: item.product_id }));
+
   // -------------- complain modal open/close code start ----------
   const [isOpenComplainCreateModel, setisOpenComplainCreateModel] = useState(false);
   const [ complainProductId, setComplainProductId] = useState("");
-  const [ complainCustomerId, setComplainCustomerId] = useState("");
 
   const CreateComplainCall = () => {
-    setisOpenComplainCreateModel(true);
     setComplainProductId("");
+    setisOpenComplainCreateModel(true);
   }
 
   const CompainCall = (data:any) =>{
@@ -66,9 +77,6 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail}) => {
     setisOpenComplainCreateModel(true);
   }
   // -------------- complain modal open/close code end ----------
-
-
-
   
   // --------------  Return Order modal open/close code start ----------
   const [isOpenReturnOrderModel, setisOpenReturnOrderModel] = useState(false);
@@ -114,9 +122,8 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail}) => {
                     <div className='text-center self-center dark:text-gray-300'> = 900 </div>
                   </div>
                   
-                  <div className='flex gap-x-3'> 
-                    <div className='text-center self-center w-[7rem] py-1 bg-indigo-600 hover:bg-indigo-700 text-gray-100 rounded-lg cursor-pointer' onClick={() => CompainCall(data?.product_id)}> Complain </div>
-                  </div>
+                  <div className='text-center self-center  bg-indigo-600 hover:bg-indigo-700 text-gray-100 rounded-lg cursor-pointer flex gap-x-2 px-3 py-1.5' onClick={() => CompainCall(data?.product_id)}> <FaExclamationTriangle className='self-center text-xl'  /> Complain </div>
+
                 </div>
               ))}
             </div>
@@ -166,7 +173,7 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail}) => {
         </div>
       </div>
 
-      <ComplainCreate isOpenComplainCreateModel={isOpenComplainCreateModel}  setisOpenComplainCreateModel={setisOpenComplainCreateModel}  orderId={orderId} product_id={complainProductId}  customerId={complainCustomerId}/>
+      <ComplainCreate isOpenComplainCreateModel={isOpenComplainCreateModel}  setisOpenComplainCreateModel={setisOpenComplainCreateModel}  orderId={orderId} product_id={complainProductId} orderItem={packingtypeoption} />
       <ReturnOrderModalPage  isOpenReturnOrderModel={isOpenReturnOrderModel}  setisOpenReturnOrderModel={setisOpenReturnOrderModel} ReturnCall={ReturnCall} /> 
     </>
   )

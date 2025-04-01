@@ -32,6 +32,7 @@ const INIT_STATE = {
   TotalOrderData:0,
   CurrentPage:1,
   DeleteOrderlist:[],
+  AddOrderdatalist:[],
   error: {},
 };
 
@@ -89,7 +90,7 @@ const Order = (state = INIT_STATE, action) => {
         case ADD_ORDER_LIST:
           return {
             ...state,
-            Orderlist: action.payload.data,
+            AddOrderdatalist: action.payload.data,
           };
       }
     case ADD_ORDER_LIST_ERROR:
@@ -153,6 +154,7 @@ const Order = (state = INIT_STATE, action) => {
             TotalOrderData:0,
             CurrentPage:1,
             DeleteOrderlist:[],
+            AddOrderdatalist:[],
           };
       }
  

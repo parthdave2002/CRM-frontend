@@ -10,6 +10,10 @@ import {
   ADD_COMPLAIN_LIST,
   ADD_COMPLAIN_LIST_SUCCESS,
   ADD_COMPLAIN_LIST_ERROR,
+
+  UPDATE_COMPLAIN_LIST,
+  UPDATE_COMPLAIN_LIST_SUCCESS,
+  UPDATE_COMPLAIN_LIST_ERROR,
   
   DELETE_COMPLAIN_LIST,
   DELETE_COMPLAIN_LIST_SUCCESS,
@@ -17,7 +21,7 @@ import {
 
   REST_COMPLAIN_LIST,
   REST_COMPLAIN_LIST_SUCCESS,
-  REST_COMPLAIN_LIST_ERROR
+  REST_COMPLAIN_LIST_ERROR,
 } from "./actionType";
 
 const INIT_STATE = {
@@ -26,6 +30,7 @@ const INIT_STATE = {
   TotalComplainData:0,
   CurrentPage:1,
   AddComplainlist: [],
+  updateComplainlist: [],
   DeleteComplainlist: [],
   SingleComplainlist: [],
   error: {},
@@ -56,26 +61,26 @@ const Complain = (state = INIT_STATE, action) => {
           return { ...state };
       }
 
-      case GET_COMPLAIN_DETAILS_LIST_SUCCESS:
-        switch (action.payload.actionType) {
-          case GET_COMPLAIN_DETAILS_LIST:
-            return {
-              ...state,
-              SingleComplainlist: action.payload.data,
-            };
-        }
-      case GET_COMPLAIN_DETAILS_LIST_ERROR:
-        switch (action.payload.actionType) {
-          case GET_COMPLAIN_DETAILS_LIST:
-            return {
-              ...state,
-              error: action.payload,
-            };
-  
-          default:
-            return { ...state };
-        }
-    
+    case GET_COMPLAIN_DETAILS_LIST_SUCCESS:
+      switch (action.payload.actionType) {
+        case GET_COMPLAIN_DETAILS_LIST:
+          return {
+            ...state,
+            SingleComplainlist: action.payload.data,
+          };
+      }
+    case GET_COMPLAIN_DETAILS_LIST_ERROR:
+      switch (action.payload.actionType) {
+        case GET_COMPLAIN_DETAILS_LIST:
+          return {
+            ...state,
+            error: action.payload,
+          };
+
+        default:
+          return { ...state };
+      }
+
     case ADD_COMPLAIN_LIST_SUCCESS:
       switch (action.payload.actionType) {
         case ADD_COMPLAIN_LIST:
@@ -87,6 +92,25 @@ const Complain = (state = INIT_STATE, action) => {
     case ADD_COMPLAIN_LIST_ERROR:
       switch (action.payload.actionType) {
         case ADD_COMPLAIN_LIST:
+          return {
+            ...state,
+            error: action.payload,
+          };
+        default:
+          return { ...state };
+      }
+
+    case UPDATE_COMPLAIN_LIST_SUCCESS:
+      switch (action.payload.actionType) {
+        case UPDATE_COMPLAIN_LIST:
+          return {
+            ...state,
+            updateComplainlist: action.payload.data,
+          };
+      }
+    case UPDATE_COMPLAIN_LIST_ERROR:
+      switch (action.payload.actionType) {
+        case UPDATE_COMPLAIN_LIST:
           return {
             ...state,
             error: action.payload,
@@ -114,30 +138,31 @@ const Complain = (state = INIT_STATE, action) => {
           return { ...state };
       }
 
-      case REST_COMPLAIN_LIST_SUCCESS:
-        switch (action.payload.actionType) {
-          case REST_COMPLAIN_LIST:
-            return {
-              ...state,
-              Complainlist: [],
-              ComplainlistSize:0,
-              TotalComplainData:0,
-              CurrentPage:1,
-              AddComplainlist: [],
-              DeleteComplainlist: [],
-              error: {},
-            };
-        }
-      case REST_COMPLAIN_LIST_ERROR:
-        switch (action.payload.actionType) {
-          case REST_COMPLAIN_LIST:
-            return {
-              ...state,
-              error: action.payload,
-            };
-          default:
-            return { ...state };
-        }
+    case REST_COMPLAIN_LIST_SUCCESS:
+      switch (action.payload.actionType) {
+        case REST_COMPLAIN_LIST:
+          return {
+            ...state,
+            Complainlist: [],
+            ComplainlistSize: 0,
+            TotalComplainData: 0,
+            CurrentPage: 1,
+            AddComplainlist: [],
+            DeleteComplainlist: [],
+            updateComplainlist :[],
+            error: {},
+          };
+      }
+    case REST_COMPLAIN_LIST_ERROR:
+      switch (action.payload.actionType) {
+        case REST_COMPLAIN_LIST:
+          return {
+            ...state,
+            error: action.payload,
+          };
+        default:
+          return { ...state };
+      }
  
     default:
       return state;
