@@ -80,12 +80,8 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile}) => {
     }
 
     const handleRemoveCall = (data: any) =>{
-      console.log("data", data);
-      
       setCartItem((prevItems) => prevItems.filter((item) => item._id !== data));
     }
-    console.log("cartItem", cartItem);
-    
   // -------- Cart open/close code end ----------
 
   // -------------- Order Details open/close code start --------------------
@@ -106,7 +102,7 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile}) => {
       :
         <>
           {cartOpen == true ?
-            <div>  <CartList setCartOpen={setCartOpen} CartData={cartItem} handleRemoveCall={handleRemoveCall} /> </div>
+            <div>  <CartList setCartOpen={setCartOpen} setCartItem={setCartItem} CartData={cartItem} handleRemoveCall={handleRemoveCall} /> </div>
             : openDetailsmodal == true?
               <OrderDetails orderId={openDetailId} closeOrderDetail={closeOrderDetail}  /> 
             :

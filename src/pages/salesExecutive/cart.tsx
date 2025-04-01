@@ -5,13 +5,16 @@ import { HiTrash } from 'react-icons/hi';
 import { FaCartShopping } from 'react-icons/fa6';
 import SuccessErrorModalPage from '../../components/modal/successErrorModal';
 import ConfirmationModalPage from '../../components/modal/confirmationModal';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Input } from 'reactstrap';
+import { AddOrderlist, ResetOrderlist } from '../../Store/actions';
+import { toast } from 'react-toastify';
 
 interface Cartprops{
   setCartOpen : (value : boolean) => void;
   handleRemoveCall  : (value : boolean) => void;
   CartData ?: any;
+  setCartItem: (value : any) => void;
 }
 
 interface ProfileInfo{
@@ -37,7 +40,8 @@ interface ProfileInfo{
   smart_phone: boolean;
 }
 
-const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall}) => {
+const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCartItem}) => {
+  const dispatch = useDispatch();
   const [cartItems, setCartItems] = useState(CartData || [])
 
   // ----------- Customer data getcode start ----------------
@@ -49,7 +53,6 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall}) => {
       }
     }, [CheckCustomerExistlist])
   // ----------- Customer data getcode end ----------------
-
 
   // ----------- Product Qty Change data getcode start ----------------
     const [productQty, setProductQty] = useState<{ [key: string]: number }>({});
@@ -73,20 +76,21 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall}) => {
     const [SelectedFutureDate, setSelectedFutureDate ] = useState("");
 
     const OrderplaceCall = (data:string) =>{
-      // setisOpenSuccessOrderModel(true)
       setisOpenConfirmModel(true);
       setisOrderTypeModel(data)
     }
 
     const PlaceCall = () =>{
-      let requser= {
-        products : [],
-        customer : "",
+      const productsArray = Object.entries(productQty).map(([id, quantity]) => ({ id, quantity}));
+      let requser :any = {
+        products : productsArray,
+        customer : "67c0b0e7749eda2a24d948d4",
         order_type : isOrderTypeModel,
-        future_order_date : SelectedFutureDate,
-        total_amount : 0,
+        total_amount : grandTotal.toFixed(2),
       }
-      console.log(requser);
+      if (isOrderTypeModel === "future")  requser.future_order_date = SelectedFutureDate;
+      dispatch(AddOrderlist(requser))
+      setisOpenConfirmModel(false);
     }
   // ---------------- Place Order code end ----------------
 
@@ -118,7 +122,26 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall}) => {
 
     useEffect(() => {
       setCartItems(CartData || []);
+      const updatedQty: { [key: string]: number } = {};
+      CartData?.forEach((item: any) => {
+        updatedQty[item._id] = 1;
+      });
+      setProductQty(updatedQty);
     }, [CartData]);
+
+  // --------------- Add Order Suucess/ error code start ----------------
+    const AddOrderdatalist = useSelector((state: any) => state.Order.AddOrderdatalist);
+    useEffect(() => {
+      if (AddOrderdatalist?.success) {
+        setisOpenSuccessOrderModel(true);
+        dispatch(ResetOrderlist());
+        setCartItems([]);
+        setCartItem([])
+      } else {
+        toast.error(AddOrderdatalist?.msg)
+      }
+    }, [AddOrderdatalist])
+  // --------------- Add Order Suucess/ error code start ----------------
 
   return (
     <>
@@ -211,13 +234,8 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall}) => {
           }
       </div> 
 
-
-
-
-
-      <SuccessErrorModalPage isOpenSuccessOrderModel={isOpenSuccessOrderModel} setisOpenSuccessOrderModel={setisOpenSuccessOrderModel} />
-    <ConfirmationModalPage isOpenConfirmModel={isOpenConfirmModel} setisOpenConfirmModel={setisOpenConfirmModel} isOrderTypeModel={isOrderTypeModel} PlaceCall={PlaceCall} setSelectedFutureDate={setSelectedFutureDate}  />
-
+      <SuccessErrorModalPage isOpenSuccessOrderModel={isOpenSuccessOrderModel} setisOpenSuccessOrderModel={setisOpenSuccessOrderModel} message="Order placed sucessfully" />
+      <ConfirmationModalPage isOpenConfirmModel={isOpenConfirmModel} setisOpenConfirmModel={setisOpenConfirmModel} isOrderTypeModel={isOrderTypeModel} PlaceCall={PlaceCall} setSelectedFutureDate={setSelectedFutureDate}  />
     </>
   )
 }

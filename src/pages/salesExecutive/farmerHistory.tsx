@@ -5,6 +5,7 @@ import { FaRegClock } from 'react-icons/fa';
 import { MdReport } from 'react-icons/md';
 import moment from 'moment';
 import ComplainDetails from '../../components/salesComponent/complainDetails';
+import ExamplePagination from '../../components/pagination';
 
 interface FarmerHistoryProps{
   setOpenDetailId : ( value : any) => void;
@@ -70,8 +71,6 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
   ]
 
   // -------------  Order  Details Call start -------------------
- 
-
   const OderDetailsCall = (data:string) => {
     setOpenDetailId(data)
     setOpenDetailsmodal(true)
@@ -98,6 +97,18 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
       setisOpenComplainModel(true);
     }
   // ------------complain details page ------------------
+
+  // ----------- next Button  Code Start -------------
+    const [TotalListData, setTotalListData] = useState(0);
+    const [CurrentUserListSize, setCurrentUserListSize] = useState();
+    const [CurrentPageNo, setCurrentPageNo] = useState(0);
+    const [PageNo, setPageNo] = useState(1);
+    const [RoePerPage, setRoePerPage] = useState(10);
+
+    const RowPerPage = (value: any) => { setRoePerPage(value)};
+    const PageDataList = (data:any) =>{ setPageNo(data)}
+  // ------------- Next button Code End -------------
+
 
   return (
     <>
@@ -183,10 +194,11 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
                         ))}
                       </Table.Body>
                     </Table>
-                
                 : null
               }
             </div>
+
+            <ExamplePagination PageData={PageDataList} RowPerPage={RowPerPage}  PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData}/>
           </div>
 
           <ComplainDetails  setisOpenComplainModel={() => setisOpenComplainModel(false)} isOpenComplainModel={isOpenComplainModel} />

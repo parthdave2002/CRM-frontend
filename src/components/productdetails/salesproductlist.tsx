@@ -3,6 +3,7 @@ import {  Button, Table} from "flowbite-react";
 const IMG_URL = import.meta.env["VITE_API_URL"];
 import { getProductlist } from '../../Store/actions';
 import { useDispatch, useSelector } from 'react-redux';
+import { FaCartArrowDown } from 'react-icons/fa';
 
 interface PorductData  {
     searchData ?: string;
@@ -55,7 +56,7 @@ const Salesproductlist : FC <PorductData> = ({searchData, ProductDetailsCall, is
               <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.price} </Table.Cell>
               <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.discount}</Table.Cell>
               <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.price - item.discount}  </Table.Cell>
-              {isLoggedin ? <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> <Button className=' bg-gradient-to-br from-green-400 to-blue-600 text-white hover:bg-gradient-to-bl focus:ring-green-200 dark:focus:ring-green-800' onClick={() => AddtoCartCall(item)} >Add to Cart  </Button> </Table.Cell> : null}
+              {isLoggedin ? <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> <Button className=' bg-gradient-to-br from-green-400 to-blue-600 text-white hover:bg-gradient-to-bl border-0' onClick={() => AddtoCartCall(item)} > <div className="flex items-center gap-x-3"> <FaCartArrowDown className='text-xl'  /> Add to Cart </div> </Button> </Table.Cell> : null}
             </Table.Row>
           ))}
         </Table.Body>
