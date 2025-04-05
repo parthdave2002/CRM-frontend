@@ -86,21 +86,22 @@ const ComplainCreate : FC <ComplainCreateProps> = ({setisOpenComplainCreateModel
         enableReinitialize: true,
         initialValues: initialValues,
 
-        validationSchema: Yup.object({
-            title: Yup.string().required("Please enter title"),
-            comment: Yup.string().required("Please enter comment")
-        }),
+        // validationSchema: Yup.object({
+        //     title: Yup.string().required("Please enter title"),
+        //     comment: Yup.string().required("Please enter comment")
+        // }),
 
         onSubmit: (values) => {
-            if (selectedpriorityid == "") {
-                setValidatepriority(1);
-                return;
-            }
+            // if (selectedpriorityid == "") {
+            //     setValidatepriority(1);
+            //     return;
+            // }
 
-            if (selectedproductid.length == 0) {
-                setValidateproduct(1);
-                return;
-            }
+            // if (selectedproductid.length == 0) {
+            //     setValidateproduct(1);
+            //     return;
+            // }
+            
 
             let requserdata = {
                 title: values?.title,
@@ -108,7 +109,7 @@ const ComplainCreate : FC <ComplainCreateProps> = ({setisOpenComplainCreateModel
                 order_id: orderId,
                 customer_id: "67c0b0e7749eda2a24d948d4",
                 priority: selectedpriorityid,
-                comment: [{ "comment": values?.comment }],
+                Comment: [{ "comment": values?.comment }],
                 resolution: "open"
             };
             dispatch(AddComplainlist(requserdata));

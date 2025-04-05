@@ -23,6 +23,10 @@ import {
   DELETE_ORDER_LIST,
   DELETE_ORDER_LIST_SUCCESS,
   DELETE_ORDER_LIST_ERROR,
+
+  GET_FARMER_ORDER_LIST,
+  GET_FARMER_ORDER_LIST_SUCCESS,
+  GET_FARMER_ORDER_LIST_ERROR
 } from "./actionType";
 
 const INIT_STATE = {
@@ -33,6 +37,7 @@ const INIT_STATE = {
   CurrentPage:1,
   DeleteOrderlist:[],
   AddOrderdatalist:[],
+  SingleFarmerOrderlist:[],
   error: {},
 };
 
@@ -143,6 +148,26 @@ const Order = (state = INIT_STATE, action) => {
           return { ...state };
       }
 
+      case GET_FARMER_ORDER_LIST_SUCCESS:
+        switch (action.payload.actionType) {
+          case GET_FARMER_ORDER_LIST:
+            return {
+              ...state,
+              SingleFarmerOrderlist: action.payload.data,
+            };
+        }
+      case GET_FARMER_ORDER_LIST_ERROR:
+        switch (action.payload.actionType) {
+          case GET_FARMER_ORDER_LIST:
+            return {
+              ...state,
+              error: action.payload,
+            };
+  
+          default:
+            return { ...state };
+        }
+
     case RESET_ORDER_LIST_SUCCESS:
       switch (action.payload.actionType) {
         case RESET_ORDER_LIST:
@@ -155,6 +180,7 @@ const Order = (state = INIT_STATE, action) => {
             CurrentPage:1,
             DeleteOrderlist:[],
             AddOrderdatalist:[],
+            SingleFarmerOrderlist:[],
           };
       }
  

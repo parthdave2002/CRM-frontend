@@ -1,56 +1,46 @@
-import React, { FC, useState } from 'react';
-import { Table } from "flowbite-react";
+import React, { FC, useEffect, useState } from 'react';
+import { Button, Table } from "flowbite-react";
 import { BsCartCheckFill } from 'react-icons/bs';
 import { FaRegClock } from 'react-icons/fa';
 import { MdReport } from 'react-icons/md';
 import moment from 'moment';
 import ComplainDetails from '../../components/salesComponent/complainDetails';
 import ExamplePagination from '../../components/pagination';
+import { getFarmerComplainlist, getFarmerOrderlist } from '../../Store/actions';
+import { useDispatch, useSelector } from 'react-redux';
 
 interface FarmerHistoryProps{
   setOpenDetailId : ( value : any) => void;
   setOpenDetailsmodal : ( value : boolean) => void;
+  setOpenDetailIData : ( value : any) => void;
+  AddtoCartCall : ( value : any) => void;
+  setCartOrderid : ( value : any) => void;
 }
 
-const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetailsmodal}) => {
+const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetailsmodal, setOpenDetailIData, AddtoCartCall, setCartOrderid}) => {
+  const dispatch = useDispatch()
 
-  const Orderdata = [
-    {
-      order_id: "#AB-240325-001",
-      sales_executive: "Demo sales executive",
-      amt: 5000,
-      status : "Confirm",
-      created_at: "2025-03-20T09:25:37.041Z",
-    },
-    {
-      order_id: "#AB-240325-002",
-      sales_executive: "Demo sales executive",
-      amt: 2000,
-      status : "Return",
-      created_at: "2025-03-20T09:25:37.041Z",
-    },
-  ]
+  useEffect(() =>{
+    let requser ={
+      customer_id : "67c0b0e7749eda2a24d948d4"
+    }
+    dispatch(getFarmerOrderlist(requser));
+    dispatch(getFarmerComplainlist(requser))
+  },[])
 
-  const ComplainData = [
-    {
-      complain_id: "#AB_123456",
-      product: "Amaze-X 123456780",
-      description: "this is a demo complain.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-      type: "High",
-      created_at: "2025-03-20T09:25:37.041Z",
-      created_by : "Priyanka Thakkar",
-      status : "Resolved",
-    },
-    {
-      complain_id : "#AB_123456",
-      product: "Amaze-X 123456780",
-      type: "High",
-      description: "this is a demo complain.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-      created_at: "2025-03-20T09:25:37.041Z",
-      created_by : "Priyanka Thakkar",
-      status : "Resolved",
-    },
-  ]
+  // ------------- Get  Data From Reducer Code Start --------------
+    const Orderlist = useSelector((state: any) => state.Order.SingleFarmerOrderlist?.data );
+    const Complainlist = useSelector((state: any) => state.Complain.SinglefarmerComplainlist?.data );
+
+    const [UserOrderDataList, setUserOrderDataList] = useState([]);
+    const [UserComplainDataList, setUserComplainDataList] = useState([]);
+
+    useEffect(() => {
+      setUserOrderDataList(Orderlist? Orderlist : []);
+      setUserComplainDataList(  Complainlist  ? Complainlist  : [])
+    }, [Orderlist]);
+
+  //  ------------- Get  Data From Reducer Code end --------------
 
   const Taglogdata =[
     {
@@ -71,11 +61,20 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
   ]
 
   // -------------  Order  Details Call start -------------------
-  const OderDetailsCall = (data:string) => {
-    setOpenDetailId(data)
+  const OderDetailsCall = ( id:string , data:any) => {
+    setOpenDetailId(id);
+    setOpenDetailIData(data);
     setOpenDetailsmodal(true)
   }
   // -------------  Order  Details Call end -------------------
+
+  // -------------  Future Order  to Cart Call start -------------------
+  const FuturaOrderCall = ( id:string , data:any) => {
+    const productIds = data?.products?.map((item: any) => item?.id);
+    AddtoCartCall(productIds);
+    setCartOrderid(id);
+  }
+  // -------------  Future Order  to Cart Call end -------------------
   
   // ----------- Tabnavbar code start --------------------
     const [selectedTabbar, setselectedTabbar] = useState("Order");
@@ -135,16 +134,21 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
                       <Table.HeadCell>COD Amt</Table.HeadCell>
                       <Table.HeadCell>Created By</Table.HeadCell>
                       <Table.HeadCell>Status</Table.HeadCell>
+                      <Table.HeadCell> Action</Table.HeadCell>
                     </Table.Head>
 
                     <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
-                      {Orderdata && Orderdata.map((item: any, k:number) => (
+                      {UserOrderDataList && UserOrderDataList.map((item: any, k:number) => (
                         <Table.Row key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => OderDetailsCall(item.order_id)}>  {item.order_id} </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item.created_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.amt} </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.sales_executive} </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.status} </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => OderDetailsCall(item?.order_id, item)}>  {item?.order_id} </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item?.added_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.total_amount.toFixed(2)} </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.advisor_name?.name} </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.order_type.charAt(0).toUpperCase() + item?.order_type.slice(1).toLowerCase()} </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.order_type == "future" ?   
+                            <Button className='bg-gradient-to-br from-purple-700 to-blue-400 text-white hover:bg-gradient-to-bl focus:ring-blue-300 dark:focus:ring-blue-800 border-0 ' onClick={() => FuturaOrderCall(item?.order_id, item)}> Confirm Order</Button>
+                          : null} 
+                          </Table.Cell>
                         </Table.Row>
                       ))}
                     </Table.Body>
@@ -163,14 +167,14 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
                     </Table.Head>
 
                     <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
-                      {ComplainData && ComplainData.map((item: any, k: number) => (
+                      {UserComplainDataList && UserComplainDataList.map((item: any, k: number) => (
                         <Table.Row key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => ComplainCall(item?.complain_id)}>  {item?.complain_id} </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item.created_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.product} </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.status} </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.type} </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.created_by} </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item?.created_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.product_id?.map((product :any, index:number) => (  <div key={index}>{product?.name?.englishname}</div> ))}</Table.Cell>
+                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.resolution.charAt(0).toUpperCase() + item?.resolution.slice(1).toLowerCase()} </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.priority.charAt(0).toUpperCase() + item?.priority.slice(1).toLowerCase()} </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.created_by?.name} </Table.Cell>
                         </Table.Row>
                       ))}
                     </Table.Body>
