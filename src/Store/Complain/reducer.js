@@ -3,6 +3,10 @@ import {
   GET_COMPLAIN_LIST_SUCCESS,
   GET_COMPLAIN_LIST_ERROR,
 
+  GET_FARMER_COMPLAIN_LIST,
+  GET_FARMER_COMPLAIN_LIST_SUCCESS,
+  GET_FARMER_COMPLAIN_LIST_ERROR,
+
   GET_COMPLAIN_DETAILS_LIST,
   GET_COMPLAIN_DETAILS_LIST_ERROR,
   GET_COMPLAIN_DETAILS_LIST_SUCCESS,
@@ -33,6 +37,7 @@ const INIT_STATE = {
   updateComplainlist: [],
   DeleteComplainlist: [],
   SingleComplainlist: [],
+  SinglefarmerComplainlist:[],
   error: {},
 };
 
@@ -80,6 +85,26 @@ const Complain = (state = INIT_STATE, action) => {
         default:
           return { ...state };
       }
+
+      case GET_FARMER_COMPLAIN_LIST_SUCCESS:
+        switch (action.payload.actionType) {
+          case GET_FARMER_COMPLAIN_LIST:
+            return {
+              ...state,
+              SinglefarmerComplainlist: action.payload.data,
+            };
+        }
+      case GET_FARMER_COMPLAIN_LIST_ERROR:
+        switch (action.payload.actionType) {
+          case GET_FARMER_COMPLAIN_LIST:
+            return {
+              ...state,
+              error: action.payload,
+            };
+  
+          default:
+            return { ...state };
+        }
 
     case ADD_COMPLAIN_LIST_SUCCESS:
       switch (action.payload.actionType) {

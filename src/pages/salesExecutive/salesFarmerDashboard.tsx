@@ -58,6 +58,7 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile}) => {
   // -------- Cart open/close code start ----------
     const [ cartOpen, setCartOpen] = useState(false); 
     const [ cartItem, setCartItem] = useState<any[]>([]); 
+    const [ cartOrderid, setCartOrderid] = useState(null); 
 
     const OpenCartCall = () => setCartOpen(true);    
 
@@ -76,7 +77,6 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile}) => {
     
         return [...prevItems, data];
       });
-    
     }
 
     const handleRemoveCall = (data: any) =>{
@@ -87,6 +87,7 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile}) => {
   // -------------- Order Details open/close code start --------------------
     const [openDetailsmodal, setOpenDetailsmodal] = useState(false);
     const [openDetailId, setOpenDetailId] = useState< null | string>(null)
+    const [openDetailIData, setOpenDetailIData] = useState(null)
 
     const closeOrderDetail = () =>{
       setOpenDetailsmodal(false)
@@ -102,9 +103,9 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile}) => {
       :
         <>
           {cartOpen == true ?
-            <div>  <CartList setCartOpen={setCartOpen} setCartItem={setCartItem} CartData={cartItem} handleRemoveCall={handleRemoveCall} /> </div>
+            <div>  <CartList setCartOpen={setCartOpen} setCartItem={setCartItem} CartData={cartItem} handleRemoveCall={handleRemoveCall} cartOrderid={cartOrderid} /> </div>
             : openDetailsmodal == true?
-              <OrderDetails orderId={openDetailId} closeOrderDetail={closeOrderDetail}  /> 
+              <OrderDetails orderId={openDetailId} closeOrderDetail={closeOrderDetail} openDetailIData={openDetailIData} /> 
             :
             <div className='flex flex-col'>
               <div className='flex justify-end gap-x-[2rem] my-3'>
@@ -134,7 +135,7 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile}) => {
                     <FarmeDashboard viewButton={true} classData="border dark:border-gray-600 rounded-xl w-full py-2 px-4 transition-all duration-800 ease-in-out" />
 
                     <div className='mt-[2rem] text-[2rem] dark:text-gray-400 font-bold'> History </div>
-                    <FarmerHistory setOpenDetailId={setOpenDetailId}  setOpenDetailsmodal={setOpenDetailsmodal} />
+                    <FarmerHistory setOpenDetailId={setOpenDetailId} setOpenDetailIData={setOpenDetailIData}  setOpenDetailsmodal={setOpenDetailsmodal}  AddtoCartCall={AddtoCartCall} setCartOrderid={setCartOrderid} />
 
                     <div className='flex mt-[1rem]'>
                       <div className='flex-1 self-end text-[2rem] dark:text-gray-400 font-bold'> Products Data</div>

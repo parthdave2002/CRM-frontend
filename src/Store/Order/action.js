@@ -3,6 +3,10 @@ import {
   GET_UPDATE_ORDER_LIST_SUCCESS,
   GET_UPDATE_ORDER_LIST_ERROR,
 
+  GET_FARMER_ORDER_LIST,
+  GET_FARMER_ORDER_LIST_SUCCESS,
+  GET_FARMER_ORDER_LIST_ERROR,
+
   GET_ORDER_LIST,
   GET_ORDER_LIST_SUCCESS,
   GET_ORDER_LIST_ERROR,
@@ -56,6 +60,21 @@ export const getOrderlistFail = (actionType, error) => ({
   payload: { actionType, error },
 });
 
+
+export const getFarmerOrderlist = (requserdata) => ({
+  type: GET_FARMER_ORDER_LIST,
+  payload: requserdata,
+});
+
+export const getFarmerOrderlistSuccess = (actionType, data) => ({
+  type: GET_FARMER_ORDER_LIST_SUCCESS,
+  payload: { actionType, data },
+});
+
+export const getFarmerOrderlistFail = (actionType, error) => ({
+  type: GET_FARMER_ORDER_LIST_ERROR,
+  payload: { actionType, error },
+});
 
 export const getOrderlistDetails = (requserdata) => ({
   type: GET_ORDER_DETAILS_LIST,

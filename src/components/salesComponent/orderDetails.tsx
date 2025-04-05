@@ -6,14 +6,17 @@ import ReturnOrderModalPage from '../../components/modal/returnOrderModal';
 const IMG_URL = import.meta.env["VITE_API_URL"];
 interface OrderDetailsProps{
   orderId : string | null;
+  openDetailIData : any;
   closeOrderDetail : ( value: boolean ) => void;
 } 
 
-const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail}) => {
+const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openDetailIData}) => {
 
   const Closecall = () =>{
     closeOrderDetail(false)
   }
+
+  console.log("openDetailIData", openDetailIData);
 
   const orderData=[
     {
@@ -106,24 +109,23 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail}) => {
             <div className="text-[1.2rem] font-semibold text-gray-900 dark:text-gray-100"> Order Item  </div>
 
             <div className='my-3 flex flex-col gap-y-8'>
-              {orderData && orderData.map((data:any , k:number) =>(
+              {openDetailIData?.products  && openDetailIData?.products.map((data:any , k:number) =>(
                 <div key={k} className='flex justify-between gap-x-4 my-4'>
                   <div className='flex gap-x-3'>
-                    <div> <img className='w-[3rem] h-[3rem]' src={`${IMG_URL}/public/product/${data?.product_img}` } alt='product image' /> </div>
+                    <div> <img className='w-[3rem] h-[3rem]' src={`${IMG_URL}/public/product/${data?.id?.product_pics[0]}` } alt='product image' /> </div>
                     <div>
-                      <div className='truncate text-gray-600 dark:text-gray-300'> {data?.product_name?.englishname} </div>
-                      <div className='truncate text-gray-600 text-[0.8rem] dark:text-gray-300'> {data?.tech_name?.english_tech_name} </div>
+                      <div className='truncate text-gray-600 dark:text-gray-300'> {data?.id?.name?.englishname} </div>
+                      <div className='truncate text-gray-600 text-[0.8rem] dark:text-gray-300'> {data?.id?.tech_name?.english_tech_name} </div>
                     </div>
                   </div>
 
                   <div className='flex gap-x-3'> 
-                    <div className='py-1 px-4 border rounded-xl self-center dark:text-gray-300'> 2 X 500 </div>
-                    <div className='text-center self-center dark:text-gray-300'> - 100 </div>
-                    <div className='text-center self-center dark:text-gray-300'> = 900 </div>
+                    <div className='py-1 px-4 border rounded-xl self-center dark:text-gray-300'> {data?.quantity}  X  {data?.id?.price} </div>
+                    <div className='text-center self-center dark:text-gray-300'> - {data?.id?.discount} </div>
+                    <div className='text-center self-center dark:text-gray-300'> = {(data?.quantity * data?.id?.price - data?.id?.discount)?.toFixed(2)}</div>
                   </div>
                   
-                  <div className='text-center self-center  bg-indigo-600 hover:bg-indigo-700 text-gray-100 rounded-lg cursor-pointer flex gap-x-2 px-3 py-1.5' onClick={() => CompainCall(data?.product_id)}> <FaExclamationTriangle className='self-center text-xl'  /> Complain </div>
-
+                  <div className='text-center self-center  bg-indigo-600 hover:bg-indigo-700 text-gray-100 rounded-lg cursor-pointer flex gap-x-2 px-3 py-1.5' onClick={() => CompainCall(data?.id?._id)}> <FaExclamationTriangle className='self-center text-xl'  /> Complain </div>
                 </div>
               ))}
             </div>

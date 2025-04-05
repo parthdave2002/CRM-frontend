@@ -3,6 +3,10 @@ import {
   GET_COMPLAIN_LIST_SUCCESS,
   GET_COMPLAIN_LIST_ERROR,
 
+  GET_FARMER_COMPLAIN_LIST,
+  GET_FARMER_COMPLAIN_LIST_SUCCESS,
+  GET_FARMER_COMPLAIN_LIST_ERROR,
+
   GET_COMPLAIN_DETAILS_LIST,
   GET_COMPLAIN_DETAILS_LIST_SUCCESS,
   GET_COMPLAIN_DETAILS_LIST_ERROR,
@@ -113,5 +117,21 @@ export const ResetComplainlistSuccess = (actionType, data) => ({
 
 export const ResetComplainlistFail = (actionType, error) => ({
   type: REST_COMPLAIN_LIST_ERROR,
+  payload: { actionType, error },
+});
+
+
+export const getFarmerComplainlist = (requserdata) => ({
+  type: GET_FARMER_COMPLAIN_LIST,
+  payload: requserdata,
+});
+
+export const getFarmerComplainlistSuccess = (actionType, data) => ({
+  type: GET_FARMER_COMPLAIN_LIST_SUCCESS,
+  payload: { actionType, data },
+});
+
+export const getFarmerComplainlistFail = (actionType, error) => ({
+  type: GET_FARMER_COMPLAIN_LIST_ERROR,
   payload: { actionType, error },
 });

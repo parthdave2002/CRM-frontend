@@ -15,6 +15,7 @@ interface Cartprops{
   handleRemoveCall  : (value : boolean) => void;
   CartData ?: any;
   setCartItem: (value : any) => void;
+  cartOrderid ?: any;
 }
 
 interface ProfileInfo{
@@ -40,8 +41,12 @@ interface ProfileInfo{
   smart_phone: boolean;
 }
 
-const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCartItem}) => {
+const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCartItem, cartOrderid}) => {
   const dispatch = useDispatch();
+
+  console.log("cartOrderid", cartOrderid);
+  console.log("cartItem >>>>>>>", CartData);
+  
   const [cartItems, setCartItems] = useState(CartData || [])
 
   // ----------- Customer data getcode start ----------------

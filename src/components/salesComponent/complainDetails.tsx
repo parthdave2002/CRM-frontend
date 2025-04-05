@@ -14,49 +14,38 @@ interface ComplainProps{
     isOpenComplainModel ? : boolean;
 } 
 
+interface Namedata{
+    _id: string;
+    name :string;
+}
+
+interface CommentData {
+    comment : string;
+    comment_date  : string;
+    name: Namedata;
+    _id  : string;
+}
+
+interface ComplainData{
+    Comment : CommentData[]
+    complain_id :string;
+    created_at    :string;
+    order_id  :string;
+    _id :string;
+    is_resolved_by :boolean;
+}
+
 const ComplainDetails : FC <ComplainProps> = ({setisOpenComplainModel,isOpenComplainModel }) => {
 
     const dispatch = useDispatch();
     const [complainResolution, setComplainResolution] = useState("");
+    const Complainlist = useSelector((state: any) => state.Complain.SinglefarmerComplainlist?.data );
+    const [UserComplainDataList, setUserComplainDataList] = useState<ComplainData>();
 
-    const SingleComplainData =
-    {
-        "product_id": [
-            "603d9d88f4560a001f9e3eab"
-        ],
-        "resolution": "close",
-        "_id": "67eb7b3d2fe0cf29a4e78555",
-        "title": " More Parth Complain ",
-        "order_id": "#AB-250330-0001",
-        "customer_id": "67c0b0e7749eda2a24d948d4",
-        "priority": "medium",
-        "Comment": [
-            {
-                "_id": "67eb7b3e2fe0cf29a4e78556",
-                "name": "67a9c7963022e8352c60d5bf",
-                "comment": " More Parth Complain ",
-                "comment_date": "2025-04-01T05:35:57.998Z"
-            },
-            {
-                "_id": "67eb7b3e2fe0cf29a4e78556",
-                "name": "67a9c7963022e8352c60d5bf",
-                "comment": " More Parth Complain ",
-                "comment_date": "2025-04-01T05:35:57.998Z"
-            },
-            {
-                "_id": "67eb7b3e2fe0cf29a4e78556",
-                "name": "67a9c7963022e8352c60d5bf",
-                "comment": " More Parth Complain ",
-                "comment_date": "2025-04-01T05:35:57.998Z"
-            }
-        ],
-        "complain_id": "#ABC-010425-0001",
-        "created_by": "67a9c7963022e8352c60d5bf",
-        "created_at": "2025-04-01T05:35:58.002Z",
-        "date": "2025-04-01T05:35:58.002Z",
-        "is_resolved_by": true
-    }
-    
+    useEffect(() => {
+      setUserComplainDataList(  Complainlist[0]  ? Complainlist[0]  : [])
+    }, [Complainlist]);
+
     const priorityoption =[
         {  label :"High",  value : "high"  },
         {   label :"Medium",   value : "medium" },
@@ -100,10 +89,10 @@ const ComplainDetails : FC <ComplainProps> = ({setisOpenComplainModel,isOpenComp
             }
 
             let requserdata = {
-                id: SingleComplainData?._id,
+                id: UserComplainDataList?._id,
                 priority: selectedactiveid,
-                comment: [{ "comment": values?.comment }],
-                complain_id: SingleComplainData?.complain_id,
+                Comment: [{ "comment": values?.comment }],
+                complain_id: UserComplainDataList?.complain_id,
                 resolution : complainResolution
             };
 
@@ -177,7 +166,9 @@ const ComplainDetails : FC <ComplainProps> = ({setisOpenComplainModel,isOpenComp
                           </div>
                           <div className='flex gap-x-3 justify-end'>
                              <Button type='submit' className='mt-3 mt-3 bg-gradient-to-br from-green-400 to-blue-600 text-white hover:bg-gradient-to-bl border-0' onClick={() => setComplainResolution("open") } ><div className='flex items-center gap-x-3'> <FaQuestionCircle  className="text-xl "  /> Add Comment </div> </Button>
-                            {SingleComplainData?.is_resolved_by ?  <Button type='submit' className='mt-3 mt-3 bg-gradient-to-br from-green-400 to-blue-600 text-white hover:bg-gradient-to-bl border-0' onClick={() => setComplainResolution("close") } ><div className='flex items-center gap-x-3'> <FaPuzzlePiece  className="text-xl "/> Resolved   </div>   </Button>  : null  } 
+                            {/* {UserComplainDataList?.is_resolved_by ?   */}
+                            <Button type='submit' className='mt-3 mt-3 bg-gradient-to-br from-green-400 to-blue-600 text-white hover:bg-gradient-to-bl border-0' onClick={() => setComplainResolution("close") } ><div className='flex items-center gap-x-3'> <FaPuzzlePiece  className="text-xl "/> Resolved   </div>   </Button> 
+                             {/* : null  }  */}
                           </div>                
                       </div>
                 </Form>
@@ -191,11 +182,11 @@ const ComplainDetails : FC <ComplainProps> = ({setisOpenComplainModel,isOpenComp
                           </Table.Head>
 
                           <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
-                              {SingleComplainData?.Comment && SingleComplainData?.Comment.map((item: any, k: number) => (
+                              {UserComplainDataList?.Comment && UserComplainDataList?.Comment.map((item: any, k: number) => (
                                   <Table.Row key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
                                       <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item?.comment_date).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
-                                      <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.name} </Table.Cell>
-                                      <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.comment} </Table.Cell>
+                                      <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.name?.name} </Table.Cell>
+                                      <Table.Cell className=" text-base font-medium text-gray-900 dark:text-white py-0  max-w-[15rem]">  {item?.comment} </Table.Cell>
                                   </Table.Row>
                               ))}
                           </Table.Body>
