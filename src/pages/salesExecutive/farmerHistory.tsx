@@ -38,7 +38,7 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
     useEffect(() => {
       setUserOrderDataList(Orderlist? Orderlist : []);
       setUserComplainDataList(  Complainlist  ? Complainlist  : [])
-    }, [Orderlist]);
+    }, [Orderlist, Complainlist]);
 
   //  ------------- Get  Data From Reducer Code end --------------
 
@@ -131,6 +131,7 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
                     <Table.Head className="bg-gray-100 dark:bg-gray-700">
                       <Table.HeadCell>Order id</Table.HeadCell>
                       <Table.HeadCell>Order Date</Table.HeadCell>
+                       <Table.HeadCell>Callback Date</Table.HeadCell>
                       <Table.HeadCell>COD Amt</Table.HeadCell>
                       <Table.HeadCell>Created By</Table.HeadCell>
                       <Table.HeadCell>Status</Table.HeadCell>
@@ -142,12 +143,13 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
                         <Table.Row key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => OderDetailsCall(item?.order_id, item)}>  {item?.order_id} </Table.Cell>
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item?.added_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.order_type == "future" ? moment(item?.future_order_date).format("DD-MM-YYYY") : "N/A"} </Table.Cell>
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.total_amount.toFixed(2)} </Table.Cell>
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.advisor_name?.name} </Table.Cell>
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.order_type.charAt(0).toUpperCase() + item?.order_type.slice(1).toLowerCase()} </Table.Cell>
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.order_type == "future" ?   
                             <Button className='bg-gradient-to-br from-purple-700 to-blue-400 text-white hover:bg-gradient-to-bl focus:ring-blue-300 dark:focus:ring-blue-800 border-0 ' onClick={() => FuturaOrderCall(item?.order_id, item)}> Confirm Order</Button>
-                          : null} 
+                          : "N/A"} 
                           </Table.Cell>
                         </Table.Row>
                       ))}

@@ -156,7 +156,7 @@ export const DelProductlistApi = async (requserdata) => await api.delete(url.DEL
 export const DetailProductlistApi = (requserdata) => api.get(url.GET_PRODUCT_LIST, requserdata);
 
 // Order API
-export const UpdateOrderlistApi = (requserdata) => api.get(url.GET_UPDATE_ORDER_LIST, requserdata);
+export const UpdateOrderlistApi = (requserdata) => api.update(url.GET_UPDATE_ORDER_LIST, requserdata);
 export const OrderlistApi = (requserdata) => api.get(url.GET_ORDER_LIST, requserdata);
 export const FermerOrderlistApi = (requserdata) => api.get(url.GET_FARMER_ORDER_LIST, requserdata);
 export const OrderDetaillistApi = (requserdata) => api.get(url.GET_ORDER_DETAILS_LIST, requserdata);

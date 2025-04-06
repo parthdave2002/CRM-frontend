@@ -7,8 +7,9 @@ import SuccessErrorModalPage from '../../components/modal/successErrorModal';
 import ConfirmationModalPage from '../../components/modal/confirmationModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { Input } from 'reactstrap';
-import { AddOrderlist, ResetOrderlist } from '../../Store/actions';
+import { AddOrderlist, getUpdateOrderlist, ResetOrderlist } from '../../Store/actions';
 import { toast } from 'react-toastify';
+import { BsCartXFill } from 'react-icons/bs';
 
 interface Cartprops{
   setCartOpen : (value : boolean) => void;
@@ -16,6 +17,7 @@ interface Cartprops{
   CartData ?: any;
   setCartItem: (value : any) => void;
   cartOrderid ?: any;
+  setCartOrderid: (value : any) => void;
 }
 
 interface ProfileInfo{
@@ -41,11 +43,8 @@ interface ProfileInfo{
   smart_phone: boolean;
 }
 
-const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCartItem, cartOrderid}) => {
+const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCartItem, cartOrderid, setCartOrderid}) => {
   const dispatch = useDispatch();
-
-  console.log("cartOrderid", cartOrderid);
-  console.log("cartItem >>>>>>>", CartData);
   
   const [cartItems, setCartItems] = useState(CartData || [])
 
@@ -94,7 +93,13 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
         total_amount : grandTotal.toFixed(2),
       }
       if (isOrderTypeModel === "future")  requser.future_order_date = SelectedFutureDate;
-      dispatch(AddOrderlist(requser))
+
+      if(cartOrderid){
+        requser.order_id =  cartOrderid
+        dispatch(getUpdateOrderlist(requser))
+      } else{
+        dispatch(AddOrderlist(requser))
+      }   
       setisOpenConfirmModel(false);
     }
   // ---------------- Place Order code end ----------------
@@ -148,11 +153,18 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
     }, [AddOrderdatalist])
   // --------------- Add Order Suucess/ error code start ----------------
 
+  const CloseCall = () =>{
+    setCartOpen(false);
+    setCartItem([])
+    setCartOrderid(null)
+  }
+
   return (
     <>
       <div className='flex justify-between'>
-        <div className="text-[2rem] font-semibold text-gray-900 dark:text-gray-100"> Cart </div>
-        <div className="text-[2rem] font-semibold text-gray-900 dark:text-gray-100 flex self-center cursor-pointer " onClick={() => setCartOpen(false)}> <FaWindowClose /> </div>
+        <div className="text-[2rem] font-semibold text-gray-900 dark:text-gray-100"> Cart : {cartOrderid}</div>
+        {cartOrderid ?  <div className="flex border border-indigo-500 text-indigo-500 dark:text-white hover:text-gray-100 font-semibold px-6 py-2 rounded-full gap-3 hover:bg-indigo-800 transition flex text-center cursor-pointer transition-all duration-500 ease-in-out text-center self-center"  onClick={() => setCartOpen(false)} > <FaCartShopping className="self-center h-5 w-5" /> Countine Shopping </div>  :  null}
+        <div className="text-[2rem] font-semibold text-gray-900 dark:text-gray-100 flex self-center cursor-pointer " onClick={() => CloseCall()}> <FaWindowClose /> </div>
       </div>
 
       <div className="flex flex-col xl:flex-row h-screen  mt-4  gap-x-3">
@@ -208,6 +220,7 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
               </div>
 
               <div className="flex gap-x-3 justify-end mt-6 mb-4">
+                {cartOrderid ?<div className="flex border border-indigo-500 text-indigo-500 dark:text-white hover:text-gray-100 font-semibold px-6 py-2 rounded-full gap-3 hover:bg-indigo-800 transition flex text-center cursor-pointer transition-all duration-500 ease-in-out" onClick={() => OrderplaceCall("cancel")}> <BsCartXFill   className="self-center h-5 w-5" /> Cancel Order </div> : null}
                 <div className="flex border border-indigo-500 text-indigo-500 dark:text-white hover:text-gray-100 font-semibold px-6 py-2 rounded-full gap-3 hover:bg-indigo-800 transition flex text-center cursor-pointer transition-all duration-500 ease-in-out" onClick={() => OrderplaceCall("future")}> <FaGhost className="self-center h-5 w-5" /> Future Order </div>
                 <div className="flex border border-indigo-500 text-indigo-500 dark:text-white hover:text-gray-100 font-semibold px-6 py-2 rounded-full gap-3 hover:bg-indigo-800 transition flex text-center cursor-pointer transition-all duration-500 ease-in-out" onClick={() => OrderplaceCall("confirm")}> <FaCartShopping className="self-center h-5 w-5" /> Place Order </div>
               </div>
