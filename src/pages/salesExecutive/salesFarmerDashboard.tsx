@@ -36,7 +36,6 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile}) => {
     setIsEditFarmer(true)
   }
 
-
   //-------------- Logout modal Code start --------------
     const [ logoutModal, setLogoutModal] = useState(false);
     const LogOutCall = () =>  setLogoutModal(true)
@@ -62,20 +61,30 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile}) => {
 
     const OpenCartCall = () => setCartOpen(true);    
 
-    const AddtoCartCall = (data: any) => {
+    const AddtoCartCall = (data: any | any[]) => {
       setCartItem((prevItems) => {
-        const isProductInCart = prevItems.some((item) => item._id === data._id);
-        
-        if (isProductInCart) {
-          toast.error("Product already in cart")
-          return prevItems; 
-        }
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth", 
-        });
-    
-        return [...prevItems, data];
+        const newItems = Array.isArray(data) ? data : [data];
+        let isDuplicate = false;
+    const uniqueItemsToAdd = newItems.filter((item) => {
+      const exists = prevItems.some((cartItem) => cartItem._id === item._id);
+      if (exists) {
+        isDuplicate = true;
+      }
+      return !exists;
+    });
+
+    if (isDuplicate) {
+      toast.error("Some products were already in the cart");
+    }
+
+    if (uniqueItemsToAdd.length === 0) return prevItems;
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+
+    return [...prevItems, ...uniqueItemsToAdd];
       });
     }
 
@@ -94,7 +103,6 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile}) => {
     }
   // -------- Order Details open/close code end ----------
 
-
   return (
     <>
 
@@ -103,7 +111,7 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile}) => {
       :
         <>
           {cartOpen == true ?
-            <div>  <CartList setCartOpen={setCartOpen} setCartItem={setCartItem} CartData={cartItem} handleRemoveCall={handleRemoveCall} cartOrderid={cartOrderid} /> </div>
+            <div>  <CartList setCartOpen={setCartOpen} setCartItem={setCartItem} CartData={cartItem} handleRemoveCall={handleRemoveCall} cartOrderid={cartOrderid} setCartOrderid={setCartOrderid} /> </div>
             : openDetailsmodal == true?
               <OrderDetails orderId={openDetailId} closeOrderDetail={closeOrderDetail} openDetailIData={openDetailIData} /> 
             :

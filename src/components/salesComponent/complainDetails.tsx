@@ -33,6 +33,7 @@ interface ComplainData{
     order_id  :string;
     _id :string;
     is_resolved_by :boolean;
+    resolution : string;
 }
 
 const ComplainDetails : FC <ComplainProps> = ({setisOpenComplainModel,isOpenComplainModel }) => {
@@ -43,7 +44,7 @@ const ComplainDetails : FC <ComplainProps> = ({setisOpenComplainModel,isOpenComp
     const [UserComplainDataList, setUserComplainDataList] = useState<ComplainData>();
 
     useEffect(() => {
-      setUserComplainDataList(  Complainlist[0]  ? Complainlist[0]  : [])
+      setUserComplainDataList(  Complainlist ? Complainlist[0]  : [])
     }, [Complainlist]);
 
     const priorityoption =[
@@ -91,7 +92,7 @@ const ComplainDetails : FC <ComplainProps> = ({setisOpenComplainModel,isOpenComp
             let requserdata = {
                 id: UserComplainDataList?._id,
                 priority: selectedactiveid,
-                Comment: [{ "comment": values?.comment }],
+                comment: values?.comment ,
                 complain_id: UserComplainDataList?.complain_id,
                 resolution : complainResolution
             };
@@ -120,6 +121,8 @@ const ComplainDetails : FC <ComplainProps> = ({setisOpenComplainModel,isOpenComp
         <Modal onClose={() => setisOpenComplainModel(false)} show={isOpenComplainModel} size="6xl" className="backdrop-blur-sm p-3" >
             <Modal.Header>   <div className='text-[2rem] dark:text-gray-200 font-bold'> Complain Details  </div>   </Modal.Header>
             <div className='p-3'>
+                
+            {UserComplainDataList?.resolution == "open" ?
                 <Form onSubmit={(e) => { e.preventDefault(); validation.handleSubmit(); return false; }} >
                       <div className='mb-[2rem] p-3'>
                           <div className='flex gap-x-4'>
@@ -172,6 +175,7 @@ const ComplainDetails : FC <ComplainProps> = ({setisOpenComplainModel,isOpenComp
                           </div>                
                       </div>
                 </Form>
+            : null}
 
                 <div className='max-h-[18rem] overflow-scroll'>
                       <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
@@ -179,6 +183,7 @@ const ComplainDetails : FC <ComplainProps> = ({setisOpenComplainModel,isOpenComp
                               <Table.HeadCell> Date</Table.HeadCell>
                               <Table.HeadCell>Name </Table.HeadCell>
                               <Table.HeadCell> Comment</Table.HeadCell>
+                              <Table.HeadCell> Status</Table.HeadCell>
                           </Table.Head>
 
                           <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
@@ -187,6 +192,7 @@ const ComplainDetails : FC <ComplainProps> = ({setisOpenComplainModel,isOpenComp
                                       <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item?.comment_date).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
                                       <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.name?.name} </Table.Cell>
                                       <Table.Cell className=" text-base font-medium text-gray-900 dark:text-white py-0  max-w-[15rem]">  {item?.comment} </Table.Cell>
+                                      <Table.Cell className=" text-base font-medium text-gray-900 dark:text-white py-0  max-w-[15rem]">  {UserComplainDataList?.resolution.charAt(0).toUpperCase() + UserComplainDataList?.resolution.slice(1).toLowerCase() } </Table.Cell>
                                   </Table.Row>
                               ))}
                           </Table.Body>
