@@ -132,12 +132,12 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
 
           <div className="border dark:border-gray-600 dark:bg-gray-800 p-3 rounded-xl w-full flex flex-col gap-y-3">
             <div className='dark:text-gray-300 text-[1.2rem] font-semibold'>Customer</div>
-            <div className='dark:text-gray-300 flex gap-x-3'><FaUserAlt className='self-center h-7-w-7'  />  <span> jaydev Lalitbhai Panchal </span> </div>
+            <div className='dark:text-gray-300 flex gap-x-3'><FaUserAlt className='self-center h-7-w-7'  />  <span> {data.customerName} </span> </div>
           </div>
 
           <div className="border dark:border-gray-600 dark:bg-gray-800 p-3 rounded-xl w-full flex flex-col gap-y-3">
             <div className='dark:text-gray-300 text-[1.2rem] font-semibold'>Contact Information</div>
-            <div className='dark:text-gray-300 flex gap-x-3'><FaPhoneVolume className='self-center h-7-w-7' />  <span> 9904764781, 9904764781 </span> </div>
+            <div className='dark:text-gray-300 flex gap-x-3'><FaPhoneVolume className='self-center h-7-w-7' />  <span> {data?.customerPhone} , {data?.customeralternatenumber} </span> </div>
           </div>
 
           <div className="border dark:border-gray-600 dark:bg-gray-800 p-3 rounded-xl w-full flex flex-col gap-y-3">

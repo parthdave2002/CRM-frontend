@@ -9,6 +9,10 @@ import {
   getCallbackdataSuccess,
   getCallbackdataFail,
 
+  getMarkasdone,
+  getMarkasdoneSuccess,
+  getMarkasdoneFail,
+
   getResetsalesDashboard,
   getResetsalesDashboardSuccess,
   getResetsalesDashboardFail,
@@ -16,10 +20,11 @@ import {
 import {
   GET_SALES_DASHBOARD_DATA,
   GET_CALLBACK_DATA,
+  GET_MARK_AS_DONE_DATA,
   GET_SALES_DASHBOARD_RESET_DATA
 } from "./actionType";
 
-import { SalesExcutiveDashboardlistApi, SalesExcutiveCallbacklistApi } from "../../../helper/Demo_helper";
+import { SalesExcutiveDashboardlistApi, SalesExcutiveCallbacklistApi, MarkasDonelistApi } from "../../../helper/Demo_helper";
 
 function* onGetsalesDashboard({ payload: requstuserlist }) {
   try {
@@ -39,6 +44,15 @@ function* onGetsalesCallback({ payload: requstuserlist }) {
   }
 }
 
+function* onGetMarkAsDoneCall({ payload: requstuserlist }) {
+  try {
+    const reponse = yield call(MarkasDonelistApi, requstuserlist);
+    yield put(getMarkasdoneSuccess(GET_MARK_AS_DONE_DATA, reponse));
+  } catch (error) {
+    yield put(getMarkasdoneFail(error));
+  }
+}
+
 
 function* onGetResetsalesDashboard() {
     const response = yield call(getResetsalesDashboard);
@@ -50,6 +64,7 @@ function* SalesDashboardSaga() {
   yield takeEvery(GET_SALES_DASHBOARD_DATA, onGetsalesDashboard);
   yield takeEvery(GET_CALLBACK_DATA, onGetsalesCallback);
   yield takeEvery(GET_SALES_DASHBOARD_RESET_DATA, onGetResetsalesDashboard);
+  yield takeEvery(GET_MARK_AS_DONE_DATA, onGetMarkAsDoneCall);
 
 }
 

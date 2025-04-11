@@ -7,6 +7,10 @@ import {
   GET_CALLBACK_DATA_SUCCESS,
   GET_CALLBACK_DATA_ERROR,
 
+  GET_MARK_AS_DONE_DATA,
+  GET_MARK_AS_DONE_DATA_SUCCESS,
+  GET_MARK_AS_DONE_DATA_ERROR,
+
   GET_SALES_DASHBOARD_RESET_DATA,
   GET_SALES_DASHBOARD_RESET_DATA_SUCCESS,
   GET_SALES_DASHBOARD_RESET_DATA_ERROR,
@@ -16,6 +20,7 @@ import {
 const INIT_STATE = {
   DashboardDataList: [],
   CallBackUserList:[],
+  CallBackDoneUserList:[],
   error: {},
 };
 
@@ -58,6 +63,25 @@ const SalesDashboard = (state = INIT_STATE, action) => {
         default:
           return { ...state };
       }
+
+      case GET_MARK_AS_DONE_DATA_SUCCESS:
+        switch (action.payload.actionType) {
+          case GET_MARK_AS_DONE_DATA:
+            return {
+              ...state,
+              CallBackDoneUserList: action.payload.data,
+            };
+        }
+      case GET_MARK_AS_DONE_DATA_ERROR:
+        switch (action.payload.actionType) {
+          case GET_MARK_AS_DONE_DATA:
+            return {
+              ...state,
+              error: action.payload,
+            };
+          default:
+            return { ...state };
+        }
 
     case GET_SALES_DASHBOARD_RESET_DATA_SUCCESS:
       switch (action.payload.actionType) {
