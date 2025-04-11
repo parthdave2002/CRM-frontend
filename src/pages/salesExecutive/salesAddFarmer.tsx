@@ -6,6 +6,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
 import Select from "react-select";
+import { toast } from 'react-toastify';
 
 interface ProfileData{
   isEditFarmer ?: boolean;
@@ -15,31 +16,90 @@ interface ProfileData{
 const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
   const dispatch = useDispatch();
 
-  // ------------- Packing Type Get Data From Reducer Code Start --------------
-  const [PackingTypeListData, setPackingTypeListData] = useState([]);
-  const Packingtypelist = useSelector((state: any) => state.PackingType.Packingtypelist);
-  const packingtypeoption = PackingTypeListData && PackingTypeListData?.filter((item: any) => item.is_active).map((item: any) => ({ label: item.type_eng, value: item._id }));
-  const [selectedpackingTypeOption, setSelectedpackingTypeOption] = useState<{ label: string, value: string } | null>(null);
-  const [selectedpackingTypeid, setSelectedpackingTypeid] = useState<string | null>(null);
-  const [validatepackingType, setValidatepackingType] = useState(0);
+  // ------------- State Get Data From Reducer Code Start --------------
+    const stateoption = [
+      { label :"Gujarat", value : "Gujarat"},
+    ]
+    const [selectedStateOption, setSelectedStateOption] = useState<{ label: string, value: string } | null>(null);
+    const [selectedStateid, setSelectedStateid] = useState<string | null>(null);
+    const [validateState, setValidateState] = useState(0);
 
-  useEffect(() => {
-    setPackingTypeListData(Packingtypelist ? Packingtypelist : []);
-  }, [Packingtypelist]);
+    const IsStatedata = (data: any) => {
+      if (!data) {
+        setSelectedStateid("");
+        setSelectedStateOption(null);
+        setValidateState(1)
+      } else {
+        setSelectedStateid(data.value);
+        setSelectedStateOption(data);
+        setValidateState(0)
+      }
+    };
+  //  ------------- State Get Data From Reducer Code end --------------
 
-  const IspackingTypedata = (data: any) => {
-    if (!data) {
-      setSelectedpackingTypeid("");
-      setSelectedpackingTypeOption(null);
-      setValidatepackingType(1)
-    } else {
-      setSelectedpackingTypeid(data.value);
-      setSelectedpackingTypeOption(data);
-      setValidatepackingType(0)
-    }
-  };
-  //  ------------- Packing Type Get Data From Reducer Code end --------------
+  // ------------- District Get Data From Reducer Code Start --------------
+    const districtoption = [
+      { label :"Gujarat", value : "Gujarat"},
+    ]
+    const [selectedDistrictOption, setSelectedDistrictOption] = useState<{ label: string, value: string } | null>(null);
+    const [selectedDistrictid, setSelectedDistrictid] = useState<string | null>(null);
+    const [validateDistrict, setValidateDistrict] = useState(0);
 
+    const IsDistrictdata = (data: any) => {
+      if (!data) {
+        setSelectedDistrictid("");
+        setSelectedDistrictOption(null);
+        setValidateDistrict(1)
+      } else {
+        setSelectedDistrictid(data.value);
+        setSelectedDistrictOption(data);
+        setValidateDistrict(0)
+      }
+    };
+  //  ------------- District Get Data From Reducer Code end --------------
+
+  // ------------- Taluka Get Data From Reducer Code Start --------------
+    const talukaoption = [
+      { label :"Gujarat", value : "Gujarat"},
+    ]
+    const [selectedTalukaOption, setSelectedTalukaOption] = useState<{ label: string, value: string } | null>(null);
+    const [selectedTalukaid, setSelectedTalukaid] = useState<string | null>(null);
+    const [validateTaluka, setValidateTaluka] = useState(0);
+  
+    const IsTalukadata = (data: any) => {
+      if (!data) {
+        setSelectedTalukaid("");
+        setSelectedTalukaOption(null);
+        setValidateTaluka(1)
+      } else {
+        setSelectedTalukaid(data.value);
+        setSelectedTalukaOption(data);
+        setValidateTaluka(0)
+      }
+    };
+  //  ------------- Taluka Get Data From Reducer Code end --------------
+  
+  // ------------- Village Get Data From Reducer Code Start --------------
+    const villageoption = [
+      { label :"Gujarat", value : "Gujarat"},
+    ]
+    const [selectedVillageOption, setSelectedVillageOption] = useState<{ label: string, value: string } | null>(null);
+    const [selectedVillageid, setSelectedVillageid] = useState<string | null>(null);
+    const [validateVaillage, setValidateVaillage] = useState(0);
+  
+    const IsVillagedata = (data: any) => {
+      if (!data) {
+        setSelectedVillageid("");
+        setSelectedVillageOption(null);
+        setValidateVaillage(1)
+      } else {
+        setSelectedVillageid(data.value);
+        setSelectedVillageOption(data);
+        setValidateVaillage(0)
+      }
+    };
+  //  ------------- Village Get Data From Reducer Code end --------------
+  
   const [initialValues, setinitialValues] = useState({
     firstname: "",
     middlename: "",
@@ -69,25 +129,35 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
     validationSchema: Yup.object({
       firstname: Yup.string().required("Please enter first name"),
       lastname: Yup.string().required("Please enter last name"),
-      mobile: Yup.string().required("Please enter mobile no"),
-      alternate_mobile_no: Yup.string().required("Please enter alternate mobile no"),
+      mobile: Yup.string().required("Please enter mobile no").matches(/^\d{10}$/, "Please enter valid mobile number"),
       address: Yup.string().required("Please enter address"),
       pincode: Yup.string().required("Please enter pincode"),
-      landarea: Yup.string().required("Please enter land area"),
+      landarea: Yup.string().required("Please enter land area")
     }),
 
     onSubmit: (values) => {
       let requserData = {
-        firstname: values.firstname,
-        middlename: values.middlename,
-        lastname: values.lastname,
-        mobile: values.mobile,
-        alternate_mobile_no: values.alternate_mobile_no,
-        address: values.address,
+        firstname: values?.firstname,
+        middlename: values?.middlename,
+        lastname: values?.lastname,
+        mobile: values?.mobile,
+        alternate_mobile_no: values?.alternate_mobile_no,
+        address: values?.address,
+        state : selectedStateid,
+        district : selectedDistrictid,
+        taluka : selectedTalukaid,
+        village : selectedVillageid,
+        pincode : values?.pincode,
+        land_area : values?.landarea,
+        land_type : selectedlandtypeid,
+        irrigation_source : selectedirrigationsourceid,
+        irrigation_type : selectedirrigationtypeid,
+        heard_about_us : selectedheaderaboutid,
+        ref_name : values?.refname
       }
 
       console.log("mobile", requserData);
-      // dispatch(AddRoleslist(requserData));
+      // dispatch(AddCustomerDatalist(requserData));
       validation.resetForm();
     },
   });
@@ -203,18 +273,43 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
   };
   // -------------- Land type code end ---------
 
+  const CloseCall = () =>{
+    if(validation?.values?.firstname){
+      setFarmerAdded(false)
+    }
+    else{
+      toast.error("Customer fields are required")
+    }
+  }
+
+  // ------------- Get  Data From Reducer Code Start --------------
+    const  AddCustomerlist = useSelector((state: any) => state.Customer.AddAddCustomerlist)
+    const [ userAddedData, setUserAddedData] = useState([])
+    
+    useEffect(() => {
+      setUserAddedData(AddCustomerlist ? AddCustomerlist  : null);
+    }, [AddCustomerlist]);
+  //  ------------- Get  Data From Reducer Code end --------------
+
   return (
    <div className='mt-[2rem]'>
       <div className='flex justify-between'>
         <div className="text-[2rem] font-semibold text-gray-900 dark:text-gray-100"> {isEditFarmer == true ? "Update Farmer"  : "Add Farmer" }  </div>
-        <div className="text-[2rem] font-semibold text-gray-900 dark:text-gray-100 flex self-center cursor-pointer " onClick={() => setFarmerAdded(false)}> <FaWindowClose /> </div>
+        <div className="text-[2rem] font-semibold text-gray-900 dark:text-gray-100 flex self-center cursor-pointer " onClick={() => CloseCall()}> <FaWindowClose /> </div>
       </div>
 
       <Form onSubmit={(e) => {  
         e.preventDefault(); 
         validation.handleSubmit(); 
         if (!selectedheaderaboutOption) setValidateheaderabout(1) 
-        }} >
+        if (!selectedirrigationtypeOption) setValidateirrigationtype(1) 
+        if (!selectedirrigationsourceOption) setValidateirrigationsource(1)
+        if (!selectedlandtypeOption) setValidatelandtype(1)
+        if (!selectedVillageOption) setValidateVaillage(1)
+        if (!selectedTalukaOption) setValidateTaluka(1)
+        if (!selectedDistrictOption) setValidateDistrict(1)
+        if (!selectedStateOption) setValidateState(1)
+      }} >
         <div className="dark:bg-gray-800 p-4 rounded-lg border border-gray-300 dark:border-gray-500 space-y-3  md:grid grid-cols-3 gap-[1rem]">
           <div className='mt-3'>
             <Label htmlFor="Name"> First Name <span className='text-red-500'>*</span> </Label>
@@ -337,12 +432,12 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
                     isSelected ? "react-select__option--is-selected" : "react-select__option",
                   placeholder: () => "react-select__placeholder",
                 }}
-                value={selectedpackingTypeOption}
-                onChange={(e) => { IspackingTypedata(e) }}
-                options={packingtypeoption}
+                value={selectedStateOption}
+                onChange={(e) => { IsStatedata(e) }}
+                options={stateoption}
                 isClearable={true}
               />
-              {validatepackingType == 1 ? ( <FormFeedback type="invalid" className="text-Red text-sm"> Please Select packing type </FormFeedback> ) : null}
+              {validateState == 1 ? ( <FormFeedback type="invalid" className="text-Red text-sm"> Please select state </FormFeedback> ) : null}
             </div>
           </div>
 
@@ -359,12 +454,12 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
                     isSelected ? "react-select__option--is-selected" : "react-select__option",
                   placeholder: () => "react-select__placeholder",
                 }}
-                value={selectedpackingTypeOption}
-                onChange={(e) => { IspackingTypedata(e) }}
-                options={packingtypeoption}
+                value={selectedDistrictOption}
+                onChange={(e) => { IsDistrictdata(e) }}
+                options={districtoption}
                 isClearable={true}
               />
-              {validatepackingType == 1 ? ( <FormFeedback type="invalid" className="text-Red text-sm"> Please Select packing type </FormFeedback> ) : null}
+              {validateDistrict == 1 ? ( <FormFeedback type="invalid" className="text-Red text-sm"> Please select district </FormFeedback> ) : null}
             </div>
           </div>
 
@@ -381,12 +476,12 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
                     isSelected ? "react-select__option--is-selected" : "react-select__option",
                   placeholder: () => "react-select__placeholder",
                 }}
-                value={selectedpackingTypeOption}
-                onChange={(e) => { IspackingTypedata(e) }}
-                options={packingtypeoption}
+                value={selectedTalukaOption}
+                onChange={(e) => { IsTalukadata(e) }}
+                options={talukaoption}
                 isClearable={true}
               />
-              {validatepackingType == 1 ? ( <FormFeedback type="invalid" className="text-Red text-sm"> Please Select packing type </FormFeedback> ) : null}
+              {validateTaluka == 1 ? ( <FormFeedback type="invalid" className="text-Red text-sm"> Please select taluka </FormFeedback> ) : null}
             </div>
           </div>
 
@@ -403,12 +498,12 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
                     isSelected ? "react-select__option--is-selected" : "react-select__option",
                   placeholder: () => "react-select__placeholder",
                 }}
-                value={selectedpackingTypeOption}
-                onChange={(e) => { IspackingTypedata(e) }}
-                options={packingtypeoption}
+                value={selectedVillageOption}
+                onChange={(e) => { IsVillagedata(e) }}
+                options={villageoption}
                 isClearable={true}
               />
-              {validatepackingType == 1 ? ( <FormFeedback type="invalid" className="text-Red text-sm"> Please Select packing type </FormFeedback> ) : null}
+              {validateVaillage == 1 ? ( <FormFeedback type="invalid" className="text-Red text-sm"> Please select village </FormFeedback> ) : null}
             </div>
           </div>
 
@@ -517,7 +612,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
           </div>
 
           <div>
-            <Label htmlFor="heard_aboutus"> Heard Aboutus <span className='text-red-500'>*</span></Label>
+            <Label htmlFor="heard_aboutus"> Heard About us <span className='text-red-500'>*</span></Label>
             <div className="mt-1">
               <Select
                 className="w-full dark:text-white"
@@ -546,7 +641,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
                 name="refname"
                 className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
                 placeholder="Enter refname"
-                type="text"
+                type="number"
                 onChange={validation.handleChange}
                 onBlur={validation.handleBlur}
                 value={validation.values?.refname|| ""}

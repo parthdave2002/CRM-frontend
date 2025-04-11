@@ -199,4 +199,5 @@ export const DelLeadlistApi = async (requserdata) => await api.delete(url.DELETE
 // ==========  sales executive API =========================
 export const SalesExcutiveDashboardlistApi = (requserdata) => api.get(url.GET_SALES_DASHBOARD_DATA, requserdata);
 export const SalesExcutiveCallbacklistApi = (requserdata) => api.get(url.GET_CALLBACK_DATA, requserdata);
+export const MarkasDonelistApi = (requserdata) => api.get(url.GET_MARK_AS_DONE_DATA, requserdata);
 

@@ -1,7 +1,9 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa6";
 import SalesFarmerDashboard from "./salesFarmerDashboard";
 import SalesMobileInput from "../../components/input/salesMobileInput";
+import { useDispatch, useSelector } from "react-redux";
+import { getFarmerComplainlist } from "../../Store/actions";
 
 interface PropsData{
     setDatactive :any;
@@ -10,11 +12,21 @@ interface PropsData{
 }
 
 const SalesUpcomingComplainPage : FC <PropsData> = function ({ setDatactive, openProfile, setOpenProfile})  {
+    
+    const dispatch = useDispatch()
+    
     const DashboardCall = (data:string) => setDatactive(data)
     const CloseProfileCall = () => {
         setOpenProfile(false);
         setDatactive("Farmer")
     }
+
+    const [loginUser, setLoginUser] = useState("");
+    const login = useSelector((state:any) => state.Login.Logincode);
+  
+    useEffect(() => {
+      setLoginUser(login ? login?.data?.id : null);
+    }, [login]);
     
     const ComplainData = [
         {
@@ -25,65 +37,27 @@ const SalesUpcomingComplainPage : FC <PropsData> = function ({ setDatactive, ope
             "mobile": "1234567890",
             "product": "Amaze-X wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
         },
-        {
-            "name": "Priyanka Thakar",
-            "type" : "medium",
-            "description": "this is a demo complain",
-            "created": "17-02-2025",
-            "mobile": "1234567890",
-            "product": "Amaze-X"
-        },
-        {
-            "name": "Priyanka Thakar",
-            "type" : "low",
-            "description": "this is a demo complain",
-            "created": "17-02-2025",
-            "mobile": "1234567890",
-            "product": "Amaze-X"
-        },
-        {
-            "name": "Priyanka Thakar",
-            "type" : "high",
-            "description": "this is a demo complain",
-            "created": "17-02-2025",
-            "mobile": "1234567890",
-            "product": "Amaze-X"
-        },
-        {
-            "name": "Priyanka Thakar",
-            "type" : "high",
-            "description": "this is a demo complain",
-            "created": "17-02-2025",
-            "mobile": "1234567890",
-            "product": "Amaze-X"
-        },
-        {
-            "name": "Priyanka Thakar",
-            "type" : "high",
-            "description": "this is a demo complain",
-            "created": "17-02-2025",
-            "mobile": "1234567890",
-            "product": "Amaze-X"
-        },
-        {
-            "name": "Priyanka Thakar",
-            "type" : "high",
-            "description": "this is a demo complain",
-            "created": "17-02-2025",
-            "mobile": "1234567890",
-            "product": "Amaze-X"
-        },
     ]
 
-    const ViewCall = (data:string)=>{
-        setOpenProfile(true)
-    }
+    const ViewCall = (data: string) => setOpenProfile(true)
+    const [searchComplainData, setSearchComplainData] = useState<string>("");
+    const handleChange = (data: string) => setSearchComplainData(data);
+    const handleClickCall = () => console.log("callll");
 
-      const [ searchComplainData, setSearchComplainData] = useState<string>("");
-      const handleChange = (data :string) =>  setSearchComplainData(data);
-      const handleClickCall = () => {
-        console.log("callll");
-      }
+
+    useEffect(() =>{
+        let requser = {
+            sales_id : loginUser
+        }
+        dispatch(getFarmerComplainlist(requser))
+    },[])
+
+    const [UserComplainDataList, setUserComplainDataList] = useState([]);
+    const Complainlist = useSelector((state: any) => state.Complain.SinglefarmerComplainlist?.data);
+    useEffect(() => {
+        setUserComplainDataList(Complainlist ? Complainlist : [])
+    }, [Complainlist]);
+    console.log("UserComplainDataList >>>>>>>>",UserComplainDataList);
 
     return (
         <>  

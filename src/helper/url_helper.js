@@ -112,3 +112,4 @@ export const DELETE_LEAD_LIST = "/api/lead/remove-lead";
 // ================== sales executive api =================
 export const GET_SALES_DASHBOARD_DATA = "/api/sales-executive/dashboard";
 export const GET_CALLBACK_DATA = "/api/order/get-callbacks";
+export const GET_MARK_AS_DONE_DATA = "/api/order/get-callbacks"
