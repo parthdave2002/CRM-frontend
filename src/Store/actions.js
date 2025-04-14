@@ -18,6 +18,7 @@ export * from "./Customer/action";
 export * from "./Crop/action";
 export * from "./Lead/action";
 export * from "./Complain/action";
+export * from "./Location/action";
 
 //  ==========   sales exective =========================
 export * from "./SalesExecutive/dashboard/action";

@@ -10,6 +10,7 @@ import { Input } from 'reactstrap';
 import { AddOrderlist, getUpdateOrderlist, ResetOrderlist } from '../../Store/actions';
 import { toast } from 'react-toastify';
 import { BsCartXFill } from 'react-icons/bs';
+import Cookies from 'js-cookie';
 
 interface Cartprops{
   setCartOpen : (value : boolean) => void;
@@ -49,13 +50,15 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
   const [cartItems, setCartItems] = useState(CartData || [])
 
   // ----------- Customer data getcode start ----------------
-    const CheckCustomerExistlist = useSelector((state: any) => state.Customer.CheckCustomerExistlist);
-    const [data, setData] = useState<ProfileInfo>()
-    useEffect(() => {
-      if (CheckCustomerExistlist?.data) {
-        setData(CheckCustomerExistlist?.data)
-      }
-    }, [CheckCustomerExistlist])
+        const [data, setData] = useState<ProfileInfo>()
+        const [data_id, setData_id] = useState(null)
+
+        useEffect(() => {
+            const customerDataString = Cookies.get("customer_data");
+            const customerData = customerDataString ? JSON.parse(customerDataString) : []    
+            setData(customerData ? customerData  : null);
+            setData_id(customerData?._id ? customerData?._id  : null);
+        },[]);
   // ----------- Customer data getcode end ----------------
 
   // ----------- Product Qty Change data getcode start ----------------
@@ -88,7 +91,7 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
       const productsArray = Object.entries(productQty).map(([id, quantity]) => ({ id, quantity}));
       let requser :any = {
         products : productsArray,
-        customer : "67c0b0e7749eda2a24d948d4",
+        customer : data_id,
         order_type : isOrderTypeModel,
         total_amount : grandTotal.toFixed(2),
       }

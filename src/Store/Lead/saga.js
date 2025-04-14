@@ -66,13 +66,11 @@ function* onResetLeadlist() {
     yield put(ResetLeadlistSuccess(RESET_LEAD_LIST, response));
 }
 
-function* CropSaga() {
+function* LeadSaga() {
   yield takeEvery(GET_LEAD_LIST, ongetLeadlist);
   yield takeEvery(ADD_LEAD_LIST, onAddLeadlist);
   yield takeEvery(MARK_AS_READ_LEAD_LIST, onMarkLeadlist);
-
-  
   yield takeEvery(DELETE_LEAD_LIST, onDelCropList);
   yield takeEvery(RESET_LEAD_LIST, onResetLeadlist);
 }
-export default CropSaga;
+export default LeadSaga;

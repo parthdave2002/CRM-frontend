@@ -8,6 +8,7 @@ import ComplainDetails from '../../components/salesComponent/complainDetails';
 import ExamplePagination from '../../components/pagination';
 import { getFarmerComplainlist, getFarmerOrderlist } from '../../Store/actions';
 import { useDispatch, useSelector } from 'react-redux';
+import Cookies from 'js-cookie';
 
 interface FarmerHistoryProps{
   setOpenDetailId : ( value : any) => void;
@@ -21,11 +22,26 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
   const dispatch = useDispatch()
 
   useEffect(() =>{
-    let requser ={
-      customer_id : "67c0b0e7749eda2a24d948d4"
+    const customerDataString = Cookies.get("customer_data");
+    let customerData = null;
+  
+    try {
+      customerData = customerDataString ? JSON.parse(customerDataString) : null;
+      // console.log("Parsed customer_data:", customerData);
+    } catch (error) {
+      console.error("Failed to parse customer_data:", error);
     }
-    dispatch(getFarmerOrderlist(requser));
-    dispatch(getFarmerComplainlist(requser))
+  
+    const customerId = customerData?._id || null;
+    // console.log("Using customerId:", customerId);
+  
+    if (customerId) {
+      const requser = {
+        customer_id: customerId,
+      };
+      dispatch(getFarmerOrderlist(requser));
+      dispatch(getFarmerComplainlist(requser));
+    }
   },[])
 
   // ------------- Get  Data From Reducer Code Start --------------

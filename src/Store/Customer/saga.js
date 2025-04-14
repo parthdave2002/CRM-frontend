@@ -26,6 +26,7 @@ import {
 } from "./actionType";
 import { CustomerlistApi, AddCustomerlistApi, DelCustomerlistApi, BlockCustomerlistApi, CheckCustomerApi} from "../../helper/Demo_helper";
 import { toast } from "react-toastify";
+import Cookies from "js-cookie";
 
 function* onGetCustomerDatalist({ payload: requstuser }) {
   try {
@@ -40,7 +41,9 @@ function* onAddCustomerList({ payload: requstuser }) {
   try {
     const response = yield call(AddCustomerlistApi, requstuser);
     yield put(AddCustomerDatalistSuccess(ADD_CUSTOMER_DATA_LIST, response));
+    Cookies.set('customer_data', JSON.stringify(response?.data), { expires: 1 });
   } catch (error) {
+    toast.error(error?.msg)
     yield put(AddCustomerDatalistFail(error));
   }
 }
@@ -84,6 +87,7 @@ function* onCheckCustomerList({ payload: requstuser }) {
   try {
     const response = yield call(CheckCustomerApi, requstuser);
     yield put(CheckCustomerExistSuccess(CHECK_CUSTOMER_EXIST_LIST, response));
+    Cookies.set('customer_data', JSON.stringify(response?.data), { expires: 1 });
   } catch (error) {
     yield put(CheckCustomerExistFail(error));
   }

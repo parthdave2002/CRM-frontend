@@ -201,3 +201,8 @@ export const SalesExcutiveDashboardlistApi = (requserdata) => api.get(url.GET_SA
 export const SalesExcutiveCallbacklistApi = (requserdata) => api.get(url.GET_CALLBACK_DATA, requserdata);
 export const MarkasDonelistApi = (requserdata) => api.get(url.GET_MARK_AS_DONE_DATA, requserdata);
 
+// Location API
+export const StatelistApi = (requserdata) => api.get(url.GET_STATE_DATA_LIST, requserdata);
+export const DistrictlistApi = (requserdata) => api.get(url.GET_DISTRICT_DATA_LIST, requserdata);
+export const TalukalistApi = (requserdata) => api.get(url.GET_TALUKA_DATA_LIST, requserdata);
+export const VillagelistApi = (requserdata) => api.get(url.GET_VILLAGE_DATA_LIST, requserdata);

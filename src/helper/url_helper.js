@@ -113,3 +113,8 @@ export const DELETE_LEAD_LIST = "/api/lead/remove-lead";
 export const GET_SALES_DASHBOARD_DATA = "/api/sales-executive/dashboard";
 export const GET_CALLBACK_DATA = "/api/order/get-callbacks";
 export const GET_MARK_AS_DONE_DATA = "/api/order/get-callbacks"
+
+export const GET_STATE_DATA_LIST = "/api/location/get-state";
+export const GET_DISTRICT_DATA_LIST = "/api/location/get-district";
+export const GET_TALUKA_DATA_LIST = "/api/location/get-taluka";
+export const GET_VILLAGE_DATA_LIST = "/api/location/get-village";

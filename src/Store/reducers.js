@@ -18,6 +18,7 @@ import Customer from "./Customer/reducer";
 import Crop from "./Crop/reducer";
 import Lead from "./Lead/reducer";
 import Complain from "./Complain/reducer";
+import Location from "./Location/reducer";
 import SalesDashboard from "./SalesExecutive/dashboard/reducer";
 
 const rootReducer = combineReducers({
@@ -41,7 +42,8 @@ const rootReducer = combineReducers({
     Crop,
     Lead,
     Complain,
-    SalesDashboard
+    SalesDashboard,
+    Location
 });
 
 export default rootReducer;
