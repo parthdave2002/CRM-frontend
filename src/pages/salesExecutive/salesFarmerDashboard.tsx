@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
-import {  FaOpencart, FaPencilAlt, FaPowerOff } from 'react-icons/fa'
+import {  FaPencilAlt, FaPowerOff } from 'react-icons/fa'
 import SalesAddFarmer from './salesAddFarmer';
 import LogoutModal from '../../components/modal/logoutModal';
 import FarmerHistory from './farmerHistory';
@@ -8,31 +8,60 @@ import { TiShoppingCart } from "react-icons/ti";
 import Salesproductlist from '../../components/productdetails/salesproductlist';
 import ProductDetailData from '../../components/productdetails/salesproductDetails';
 import SalesMobileInput from '../../components/input/salesMobileInput';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import CartList from './cart';
 import OrderDetails from '../../components/salesComponent/orderDetails';
 import { toast } from 'react-toastify';
+import Cookies from 'js-cookie';
+
 interface PropsData{
   setOpenProfile : (value: boolean) => void;
 }
 
-const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile}) => {
+interface ProfileInfo{
+  crops: [];
+  is_deleted:  boolean;
+  _id: string;
+  customer_name : string; 
+  mobile_number:  number;
+  land_area: number;
+  land_type: string;
+  irrigation_source: string;
+  irrigation_type:  string;
+  heard_about_agribharat:  string;
+  address: string;
+  district:  string;
+  taluka:  string;
+  village:  string;
+  pincode:  number;
+  created_by:  string;
+  __v: number;
+  alternate_number: number;
+  added_at:  string;
+  smart_phone: boolean;
+}
 
+const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile}) => {
+  const dispatch = useDispatch()
   const [farmedAdded, setFarmerAdded] = useState(false);
+  const [isLoading, setisLoading] = useState(true);
   const [ isEditFarmer, setIsEditFarmer] = useState(false);
 
   const CheckCustomerExistlist = useSelector((state: any) => state.Customer.CheckCustomerExistlist);
   useEffect(() => {
+    // console.log("CheckCustomerExistlist?.success", CheckCustomerExistlist?.success);
     if (CheckCustomerExistlist?.success == true) {
       setFarmerAdded(false)
+      setisLoading(false)
     }
     else {
       setFarmerAdded(true)
+      setisLoading(false)
     }
-  }, [CheckCustomerExistlist])
+  }, [CheckCustomerExistlist?.success])
 
   const EditFarmerCall = () => {
-    setFarmerAdded(true)
+    setFarmerAdded(true) 
     setIsEditFarmer(true)
   }
 
@@ -41,6 +70,7 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile}) => {
     const LogOutCall = () =>  setLogoutModal(true)
     const handleClose = () =>  setLogoutModal(false)
     const handleAccept = () =>{
+      Cookies.remove("customer_data");
       setLogoutModal(false)
       setOpenProfile(false)
     }
@@ -106,9 +136,9 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile}) => {
   return (
     <>
 
-      {farmedAdded == true ?
+      { !isLoading && farmedAdded == true  ?
         <SalesAddFarmer isEditFarmer={isEditFarmer} setFarmerAdded={setFarmerAdded}  />
-      :
+      : farmedAdded == false && !isLoading ?
         <>
           {cartOpen == true ?
             <div>  <CartList setCartOpen={setCartOpen} setCartItem={setCartItem} CartData={cartItem} handleRemoveCall={handleRemoveCall} cartOrderid={cartOrderid} setCartOrderid={setCartOrderid} /> </div>
@@ -158,7 +188,7 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile}) => {
 
           <LogoutModal openModal={logoutModal} handleClose={handleClose} handleAccept={handleAccept} />
         </>
-      }
+     : null }
       
     </>
   )

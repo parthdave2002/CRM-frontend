@@ -9,6 +9,7 @@ import { AddComplainlist, ResetComplainlist } from '../../Store/actions';
 import SuccessErrorModalPage from '../../components/modal/successErrorModal';
 import { MdNoteAlt } from 'react-icons/md';
 import { FaAddressCard } from 'react-icons/fa';
+import Cookies from 'js-cookie';
 
 interface ComplainCreateProps{
     setisOpenComplainCreateModel :  ( value :  boolean ) => void;
@@ -21,6 +22,12 @@ interface ComplainCreateProps{
 const ComplainCreate : FC <ComplainCreateProps> = ({setisOpenComplainCreateModel,isOpenComplainCreateModel, orderId, product_id, orderItem}) => {
     
     const dispatch  = useDispatch();
+    const [data, setData] = useState(null)
+    useEffect(() => {
+        const customerDataString = Cookies.get("customer_data");
+        const customerData = customerDataString ? JSON.parse(customerDataString) : []    
+        setData(customerData?._id ? customerData?._id  : null);
+    },[]);
 
     useEffect(() =>{
         validation.values.comment= "";
@@ -107,7 +114,7 @@ const ComplainCreate : FC <ComplainCreateProps> = ({setisOpenComplainCreateModel
                 title: values?.title,
                 product_id: product_id ? [product_id] : selectedproductid,
                 order_id: orderId,
-                customer_id: "67c0b0e7749eda2a24d948d4",
+                customer_id: data,
                 priority: selectedpriorityid,
                 Comment: [{ "comment": values?.comment }],
                 resolution: "open"

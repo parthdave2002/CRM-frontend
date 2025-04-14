@@ -110,6 +110,7 @@ const Customer = (state = INIT_STATE, action) => {
             CurrentPage: 1,
             AddCustomerlist: [],
             DeleteCustomerlist: [],
+            CheckCustomerExistlist:[],
             error: {},
           };
       }

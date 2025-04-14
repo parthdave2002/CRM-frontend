@@ -52,8 +52,7 @@ const CustomerDetailsPage: FC = function () {
   useEffect(() => {
     setUserDataList(Customerlist ? Customerlist  : null);
   }, [Customerlist]);
-  console.log("UserDataList", UserDataList);
-  
+
   //  ------------- Get User Data From Reducer Code Start --------------
 
   let Name = "Customer Details";

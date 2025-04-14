@@ -19,6 +19,7 @@ import CustomerSaga from "./Customer/saga";
 import CropSaga from "./Crop/saga";
 import LeadSaga from "./Lead/saga";
 import ComplainSaga from "./Complain/saga";
+import LocationSaga from "./Location/saga";
 import SalesDashboardSaga from "./SalesExecutive/dashboard/saga";
 
 export default function* rootSaga() {
@@ -43,5 +44,6 @@ export default function* rootSaga() {
     fork(LeadSaga),
     fork(ComplainSaga),
     fork(SalesDashboardSaga),
+    fork(LocationSaga)
   ]);
 }

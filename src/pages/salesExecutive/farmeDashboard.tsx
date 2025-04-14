@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useState } from 'react'
-import { FaPencilAlt } from 'react-icons/fa';
 import { MdKeyboardArrowDown, MdKeyboardArrowRight, MdKeyboardArrowUp } from 'react-icons/md'
-import { useSelector } from 'react-redux';
+import Cookies from 'js-cookie';
 
 interface DashboardProps{
   classData ?: string;
@@ -37,13 +36,16 @@ const FarmeDashboard : FC <DashboardProps> = ({classData, viewButton}) => {
     setExpanded(!expanded);
   };
 
-  const CheckCustomerExistlist = useSelector((state: any) => state.Customer.CheckCustomerExistlist);
   const [data, setData] = useState<ProfileInfo>()
-  useEffect(() => {
-    if (CheckCustomerExistlist?.data) {
-      setData(CheckCustomerExistlist?.data)
-    }
-  }, [CheckCustomerExistlist])
+  console.log("data >>>>>>>>>", data);
+  
+    //  -------------Farmer Data get  code start ----------------------
+        useEffect(() => {
+          const customerDataString = Cookies.get("customer_data");
+          const customerData = customerDataString ? JSON.parse(customerDataString) : []    
+          setData(customerData ? customerData  : null);
+        },[]);
+    //  -------------Farmer Data get  code end  ----------------------
 
   return (
     <div className={classData}> 
@@ -63,7 +65,7 @@ const FarmeDashboard : FC <DashboardProps> = ({classData, viewButton}) => {
               <div className="dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] ">  <div className="w-[10rem]" >Irrigation Source </div>   <div>: {data?.irrigation_source}</div>   </div>
               <div className="dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] ">  <div className="w-[10rem]" >Irrigation type </div>  <div> : {data?.irrigation_type}</div>    </div>
               <div className="dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] ">  <div className="w-[10rem]" >Smart phone user</div>  <div> : {data?.smart_phone == true ? "Yes" : "No"}</div>   </div>
-              <div className="dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] ">  <div className="w-[10rem]"  >Crops </div>  <div>: {data?.crops}</div>   </div>
+              {/* <div className="dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] ">  <div className="w-[10rem]"  >Crops </div>  <div>: {data?.crops}</div>   </div> */}
               <div className="dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] ">  <div className="w-[10rem]" >Heard about us </div> <div>: {data?.heard_about_agribharat} </div>   </div>
             </>
           )}

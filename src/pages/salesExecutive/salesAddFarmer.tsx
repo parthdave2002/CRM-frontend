@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
 import Select from "react-select";
 import { toast } from 'react-toastify';
+import { AddCustomerDatalist, getCroplist, getdistrictdata, getstatedatalist, gettalukadata, getvillagedata, ResetCustomerDatalist } from '../../Store/actions';
 
 interface ProfileData{
   isEditFarmer ?: boolean;
@@ -17,9 +18,36 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
   const dispatch = useDispatch();
 
   // ------------- State Get Data From Reducer Code Start --------------
-    const stateoption = [
-      { label :"Gujarat", value : "Gujarat"},
-    ]
+  useEffect(() =>{
+    dispatch(getstatedatalist())
+  },[])
+
+  const stateoption = useSelector((state: any) => state.Location.Statedatalist?.data)?.map(
+    (item: any) => ({
+      label: item.name,
+      value: item._id
+    })
+  );
+  const districtoption = useSelector((state: any) => state.Location.Districtdatalist?.data)?.map(
+    (item: any) => ({
+      label: item.name,
+      value: item._id
+    }));
+
+  const talukaoption = useSelector((state: any) => state.Location.Talukadatalist?.data)?.map(
+    (item: any) => ({
+      label: item.name,
+      value: item._id
+    })
+  );
+
+  const villageoption = useSelector((state: any) => state.Location.Villagedatalist?.data)?.map(
+    (item: any) => ({
+      label: item.name,
+      value: item._id
+    })
+  );
+
     const [selectedStateOption, setSelectedStateOption] = useState<{ label: string, value: string } | null>(null);
     const [selectedStateid, setSelectedStateid] = useState<string | null>(null);
     const [validateState, setValidateState] = useState(0);
@@ -29,18 +57,40 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
         setSelectedStateid("");
         setSelectedStateOption(null);
         setValidateState(1)
+        setSelectedDistrictid("");
+        setSelectedDistrictOption(null);
+        setValidateDistrict(1)
+        setSelectedTalukaid("");
+        setSelectedTalukaOption(null);
+        setValidateTaluka(1);
+        setSelectedVillageid("");
+        setSelectedVillageOption(null);
+        setValidateVaillage(1)
       } else {
         setSelectedStateid(data.value);
         setSelectedStateOption(data);
-        setValidateState(0)
+        setValidateState(0);
+        setSelectedDistrictid("");
+        setSelectedDistrictOption(null);
+        setValidateDistrict(1)
+        setSelectedTalukaid("");
+        setSelectedTalukaOption(null);
+        setValidateTaluka(1);
+        setSelectedVillageid("");
+        setSelectedVillageOption(null);
+        setValidateVaillage(1)
       }
     };
   //  ------------- State Get Data From Reducer Code end --------------
 
   // ------------- District Get Data From Reducer Code Start --------------
-    const districtoption = [
-      { label :"Gujarat", value : "Gujarat"},
-    ]
+  useEffect(() =>{
+    if(selectedStateid){
+      let requser ={  stateId: selectedStateid }
+      dispatch(getdistrictdata(requser))
+    }
+  },[selectedStateid])
+  
     const [selectedDistrictOption, setSelectedDistrictOption] = useState<{ label: string, value: string } | null>(null);
     const [selectedDistrictid, setSelectedDistrictid] = useState<string | null>(null);
     const [validateDistrict, setValidateDistrict] = useState(0);
@@ -50,18 +100,34 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
         setSelectedDistrictid("");
         setSelectedDistrictOption(null);
         setValidateDistrict(1)
+        setSelectedTalukaid("");
+        setSelectedTalukaOption(null);
+        setValidateTaluka(1);
+        setSelectedVillageid("");
+        setSelectedVillageOption(null);
+        setValidateVaillage(1)
       } else {
         setSelectedDistrictid(data.value);
         setSelectedDistrictOption(data);
         setValidateDistrict(0)
+        setSelectedTalukaid("");
+        setSelectedTalukaOption(null);
+        setValidateTaluka(1);
+        setSelectedVillageid("");
+        setSelectedVillageOption(null);
+        setValidateVaillage(1)
       }
     };
   //  ------------- District Get Data From Reducer Code end --------------
 
   // ------------- Taluka Get Data From Reducer Code Start --------------
-    const talukaoption = [
-      { label :"Gujarat", value : "Gujarat"},
-    ]
+  useEffect(() =>{
+    if(selectedDistrictid){
+    let requser ={ stateId: selectedStateid ,  districtId: selectedDistrictid }
+    dispatch(gettalukadata(requser))
+    }
+  },[selectedDistrictid])
+
     const [selectedTalukaOption, setSelectedTalukaOption] = useState<{ label: string, value: string } | null>(null);
     const [selectedTalukaid, setSelectedTalukaid] = useState<string | null>(null);
     const [validateTaluka, setValidateTaluka] = useState(0);
@@ -71,18 +137,28 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
         setSelectedTalukaid("");
         setSelectedTalukaOption(null);
         setValidateTaluka(1)
+        setSelectedVillageid("");
+        setSelectedVillageOption(null);
+        setValidateVaillage(1)
       } else {
         setSelectedTalukaid(data.value);
         setSelectedTalukaOption(data);
         setValidateTaluka(0)
+        setSelectedVillageid("");
+        setSelectedVillageOption(null);
+        setValidateVaillage(1)
       }
     };
   //  ------------- Taluka Get Data From Reducer Code end --------------
   
   // ------------- Village Get Data From Reducer Code Start --------------
-    const villageoption = [
-      { label :"Gujarat", value : "Gujarat"},
-    ]
+  useEffect(() =>{
+    if(selectedTalukaid){
+      let requser ={ stateId: selectedStateid ,  districtId: selectedDistrictid,  talukaId: selectedTalukaid }
+      dispatch(getvillagedata(requser))
+    }
+  },[selectedTalukaid]) 
+  
     const [selectedVillageOption, setSelectedVillageOption] = useState<{ label: string, value: string } | null>(null);
     const [selectedVillageid, setSelectedVillageid] = useState<string | null>(null);
     const [validateVaillage, setValidateVaillage] = useState(0);
@@ -104,7 +180,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
     firstname: "",
     middlename: "",
     lastname: "",
-    mobile: "",
+    mobile_number: "",
     address:"",
     alternate_mobile_no: "",
     state : "",
@@ -129,7 +205,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
     validationSchema: Yup.object({
       firstname: Yup.string().required("Please enter first name"),
       lastname: Yup.string().required("Please enter last name"),
-      mobile: Yup.string().required("Please enter mobile no").matches(/^\d{10}$/, "Please enter valid mobile number"),
+      mobile_number: Yup.string().required("Please enter mobile no").matches(/^\d{10}$/, "Please enter valid mobile number"),
       address: Yup.string().required("Please enter address"),
       pincode: Yup.string().required("Please enter pincode"),
       landarea: Yup.string().required("Please enter land area")
@@ -140,7 +216,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
         firstname: values?.firstname,
         middlename: values?.middlename,
         lastname: values?.lastname,
-        mobile: values?.mobile,
+        mobile_number: values?.mobile_number,
         alternate_mobile_no: values?.alternate_mobile_no,
         address: values?.address,
         state : selectedStateid,
@@ -152,26 +228,24 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
         land_type : selectedlandtypeid,
         irrigation_source : selectedirrigationsourceid,
         irrigation_type : selectedirrigationtypeid,
-        heard_about_us : selectedheaderaboutid,
+        heard_about_agribharat : selectedheaderaboutid,
+        smart_phone: true,
+        crops:selectedcropid,
         ref_name : values?.refname
       }
-
-      console.log("mobile", requserData);
-      // dispatch(AddCustomerDatalist(requserData));
-      validation.resetForm();
+      dispatch(AddCustomerDatalist(requserData));
     },
   });
 
   // -------------- Header about code start ---------
-
   const HeardAboutOprions= [
-    { label :"Newspaper", value : "newpaper"},
-    { label :"TV Ad", value : "tv"},
+    { label :"Newspaper", value : "newspaper"},
+    { label :"TV Ad", value : "tv add"},
     { label :"Magazine", value : "magazine"},
     { label :"Van campaign", value : "van campaign"},
     { label :"Instagram", value : "instagram"},
     { label :"Facebook", value : "facebook"},
-    { label :"What's App", value : "what's app"},
+    { label :"What's App", value : "whatsapp"},
     { label :"Linkedin", value : "linkedin"},
     { label :"Youtube", value : "youtube"},
     { label :"Brochure ", value : "brochure"},
@@ -195,14 +269,45 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
       setValidateheaderabout(0)
     }
   };
+  // -------------- Header about code end ---------
 
+   // -------------- Header about code start ---------  
+
+      const  CropOprions= useSelector((state: any) => state.Crop.Cropdatalist )?.map(
+        (item: any) => ({
+          label: item.name_eng,
+          value: item._id
+        }));
+
+  useEffect(() =>{
+    dispatch(getCroplist() )
+  },[])
+
+  const [selectedcropOption, setSelectedcropOption] = useState<{ label: string, value: string } | null>(null);
+  const [selectedcropid, setSelectedcropid] = useState<string | []>([]);
+  const [validatecrop, setValidatecrop] = useState(0);
+
+  const Iscropdata = (data: any) => {
+    if (!data || data.length === 0) {
+      setSelectedcropid([]);
+      setSelectedcropOption(null);
+      setValidatecrop(1)
+    } else {
+      const selectedIds = data.map((item: any) => item.value); 
+      setSelectedcropid(selectedIds);
+      setSelectedcropOption(data);
+      setValidatecrop(0)
+    }
+  };
   // -------------- Header about code end ---------
 
   // -------------- Irrigation source code start ---------
   const IrrigationSourceOptions= [
-    { label :"Drip", value : "drip"},
-    { label :"Sprinkler", value : "sprinkler"},
-    { label :"Flood", value : "flood"},
+    { label :"Well", value : "well"},
+    { label :"Borwell", value : "borwell"},
+    { label :"Canal", value : "canal"},
+    { label :"Other", value : "other"},
+    { label :"No source", value : "no source"},
   ]
 
   const [selectedirrigationsourceOption, setSelectedirrigationsourceOption] = useState<{ label: string, value: string } | null>(null);
@@ -220,16 +325,13 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
       setValidateirrigationsource(0)
     }
   };
-  
   // -------------- Irrigation source code end ---------
 
   // -------------- Irrigation type code start ---------
   const IrrigationTypeOptions= [
-    { label :"Well", value : "well"},
-    { label :"Borwell", value : "borwell"},
-    { label :"Canal", value : "canal"},
-    { label :"Other", value : "other"},
-    { label :"No source", value : "no source"},
+    { label :"Drip", value : "drip"},
+    { label :"Sprinkler", value : "sprinkler"},
+    { label :"Flood", value : "flood"},
   ]
 
   const [selectedirrigationtypeOption, setSelectedirrigationtypeOption] = useState<{ label: string, value: string } | null>(null);
@@ -278,17 +380,28 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
       setFarmerAdded(false)
     }
     else{
-      toast.error("Customer fields are required")
+      setFarmerAdded(false)
     }
   }
 
   // ------------- Get  Data From Reducer Code Start --------------
-    const  AddCustomerlist = useSelector((state: any) => state.Customer.AddAddCustomerlist)
-    const [ userAddedData, setUserAddedData] = useState([])
+    const  AddCustomerlist = useSelector((state: any) => state.Customer.AddCustomerlist)
+    const [ userAddedData, setUserAddedData] = useState<any>(null)
     
     useEffect(() => {
       setUserAddedData(AddCustomerlist ? AddCustomerlist  : null);
     }, [AddCustomerlist]);
+
+    useEffect(() =>{  
+      console.log("userAddedData", userAddedData);
+      
+      if(userAddedData?.success == true ){
+        toast.success(userAddedData?.msg);
+        validation.resetForm();
+        setFarmerAdded(false);
+        dispatch(ResetCustomerDatalist())
+      }
+    },[userAddedData])
   //  ------------- Get  Data From Reducer Code end --------------
 
   return (
@@ -369,17 +482,17 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
             <Label htmlFor="Name"> Mobile No <span className='text-red-500'>*</span></Label>
             <div className="mt-1">
               <Input
-                id="mobile"
-                name="mobile"
+                id="mobile_number"
+                name="mobile_number"
                 className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
                 placeholder="Enter mobile"
                 type="text"
                 onChange={validation.handleChange}
                 onBlur={validation.handleBlur}
-                value={validation.values?.mobile || ""}
-                invalid={validation.touched?.mobile && validation.errors?.mobile ? true : false}
+                value={validation.values?.mobile_number || ""}
+                invalid={validation.touched?.mobile_number && validation.errors?.mobile_number ? true : false}
               />
-              {validation.touched?.mobile && validation.errors?.mobile ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.mobile} </FormFeedback>) : null}
+              {validation.touched?.mobile_number && validation.errors?.mobile_number ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.mobile_number} </FormFeedback>) : null}
             </div>
           </div>
 
@@ -630,6 +743,29 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
                 isClearable={true}
               />
               {validateheaderabout == 1 ? (<FormFeedback type="invalid" className="text-Red text-sm"> Please select Heard Aboutus </FormFeedback>) : null}
+            </div>
+          </div>
+
+          <div>
+            <Label htmlFor="heard_aboutus"> Crops <span className='text-red-500'>*</span></Label>
+            <div className="mt-1">
+              <Select
+                className="w-full dark:text-white"
+                classNames={{
+                  control: () => "react-select__control",
+                  singleValue: () => "react-select__single-value",
+                  menu: () => "react-select__menu",
+                  option: ({ isSelected }) =>
+                    isSelected ? "react-select__option--is-selected" : "react-select__option",
+                  placeholder: () => "react-select__placeholder",
+                }}
+                value={selectedcropOption}
+                onChange={(e) => { Iscropdata(e) }}
+                options={CropOprions}
+                isClearable={true}
+                isMulti={true}
+              />
+              {validatecrop == 1 ? (<FormFeedback type="invalid" className="text-Red text-sm"> Please select crop </FormFeedback>) : null}
             </div>
           </div>
 
