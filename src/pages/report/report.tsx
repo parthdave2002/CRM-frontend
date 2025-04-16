@@ -219,17 +219,17 @@ const ReportPage: FC = function () {
                   {Customerdata && Customerdata.map((item: any, k: any) => (
                       <Table.Row  key={k}  className="hover:bg-gray-100 dark:hover:bg-gray-700">
                         <Table.Cell  className="w-4 py-0"  style={{ paddingTop: "1", paddingBottom: "1" }}  >  <Checkbox /> </Table.Cell>
-                        <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {item.customer_name} </Table.Cell>
-                        <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {item.mobile_number} </Table.Cell>
-                        <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0"> {item.address}  </Table.Cell>
-                        <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0"> {item.village}  </Table.Cell>
-                        <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {item.taluka} </Table.Cell>
-                        <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {moment(item.added_at).format("DD-MM-YYYY hh:mm:ss")}   </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.customer_name} </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.mobile_number} </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.address}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.village}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.taluka} </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {moment(item.added_at).format("DD-MM-YYYY hh:mm:ss")}   </Table.Cell>
                       </Table.Row>
                     ))}
                 </Table.Body>
               </Table>
-            ) : showReportData && selectedStatusid == "product" ? (
+            ) : showReportData && selectedStatusid == "product" ? 
               <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
                 <Table.Head className="bg-gray-100 dark:bg-gray-700">
                   <Table.HeadCell> <Checkbox id="select-all" name="select-all" /> </Table.HeadCell>
@@ -262,7 +262,7 @@ const ReportPage: FC = function () {
                     ))}
                 </Table.Body>
               </Table>
-            ) : showReportData && selectedStatusid == "order" ? (
+           : showReportData && selectedStatusid == "order" ? (
               <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
                 <Table.Head className="bg-gray-100 dark:bg-gray-700">
                   {/* <Table.HeadCell>  <Checkbox id="select-all" name="select-all" />  </Table.HeadCell> */}
@@ -278,9 +278,9 @@ const ReportPage: FC = function () {
                     Orderdata.map((item: any, k: any) => (
                       <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700"  >
                         {/* <Table.Cell  className="w-4 py-0"  style={{ paddingTop: "1", paddingBottom: "1" }} >   <Checkbox />   </Table.Cell> */}
-                        <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {moment (item.added_at).format("DD-MM-YYYY hh:mm:ss")}  </Table.Cell>
-                        <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {item.order_id}  </Table.Cell>
-                        <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {item?.customer?.customer_name}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {moment (item.added_at).format("DD-MM-YYYY hh:mm:ss")}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.order_id}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.customer?.customer_name}  </Table.Cell>
                         <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white"> { item?.total_amount} </Table.Cell>
                         <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white"> { item?.status} </Table.Cell>
                       </Table.Row>

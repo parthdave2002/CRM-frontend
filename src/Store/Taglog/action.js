@@ -15,6 +15,22 @@ import {
   DELETE_TAGLOG_LIST_SUCCESS,
   DELETE_TAGLOG_LIST_ERROR,
 
+  GET_SUB_TAGLOG_LIST,
+  GET_SUB_TAGLOG_LIST_SUCCESS,
+  GET_SUB_TAGLOG_LIST_ERROR,
+
+  ADD_SUB_TAGLOG_LIST,
+  ADD_SUB_TAGLOG_LIST_SUCCESS,
+  ADD_SUB_TAGLOG_LIST_ERROR,
+
+  CHANGE_STATUS_SUB_TAGLOG_LIST,
+  CHANGE_STATUS_SUB_TAGLOG_LIST_SUCCESS,
+  CHANGE_STATUS_SUB_TAGLOG_LIST_ERROR,
+  
+  DELETE_SUB_TAGLOG_LIST,
+  DELETE_SUB_TAGLOG_LIST_SUCCESS,
+  DELETE_SUB_TAGLOG_LIST_ERROR,
+
   REST_TAGLOG_LIST,
   REST_TAGLOG_LIST_SUCCESS,
   REST_TAGLOG_LIST_ERROR
@@ -77,6 +93,66 @@ export const ChangeStatusTagloglistSuccess = (actionType, data) => ({
 
 export const ChangeStatusTagloglistFail = (actionType, error) => ({
   type: CHANGE_STATUS_TAGLOG_LIST_ERROR,
+  payload: { actionType, error },
+});
+
+export const getSubTagloglist = (requserdata) => ({
+  type: GET_SUB_TAGLOG_LIST,
+  payload: requserdata,
+});
+
+export const getSubTagloglistSuccess = (actionType, data) => ({
+  type: GET_SUB_TAGLOG_LIST_SUCCESS,
+  payload: { actionType, data },
+});
+
+export const getSubTagloglistFail = (actionType, error) => ({
+  type: GET_SUB_TAGLOG_LIST_ERROR,
+  payload: { actionType, error },
+});
+
+export const AddSubTagloglist = (requserdata) => ({
+  type: ADD_SUB_TAGLOG_LIST,
+  payload: requserdata,
+});
+
+export const AddSubTagloglistSuccess = (actionType, data) => ({
+  type: ADD_SUB_TAGLOG_LIST_SUCCESS,
+  payload: { actionType, data },
+});
+
+export const AddSubTagloglistFail = (actionType, error) => ({
+  type: ADD_SUB_TAGLOG_LIST_ERROR,
+  payload: { actionType, error },
+});
+
+export const DeleteSubTagloglist = (requserdata) => ({
+  type: DELETE_SUB_TAGLOG_LIST,
+  payload: requserdata,
+});
+
+export const DeleteSubTagloglistSuccess = (actionType, data) => ({
+  type: DELETE_SUB_TAGLOG_LIST_SUCCESS,
+  payload: { actionType, data },
+});
+
+export const DeleteSubTagloglistFail = (actionType, error) => ({
+  type: DELETE_SUB_TAGLOG_LIST_ERROR,
+  payload: { actionType, error },
+});
+
+export const ChangeStatusSubTagloglist = (requserdata) => ({
+  type: CHANGE_STATUS_SUB_TAGLOG_LIST,
+  payload: requserdata,
+});
+
+export const ChangeStatusSubTagloglistSuccess = (actionType, data) => ({
+  type: CHANGE_STATUS_SUB_TAGLOG_LIST_SUCCESS,
+  payload: { actionType, data },
+});
+
+export const ChangeStatusSubTagloglistFail = (actionType, error) => ({
+  type: CHANGE_STATUS_SUB_TAGLOG_LIST_ERROR,
   payload: { actionType, error },
 });
 
