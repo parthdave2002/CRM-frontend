@@ -435,7 +435,7 @@ const EcommerceProductsPage: FC = function () {
                       </Table.Cell>
 
                       <Table.Cell
-                        className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0"
+                        className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"
                         style={{ paddingTop: "1", paddingBottom: "1" }}
                       >
                         {item.SKU}

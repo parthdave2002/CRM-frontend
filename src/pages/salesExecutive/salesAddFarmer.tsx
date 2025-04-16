@@ -393,8 +393,6 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
     }, [AddCustomerlist]);
 
     useEffect(() =>{  
-      console.log("userAddedData", userAddedData);
-      
       if(userAddedData?.success == true ){
         toast.success(userAddedData?.msg);
         validation.resetForm();

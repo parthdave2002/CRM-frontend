@@ -142,8 +142,8 @@ const RolesPage: FC = function () {
               {RolesList && RolesList.map((item: any, k:any) => (
                   <Table.Row key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
                     <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }} > <Checkbox /> </Table.Cell>
-                    <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {item.role_title}  </Table.Cell>
-                    <Table.Cell className="whitespace-nowraptext-base font-medium text-gray-900 dark:text-white py-0">  {item.description}  </Table.Cell>
+                    <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.role_title}  </Table.Cell>
+                    <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.description}  </Table.Cell>
                     <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white">
                       {item.is_active == true ? 
                           <div className="flex items-center"><div className="mr-2 h-2.5 w-2.5 rounded-full bg-green-400"></div> Active </div>

@@ -89,6 +89,11 @@ export const ADD_TAGLOG_LIST = "/api/taglog/add-taglog";
 export const DELETE_TAGLOG_LIST = "/api/taglog/remove-taglog";
 export const CHANGE_STATUS_TAGLOG_LIST = "/api/taglog/status-taglog";
 
+export const GET_SUB_TAGLOG_LIST = "/api/taglog/get-taglog";
+export const ADD_SUB_TAGLOG_LIST = "/api/taglog/add-taglog";
+export const DELETE_SUB_TAGLOG_LIST = "/api/taglog/remove-taglog";
+export const CHANGE_STATUS_SUB_TAGLOG_LIST = "/api/taglog/status-taglog";
+
 export const GET_EXPORT_DATA_LIST = "/api/export/export-data";
 
 // Customer
