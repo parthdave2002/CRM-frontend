@@ -112,8 +112,13 @@ function* onDelSubTaglogList({ payload: requstuser }) {
 
     if(response.success === true || response.success === "true"){
        toast.success(response?.msg);
-       const response = yield call(SubTagloglistApi, requstuser);
-       yield put(getSubTagloglistSuccess(GET_SUB_TAGLOG_LIST, response));
+       let data= {
+        id :  requstuser?.taglog_id,
+        page: 1,
+        size: 10
+      }
+       const responsedata = yield call(SubTagloglistApi, data);
+       yield put(getSubTagloglistSuccess(GET_SUB_TAGLOG_LIST, responsedata));
     }
   } catch (error) {
     toast.error(error?.msg);
@@ -125,11 +130,15 @@ function* onStatusSubTaglogList({ payload: requstuser }) {
   try {
     const response = yield call(StatusSubTagloglistApi, requstuser);
     yield put(ChangeStatusSubTagloglistSuccess(CHANGE_STATUS_TAGLOG_LIST, response));
-
-    if(response.success === true || response.success === "true"){
-       toast.success(response?.msg);
-       const response = yield call(SubTagloglistApi, requstuser);
-       yield put(getSubTagloglistSuccess(GET_SUB_TAGLOG_LIST, response));
+    if(response?.success === true || response?.success === "true"){
+      toast.success(response?.msg);
+      let data= {
+        id :  requstuser?.taglog_id,
+        page: 1,
+        size: 10
+      }
+       const responsedata = yield call(SubTagloglistApi, data);
+       yield put(getSubTagloglistSuccess(GET_SUB_TAGLOG_LIST, responsedata));
     }
   } catch (error) {
     toast.error(error?.msg);
