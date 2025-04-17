@@ -6,14 +6,15 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Select from "react-select";
 import { Form, Input, FormFeedback } from "reactstrap";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { AddTagloglist, ResetTagloglist } from "../../Store/actions";
+import { AddSubTagloglist, AddTagloglist, ResetTagloglist } from "../../Store/actions";
 import { toast } from "react-toastify";
 
 const SubTaglogAddPage : FC = function () {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const  { id } = useParams();
 
     // ------ status code start ------
     const [selectedactiveOption, setSelectedactiveOption] = useState(null);
@@ -49,10 +50,11 @@ const SubTaglogAddPage : FC = function () {
         onSubmit: (values) => {
           if(selectedactiveid == null) return setValidateactive(1)
           let requserdata = {
-            taglog_name: values?.name,
+            taglog_id : id,
+            name: values?.name,
             is_active: selectedactiveid,
           };
-          dispatch(AddTagloglist(requserdata));
+          dispatch(AddSubTagloglist(requserdata));
         },
     });
 
@@ -68,15 +70,12 @@ const SubTaglogAddPage : FC = function () {
     ]
 
     // ------------- Get  Data From Reducer Code Start --------------
-        const { AddTagloglistData  } = useSelector((state: any) => ({
-            AddTagloglistData : state.Taglog.AddTagloglist,
-        }));
+        const  AddTagloglistData = useSelector((state: any) =>  state.Taglog.AddSubTagloglist );
 
         useEffect(() => {  
             if(AddTagloglistData?.success == true){
                 dispatch(ResetTagloglist())
                 toast.success(AddTagloglistData?.msg);
-               
                 navigate(ParentLink)
                 validation.resetForm();
                 setSelectedactiveid(null);

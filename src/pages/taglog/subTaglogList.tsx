@@ -1,24 +1,24 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { Button, Checkbox, Table} from "flowbite-react";
 import type { FC } from "react";
-import { HiOutlinePencilAlt, HiTrash} from "react-icons/hi";
+import {  HiTrash} from "react-icons/hi";
 import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
 import { useDispatch, useSelector } from "react-redux";
-import { ChangeStatusTagloglist, DeleteTagloglist,  getTagloglist } from "../../Store/actions";
+import { ChangeStatusSubTagloglist, ChangeStatusTagloglist, DeleteSubTagloglist, DeleteTagloglist,  getSubTagloglist,  getTagloglist } from "../../Store/actions";
 import { lazy, Suspense, useEffect, useState } from "react";
 import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import moment from "moment";
-import { FaExchangeAlt, FaExclamationCircle } from "react-icons/fa";
-import { BiSolidAddToQueue } from "react-icons/bi";
+import { FaExchangeAlt } from "react-icons/fa";
 import Cookies from "js-cookie";
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 const ToastMessage = lazy(() => import("../../components/ToastMessage"));
 
-const TaglogListPage: FC = function () {
+const SubTaglogListPage: FC = function () {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { id } = useParams()
   const [isOpenDelteModel, setisOpenDelteModel] = useState(false);
   const [TaglogList, setTaglogList] = useState([]);
   
@@ -33,11 +33,11 @@ const TaglogListPage: FC = function () {
 
   //--------- Access Data Code end------------------
   
-    const { Tagloglist,  TagloglistSize, TotalTaglogData, CurrentPage, permissionsdata } = useSelector((state: any) => ({
-      Tagloglist: state.Taglog.Tagloglist,
-      TagloglistSize: state.Taglog.TagloglistSize,
-      TotalTaglogData: state.Taglog.TotalTaglogData,
-      CurrentPage: state.Taglog.CurrentPage,
+    const { SubTagloglist,  SubTagloglistSize, SubTotalTaglogData, SubCurrentPage, permissionsdata } = useSelector((state: any) => ({
+        SubTagloglist: state.Taglog.SubTagloglist,
+        SubTagloglistSize: state.Taglog.SubTagloglistSize,
+        SubTotalTaglogData: state.Taglog.SubTotalTaglogData,
+        SubCurrentPage: state.Taglog.SubCurrentPage,
       permissionsdata: state.Login.permissionsdata
     }));
     
@@ -76,20 +76,21 @@ const TaglogListPage: FC = function () {
 
   // ------------- Get  Data From Reducer Code Start --------------
     useEffect(() => {
-      let requserdata: { page: number; size: number; search?: string } = {
+      let requserdata: { id: string | undefined; page: number; size: number; search?: string } = {
+        id : id,
         page: PageNo,
         size: RoePerPage
       };
       if (searchData)  requserdata.search = searchData;
-      dispatch(getTagloglist(requserdata));
+      dispatch(getSubTagloglist(requserdata));
     }, [dispatch, PageNo, RoePerPage, searchData]);
 
     useEffect(() => {        
-      setTaglogList(Tagloglist? Tagloglist : []);
-      setTotalListData(TotalTaglogData ? TotalTaglogData : 0);
-      setCurrentUserListSize(TagloglistSize ? TagloglistSize : 0);
-      setCurrentPageNo(CurrentPage ? CurrentPage : 1);
-    }, [Tagloglist,  TagloglistSize, TotalTaglogData, CurrentPage]);
+      setTaglogList(SubTagloglist? SubTagloglist : []);
+      setTotalListData(SubTotalTaglogData ? SubTotalTaglogData : 0);
+      setCurrentUserListSize(SubTagloglistSize ? SubTagloglistSize : 0);
+      setCurrentPageNo(SubCurrentPage ? SubCurrentPage : 1);
+    }, [SubTagloglist,  SubTagloglistSize, SubTotalTaglogData, SubCurrentPage]);
   //  ------------- Get Data From Reducer Code end --------------
 
   // ------------  Delete Code Start ------------
@@ -100,8 +101,8 @@ const TaglogListPage: FC = function () {
     };
 
     const DeletepackingType = () => {
-      let rqeuserdata = { id: Delete_id };
-      dispatch(DeleteTagloglist(rqeuserdata));
+      let rqeuserdata = { taglog_id : id , id: Delete_id };
+      dispatch(DeleteSubTagloglist(rqeuserdata));
       setisOpenDelteModel(false);
     };
   // -------  Delete Code End ---------------
@@ -116,31 +117,20 @@ const TaglogListPage: FC = function () {
     navigate("/taglog/add")
   }
 
-  const DetailsPageCall = (id:any) =>{
-    navigate(`/taglog/details/${id}`)
+
+  const ChangestatusFuncall = (data: string) => {
+    let rqeuserdata = { taglog_id : id,   id: data };
+    dispatch(ChangeStatusSubTagloglist(rqeuserdata))
   }
 
-  const ChangestatusFuncall = (id: any) => {
-    let rqeuserdata = { id: id };
-    dispatch(ChangeStatusTagloglist(rqeuserdata))
-  }
-
-  const getEditTaglogData = (id:any) =>{
-    navigate(`/subtaglog/list/${id}`)
-  }
-
-  const AddSubTaglogData = (id:any) =>{
-    navigate(`/subtaglog/add/${id}`)
-  }
-
-  let Name = "Taglog List";
-  let Searchplaceholder = "Search For Taglog (Name)";
+  let Name = "SubTaglog List";
+  let Searchplaceholder = "Search For SubTaglog (Name)";
   let AddAccess = AccessList?.add;
 
   return (
     <>
       <NavbarSidebarLayout isFooter={false}  isSidebar={true} isNavbar={true} isRightSidebar={true}>
-        <ExampleBreadcrumb  Name={Name} Searchplaceholder={Searchplaceholder} searchData={searchData} Changename= {Changename} isOpenAddModel= {OpenAddModel} AddAccess={AddAccess}/>
+        <ExampleBreadcrumb  Name={Name} Searchplaceholder={Searchplaceholder} searchData={searchData} Changename= {Changename} />
     
           <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
               <Table.Head className="bg-gray-100 dark:bg-gray-700">
@@ -154,8 +144,8 @@ const TaglogListPage: FC = function () {
               <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
                   {TaglogList && TaglogList.map((item: any, k) => (
                         <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
-                          <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item._id} onClick={() => {CheckData(item._id)}}/>  </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.taglog_name} </Table.Cell>
+                          <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item?._id} onClick={() => {CheckData(item?._id)}}/>  </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.name} </Table.Cell>
                           <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white">
                             {item.is_active == true ? <div className="flex items-center">  <div className="mr-2 h-2.5 w-2.5 rounded-full bg-green-400"></div> Active  </div>
                             : <div className="flex items-center">  <div className="mr-2 h-2.5 w-2.5 rounded-full bg-Red"></div> Deactive  </div>}
@@ -163,10 +153,8 @@ const TaglogListPage: FC = function () {
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item.createdAt).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
                           <Table.Cell className="space-x-2 whitespace-nowrap py-0">
                             <div className="flex items-center gap-x-3">
-                              {AccessList?.edit ? <Button  gradientDuoTone="greenToBlue" onClick={() => ChangestatusFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton min-w-[5rem] text-center font-semibold"> <FaExchangeAlt className="text-lg font-semibold" />  Change status </div> </Button> : null}
-                              {AccessList?.delete ?  <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete Taglog </div> </Button> : null } 
-                              {AccessList?.add ?  <Button gradientDuoTone="greenToBlue" onClick={() => AddSubTaglogData(item._id)} > <div className="flex items-center gap-x-2">  <BiSolidAddToQueue className="text-lg" />  Add Sub-Taglog  </div></Button> : null}
-                              {AccessList?.add ?  <Button gradientDuoTone="greenToBlue" onClick={() => getEditTaglogData(item._id)} > <div className="flex items-center gap-x-2">  <BiSolidAddToQueue className="text-lg" />  Sub-Taglog  </div></Button> : null}
+                              {AccessList?.edit ? <Button  gradientDuoTone="greenToBlue" onClick={() => ChangestatusFuncall(item?._id)}><div className="flex items-center gap-x-2 deletebutton min-w-[5rem] text-center font-semibold"> <FaExchangeAlt className="text-lg font-semibold" />  Change status </div> </Button> : null}
+                              {AccessList?.delete ?  <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item?._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete Sub Taglog </div> </Button> : null } 
                             </div>
                           </Table.Cell>
                         </Table.Row>
@@ -179,7 +167,7 @@ const TaglogListPage: FC = function () {
     
         {isOpenDelteModel && (
           <Suspense fallback={<div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50"> <div className="text-white">Loading...</div> </div> }>
-            <DeleteModalPage  isOpenDelteModel={isOpenDelteModel}  name={"taglog"} setisOpenDelteModel={setisOpenDelteModel}  DelCall={DeletepackingType} />
+            <DeleteModalPage  isOpenDelteModel={isOpenDelteModel}  name={"Subtaglog"} setisOpenDelteModel={setisOpenDelteModel}  DelCall={DeletepackingType} />
           </Suspense>
         )}
 
@@ -188,4 +176,4 @@ const TaglogListPage: FC = function () {
   );
 };
 
-export default TaglogListPage;
+export default SubTaglogListPage;

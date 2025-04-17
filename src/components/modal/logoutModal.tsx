@@ -1,5 +1,10 @@
-import React, { FC } from 'react';
-import { Button, Modal } from "flowbite-react";
+import React, { FC, useState } from 'react';
+import { Button, Label, Modal } from "flowbite-react";
+import Select from "react-select";
+import { Form, FormFeedback } from 'reactstrap';
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { useDispatch, useSelector } from 'react-redux';
 
 interface PoropsData{
     openModal ?: boolean;
@@ -8,21 +13,81 @@ interface PoropsData{
 }
 
 const LogoutModal : FC <PoropsData> = ({openModal, handleClose, handleAccept}) => {
+
+    // -------------- Land type code start ---------
+    const LandTypeOptions= [
+      { label :"Acre", value : "acre"},
+      { label :"Bigha", value : "bigha"},
+      { label :"Hacter", value : "hacter"},
+    ]
+  
+    const [selectedlandtypeOption, setSelectedlandtypeOption] = useState<{ label: string, value: string } | null>(null);
+    const [selectedlandtypeid, setSelectedlandtypeid] = useState<string | null>(null);
+    const [validatelandtype, setValidatelandtype] = useState(0);
+    
+    const Islandypedata = (data: any) => {
+      if (!data) {
+        setSelectedlandtypeid("");
+        setSelectedlandtypeOption(null);
+        setValidatelandtype(1)
+      } else {
+        setSelectedlandtypeid(data.value);
+        setSelectedlandtypeOption(data);
+        setValidatelandtype(0)
+      }
+    };
+    // -------------- Land type code end ---------
+
   return (
     <>
      <Modal dismissible show={openModal} onClose={() => handleClose()}>
               <Modal.Header className='text-[1rem] font-bold'>Add Taglog</Modal.Header>
               <Modal.Body>
                 <div className="space-y-6">
-                  <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                    With less than a month to go before the European Union enacts new consumer privacy laws for its citizens,
-                    companies around the world are updating their terms of service agreements to comply.
-                  </p>
-                  <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                    The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is meant
-                    to ensure a common set of data rights in the European Union. It requires organizations to notify users as
-                    soon as possible of high-risk data breaches that could personally affect them.
-                  </p>
+                       <div className='flex-1'>
+                                    <Label htmlFor="taglog"> Taglog <span className='text-red-500'>*</span></Label>
+                                    <div className="mt-1">
+                                      <Select
+                                        className="w-full dark:text-white"
+                                        classNames={{
+                                          control: () => "react-select__control",
+                                          singleValue: () => "react-select__single-value",
+                                          menu: () => "react-select__menu",
+                                          option: ({ isSelected }) =>
+                                            isSelected ? "react-select__option--is-selected" : "react-select__option",
+                                          placeholder: () => "react-select__placeholder",
+                                        }}
+                                        value={selectedlandtypeOption}
+                                        onChange={(e) => { Islandypedata(e) }}
+                                        options={LandTypeOptions}
+                                        isClearable={true}
+                                      />
+                                      {validatelandtype == 1 ? ( <FormFeedback type="invalid" className="text-Red text-sm"> Please select taglog </FormFeedback> ) : null}
+                                    </div>
+                                  </div>
+
+
+                                   <div className='flex-1'>
+                                                <Label htmlFor="land_type"> Sub Taglog <span className='text-red-500'>*</span></Label>
+                                                <div className="mt-1">
+                                                  <Select
+                                                    className="w-full dark:text-white"
+                                                    classNames={{
+                                                      control: () => "react-select__control",
+                                                      singleValue: () => "react-select__single-value",
+                                                      menu: () => "react-select__menu",
+                                                      option: ({ isSelected }) =>
+                                                        isSelected ? "react-select__option--is-selected" : "react-select__option",
+                                                      placeholder: () => "react-select__placeholder",
+                                                    }}
+                                                    value={selectedlandtypeOption}
+                                                    onChange={(e) => { Islandypedata(e) }}
+                                                    options={LandTypeOptions}
+                                                    isClearable={true}
+                                                  />
+                                                  {validatelandtype == 1 ? ( <FormFeedback type="invalid" className="text-Red text-sm"> Please select sub taglog </FormFeedback> ) : null}
+                                                </div>
+                                              </div>
                 </div>
               </Modal.Body>
               <Modal.Footer className='py-2'>
