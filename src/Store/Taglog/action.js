@@ -31,6 +31,14 @@ import {
   DELETE_SUB_TAGLOG_LIST_SUCCESS,
   DELETE_SUB_TAGLOG_LIST_ERROR,
 
+  GET_CUSTOMER_TAGLOG_LIST,
+  GET_CUSTOMER_TAGLOG_LIST_SUCCESS,
+  GET_CUSTOMER_TAGLOG_LIST_ERROR,
+
+  ADD_CUSTOMER_TAGLOG_LIST,
+  ADD_CUSTOMER_TAGLOG_LIST_SUCCESS,
+  ADD_CUSTOMER_TAGLOG_LIST_ERROR,
+
   REST_TAGLOG_LIST,
   REST_TAGLOG_LIST_SUCCESS,
   REST_TAGLOG_LIST_ERROR
@@ -153,6 +161,37 @@ export const ChangeStatusSubTagloglistSuccess = (actionType, data) => ({
 
 export const ChangeStatusSubTagloglistFail = (actionType, error) => ({
   type: CHANGE_STATUS_SUB_TAGLOG_LIST_ERROR,
+  payload: { actionType, error },
+});
+
+
+export const getCustomerTagloglist = (requserdata) => ({
+  type: GET_CUSTOMER_TAGLOG_LIST,
+  payload: requserdata,
+});
+
+export const getCustomerTagloglistSuccess = (actionType, data) => ({
+  type: GET_CUSTOMER_TAGLOG_LIST_SUCCESS,
+  payload: { actionType, data },
+});
+
+export const getCustomerTagloglistFail = (actionType, error) => ({
+  type: GET_CUSTOMER_TAGLOG_LIST_ERROR,
+  payload: { actionType, error },
+});
+
+export const AddCustomerTagloglist = (requserdata) => ({
+  type: ADD_CUSTOMER_TAGLOG_LIST,
+  payload: requserdata,
+});
+
+export const AddCustomerTagloglistSuccess = (actionType, data) => ({
+  type: ADD_CUSTOMER_TAGLOG_LIST_SUCCESS,
+  payload: { actionType, data },
+});
+
+export const AddCustomerTagloglistFail = (actionType, error) => ({
+  type: ADD_CUSTOMER_TAGLOG_LIST_ERROR,
   payload: { actionType, error },
 });
 

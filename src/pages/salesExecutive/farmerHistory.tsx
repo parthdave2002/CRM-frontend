@@ -6,7 +6,7 @@ import { MdReport } from 'react-icons/md';
 import moment from 'moment';
 import ComplainDetails from '../../components/salesComponent/complainDetails';
 import ExamplePagination from '../../components/pagination';
-import { getFarmerComplainlist, getFarmerOrderlist } from '../../Store/actions';
+import { getCustomerTagloglist, getFarmerComplainlist, getFarmerOrderlist } from '../../Store/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import Cookies from 'js-cookie';
 
@@ -21,60 +21,63 @@ interface FarmerHistoryProps{
 const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetailsmodal, setOpenDetailIData, AddtoCartCall, setCartOrderid}) => {
   const dispatch = useDispatch()
 
+    // ----------- Tabnavbar code start --------------------
+    const [selectedTabbar, setselectedTabbar] = useState("Order");
+
+    const TabData = [
+      { title: "Order", icon: <BsCartCheckFill  size={20} /> },
+      { title: "Complain", icon: <MdReport  size={20} /> },
+      { title: "Taglog", icon: <FaRegClock  size={20} /> },
+    ]
+
+    const TabSelection = (data: string) => {
+      setselectedTabbar(data)
+    }
+  // ----------- Tabnavbar code end --------------------
+
   useEffect(() =>{
     const customerDataString = Cookies.get("customer_data");
     let customerData = null;
   
     try {
       customerData = customerDataString ? JSON.parse(customerDataString) : null;
-      // console.log("Parsed customer_data:", customerData);
     } catch (error) {
       console.error("Failed to parse customer_data:", error);
     }
   
     const customerId = customerData?._id || null;
-    // console.log("Using customerId:", customerId);
-  
     if (customerId) {
       const requser = {
         customer_id: customerId,
       };
-      dispatch(getFarmerOrderlist(requser));
-      dispatch(getFarmerComplainlist(requser));
+
+      if(selectedTabbar == "Order"){
+        dispatch(getFarmerOrderlist(requser));
+      }
+      else if(selectedTabbar == "Complain"){
+        dispatch(getFarmerComplainlist(requser));
+      }else if(selectedTabbar == "Taglog"){
+        dispatch(getCustomerTagloglist(requser));
+      }
     }
-  },[])
+  },[dispatch, selectedTabbar ])
 
   // ------------- Get  Data From Reducer Code Start --------------
     const Orderlist = useSelector((state: any) => state.Order.SingleFarmerOrderlist?.data );
     const Complainlist = useSelector((state: any) => state.Complain.SinglefarmerComplainlist?.data );
+    const Tagloglist = useSelector((state: any) => state.Taglog.CustomerTagloglist );
 
     const [UserOrderDataList, setUserOrderDataList] = useState([]);
     const [UserComplainDataList, setUserComplainDataList] = useState([]);
+    const [UserTaglogDataList, setUserTaglogDataList] = useState([]);
 
     useEffect(() => {
       setUserOrderDataList(Orderlist? Orderlist : []);
       setUserComplainDataList(  Complainlist  ? Complainlist  : [])
-    }, [Orderlist, Complainlist]);
+      setUserTaglogDataList(  Tagloglist  ? Tagloglist  : [])
+    }, [Orderlist, Complainlist, Tagloglist]);
 
   //  ------------- Get  Data From Reducer Code end --------------
-
-  const Taglogdata =[
-    {
-      created_at : "2025-03-20T09:25:37.041Z",
-      taglog : "CallBack",
-      comment : "we have to call him on 31st march for order confirmation"
-    },
-    {
-      created_at : "2025-03-20T09:25:37.041Z",
-      taglog : "Busy",
-      comment : "Farmer is on another call"
-    },
-    {
-      created_at : "2025-03-20T09:25:37.041Z",
-      taglog : "Not Pickup",
-      comment : "Farmer not pickup the call"
-    }
-  ]
 
   // -------------  Order  Details Call start -------------------
   const OderDetailsCall = ( id:string , data:any) => {
@@ -91,20 +94,6 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
     setCartOrderid(id);
   }
   // -------------  Future Order  to Cart Call end -------------------
-  
-  // ----------- Tabnavbar code start --------------------
-    const [selectedTabbar, setselectedTabbar] = useState("Order");
-
-    const TabData = [
-      { title: "Order", icon: <BsCartCheckFill  size={20} /> },
-      { title: "Complain", icon: <MdReport  size={20} /> },
-      { title: "Taglog", icon: <FaRegClock  size={20} /> },
-    ]
-
-    const TabSelection = (data: string) => {
-      setselectedTabbar(data)
-    }
-  // ----------- Tabnavbar code end --------------------
 
   // ------------complain details page ------------------
       const [isOpenComplainModel , setisOpenComplainModel ]  = useState(false);
@@ -202,15 +191,17 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
                     <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
                       <Table.Head className="bg-gray-100 dark:bg-gray-700">
                         <Table.HeadCell> Taglog </Table.HeadCell>
+                        <Table.HeadCell> SubTaglog </Table.HeadCell>
                         <Table.HeadCell> Comment </Table.HeadCell>
                         <Table.HeadCell>Created Date</Table.HeadCell>
                       </Table.Head>
 
                       <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
-                        {Taglogdata && Taglogdata.map((item: any, k: number) => (
+                        {UserTaglogDataList && UserTaglogDataList.map((item: any, k: number) => (
                           <Table.Row key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
-                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.taglog} </Table.Cell>
-                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.comment} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.taglog?.taglog_name} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.subtaglog?.name} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.comment} </Table.Cell>
                             <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item.created_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
                           </Table.Row>
                         ))}

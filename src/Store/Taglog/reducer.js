@@ -27,6 +27,14 @@ import {
   DELETE_SUB_TAGLOG_LIST_SUCCESS,
   DELETE_SUB_TAGLOG_LIST_ERROR,
 
+  GET_CUSTOMER_TAGLOG_LIST,
+  GET_CUSTOMER_TAGLOG_LIST_SUCCESS,
+  GET_CUSTOMER_TAGLOG_LIST_ERROR,
+
+  ADD_CUSTOMER_TAGLOG_LIST,
+  ADD_CUSTOMER_TAGLOG_LIST_SUCCESS,
+  ADD_CUSTOMER_TAGLOG_LIST_ERROR,
+
   REST_TAGLOG_LIST,
   REST_TAGLOG_LIST_SUCCESS,
   REST_TAGLOG_LIST_ERROR
@@ -36,7 +44,7 @@ const INIT_STATE = {
   Tagloglist: [],
   TagloglistSize:0,
   TotalTaglogData:0,
-  CurrentPage:1,
+  CurrentPcage:1,
   AddTagloglist: [],
   DeleteTagloglist: [],
   SubTagloglist: [],
@@ -45,6 +53,11 @@ const INIT_STATE = {
   SubCurrentPage:1,
   AddSubTagloglist: [],
   DeleteSubTagloglist: [],
+  AddCustomerTagloglist:[],
+  CustomerTagloglist:[],
+  CustomerTagloglistSize:0,
+  CustomerTotalTaglogData:0,
+  CustomerCurrentPage:1,
   error: {},
 };
 
@@ -171,6 +184,48 @@ const Taglog = (state = INIT_STATE, action) => {
           default:
             return { ...state };
         }
+        
+        case GET_CUSTOMER_TAGLOG_LIST_SUCCESS:
+          switch (action.payload.actionType) {
+            case GET_CUSTOMER_TAGLOG_LIST:
+              return {
+                ...state,
+                CustomerTagloglist: action.payload.data.data,
+                CustomerTagloglistSize: action.payload.data.size,
+                CustomerTotalTaglogData: action.payload.data.totalData,
+                CustomerCurrentPage: action.payload.data.page,
+              };
+          }
+        case GET_CUSTOMER_TAGLOG_LIST_ERROR:
+          switch (action.payload.actionType) {
+            case GET_CUSTOMER_TAGLOG_LIST:
+              return {
+                ...state,
+                error: action.payload,
+              };
+    
+            default:
+              return { ...state };
+          }
+        
+        case ADD_CUSTOMER_TAGLOG_LIST_SUCCESS:
+          switch (action.payload.actionType) {
+            case ADD_CUSTOMER_TAGLOG_LIST:
+              return {
+                ...state,
+                AddCustomerTagloglist: action.payload.data,
+              };
+          }
+        case ADD_CUSTOMER_TAGLOG_LIST_ERROR:
+          switch (action.payload.actionType) {
+            case ADD_CUSTOMER_TAGLOG_LIST:
+              return {
+                ...state,
+                error: action.payload,
+              };
+            default:
+              return { ...state };
+          }
 
       case REST_TAGLOG_LIST_SUCCESS:
         switch (action.payload.actionType) {
@@ -189,6 +244,7 @@ const Taglog = (state = INIT_STATE, action) => {
               SubCurrentPage:1,
               AddSubTagloglist: [],
               DeleteSubTagloglist: [],
+              AddCustomerTagloglist:[],
               error: {},
             };
         }
