@@ -94,6 +94,9 @@ export const ADD_SUB_TAGLOG_LIST = "/api/taglog/add-subtaglog";
 export const DELETE_SUB_TAGLOG_LIST = "/api/taglog/remove-subtaglog";
 export const CHANGE_STATUS_SUB_TAGLOG_LIST = "/api/taglog/update-subtaglog";
 
+export const GET_CUSTOMER_TAGLOG_LIST = "/api/taglog/get-customer-taglog";
+export const ADD_CUSTOMER_TAGLOG_LIST = "/api/taglog/add-customer-taglog";
+
 export const GET_EXPORT_DATA_LIST = "/api/export/export-data";
 
 // Customer

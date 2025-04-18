@@ -180,6 +180,9 @@ export const AddSubTagloglistApi = async (requserdata) => await api.create(url.A
 export const DelSubTagloglistApi = async (requserdata) => await api.delete(url.DELETE_SUB_TAGLOG_LIST, requserdata);
 export const StatusSubTagloglistApi = async (requserdata) => await api.delete(url.CHANGE_STATUS_SUB_TAGLOG_LIST, requserdata);
 
+export const CustomerTagloglistApi = (requserdata) => api.get(url.GET_CUSTOMER_TAGLOG_LIST, requserdata);
+export const AddCustomerTagloglistApi = async (requserdata) => await api.create(url.ADD_CUSTOMER_TAGLOG_LIST, requserdata);
+
 export const ExportDatalistApi = async (requserdata,name) => await api.get(url.GET_EXPORT_DATA_LIST, requserdata,name);
 
 // Customer API

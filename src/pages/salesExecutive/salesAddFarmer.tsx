@@ -41,13 +41,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
     })
   );
 
-  const villageoption = useSelector((state: any) => state.Location.Villagedatalist?.data)?.map(
-    (item: any) => ({
-      label: item.name,
-      value: item._id
-    })
-  );
-
+  const villageoption = useSelector((state: any) => state.Location.Villagedatalist?.data)?.map( (item: any) => ({  label: item.name, value: item._id }) );
     const [selectedStateOption, setSelectedStateOption] = useState<{ label: string, value: string } | null>(null);
     const [selectedStateid, setSelectedStateid] = useState<string | null>(null);
     const [validateState, setValidateState] = useState(0);
