@@ -78,13 +78,24 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
 
   // ---------------- Place Order code start ----------------
     const [isOpenSuccessOrderModel, setisOpenSuccessOrderModel ] = useState(false);
+    const [isOpenSuccessOrderMessage, setisOpenSuccessOrderMessage ] = useState("");
     const [isOpenConfirmModel, setisOpenConfirmModel ] = useState(false);
+    const [isOrderStatusModel, setisOrderStatusModel ] = useState("confirm");
     const [isOrderTypeModel, setisOrderTypeModel ] = useState("confirm");
     const [SelectedFutureDate, setSelectedFutureDate ] = useState("");
 
-    const OrderplaceCall = (data:string) =>{
+    const OkayCall =() =>{
+      setisOpenSuccessOrderModel(false);
+      setisOpenSuccessOrderMessage("");
+      setCartOpen(false);
+      setCartItem([])
+      setCartOrderid(null)
+    }
+
+    const OrderplaceCall = (data:string, item:string) =>{
       setisOpenConfirmModel(true);
-      setisOrderTypeModel(data)
+      setisOrderStatusModel(data)
+      setisOrderTypeModel(item)
     }
 
     const PlaceCall = () =>{
@@ -92,10 +103,11 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
       let requser :any = {
         products : productsArray,
         customer : data_id,
-        order_type : isOrderTypeModel,
+        order_type :  isOrderTypeModel,
+        status : isOrderStatusModel,
         total_amount : grandTotal.toFixed(2),
       }
-      if (isOrderTypeModel === "future")  requser.future_order_date = SelectedFutureDate;
+      if (isOrderTypeModel === "future" && isOrderStatusModel == "null" )  requser.future_order_date = SelectedFutureDate;
 
       if(cartOrderid){
         requser.order_id =  cartOrderid
@@ -144,16 +156,19 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
 
   // --------------- Add Order Suucess/ error code start ----------------
     const AddOrderdatalist = useSelector((state: any) => state.Order.AddOrderdatalist);
+    const UpdateOrderdatalist = useSelector((state: any) => state.Order.Orderlist);;
+    
     useEffect(() => {
-      if (AddOrderdatalist?.success) {
+      if (AddOrderdatalist?.success || UpdateOrderdatalist?.success ) {
         setisOpenSuccessOrderModel(true);
+        setisOpenSuccessOrderMessage(UpdateOrderdatalist?.msg ? UpdateOrderdatalist?.msg : AddOrderdatalist?.msg);
         dispatch(ResetOrderlist());
         setCartItems([]);
-        setCartItem([])
+        setCartItem([]);
       } else {
-        toast.error(AddOrderdatalist?.msg)
+        toast.error(UpdateOrderdatalist?.msg ? UpdateOrderdatalist?.msg : AddOrderdatalist?.msg)
       }
-    }, [AddOrderdatalist])
+    }, [AddOrderdatalist, UpdateOrderdatalist])
   // --------------- Add Order Suucess/ error code start ----------------
 
   const CloseCall = () =>{
@@ -223,9 +238,9 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
               </div>
 
               <div className="flex gap-x-3 justify-end mt-6 mb-4">
-                {cartOrderid ?<div className="flex border border-indigo-500 text-indigo-500 dark:text-white hover:text-gray-100 font-semibold px-6 py-2 rounded-full gap-3 hover:bg-indigo-800 transition flex text-center cursor-pointer transition-all duration-500 ease-in-out" onClick={() => OrderplaceCall("cancel")}> <BsCartXFill   className="self-center h-5 w-5" /> Cancel Order </div> : null}
-                <div className="flex border border-indigo-500 text-indigo-500 dark:text-white hover:text-gray-100 font-semibold px-6 py-2 rounded-full gap-3 hover:bg-indigo-800 transition flex text-center cursor-pointer transition-all duration-500 ease-in-out" onClick={() => OrderplaceCall("future")}> <FaGhost className="self-center h-5 w-5" /> Future Order </div>
-                <div className="flex border border-indigo-500 text-indigo-500 dark:text-white hover:text-gray-100 font-semibold px-6 py-2 rounded-full gap-3 hover:bg-indigo-800 transition flex text-center cursor-pointer transition-all duration-500 ease-in-out" onClick={() => OrderplaceCall("confirm")}> <FaCartShopping className="self-center h-5 w-5" /> Place Order </div>
+                {cartOrderid ?<div className="flex border border-indigo-500 text-indigo-500 dark:text-white hover:text-gray-100 font-semibold px-6 py-2 rounded-full gap-3 hover:bg-indigo-800 transition flex text-center cursor-pointer transition-all duration-500 ease-in-out" onClick={() => OrderplaceCall("cancel", "future" )}> <BsCartXFill   className="self-center h-5 w-5" /> Cancel Order </div> : null}
+                <div className="flex border border-indigo-500 text-indigo-500 dark:text-white hover:text-gray-100 font-semibold px-6 py-2 rounded-full gap-3 hover:bg-indigo-800 transition flex text-center cursor-pointer transition-all duration-500 ease-in-out" onClick={() => OrderplaceCall("null",  "future" )}> <FaGhost className="self-center h-5 w-5" /> Future Order </div>
+                <div className="flex border border-indigo-500 text-indigo-500 dark:text-white hover:text-gray-100 font-semibold px-6 py-2 rounded-full gap-3 hover:bg-indigo-800 transition flex text-center cursor-pointer transition-all duration-500 ease-in-out" onClick={() => OrderplaceCall("confirm", "confirm" )}> <FaCartShopping className="self-center h-5 w-5" /> Place Order </div>
               </div>
             </div>
 
@@ -255,8 +270,8 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
           }
       </div> 
 
-      <SuccessErrorModalPage isOpenSuccessOrderModel={isOpenSuccessOrderModel} setisOpenSuccessOrderModel={setisOpenSuccessOrderModel} message="Order placed sucessfully" />
-      <ConfirmationModalPage isOpenConfirmModel={isOpenConfirmModel} setisOpenConfirmModel={setisOpenConfirmModel} isOrderTypeModel={isOrderTypeModel} PlaceCall={PlaceCall} setSelectedFutureDate={setSelectedFutureDate}  />
+      <SuccessErrorModalPage isOpenSuccessOrderModel={isOpenSuccessOrderModel} setisOpenSuccessOrderModel={setisOpenSuccessOrderModel} message={isOpenSuccessOrderMessage} OkayCall={OkayCall} />
+      <ConfirmationModalPage isOpenConfirmModel={isOpenConfirmModel} setisOpenConfirmModel={setisOpenConfirmModel} isOrderTypeModel={isOrderTypeModel} isOrderStatusModel={isOrderStatusModel} PlaceCall={PlaceCall} setSelectedFutureDate={setSelectedFutureDate}  />
     </>
   )
 }

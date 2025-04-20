@@ -40,8 +40,12 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
 
       const  DashboardDataList  = useSelector((state: any) => state.SalesDashboard.DashboardDataList?.data );
   
+      const [data, setData] = useState<string | null>(null);
       useEffect(( ) => {
-          dispatch (getsalesDashboard())
+         const usernameDataString = Cookies.get("username");
+         const decodedUsername = usernameDataString ? decodeURIComponent(usernameDataString) : null;
+         setData(decodedUsername);
+        dispatch (getsalesDashboard())
       }, [])
   
       useEffect(() =>{
@@ -127,15 +131,14 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
 
             <div className="flex justify-between">
                                 <div className="flex flex-col self-center mt-3">
-                                <div className="text-[0.9rem] text-gray-500 dark:text-gray-100 dark:text-gray-200"> Welcome back, Parth!</div>
+                                <div className="text-[0.9rem] text-gray-500 dark:text-gray-100 dark:text-gray-200"> Welcome back, {data ? data : ""}!</div>
                                 <div className="text-[2.5rem] font-semibold text-gray-900 dark:text-gray-100">  Dashboard </div>
                                 </div>
-                            
 
                                 <div className="relative flex ">
                                     <button onClick={() => setIsOpen(!isOpen)}  className="flex items-center text-sm px-3 py-0.5 font-medium text-gray-900 hover:text-blue-600 md:me-0  dark:text-white  dark:hover:text-gray-100"   type="button"  >
                                       <img  className="w-8 h-8 me-2 rounded-full"   src={userphoto}   alt="user photo"   />
-                                      <span>Parth Dave  </span>
+                                      <span> {data ? data : ""}  </span>
                                       <FaAngleDown className="w-4 h-4 ms-3" />
                                     </button>
 

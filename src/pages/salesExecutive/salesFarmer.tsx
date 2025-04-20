@@ -8,6 +8,7 @@ import SalesMobileInput from "../../components/input/salesMobileInput";
 import { useDispatch, useSelector } from "react-redux";
 import { CheckCustomerExist, getCallbackdata } from "../../Store/actions";
 import moment from "moment";
+import Cookies from "js-cookie";
 
 interface PropsData{
     setDatactive :any;
@@ -20,15 +21,30 @@ const SalesFarmerDetailsPage : FC  <PropsData> = function ({ setDatactive, openP
 
     const dispatch =useDispatch();
 
+    const [data, setData] = useState(null)
+    useEffect(() =>{
+        const customerDataString = Cookies.get("customer_data");
+        const customerData = customerDataString ? JSON.parse(customerDataString) : []    
+        setData(customerData?.mobile_number ? customerData?.mobile_number  : null);
+    },[])
+
+    useEffect(() =>{
+        if(data){
+            let requser={   number : data  }
+            dispatch(CheckCustomerExist(requser))
+            setOpenProfile(true);
+        }
+    },[data])
+
     //---------    Get callback data  start--------- 
     const [Farmerdata, setFarmerdata] = useState([])
     const  CallBackUserList  = useSelector((state: any) => state.SalesDashboard.CallBackUserList );
 
     useEffect(( ) => {
-        let requser= {
-            callback : true
-        }
+        if(!data){
+        let requser= { callback : true }
         dispatch (getCallbackdata(requser))
+    }
     }, [])
     
     useEffect(() =>{

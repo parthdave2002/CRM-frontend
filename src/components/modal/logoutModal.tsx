@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AddCustomerTagloglist, getSubTagloglist, getTagloglist, ResetTagloglist } from '../../Store/actions';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
+import { FaCartArrowDown, FaUserTag } from 'react-icons/fa';
 
 interface PoropsData{
     openModal ?: boolean;
@@ -30,7 +31,7 @@ const LogoutModal : FC <PoropsData> = ({openModal, handleClose, handleAccept}) =
  
   useEffect(() =>{
     dispatch(getTagloglist())
-  },[openModal])
+  },[dispatch])
   
     const [selectedTaglogOption, setSelectedTaglogOption] = useState<{ label: string, value: string } | null>(null);
     const [selectedTaglogid, setSelectedTaglogid] = useState<string | null>(null);
@@ -194,9 +195,9 @@ const LogoutModal : FC <PoropsData> = ({openModal, handleClose, handleAccept}) =
                                   </div>
                     </div>
               </Modal.Body>
-              <Modal.Footer className='py-2'>
-                <Button type='submit'> Submit </Button>
-                <Button color="gray" onClick={() => handleClose()}> Close  </Button>
+              <Modal.Footer className='py-2 flex gapx-3 justify-end'>
+                <Button type='submit' className='w-[8rem] bg-gradient-to-br from-green-400 to-blue-600 text-white hover:bg-gradient-to-bl border-0'> <div className="flex items-center gap-x-3 text-[1.2rem]">  <FaUserTag  className='text-xl'  />  Submit  </div> </Button>
+                <Button color="gray" className='w-[8rem]' onClick={() => handleClose()}> Close  </Button>
               </Modal.Footer>
             </Form>
       </Modal>

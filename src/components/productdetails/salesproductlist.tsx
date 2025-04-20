@@ -34,6 +34,7 @@ const Salesproductlist : FC <PorductData> = ({searchData, ProductDetailsCall, is
         <Table.Head className="bg-gray-100 dark:bg-gray-700">
           <Table.HeadCell>Name</Table.HeadCell>
           <Table.HeadCell>Packing size</Table.HeadCell>
+          <Table.HeadCell>Qty</Table.HeadCell>
           <Table.HeadCell>price (RS.)</Table.HeadCell>
           <Table.HeadCell>discount (RS.)</Table.HeadCell>
           <Table.HeadCell>final price	</Table.HeadCell>
@@ -53,9 +54,10 @@ const Salesproductlist : FC <PorductData> = ({searchData, ProductDetailsCall, is
                 </div>
               </Table.Cell>
               <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.packaging} {item?.packagingtype?.type_eng} </Table.Cell>
-              <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.price} </Table.Cell>
-              <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.discount}</Table.Cell>
-              <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.price - item.discount}  </Table.Cell>
+              <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.avl_qty ? item?.avl_qty  : 0} </Table.Cell>
+              <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.price ? (item?.price).toFixed(2) :  0} </Table.Cell>
+              <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.discount ? (item?.discount).toFixed(2) : 0}</Table.Cell>
+              <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.price - item?.discount ? (item?.price - item?.discount).toFixed(2) : 0}  </Table.Cell>
               {isLoggedin ? <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> <Button className=' bg-gradient-to-br from-green-400 to-blue-600 text-white hover:bg-gradient-to-bl border-0' onClick={() => AddtoCartCall(item)} > <div className="flex items-center gap-x-3"> <FaCartArrowDown className='text-xl'  /> Add to Cart </div> </Button> </Table.Cell> : null}
             </Table.Row>
           ))}

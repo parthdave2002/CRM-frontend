@@ -7,14 +7,15 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
 import Select from "react-select";
 import { toast } from 'react-toastify';
-import { AddCustomerDatalist, getCroplist, getdistrictdata, getstatedatalist, gettalukadata, getvillagedata, ResetCustomerDatalist } from '../../Store/actions';
+import { AddCustomerDatalist, CheckCustomerExist, getCroplist, getdistrictdata, getstatedatalist, gettalukadata, getvillagedata, ResetCustomerDatalist } from '../../Store/actions';
 
 interface ProfileData{
   isEditFarmer ?: boolean;
   setFarmerAdded : (value: boolean) => void;
+  handleAccept : (value: boolean) => void;
 }
 
-const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
+const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAccept}) => {
   const dispatch = useDispatch();
 
   // ------------- State Get Data From Reducer Code Start --------------
@@ -22,25 +23,9 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
     dispatch(getstatedatalist())
   },[])
 
-  const stateoption = useSelector((state: any) => state.Location.Statedatalist?.data)?.map(
-    (item: any) => ({
-      label: item.name,
-      value: item._id
-    })
-  );
-  const districtoption = useSelector((state: any) => state.Location.Districtdatalist?.data)?.map(
-    (item: any) => ({
-      label: item.name,
-      value: item._id
-    }));
-
-  const talukaoption = useSelector((state: any) => state.Location.Talukadatalist?.data)?.map(
-    (item: any) => ({
-      label: item.name,
-      value: item._id
-    })
-  );
-
+  const stateoption = useSelector((state: any) => state.Location.Statedatalist?.data)?.map( (item: any) => ({ label: item.name, value: item._id }));
+  const districtoption = useSelector((state: any) => state.Location.Districtdatalist?.data)?.map((item: any) => ({ label: item.name, value: item._id  }));
+  const talukaoption = useSelector((state: any) => state.Location.Talukadatalist?.data)?.map( (item: any) => ({ label: item.name, value: item._id}));
   const villageoption = useSelector((state: any) => state.Location.Villagedatalist?.data)?.map( (item: any) => ({  label: item.name, value: item._id }) );
     const [selectedStateOption, setSelectedStateOption] = useState<{ label: string, value: string } | null>(null);
     const [selectedStateid, setSelectedStateid] = useState<string | null>(null);
@@ -197,35 +182,35 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
     initialValues: initialValues,
 
     validationSchema: Yup.object({
-      firstname: Yup.string().required("Please enter first name"),
-      lastname: Yup.string().required("Please enter last name"),
-      mobile_number: Yup.string().required("Please enter mobile no").matches(/^\d{10}$/, "Please enter valid mobile number"),
+      firstname: Yup.string().required("Please enter first name").matches(/^[A-Za-z\s]+$/, "Please Enter valid name"),
+      lastname: Yup.string().required("Please enter last name").matches(/^[A-Za-z\s]+$/, "Please Enter valid name"),
+      mobile_number: Yup.string().required("Please enter mobile no").matches(/^\d{10}$/, "Please enter valid Mobile number (10 digits)"),
       address: Yup.string().required("Please enter address"),
-      pincode: Yup.string().required("Please enter pincode"),
-      landarea: Yup.string().required("Please enter land area")
+      pincode: Yup.string().required("Please enter pincode").min(6, "Pincode must be minimum 6 digits") .max(6, "Pincode must be maximum 6 digits").matches(/^\d+$/, "Please enter valid pincode"),
+      landarea: Yup.number().required("Please enter land area") .typeError("Please enter valid land area").min(0, "Please enter valid land area")
     }),
 
     onSubmit: (values) => {
       let requserData = {
-        firstname: values?.firstname,
-        middlename: values?.middlename,
-        lastname: values?.lastname,
-        mobile_number: values?.mobile_number,
-        alternate_mobile_no: values?.alternate_mobile_no,
-        address: values?.address,
+        firstname: values?.firstname.trim().charAt(0).toUpperCase() + values?.firstname.trim().slice(1).toLowerCase(),
+        middlename: values?.middlename.trim().charAt(0).toUpperCase() + values?.middlename.trim().slice(1).toLowerCase(),
+        lastname: values?.lastname.trim().charAt(0).toUpperCase() + values?.lastname.trim().slice(1).toLowerCase(),
+        mobile_number: values?.mobile_number.trim(),
+        alternate_mobile_no: values?.alternate_mobile_no.trim(),
+        address: values?.address.trim(),
         state : selectedStateid,
         district : selectedDistrictid,
         taluka : selectedTalukaid,
         village : selectedVillageid,
-        pincode : values?.pincode,
-        land_area : values?.landarea,
+        pincode : values?.pincode.trim(),
+        land_area : values?.landarea.trim(),
         land_type : selectedlandtypeid,
         irrigation_source : selectedirrigationsourceid,
         irrigation_type : selectedirrigationtypeid,
         heard_about_agribharat : selectedheaderaboutid,
         smart_phone: true,
         crops:selectedcropid,
-        ref_name : values?.refname
+        ref_name : selectedRef_id ?  selectedRef_id : null
       }
       dispatch(AddCustomerDatalist(requserData));
     },
@@ -369,12 +354,40 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
   };
   // -------------- Land type code end ---------
 
+  // -------------- Ref name code start ---------------
+  const [selectedRefnumber, setSelectedRefnumber] = useState<string>("");
+  const [selectedRef_id, setSelectedRef_id] = useState<string>("");
+  const handlePhoneNumberChange  =(data:string) => {
+    setSelectedRefnumber(data);
+  };
+
+  useEffect(() =>{
+    if(selectedRefnumber.length == 10){
+        let requser={   number : selectedRefnumber  }
+        dispatch(CheckCustomerExist(requser))
+    }
+  },[selectedRefnumber])
+
+  const CheckCustomerExistlist = useSelector((state: any) => state.Customer.CheckCustomerExistlist);
+    useEffect(() => {
+      if (selectedRefnumber && CheckCustomerExistlist?.success == true) {
+        setSelectedRef_id(CheckCustomerExistlist?.data?._id);
+      }
+      else if (selectedRefnumber && CheckCustomerExistlist?.success == false) {
+       toast.error(CheckCustomerExistlist?.msg);
+       setSelectedRef_id("")
+      }
+    }, [CheckCustomerExistlist, selectedRefnumber]);
+  // -------------- Ref name code end ---------------
+
   const CloseCall = () =>{
-    if(validation?.values?.firstname){
-      setFarmerAdded(false)
+    if(isEditFarmer == true){
+
+      if(validation?.values?.firstname){  setFarmerAdded(false) }
+      else{  setFarmerAdded(false) }
     }
     else{
-      setFarmerAdded(false)
+      handleAccept(false)
     }
   }
 
@@ -427,7 +440,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
                 type="text"
                 onChange={validation.handleChange}
                 onBlur={validation.handleBlur}
-                value={validation.values?.firstname|| ""}
+                value={validation.values?.firstname.trim()|| ""}
                 invalid={validation.touched?.firstname && validation.errors?.firstname ? true : false}
               />
               {validation.touched.firstname && validation.errors?.firstname ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.firstname} </FormFeedback>) : null}
@@ -445,7 +458,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
                 type="text"
                 onChange={validation.handleChange}
                 onBlur={validation.handleBlur}
-                value={validation.values?.middlename|| ""}
+                value={validation.values?.middlename.trim()|| ""}
                 invalid={validation.touched?.middlename && validation.errors?.middlename ? true : false}
               />
               {validation.touched.middlename && validation.errors?.middlename ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.middlename} </FormFeedback>) : null}
@@ -463,7 +476,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
                 type="text"
                 onChange={validation.handleChange}
                 onBlur={validation.handleBlur}
-                value={validation.values?.lastname|| ""}
+                value={validation.values?.lastname.trim()|| ""}
                 invalid={validation.touched?.lastname && validation.errors?.lastname ? true : false}
               />
               {validation.touched.lastname && validation.errors?.lastname ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.lastname} </FormFeedback>) : null}
@@ -478,10 +491,10 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
                 name="mobile_number"
                 className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
                 placeholder="Enter mobile"
-                type="text"
+                type="tel"
                 onChange={validation.handleChange}
                 onBlur={validation.handleBlur}
-                value={validation.values?.mobile_number || ""}
+                value={validation.values?.mobile_number.trim()|| ""}
                 invalid={validation.touched?.mobile_number && validation.errors?.mobile_number ? true : false}
               />
               {validation.touched?.mobile_number && validation.errors?.mobile_number ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.mobile_number} </FormFeedback>) : null}
@@ -489,7 +502,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
           </div>
 
           <div>
-            <Label htmlFor="alternate mobile"> Alternate Mobile No  <span className='text-red-500'>*</span></Label>
+            <Label htmlFor="alternate mobile"> Alternate Mobile No  </Label>
             <div className="mt-1">
               <Input
                 id="alternate_mobile_no"
@@ -499,7 +512,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
                 type="text"
                 onChange={validation.handleChange}
                 onBlur={validation.handleBlur}
-                value={validation.values?.alternate_mobile_no|| ""}
+                value={validation.values?.alternate_mobile_no.trim()|| ""}
                 invalid={validation.touched?.alternate_mobile_no && validation.errors?.alternate_mobile_no ? true : false}
               />
               {validation.touched.alternate_mobile_no && validation.errors?.alternate_mobile_no ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.alternate_mobile_no} </FormFeedback>) : null}
@@ -517,7 +530,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
                 type="text"
                 onChange={validation.handleChange}
                 onBlur={validation.handleBlur}
-                value={validation.values?.address|| ""}
+                value={validation.values?.address.trim()|| ""}
                 invalid={validation.touched?.address && validation.errors?.address ? true : false}
               />
               {validation.touched.address && validation.errors?.address ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.address} </FormFeedback>) : null}
@@ -623,7 +636,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
                 type="text"
                 onChange={validation.handleChange}
                 onBlur={validation.handleBlur}
-                value={validation.values?.pincode|| ""}
+                value={validation.values?.pincode.trim()|| ""}
                 invalid={validation.touched?.pincode && validation.errors?.pincode ? true : false}
               />
               {validation.touched.pincode && validation.errors?.pincode ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.pincode} </FormFeedback>) : null}
@@ -642,7 +655,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
                   type="number"
                   onChange={validation.handleChange}
                   onBlur={validation.handleBlur}
-                  value={validation.values?.landarea|| ""}
+                  value={validation.values?.landarea.trim()|| ""}
                   invalid={validation.touched?.landarea && validation.errors?.landarea ? true : false}
                 />
                 {validation.touched.landarea && validation.errors?.landarea ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.landarea} </FormFeedback>) : null}
@@ -769,13 +782,10 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer}) => {
                 name="refname"
                 className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
                 placeholder="Enter refname"
-                type="number"
-                onChange={validation.handleChange}
-                onBlur={validation.handleBlur}
-                value={validation.values?.refname|| ""}
-                invalid={validation.touched?.refname && validation.errors?.refname ? true : false}
+                type="tel"
+                onChange={ (e:any) =>handlePhoneNumberChange(e.target.value)}
+                value={selectedRefnumber ?? ""}
               />
-              {validation.touched.refname && validation.errors?.refname ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.refname} </FormFeedback>) : null}
             </div>
           </div>
          

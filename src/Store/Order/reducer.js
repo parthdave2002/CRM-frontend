@@ -47,6 +47,8 @@ const Order = (state = INIT_STATE, action) => {
     case GET_UPDATE_ORDER_LIST_SUCCESS:
       switch (action.payload.actionType) {
         case GET_UPDATE_ORDER_LIST:
+          console.log("callllllllllll");
+          
           return {
             ...state,
             Orderlist: action.payload.data,

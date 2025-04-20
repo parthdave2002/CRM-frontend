@@ -18,29 +18,6 @@ interface PropsData{
   setOpenProfile : (value: boolean) => void;
 }
 
-interface ProfileInfo{
-  crops: [];
-  is_deleted:  boolean;
-  _id: string;
-  customer_name : string; 
-  mobile_number:  number;
-  land_area: number;
-  land_type: string;
-  irrigation_source: string;
-  irrigation_type:  string;
-  heard_about_agribharat:  string;
-  address: string;
-  district:  string;
-  taluka:  string;
-  village:  string;
-  pincode:  number;
-  created_by:  string;
-  __v: number;
-  alternate_number: number;
-  added_at:  string;
-  smart_phone: boolean;
-}
-
 const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile}) => {
   const dispatch = useDispatch()
   const [farmedAdded, setFarmerAdded] = useState(false);
@@ -49,7 +26,6 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile}) => {
 
   const CheckCustomerExistlist = useSelector((state: any) => state.Customer.CheckCustomerExistlist);
   useEffect(() => {
-    // console.log("CheckCustomerExistlist?.success", CheckCustomerExistlist?.success);
     if (CheckCustomerExistlist?.success == true) {
       setFarmerAdded(false)
       setisLoading(false)
@@ -70,6 +46,8 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile}) => {
     const LogOutCall = () =>  setLogoutModal(true)
     const handleClose = () =>  setLogoutModal(false)
     const handleAccept = () =>{
+      console.log("callllllll");
+      
       Cookies.remove("customer_data");
       setLogoutModal(false)
       setOpenProfile(false)
@@ -137,7 +115,7 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile}) => {
     <>
 
       { !isLoading && farmedAdded == true  ?
-        <SalesAddFarmer isEditFarmer={isEditFarmer} setFarmerAdded={setFarmerAdded}  />
+        <SalesAddFarmer isEditFarmer={isEditFarmer} setFarmerAdded={setFarmerAdded} handleAccept={handleAccept}  />
       : farmedAdded == false && !isLoading ?
         <>
           {cartOpen == true ?

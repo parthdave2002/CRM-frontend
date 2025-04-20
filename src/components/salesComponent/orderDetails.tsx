@@ -1,10 +1,13 @@
 import { Badge, Button } from 'flowbite-react';
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { FaExclamationTriangle, FaPhoneVolume, FaSeedling, FaTruck, FaUserAlt, FaWindowClose } from 'react-icons/fa';
 import ComplainCreate from './complainCreate';
 import ReturnOrderModalPage from '../../components/modal/returnOrderModal';
-import { useDispatch } from 'react-redux';
-import { getUpdateOrderlist } from '../../Store/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUpdateOrderlist, ResetOrderlist } from '../../Store/actions';
+import { toast } from 'react-toastify';
+import Cookies from 'js-cookie';
+import SuccessErrorModalPage from '../../components/modal/successErrorModal';
 const IMG_URL = import.meta.env["VITE_API_URL"];
 interface OrderDetailsProps{
   orderId : string | null;
@@ -14,24 +17,38 @@ interface OrderDetailsProps{
 
 const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openDetailIData}) => {
 
-  const dispatch = useDispatch()
+  console.log("openDetailId", openDetailIData);
+  
+  const dispatch = useDispatch();
+
+    const [isOpenSuccessOrderModel, setisOpenSuccessOrderModel ] = useState(false);
+    const [isOpenSuccessOrderMessage, setisOpenSuccessOrderMessage ] = useState("");
+    const UpdateOrderdatalist = useSelector((state: any) => state.Order.Orderlist);
+        useEffect(() => {
+          if ( UpdateOrderdatalist?.success ) {
+            setisOpenSuccessOrderModel(true)
+            setisOpenSuccessOrderMessage(UpdateOrderdatalist?.msg);
+          } else {
+            toast.error(UpdateOrderdatalist?.msg)
+          }
+        }, [ UpdateOrderdatalist])
+
+  const OkayCall = () =>{
+    dispatch(ResetOrderlist());
+    closeOrderDetail(false)
+  }
 
   const Closecall = () =>{
     closeOrderDetail(false)
   }
 
-  const data= {
-    customerName : "John Doe",
-    customerPhone : 9876543210,
-    customeralternatenumber : 1234567890,
-    customerAddress : "H-34/503 Aandand nagar society, Near Akhbarnagar",
-    village : "Ahmedabad",
-    taluka : "Ahmedabad",
-    district : "Ahmedabad",
-    state : "Gujarat",
-    pincode : 380013,
-    orderDate : "2022-03-15",
-  }
+
+      const [data, setData] = useState <null | any>(null)
+        useEffect(() => {
+            const customerDataString = Cookies.get("customer_data");
+            const customerData = customerDataString ? JSON.parse(customerDataString) : []    
+            setData(customerData ? customerData  : null);
+        },[]);
 
   const packingtypeoption = openDetailIData?.products && openDetailIData?.products.map((item: any) => ({ label: item?.id?.name?.englishname, value: item?.id?._id }));
 
@@ -71,7 +88,7 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
       <div className='flex justify-between'>
         <div className="flex gap-x-5"> 
           <span className='text-[2rem] font-semibold text-gray-900 dark:text-gray-100'> Order ID :  {orderId}  </span> 
-          <Badge  color="warning" size="md" className=' self-center '>  { openDetailIData?.order_type.charAt(0).toUpperCase() + openDetailIData?.order_type.slice(1).toLowerCase()}  </Badge>
+          <Badge  color="warning" size="md" className=' self-center '>  { openDetailIData?.status.charAt(0).toUpperCase() + openDetailIData?.status.slice(1).toLowerCase()}  </Badge>
         </div>
         <div className="text-[2rem] font-semibold text-gray-900 dark:text-gray-100 flex self-center cursor-pointer " onClick={() => Closecall()}> <FaWindowClose /> </div>
       </div>
@@ -99,7 +116,7 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
                     <div className='text-center self-center dark:text-gray-300'> = {(data?.quantity * data?.id?.price - data?.id?.discount)?.toFixed(2)}</div>
                   </div>
                   
-                  { openDetailIData?.order_type == "confirm" ?  <div className='text-center self-center  bg-indigo-600 hover:bg-indigo-700 text-gray-100 rounded-lg cursor-pointer flex gap-x-2 px-3 py-1.5' onClick={() => CompainCall(data?.id?._id)}> <FaExclamationTriangle className='self-center text-xl'  /> Complain </div> : null }
+                  { openDetailIData?.status == "confirm" ?  <div className='text-center self-center  bg-indigo-600 hover:bg-indigo-700 text-gray-100 rounded-lg cursor-pointer flex gap-x-2 px-3 py-1.5' onClick={() => CompainCall(data?.id?._id)}> <FaExclamationTriangle className='self-center text-xl'  /> Complain </div> : null }
                 </div>
               ))}
             </div>
@@ -117,7 +134,7 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
             <div className="flex justify-end items-center text-xl font-semibold text-gray-500 dark:text-gray-300 mt-4 gap-x-4 "> <span className='text-[1.5rem]'>Grand Total</span> <span className='min-w-[11rem] text-end'> : 950 Rs.</span> </div>
           </div>
 
-          { openDetailIData?.order_type == "confirm" ?
+          { openDetailIData?.status == "confirm" ?
           <div className='flex justify-end gap-x-4'>
             <div className='text-center self-center  bg-red-600 border border-red-600 hover:bg-red-600 hover:border-red-500 rounded-lg cursor-pointer flex gap-x-2 px-4 py-2 text-gray-100'  onClick={() => ReturnComplainCall()}  > <FaTruck className='self-center h-6 w-6' /> Return </div>
             <div className='text-center self-center  bg-indigo-600 hover:bg-indigo-700 text-gray-100 rounded-lg cursor-pointer  flex gap-x-2 px-4 py-2' onClick={() => CreateComplainCall()}> <FaExclamationTriangle className='self-center '  /> Complain </div>
@@ -132,12 +149,12 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
 
           <div className="border dark:border-gray-600 dark:bg-gray-800 p-3 rounded-xl w-full flex flex-col gap-y-3">
             <div className='dark:text-gray-300 text-[1.2rem] font-semibold'>Customer</div>
-            <div className='dark:text-gray-300 flex gap-x-3'><FaUserAlt className='self-center h-7-w-7'  />  <span> {data.customerName} </span> </div>
+            <div className='dark:text-gray-300 flex gap-x-3'><FaUserAlt className='self-center h-7-w-7'  />  <span> {data?.customer_name} </span> </div>
           </div>
 
           <div className="border dark:border-gray-600 dark:bg-gray-800 p-3 rounded-xl w-full flex flex-col gap-y-3">
             <div className='dark:text-gray-300 text-[1.2rem] font-semibold'>Contact Information</div>
-            <div className='dark:text-gray-300 flex gap-x-3'><FaPhoneVolume className='self-center h-7-w-7' />  <span> {data?.customerPhone} , {data?.customeralternatenumber} </span> </div>
+            <div className='dark:text-gray-300 flex gap-x-3'><FaPhoneVolume className='self-center h-7-w-7' />  <span> {data?.mobile_number} , {data?.alternate_number} </span> </div>
           </div>
 
           <div className="border dark:border-gray-600 dark:bg-gray-800 p-3 rounded-xl w-full flex flex-col gap-y-3">
@@ -153,6 +170,8 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
 
       <ComplainCreate isOpenComplainCreateModel={isOpenComplainCreateModel}  setisOpenComplainCreateModel={setisOpenComplainCreateModel}  orderId={orderId} product_id={complainProductId} orderItem={packingtypeoption} />
       <ReturnOrderModalPage  isOpenReturnOrderModel={isOpenReturnOrderModel}  setisOpenReturnOrderModel={setisOpenReturnOrderModel} ReturnCall={ReturnCall} /> 
+      <SuccessErrorModalPage isOpenSuccessOrderModel={isOpenSuccessOrderModel} setisOpenSuccessOrderModel={setisOpenSuccessOrderModel} message={isOpenSuccessOrderMessage} OkayCall={OkayCall} />
+      
     </>
   )
 }

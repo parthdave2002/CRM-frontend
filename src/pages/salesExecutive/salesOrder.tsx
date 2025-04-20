@@ -40,7 +40,7 @@ const SalesOrder : FC <PropsData> = function ({ setDatactive, openProfile,setOpe
   
   useEffect(( ) => {
     dispatch(getCallbackdata())
-  }, [])
+  }, [dispatch])
 
   useEffect(() =>{
     if(CallBackUserList){
