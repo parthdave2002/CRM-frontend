@@ -6,12 +6,13 @@ import { Input } from "reactstrap";
 interface ConfirmationModalProps{
     isOpenConfirmModel: boolean  | undefined;
     isOrderTypeModel : string;
+    isOrderStatusModel :string;
     setisOpenConfirmModel: (value: boolean) => void;
     PlaceCall: () => void;
     setSelectedFutureDate: (value : any) => void;
 }
 
-const ConfirmationModalPage: FC<ConfirmationModalProps>= function ({ isOpenConfirmModel, setisOpenConfirmModel, isOrderTypeModel, PlaceCall, setSelectedFutureDate }) {
+const ConfirmationModalPage: FC<ConfirmationModalProps>= function ({ isOpenConfirmModel, setisOpenConfirmModel, isOrderTypeModel,isOrderStatusModel, PlaceCall, setSelectedFutureDate }) {
 
     const today = new Date();
     const tomorrow = new Date(today);
@@ -25,9 +26,9 @@ const ConfirmationModalPage: FC<ConfirmationModalProps>= function ({ isOpenConfi
                 <div className="flex flex-col items-center gap-y-6 "> <HiOutlineExclamationCircle className="text-7xl text-red-500" /> 
                     <p className="text-xl text-gray-500"> Are you sure you want to {isOrderTypeModel} this order ? </p>
 
-                    {isOrderTypeModel == "future"?
+                    {isOrderTypeModel == "future"  && isOrderStatusModel == "null" ?
                         <div className="flex gap-x-3">
-                            <div className="self-center"> Callback Date : </div>
+                            <div className="self-center dark:text-gray-50"> Callback Date : </div>
                             <div className="mt-1">
                                 <Input
                                     id="callbackDate"

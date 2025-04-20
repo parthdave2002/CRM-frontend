@@ -197,12 +197,12 @@ const DashboardPage: FC = function () {
                       <li className="py-3 sm:py-4" key={k}>
                       <div className="flex justify-between items-center space-x-4">
                         <div className="min-w-0 ">
-                          <p className="truncate text-sm font-medium text-gray-900 dark:text-white"> {item.customer_name} </p>
-                          <p className="truncate text-sm text-gray-500 dark:text-gray-400"> {item.taluka}  </p>
+                          <p className="truncate text-sm font-medium text-gray-900 dark:text-white"> {item?.customer_name} </p>
+                          <p className="truncate text-sm text-gray-500 dark:text-gray-400"> {item?.taluka}  </p>
                         </div>
                         {/* <div className="inline-flex items-center text-sm font-normal text-gray-900 dark:text-gray-300 text-center">{item.village}</div> */}
-                        <div className="inline-flex items-center text-md font-normal text-gray-900 dark:text-gray-200">{item.mobile_number}</div>
-                        <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-400">{item.is_deleted == false ?  <Badge color="success">Active</Badge>  :  <Badge color="danger">Deactive</Badge>}</div>
+                        <div className="inline-flex items-center text-md font-normal text-gray-900 dark:text-gray-200">{item?.mobile_number}</div>
+                        <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-400">{item?.is_deleted == false ?  <Badge color="success">Active</Badge>  :  <Badge color="danger">Deactive</Badge>}</div>
                       </div>
                       </li>
                     ))}
@@ -268,11 +268,11 @@ const DashboardPage: FC = function () {
                           <Table.Row key={k}>
                           <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 dark:text-white"><span className="font-semibold">{item?.name?.englishname}</span>  </Table.Cell>
                           <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 dark:text-white"><span className="font-semibold">{item?.name?.gujaratiname}</span>  </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-300"> { item?.categories ? item?.categories?.name : "N/A"}  </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-gray-300"> {item.avl_qty}  </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-gray-300"> {item.hsn_code}  </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-gray-300"> {item.batch_no}  </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-gray-300"> {item.price}  </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-300"> { item?.categories?.name_eng ? item?.categories?.name_eng : "N/A"}  </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-gray-300"> {item?.avl_qty}  </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-gray-300"> {item?.hsn_code}  </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-gray-300"> {item?.batch_no}  </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-gray-300"> {item?.price.toFixed(2)}  </Table.Cell>
                           <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-gray-300">   {moment(item.createdAt).format("DD-MM-YYYY hh:mm:ss")}   </Table.Cell>
                           </Table.Row>
                         ))}

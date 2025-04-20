@@ -36,9 +36,7 @@ const FarmeDashboard : FC <DashboardProps> = ({classData, viewButton}) => {
     setExpanded(!expanded);
   };
 
-  const [data, setData] = useState<ProfileInfo>()
-  console.log("data >>>>>>>>>", data);
-  
+  const [data, setData] = useState<ProfileInfo>()  
     //  -------------Farmer Data get  code start ----------------------
         useEffect(() => {
           const customerDataString = Cookies.get("customer_data");
