@@ -88,7 +88,7 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
       <div className='flex justify-between'>
         <div className="flex gap-x-5"> 
           <span className='text-[2rem] font-semibold text-gray-900 dark:text-gray-100'> Order ID :  {orderId}  </span> 
-          <Badge  color="warning" size="md" className=' self-center '>  { openDetailIData?.status.charAt(0).toUpperCase() + openDetailIData?.status.slice(1).toLowerCase()}  </Badge>
+          <Badge  color="warning" size="md" className=' self-center '>  { openDetailIData?.order_type.charAt(0).toUpperCase() + openDetailIData?.order_type.slice(1).toLowerCase()}  </Badge>
         </div>
         <div className="text-[2rem] font-semibold text-gray-900 dark:text-gray-100 flex self-center cursor-pointer " onClick={() => Closecall()}> <FaWindowClose /> </div>
       </div>
@@ -116,7 +116,7 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
                     <div className='text-center self-center dark:text-gray-300'> = {(data?.quantity * data?.id?.price - data?.id?.discount)?.toFixed(2)}</div>
                   </div>
                   
-                  { openDetailIData?.status == "confirm" ?  <div className='text-center self-center  bg-indigo-600 hover:bg-indigo-700 text-gray-100 rounded-lg cursor-pointer flex gap-x-2 px-3 py-1.5' onClick={() => CompainCall(data?.id?._id)}> <FaExclamationTriangle className='self-center text-xl'  /> Complain </div> : null }
+                  { openDetailIData?.order_type == "confirm" ?  <div className='text-center self-center  bg-indigo-600 hover:bg-indigo-700 text-gray-100 rounded-lg cursor-pointer flex gap-x-2 px-3 py-1.5' onClick={() => CompainCall(data?.id?._id)}> <FaExclamationTriangle className='self-center text-xl'  /> Complain </div> : null }
                 </div>
               ))}
             </div>
@@ -134,7 +134,7 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
             <div className="flex justify-end items-center text-xl font-semibold text-gray-500 dark:text-gray-300 mt-4 gap-x-4 "> <span className='text-[1.5rem]'>Grand Total</span> <span className='min-w-[11rem] text-end'> : 950 Rs.</span> </div>
           </div>
 
-          { openDetailIData?.status == "confirm" ?
+          { openDetailIData?.order_type == "confirm" ?
           <div className='flex justify-end gap-x-4'>
             <div className='text-center self-center  bg-red-600 border border-red-600 hover:bg-red-600 hover:border-red-500 rounded-lg cursor-pointer flex gap-x-2 px-4 py-2 text-gray-100'  onClick={() => ReturnComplainCall()}  > <FaTruck className='self-center h-6 w-6' /> Return </div>
             <div className='text-center self-center  bg-indigo-600 hover:bg-indigo-700 text-gray-100 rounded-lg cursor-pointer  flex gap-x-2 px-4 py-2' onClick={() => CreateComplainCall()}> <FaExclamationTriangle className='self-center '  /> Complain </div>

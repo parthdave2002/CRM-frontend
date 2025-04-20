@@ -203,7 +203,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
         taluka : selectedTalukaid,
         village : selectedVillageid,
         pincode : values?.pincode.trim(),
-        land_area : values?.landarea.trim(),
+        land_area : values?.landarea,
         land_type : selectedlandtypeid,
         irrigation_source : selectedirrigationsourceid,
         irrigation_type : selectedirrigationtypeid,
@@ -655,7 +655,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
                   type="number"
                   onChange={validation.handleChange}
                   onBlur={validation.handleBlur}
-                  value={validation.values?.landarea.trim()|| ""}
+                  value={validation.values?.landarea|| ""}
                   invalid={validation.touched?.landarea && validation.errors?.landarea ? true : false}
                 />
                 {validation.touched.landarea && validation.errors?.landarea ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.landarea} </FormFeedback>) : null}

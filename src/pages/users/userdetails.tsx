@@ -18,7 +18,7 @@ date_of_joining: string;
 email: string;
 emergency_contact_person: string;
 emergency_mobile_no: number;
-gender: string;
+gender: string | undefined;
 is_active: boolean; 
 is_deleted: boolean; 
 mobile_no: number;
@@ -77,7 +77,9 @@ const UserDetailsPage: FC = function () {
                 {/* Gender */}
                 <div className="p-4 dark:bg-gray-800 rounded-lg">
                   <h3 className="text-gray-600 dark:text-gray-300 font-semibold">Gender</h3>
-                  <p className="text-gray-900 dark:text-white">{UserDataList?.gender || "N/A"}</p>
+                  <p className="text-gray-900 dark:text-white">
+                      {UserDataList?.gender ? UserDataList.gender.charAt(0).toUpperCase() + UserDataList.gender.slice(1).toLowerCase() : "Unknown"}
+                    </p>
                 </div>
 
                 {/* Mobile Number */}
@@ -148,7 +150,7 @@ const UserDetailsPage: FC = function () {
                 {/* Status */}
                 <div className="p-4 dark:bg-gray-800 rounded-lg">
                   <h3 className="text-gray-600 dark:text-gray-300 font-semibold">Status</h3>
-                  <p className="text-white text-sm font-bold  rounded-lg">
+                  <p className="text-gray-900 dark:text-white text-sm font-bold  rounded-lg">
                     {UserDataList?.is_active ? "Active" : "Inactive"}
                   </p>
                 </div>

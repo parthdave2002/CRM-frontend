@@ -132,83 +132,94 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
             <div className='mt-[1.5rem] px-4'>
               {selectedTabbar == "Order" ?
                 <>
-                  <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
-                    <Table.Head className="bg-gray-100 dark:bg-gray-700">
-                      <Table.HeadCell>Order id</Table.HeadCell>
-                      <Table.HeadCell>Order Date</Table.HeadCell>
-                      <Table.HeadCell> Order Type</Table.HeadCell>
-                       <Table.HeadCell>Callback Date</Table.HeadCell>
-                      <Table.HeadCell>COD Amt</Table.HeadCell>
-                      <Table.HeadCell>Created By</Table.HeadCell>
-                      <Table.HeadCell>Status</Table.HeadCell>
-                      <Table.HeadCell> Action</Table.HeadCell>
-                    </Table.Head>
-
-                    <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
-                      {UserOrderDataList && UserOrderDataList.map((item: any, k:number) => (
-                        <Table.Row key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => OderDetailsCall(item?.order_id, item)}>  {item?.order_id} </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item?.added_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.order_type  ? item?.order_type.charAt(0).toUpperCase() + item?.order_type.slice(1).toLowerCase()  : "-"} </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.order_type == "future" ? moment(item?.future_order_date).format("DD-MM-YYYY") : "-"} </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.total_amount.toFixed(2)} </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.advisor_name?.name} </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.status ? item?.status.charAt(0).toUpperCase() + item?.status.slice(1).toLowerCase() : "-"} </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.order_type == "future"  && item?.status == null ?   
-                            <Button className='bg-gradient-to-br from-purple-700 to-blue-400 text-white hover:bg-gradient-to-bl focus:ring-blue-300 dark:focus:ring-blue-800 border-0 ' onClick={() => FuturaOrderCall(item?.order_id, item)}> Confirm Order</Button>
-                          : "-"} 
-                          </Table.Cell>
-                        </Table.Row>
-                      ))}
-                    </Table.Body>
-                  </Table>
-                </>
-
-                : selectedTabbar == "Complain" ?
-                  <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
-                    <Table.Head className="bg-gray-100 dark:bg-gray-700">
-                      <Table.HeadCell>Complain id</Table.HeadCell>
-                      <Table.HeadCell>Complain Date</Table.HeadCell>
-                      <Table.HeadCell> Product </Table.HeadCell>
-                      <Table.HeadCell> Status </Table.HeadCell>
-                      <Table.HeadCell> Type </Table.HeadCell>
-                      <Table.HeadCell>Created By</Table.HeadCell>
-                    </Table.Head>
-
-                    <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
-                      {UserComplainDataList && UserComplainDataList.map((item: any, k: number) => (
-                        <Table.Row key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => ComplainCall(item?.complain_id)}>  {item?.complain_id} </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item?.created_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.product_id?.map((product :any, index:number) => (  <div key={index}>{product?.name?.englishname}</div> ))}</Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.resolution.charAt(0).toUpperCase() + item?.resolution.slice(1).toLowerCase()} </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.priority.charAt(0).toUpperCase() + item?.priority.slice(1).toLowerCase()} </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.created_by?.name} </Table.Cell>
-                        </Table.Row>
-                      ))}
-                    </Table.Body>
-                  </Table>
-                  
-                : selectedTabbar == "Taglog" ?
-                    <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
-                      <Table.Head className="bg-gray-100 dark:bg-gray-700">
-                        <Table.HeadCell> Taglog </Table.HeadCell>
-                        <Table.HeadCell> SubTaglog </Table.HeadCell>
-                        <Table.HeadCell> Comment </Table.HeadCell>
-                        <Table.HeadCell>Created Date</Table.HeadCell>
-                      </Table.Head>
-
+                  {UserOrderDataList.length > 0 ?
+                      <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
+                        <Table.Head className="bg-gray-100 dark:bg-gray-700">
+                          <Table.HeadCell>Order id</Table.HeadCell>
+                          <Table.HeadCell>Order Date</Table.HeadCell>
+                          <Table.HeadCell> Order Type</Table.HeadCell>
+                          <Table.HeadCell>Callback Date</Table.HeadCell>
+                          <Table.HeadCell>COD Amt</Table.HeadCell>
+                          <Table.HeadCell>Created By</Table.HeadCell>
+                          <Table.HeadCell>Status</Table.HeadCell>
+                          <Table.HeadCell> Action</Table.HeadCell>
+                        </Table.Head>
+  
                       <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
-                        {UserTaglogDataList && UserTaglogDataList.map((item: any, k: number) => (
+                        {UserOrderDataList && UserOrderDataList.map((item: any, k:number) => (
                           <Table.Row key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
-                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.taglog?.taglog_name} </Table.Cell>
-                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.subtaglog?.name} </Table.Cell>
-                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.comment} </Table.Cell>
-                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item.created_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => OderDetailsCall(item?.order_id, item)}>  {item?.order_id} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item?.added_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.order_type  ? item?.order_type.charAt(0).toUpperCase() + item?.order_type.slice(1).toLowerCase()  : "-"} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.order_type == "future" ? moment(item?.future_order_date).format("DD-MM-YYYY") : "-"} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.total_amount.toFixed(2)} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.advisor_name?.name} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.status ? item?.status.charAt(0).toUpperCase() + item?.status.slice(1).toLowerCase() : "-"} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.order_type == "future"  && item?.status == null ?   
+                              <Button className='bg-gradient-to-br from-purple-700 to-blue-400 text-white hover:bg-gradient-to-bl focus:ring-blue-300 dark:focus:ring-blue-800 border-0 ' onClick={() => FuturaOrderCall(item?.order_id, item)}> Confirm Order</Button>
+                            : "-"} 
+                            </Table.Cell>
                           </Table.Row>
                         ))}
                       </Table.Body>
                     </Table>
+                  :  <div className='text-center py-4 dark:text-gray-50'>No DataFound </div> }
+                </>
+
+                : selectedTabbar == "Complain" ?
+                <>
+                    {UserComplainDataList.length > 0 ?
+                    <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
+                      <Table.Head className="bg-gray-100 dark:bg-gray-700">
+                        <Table.HeadCell>Complain id</Table.HeadCell>
+                        <Table.HeadCell>Complain Date</Table.HeadCell>
+                        <Table.HeadCell> Product </Table.HeadCell>
+                        <Table.HeadCell> Status </Table.HeadCell>
+                        <Table.HeadCell> Type </Table.HeadCell>
+                        <Table.HeadCell>Created By</Table.HeadCell>
+                      </Table.Head>
+
+                      <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
+                        {UserComplainDataList && UserComplainDataList.map((item: any, k: number) => (
+                          <Table.Row key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => ComplainCall(item?.complain_id)}>  {item?.complain_id} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item?.created_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.product_id?.map((product :any, index:number) => (  <div key={index}>{product?.name?.englishname}</div> ))}</Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.resolution.charAt(0).toUpperCase() + item?.resolution.slice(1).toLowerCase()} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.priority.charAt(0).toUpperCase() + item?.priority.slice(1).toLowerCase()} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.created_by?.name} </Table.Cell>
+                          </Table.Row>
+                        ))}
+                      </Table.Body>
+                    </Table>
+                  :  <div className='text-center py-4 dark:text-gray-50'>No DataFound </div> }
+                </>
+                  
+                : selectedTabbar == "Taglog" ?
+                <>
+                     {UserTaglogDataList.length > 0 ?
+                          <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
+                          <Table.Head className="bg-gray-100 dark:bg-gray-700">
+                            <Table.HeadCell> Taglog </Table.HeadCell>
+                            <Table.HeadCell> SubTaglog </Table.HeadCell>
+                            <Table.HeadCell> Comment </Table.HeadCell>
+                            <Table.HeadCell>Created Date</Table.HeadCell>
+                          </Table.Head>
+
+                          <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
+                            {UserTaglogDataList && UserTaglogDataList.map((item: any, k: number) => (
+                              <Table.Row key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
+                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.taglog?.taglog_name} </Table.Cell>
+                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.subtaglog?.name} </Table.Cell>
+                                <Table.Cell className="max-w-[20rem] text-base font-medium text-gray-900 dark:text-white py-0 "> {item?.comment} </Table.Cell>
+                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item.created_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
+                              </Table.Row>
+                            ))}
+                          </Table.Body>
+                          </Table>
+                      :  <div className='text-center py-4 dark:text-gray-50'>No DataFound </div> }
+                </>
+                    
                 : null
               }
             </div>
