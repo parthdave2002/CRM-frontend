@@ -44,7 +44,7 @@ const DashboardPage: FC = function () {
     setUserData(DashboardDataList?.data?.users);
     setProductData(DashboardDataList?.data?.products);
     set_total_revenueData(DashboardDataList?.data?.totalCustomers);
-    set_total_orderData(DashboardDataList?.data?.totalProducts);
+    set_total_orderData(DashboardDataList?.data?.totalOrders );
     set_total_userData(DashboardDataList?.data?.totalUsers);
 
   },[DashboardDataList])

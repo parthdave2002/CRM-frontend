@@ -155,7 +155,7 @@ const UserListPage: FC = function () {
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => DetailsUserCall(item?._id)}>  {item?.name} </Table.Cell>
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.email} </Table.Cell>
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.role?.role_title} </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.gender} </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.gender.charAt(0).toUpperCase() + item?.gender.slice(1).toLowerCase()} </Table.Cell>
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.mobile_no} </Table.Cell>
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.date_of_joining} </Table.Cell>
                           <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white">

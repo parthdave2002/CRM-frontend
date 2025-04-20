@@ -56,7 +56,7 @@ const SalesUpcomingComplainPage : FC <PropsData> = function ({ setDatactive, ope
                 <SalesFarmerDashboard setOpenProfile={CloseProfileCall} />
                 : 
                 <>
-                    <div className='flex justify-between'>
+                    <div className='lg:flex justify-between'>
                         <div className='flex flex-col self-center'>
                             <div className="text-[0.9rem] text-blue-500 flex gap-x-3 cursor-pointer w-fit " onClick={() => DashboardCall("Dashboard")}> <FaArrowLeft style={{ alignSelf: "center" }} /> Back to Dashboard</div>
                             <div className="text-[2rem] font-semibold text-gray-900 dark:text-gray-100"> Total Complain ({String(UserComplainDataList?.length).padStart(2, '0')}) </div>
@@ -67,17 +67,17 @@ const SalesUpcomingComplainPage : FC <PropsData> = function ({ setDatactive, ope
                     <div className="grid md:grid-cols-2 gap-4 mt-[2rem]">
                         {UserComplainDataList && UserComplainDataList.map((item: any, k:number) => (
                             <div className=" bg-white dark:bg-gray-700 dark:hover:bg-gray-600 p-4 rounded-xl relative" key={k}>
-                                <div> {item.type && <div className={`absolute left-3 top-4 bottom-4 w-1 rounded-md ${item?.priority == "high" ? "bg-red-400" : item?.priority == "medium" ? "bg-yellow-400" : item?.priority == "low" ? "bg-blue-400" : ""}`} />} </div>
+                                <div> {item?.priority && <div className={`absolute left-3 top-4 bottom-4 w-1 rounded-md ${item?.priority == "high" ? "bg-red-400" : item?.priority == "medium" ? "bg-yellow-400" : item?.priority == "low" ? "bg-blue-400" : ""}`} />} </div>
 
                                 <div className="pl-3 lg:flex justify-between">
-                                    <div className="flex-1 overflow-hidden text-gray-500 dark:text-gray-50 truncate whitespace-nowrap"> {item?.title} </div>
+                                    <div className="flex-1 overflow-hidden text-gray-500 dark:text-gray-50 max-w-[15rem] truncate whitespace-nowrap"> {item?.title} </div>
                                     <div className="lg:flex justify-end flex-1">
-                                        <div className="text-[0.7rem] xl:text-[0.8rem] text-gray-500 dark:text-gray-50"> {item?.customer_id?.firstname} {item?.customer_id?.lastname}  |  {item?.complain_id} </div>
+                                        <div className="text-[0.8rem] xl:text-[0.9rem] text-gray-500 dark:text-gray-50"> {item?.customer_id?.firstname} {item?.customer_id?.lastname}  |  {item?.complain_id} </div>
                                     </div>
                                 </div>
 
                                 <div className="pl-3 flex justify-between my-2">
-                                    <div className="text-gray-500 dark:text-gray-50 text-[1rem] truncate">  {item?.Comment?.[item.Comment.length - 1]?.comment || "No comment available"} </div>
+                                    <div className="text-gray-500 dark:text-gray-50 text-[1rem] truncate max-w-[15rem]  lg:max-w-[35rem]">  {item?.Comment?.[item.Comment.length - 1]?.comment || "No comment available"} </div>
                                 </div>
 
                                 <div className="pl-3 flex justify-between">

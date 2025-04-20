@@ -26,12 +26,12 @@ const OrdererDetailsPage: FC = function () {
   interface CustomerData {
     address: string;
     customer_name : string;
-    district: string;
+    district_name: string;
     mobile_number : number;
     alternate_number : number;
     pincode : string;
-    taluka:string;
-    village : string;
+    taluka_name:string;
+    village_name : string;
   }
 
   interface ProductData {
@@ -127,7 +127,7 @@ const OrdererDetailsPage: FC = function () {
                     <p className="font-semibold">Bill To:</p>
                     <p>{UserDataList?.customer?.customer_name}</p>
                     <p className="text-gray-600">  {UserDataList?.customer?.address}   </p>
-                    <p className="text-gray-600">  {UserDataList?.customer?.district},{UserDataList?.customer?.taluka},{UserDataList?.customer?.village}  </p>
+                    <p className="text-gray-600">  {UserDataList?.customer?.district_name}, {UserDataList?.customer?.taluka_name}, {UserDataList?.customer?.village_name}  </p>
                     <p className="text-gray-600">  Contact : {UserDataList?.customer?.mobile_number}, {UserDataList?.customer?.alternate_number} </p>
                   </div>
                   <div className="text-right">

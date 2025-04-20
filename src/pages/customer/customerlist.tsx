@@ -124,19 +124,19 @@ const CustomerListPage : FC = function () {
                     <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
                         {UserDataList && UserDataList.map((item: any, k) => (
                                 <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
-                                  <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item._id} onClick={() => {CheckData(item._id)}}/>  </Table.Cell>
-                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => DetailsCustomerCall(item._id)}>  {item.customer_name} </Table.Cell>
-                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.mobile_number} </Table.Cell>
-                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.district} </Table.Cell>
-                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.taluka} </Table.Cell>
-                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.village} </Table.Cell>
-                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment (item.added_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
+                                  <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item?._id} onClick={() => {CheckData(item._id)}}/>  </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => DetailsCustomerCall(item?._id)}>  {item?.customer_name} </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.mobile_number} </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.district_name} </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.taluka_name} </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.village_name} </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment (item?.added_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
                                   <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white">
                                       {item.is_deleted == true ?  <div className="flex items-center">  <div className="mr-2 h-2.5 w-2.5 rounded-full bg-Red"></div> Deactive  </div> :   <div className="flex items-center">  <div className="mr-2 h-2.5 w-2.5 rounded-full bg-green-400"></div> Active  </div> }
                                   </Table.Cell>
                                   <Table.Cell className="space-x-2 whitespace-nowrap py-0">
                                       <div className="flex items-center gap-x-3">
-                                        {AccessList?.delete ?  <Button  gradientDuoTone="purpleToPink" onClick={() => BlockUserCall(item._id)}><div className="flex items-center gap-x-2 deletebutton min-w-[5rem] text-center font-semibold">  {item.is_deleted == true ? <FaUnlock className="text-lg" /> :  <FaUserLock className="text-xl" />  }  {item.is_deleted == true ? "Unblock"  :  "Block" }  </div> </Button> : null }  
+                                        {AccessList?.delete ?  <Button  gradientDuoTone="purpleToPink" onClick={() => BlockUserCall(item._id)}><div className="flex items-center gap-x-2 deletebutton min-w-[5rem] text-center font-semibold">  {item?.is_deleted == true ? <FaUnlock className="text-lg" /> :  <FaUserLock className="text-xl" />  }  {item.is_deleted == true ? "Unblock"  :  "Block" }  </div> </Button> : null }  
                                         <Button  gradientDuoTone="purpleToBlue" onClick={() => DetailsCustomerCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <FaExclamationCircle className="text-lg" /> Detail Customer  </div> </Button>
                                       </div>
                                   </Table.Cell>

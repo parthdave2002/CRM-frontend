@@ -256,9 +256,9 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
 
                 <div className="grid grid-cols-2  xl:grid-cols-4 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-3">
                   {FarmerData && FarmerData.map((item: any, k: number) => (
-                    <div className="bg-[#f4f9fd] dark:bg-gray-700 px-[2.8rem] py-3 rounded-xl flex flex-col gap-y-2" key={k}>
+                    <div className="bg-[#f4f9fd] dark:bg-gray-700 px-[2rem] py-3 rounded-xl flex flex-col gap-y-2" key={k}>
                       <img src={userimage} alt="" className="h-16 w-16 rounded-full self-center border-2 border-blue-600 p-1" />
-                      <div className="text-gray-500 dark:text-gray-100 text-[0.9rem] text-center"> {item.customer_name} </div>
+                      <div className="text-gray-500 dark:text-gray-100 text-[0.9rem] text-center max-w-[15rem] truncate"> {item.customer_name} </div>
                       <div className="text-gray-500 dark:text-gray-100 text-[0.9rem] text-center"> {item.mobile_number}</div>
                       <div className="text-gray-500 dark:text-gray-100 text-[0.8rem] text-center border border-gray-500 rounded-md size-fit px-2 cursor-pointer self-center" onClick={() => handleClickCall() }> View </div>
                     </div>
@@ -278,7 +278,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
 
                     <div className="pl-3 flex flex-col gap-y-1">
                         <div className="truncate text-gray-500 dark:text-gray-100 dark:text-gray-50 lg:max-w-[15rem]"> {item?.title} </div>
-                        <div className="text-[0.7rem] xl:text-[0.9rem] text-gray-500 dark:text-gray-100 dark:text-gray-50"> {item?.customer_id?.customer_name}</div>
+                        <div className="text-[0.7rem] xl:text-[0.9rem] text-gray-500 dark:text-gray-100 dark:text-gray-50 lg:max-w-[15rem] truncate"> {item?.customer_id?.customer_name}</div>
                         <div className="text-gray-500 dark:text-gray-100 dark:text-gray-50 text-[0.9rem]"> {item?.customer_id?.mobile_number}  </div>
                         <div className="text-gray-500 dark:text-gray-100 dark:text-gray-50 text-[0.9rem]"> {moment(item?.created_at).format("DD-MM-YYYY")}  </div>
                     </div>       
