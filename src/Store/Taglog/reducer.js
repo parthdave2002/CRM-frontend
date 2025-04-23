@@ -190,7 +190,7 @@ const Taglog = (state = INIT_STATE, action) => {
             case GET_CUSTOMER_TAGLOG_LIST:
               return {
                 ...state,
-                CustomerTagloglist: action.payload.data.data,
+                CustomerTagloglist: action.payload.data,
                 CustomerTagloglistSize: action.payload.data.size,
                 CustomerTotalTaglogData: action.payload.data.totalData,
                 CustomerCurrentPage: action.payload.data.page,

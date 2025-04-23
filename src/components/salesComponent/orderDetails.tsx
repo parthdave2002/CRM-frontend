@@ -24,23 +24,54 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
     const [isOpenSuccessOrderModel, setisOpenSuccessOrderModel ] = useState(false);
     const [isOpenSuccessOrderMessage, setisOpenSuccessOrderMessage ] = useState("");
     const UpdateOrderdatalist = useSelector((state: any) => state.Order.Orderlist);
-        useEffect(() => {
+    useEffect(() => {
           if ( UpdateOrderdatalist?.success ) {
             setisOpenSuccessOrderModel(true)
             setisOpenSuccessOrderMessage(UpdateOrderdatalist?.msg);
           } else {
             toast.error(UpdateOrderdatalist?.msg)
           }
-        }, [ UpdateOrderdatalist])
+    }, [ UpdateOrderdatalist])
 
   const OkayCall = () =>{
     dispatch(ResetOrderlist());
-    closeOrderDetail(false)
+    closeOrderDetail(false);
+    setisOpenSuccessOrderModel(false);
+    setisOpenSuccessOrderMessage("");
   }
 
   const Closecall = () =>{
     closeOrderDetail(false)
   }
+
+    // ---------------- Calculation Logic ----------------
+    const calculateOrderSummary = () => {
+      let totalSubtotal = 0;
+      let totalGST = 0;
+      let totalDiscount = 0;
+
+      openDetailIData?.products?.forEach((item: any) => {
+        console.log("item", item);
+        
+        const price = item?.id?.price || 0;
+        const discount = item?.id?.discount || 0;
+        const gstRate = item?.id?.s_gst || 0;
+        const quantity = item?.quantity|| 1;
+
+        const discountedPrice = (price - discount) * quantity;
+        const gstAmount = (discountedPrice * gstRate * 2) / 100;
+
+        totalSubtotal += discountedPrice;
+        totalDiscount += discount * quantity;
+        totalGST += gstAmount;
+      });
+
+      return { totalSubtotal, totalDiscount, totalGST, grandTotal: totalSubtotal + totalGST };
+    };
+
+    const { totalSubtotal, totalDiscount, totalGST, grandTotal } = calculateOrderSummary();
+  // ---------------- Calculation Logic End ----------------
+
 
 
       const [data, setData] = useState <null | any>(null)
@@ -76,7 +107,8 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
   const ReturnCall = () =>{
     let requser ={
       order_id : orderId,
-      order_type : "return"
+      order_type : "confirm",
+      status : "return"
     }
       dispatch(getUpdateOrderlist(requser))
       setisOpenReturnOrderModel(false)
@@ -88,7 +120,7 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
       <div className='flex justify-between'>
         <div className="flex gap-x-5"> 
           <span className='text-[2rem] font-semibold text-gray-900 dark:text-gray-100'> Order ID :  {orderId}  </span> 
-          <Badge  color="warning" size="md" className=' self-center '>  { openDetailIData?.order_type.charAt(0).toUpperCase() + openDetailIData?.order_type.slice(1).toLowerCase()}  </Badge>
+          <Badge  color="warning" size="md" className=' self-center '>  { openDetailIData?.status.charAt(0).toUpperCase() + openDetailIData?.status.slice(1).toLowerCase()}  </Badge>
         </div>
         <div className="text-[2rem] font-semibold text-gray-900 dark:text-gray-100 flex self-center cursor-pointer " onClick={() => Closecall()}> <FaWindowClose /> </div>
       </div>
@@ -116,7 +148,7 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
                     <div className='text-center self-center dark:text-gray-300'> = {(data?.quantity * data?.id?.price - data?.id?.discount)?.toFixed(2)}</div>
                   </div>
                   
-                  { openDetailIData?.order_type == "confirm" ?  <div className='text-center self-center  bg-indigo-600 hover:bg-indigo-700 text-gray-100 rounded-lg cursor-pointer flex gap-x-2 px-3 py-1.5' onClick={() => CompainCall(data?.id?._id)}> <FaExclamationTriangle className='self-center text-xl'  /> Complain </div> : null }
+                  { openDetailIData?.status == "confirm" ?  <div className='text-center self-center  bg-indigo-600 hover:bg-indigo-700 text-gray-100 rounded-lg cursor-pointer flex gap-x-2 px-3 py-1.5' onClick={() => CompainCall(data?.id?._id)}> <FaExclamationTriangle className='self-center text-xl'  /> Complain </div> : null }
                 </div>
               ))}
             </div>
@@ -126,15 +158,15 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
             <div className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-8"> Order Summary </div>
 
             <div className="flex flex-col items-end space-y-3">
-              <div className="text-lg font-semibold text-gray-500 dark:text-gray-300 flex justify-between w-full max-w-xs"> <span>Total Subtotal </span> <span > : 100000 Rs.</span></div>
-              <div className="text-lg font-semibold text-gray-500 dark:text-gray-300 flex justify-between w-full max-w-xs"> <span>Total Discount </span> <span >: 100 Rs.</span> </div>
-              <div className="text-lg font-semibold text-gray-500 dark:text-gray-300 flex justify-between w-full max-w-xs"> <span>Total GST </span> <span > : 50 Rs.</span> </div>
+              <div className="text-lg font-semibold text-gray-500 dark:text-gray-300 flex justify-between w-full max-w-xs"> <span>Total Subtotal </span> <span > : {totalSubtotal.toFixed(2)} Rs.</span></div>
+              <div className="text-lg font-semibold text-gray-500 dark:text-gray-300 flex justify-between w-full max-w-xs"> <span>Total Discount </span> <span >: {totalDiscount.toFixed(2)} Rs.</span> </div>
+              <div className="text-lg font-semibold text-gray-500 dark:text-gray-300 flex justify-between w-full max-w-xs"> <span>Total GST </span> <span > : {totalGST.toFixed(2)} Rs.</span> </div>
             </div>
 
-            <div className="flex justify-end items-center text-xl font-semibold text-gray-500 dark:text-gray-300 mt-4 gap-x-4 "> <span className='text-[1.5rem]'>Grand Total</span> <span className='min-w-[11rem] text-end'> : 950 Rs.</span> </div>
+            <div className="flex justify-end items-center text-xl font-semibold text-gray-500 dark:text-gray-300 mt-4 gap-x-4 "> <span className='text-[1.5rem]'>Grand Total</span> <span className='min-w-[11rem] text-end'> : {grandTotal.toFixed(2)} Rs.</span> </div>
           </div>
 
-          { openDetailIData?.order_type == "confirm" ?
+          { openDetailIData?.status == "confirm" ?
           <div className='flex justify-end gap-x-4'>
             <div className='text-center self-center  bg-red-600 border border-red-600 hover:bg-red-600 hover:border-red-500 rounded-lg cursor-pointer flex gap-x-2 px-4 py-2 text-gray-100'  onClick={() => ReturnComplainCall()}  > <FaTruck className='self-center h-6 w-6' /> Return </div>
             <div className='text-center self-center  bg-indigo-600 hover:bg-indigo-700 text-gray-100 rounded-lg cursor-pointer  flex gap-x-2 px-4 py-2' onClick={() => CreateComplainCall()}> <FaExclamationTriangle className='self-center '  /> Complain </div>
@@ -149,7 +181,7 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
 
           <div className="border dark:border-gray-600 dark:bg-gray-800 p-3 rounded-xl w-full flex flex-col gap-y-3">
             <div className='dark:text-gray-300 text-[1.2rem] font-semibold'>Customer</div>
-            <div className='dark:text-gray-300 flex gap-x-3'><FaUserAlt className='self-center h-7-w-7'  />  <span> {data?.customer_name} </span> </div>
+            <div className='dark:text-gray-300 flex gap-x-3 truncate max-w-[18rem]'><FaUserAlt className='self-center h-7-w-7'  />  <span> {data?.customer_name} </span> </div>
           </div>
 
           <div className="border dark:border-gray-600 dark:bg-gray-800 p-3 rounded-xl w-full flex flex-col gap-y-3">
@@ -160,9 +192,9 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
           <div className="border dark:border-gray-600 dark:bg-gray-800 p-3 rounded-xl w-full flex flex-col gap-y-3">
             <div className='dark:text-gray-300 text-[1.2rem] font-semibold'>Shipping Address</div>
             <div className='dark:text-gray-300 '>  {data?.customerAddress } </div>
-            <div className='dark:text-gray-300'> District :   {data?.district } </div>
-            <div className='dark:text-gray-300'> Taluka :  {data?.taluka } </div>
-            <div className='dark:text-gray-300'> Village :  {data?.village } </div>
+            <div className='dark:text-gray-300'> District :   {data?.district_name } </div>
+            <div className='dark:text-gray-300'> Taluka :  {data?.taluka_name } </div>
+            <div className='dark:text-gray-300'> Village :  {data?.village_name } </div>
             <div className='dark:text-gray-300'> Pincode : {data?.pincode } </div>
           </div>
         </div>
@@ -171,7 +203,6 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
       <ComplainCreate isOpenComplainCreateModel={isOpenComplainCreateModel}  setisOpenComplainCreateModel={setisOpenComplainCreateModel}  orderId={orderId} product_id={complainProductId} orderItem={packingtypeoption} />
       <ReturnOrderModalPage  isOpenReturnOrderModel={isOpenReturnOrderModel}  setisOpenReturnOrderModel={setisOpenReturnOrderModel} ReturnCall={ReturnCall} /> 
       <SuccessErrorModalPage isOpenSuccessOrderModel={isOpenSuccessOrderModel} setisOpenSuccessOrderModel={setisOpenSuccessOrderModel} message={isOpenSuccessOrderMessage} OkayCall={OkayCall} />
-      
     </>
   )
 }

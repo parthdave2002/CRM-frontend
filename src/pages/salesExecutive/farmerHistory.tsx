@@ -35,6 +35,19 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
     }
   // ----------- Tabnavbar code end --------------------
 
+    // ----------- next Button  Code Start -------------
+    const [TotalListData, setTotalListData] = useState(0);
+    const [CurrentPageNo, setCurrentPageNo] = useState(0);
+    const [PageNo, setPageNo] = useState(1);
+    const [RoePerPage, setRoePerPage] = useState(5);
+
+    const RowPerPage = (event: any) => {
+      const value = Number(event)
+       setRoePerPage(value);
+     };
+    const PageDataList = (data:any) =>{ setPageNo(data)}
+  // ------------- Next button Code End -------------
+
   useEffect(() =>{
     const customerDataString = Cookies.get("customer_data");
     let customerData = null;
@@ -49,6 +62,8 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
     if (customerId) {
       const requser = {
         customer_id: customerId,
+        page: PageNo,
+        size: RoePerPage
       };
 
       if(selectedTabbar == "Order"){
@@ -60,11 +75,12 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
         dispatch(getCustomerTagloglist(requser));
       }
     }
-  },[dispatch, selectedTabbar ])
+  },[dispatch, selectedTabbar, PageNo, RoePerPage ])
 
   // ------------- Get  Data From Reducer Code Start --------------
-    const Orderlist = useSelector((state: any) => state.Order.SingleFarmerOrderlist?.data );
-    const Complainlist = useSelector((state: any) => state.Complain.SinglefarmerComplainlist?.data );
+  
+    const Orderlist = useSelector((state: any) => state.Order.SingleFarmerOrderlist );
+    const Complainlist = useSelector((state: any) => state.Complain.SinglefarmerComplainlist );
     const Tagloglist = useSelector((state: any) => state.Taglog.CustomerTagloglist );
 
     const [UserOrderDataList, setUserOrderDataList] = useState([]);
@@ -72,9 +88,21 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
     const [UserTaglogDataList, setUserTaglogDataList] = useState([]);
 
     useEffect(() => {
-      setUserOrderDataList(Orderlist? Orderlist : []);
-      setUserComplainDataList(  Complainlist  ? Complainlist  : [])
-      setUserTaglogDataList(  Tagloglist  ? Tagloglist  : [])
+      if(selectedTabbar == "Order"){
+        setUserOrderDataList(Orderlist? Orderlist?.data : []);
+        setTotalListData(Orderlist? Orderlist?.totalData : []);
+        setCurrentPageNo(Orderlist? Orderlist?.page : []);  
+      }
+      else if(selectedTabbar == "Complain"){
+        setUserComplainDataList(  Complainlist  ? Complainlist?.data  : [])
+        setTotalListData(Complainlist? Complainlist?.totalData : []);
+        setCurrentPageNo(Complainlist? Complainlist?.page : []);
+      }
+      else if(selectedTabbar == "Taglog"){
+        setUserTaglogDataList(  Tagloglist  ? Tagloglist?.data : [])
+        setTotalListData(Tagloglist? Tagloglist?.totalData : []);
+        setCurrentPageNo(Tagloglist? Tagloglist?.page : []);
+      }
     }, [Orderlist, Complainlist, Tagloglist]);
 
   //  ------------- Get  Data From Reducer Code end --------------
@@ -102,16 +130,6 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
     }
   // ------------complain details page ------------------
 
-  // ----------- next Button  Code Start -------------
-    const [TotalListData, setTotalListData] = useState(0);
-    const [CurrentUserListSize, setCurrentUserListSize] = useState();
-    const [CurrentPageNo, setCurrentPageNo] = useState(0);
-    const [PageNo, setPageNo] = useState(1);
-    const [RoePerPage, setRoePerPage] = useState(10);
-
-    const RowPerPage = (value: any) => { setRoePerPage(value)};
-    const PageDataList = (data:any) =>{ setPageNo(data)}
-  // ------------- Next button Code End -------------
 
 
   return (
@@ -132,7 +150,7 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
             <div className='mt-[1.5rem] px-4'>
               {selectedTabbar == "Order" ?
                 <>
-                  {UserOrderDataList.length > 0 ?
+                  {UserOrderDataList && UserOrderDataList.length > 0 ?
                       <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
                         <Table.Head className="bg-gray-100 dark:bg-gray-700">
                           <Table.HeadCell>Order id</Table.HeadCell>
@@ -168,7 +186,7 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
 
                 : selectedTabbar == "Complain" ?
                 <>
-                    {UserComplainDataList.length > 0 ?
+                    {UserComplainDataList && UserComplainDataList.length > 0 ?
                     <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
                       <Table.Head className="bg-gray-100 dark:bg-gray-700">
                         <Table.HeadCell>Complain id</Table.HeadCell>
@@ -197,7 +215,7 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
                   
                 : selectedTabbar == "Taglog" ?
                 <>
-                     {UserTaglogDataList.length > 0 ?
+                     {UserTaglogDataList && UserTaglogDataList.length > 0 ?
                           <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
                           <Table.Head className="bg-gray-100 dark:bg-gray-700">
                             <Table.HeadCell> Taglog </Table.HeadCell>
@@ -224,7 +242,7 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
               }
             </div>
 
-            <ExamplePagination PageData={PageDataList} RowPerPage={RowPerPage}  PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData}/>
+ <ExamplePagination PageData={PageDataList} RowPerPage={RowPerPage}   RowsPerPageValue={RoePerPage}  PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData}/>
           </div>
 
           <ComplainDetails  setisOpenComplainModel={() => setisOpenComplainModel(false)} isOpenComplainModel={isOpenComplainModel} />

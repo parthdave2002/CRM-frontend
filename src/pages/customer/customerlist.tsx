@@ -4,7 +4,6 @@ import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { Button,  Checkbox, Table} from "flowbite-react";
 import { useDispatch, useSelector } from "react-redux";
-import { HiTrash } from "react-icons/hi";
 import { useNavigate } from "react-router";
 import Cookies from "js-cookie";
 import { getCustomerDatalist, BlockCustomer } from "../../Store/actions";
@@ -26,11 +25,13 @@ const CustomerListPage : FC = function () {
 
     // ----------- next Button  Code Start -------------
       const [UserDataList, setUserDataList] = useState([]);
-      const [TotalPage, setTotalPage] = useState(0);
       const [PageNo, setPageNo] = useState(1);
-      const [RoePerPage, setRoePerPage] = useState(10);
+      const [RoePerPage, setRoePerPage] = useState(5);
     
-      const RowPerPage = (value: any) => { setRoePerPage(value)};
+      const RowPerPage = (event: any) => {
+        const value = Number(event)
+         setRoePerPage(value);
+       };
       const PageDataList = (data:any) =>{ setPageNo(data)}
     // ------------- Next button Code End -------------
     
@@ -44,20 +45,18 @@ const CustomerListPage : FC = function () {
     // ------------- Get  Data From Reducer Code Start --------------
       const { Customerlist,  UserListSize, TotalUserListData, CurrentPage, permissionsdata } = useSelector((state: any) => ({
         Customerlist: state.Customer.Customerlist,
-          UserListSize: state.Customer.UserListSize,
-          TotalUserListData: state.Customer.TotalUserListData,
+          UserListSize: state.Customer.CustomerlistSize,
+          TotalUserListData: state.Customer.TotalCustomerData,
           CurrentPage: state.Customer.CurrentPage,
           permissionsdata: state.Login.permissionsdata
         }));
 
       const [TotalListData, setTotalListData] = useState(0);
-      const [CurrentUserListSize, setCurrentUserListSize] = useState();
       const [CurrentPageNo, setCurrentPageNo] = useState(0);
       
       useEffect(() => {
         setUserDataList(Customerlist ? Customerlist  : null);
         setTotalListData(TotalUserListData ? TotalUserListData : 0);
-        setCurrentUserListSize(UserListSize ? UserListSize : 0);
         setCurrentPageNo(CurrentPage ? CurrentPage : 1);
       }, [Customerlist,  TotalUserListData, UserListSize, CurrentPage]);
     //  ------------- Get  Data From Reducer Code end --------------
@@ -144,7 +143,7 @@ const CustomerListPage : FC = function () {
                         ))}
                     </Table.Body>
                 </Table>
-                <ExamplePagination PageData={PageDataList} RowPerPage={RowPerPage}  PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData}/>
+                <ExamplePagination PageData={PageDataList} RowPerPage={RowPerPage}   RowsPerPageValue={RoePerPage}  PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData}/>
             </NavbarSidebarLayout>
 
             <ToastMessage />

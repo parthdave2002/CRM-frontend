@@ -35,21 +35,18 @@ const RolesPage: FC = function () {
   // ----------------- Access Data Code end  -----------------
  
  //  ----------------- next Button  Code Start  -----------------
- const [TotalPage, setTotalPage] = useState(0);
  const [PageNo, setPageNo] = useState(1);
- const [RoePerPage, setRoePerPage] = useState(10);
+ const [RoePerPage, setRoePerPage] = useState(5);
 
- const RowPerPage = (value: any) => {
+ const RowPerPage = (event: any) => {
+  const value = Number(event)
    setRoePerPage(value);
  };
 
- const PageDataList = (data:any) =>{
-   setPageNo(data)
- }
+ const PageDataList = (data:any) =>{ setPageNo(data)}
  // ----------------- Nect button Code End  -----------------
 
   const [TotalListData, setTotalListData] = useState(0);
-  const [CurrentUserListSize, setCurrentUserListSize] = useState();
   const [CurrentPageNo, setCurrentPageNo] = useState(0);
   const [RolesList, setRoleList] = useState([]);
 
@@ -165,7 +162,7 @@ const RolesPage: FC = function () {
               ))}
             </Table.Body>
           </Table>
-        <ExamplePagination PageData={PageDataList} RowPerPage={RowPerPage}  PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData}/>
+        <ExamplePagination PageData={PageDataList} RowPerPage={RowPerPage}   RowsPerPageValue={RoePerPage}  PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData}/>
       </NavbarSidebarLayout>
 
       {isOpenDelteModel && (

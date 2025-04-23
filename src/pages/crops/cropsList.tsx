@@ -10,7 +10,7 @@ import { lazy, Suspense, useEffect, useState } from "react";
 import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useNavigate } from "react-router";
-import { FaExchangeAlt, FaExclamationCircle } from "react-icons/fa";
+import { FaExchangeAlt } from "react-icons/fa";
 import Cookies from "js-cookie";
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 const ToastMessage = lazy(() => import("../../components/ToastMessage"));
@@ -59,12 +59,14 @@ const CropsListPage: FC = function () {
 
   // ----------- next Button  Code Start -------------
     const [TotalListData, setTotalListData] = useState(0);
-    const [CurrentUserListSize, setCurrentUserListSize] = useState();
     const [CurrentPageNo, setCurrentPageNo] = useState(0);
     const [PageNo, setPageNo] = useState(1);
-    const [RoePerPage, setRoePerPage] = useState(10);
+    const [RoePerPage, setRoePerPage] = useState(5);
 
-    const RowPerPage = (value: any) => { setRoePerPage(value)};
+    const RowPerPage = (event: any) => {
+      const value = Number(event)
+       setRoePerPage(value);
+     };
     const PageDataList = (data:any) =>{ setPageNo(data)}
   // ------------- Next button Code End -------------
 
@@ -88,7 +90,6 @@ const CropsListPage: FC = function () {
     useEffect(() => {  
       setCroplist(Cropdatalist ? Cropdatalist : null);
       setTotalListData(TotalCropData ? TotalCropData : 0);
-      setCurrentUserListSize(CroplistSize ? CroplistSize : 0);
       setCurrentPageNo(CurrentPage ? CurrentPage : 1);
     }, [Cropdatalist,  CroplistSize, TotalCropData, CurrentPage]);
   //  ------------- Get Data From Reducer Code end --------------
@@ -173,7 +174,7 @@ const CropsListPage: FC = function () {
               </Table.Body>
           </Table>
           
-        <ExamplePagination PageData={PageDataList} RowPerPage={RowPerPage}  PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData}/>
+          <ExamplePagination PageData={PageDataList} RowPerPage={RowPerPage}   RowsPerPageValue={RoePerPage}  PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData}/>
       </NavbarSidebarLayout>
     
         {isOpenDelteModel && (

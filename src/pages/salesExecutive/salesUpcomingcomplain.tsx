@@ -3,7 +3,7 @@ import { FaArrowLeft } from "react-icons/fa6";
 import SalesFarmerDashboard from "./salesFarmerDashboard";
 import SalesMobileInput from "../../components/input/salesMobileInput";
 import { useDispatch, useSelector } from "react-redux";
-import { getFarmerComplainlist } from "../../Store/actions";
+import { CheckCustomerExist, getFarmerComplainlist } from "../../Store/actions";
 import moment from "moment";
 
 interface PropsData{
@@ -22,21 +22,16 @@ const SalesUpcomingComplainPage : FC <PropsData> = function ({ setDatactive, ope
         setDatactive("Farmer")
     }
 
-    const ComplainData = [
-        {
-            "name": "Priyanka Thakar",
-            "type" : "high",
-            "description": "this is a demo complain.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-            "created": "17-02-2025",
-            "mobile": "1234567890",
-            "product": "Amaze-X wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-        },
-    ]
-
     const ViewCall = (data: string) => setOpenProfile(true)
     const [searchComplainData, setSearchComplainData] = useState<string>("");
     const handleChange = (data: string) => setSearchComplainData(data);
-    const handleClickCall = () => console.log("callll");
+    const handleClickCall = () => {
+        if(searchComplainData.length){
+                    let requser={   complain_id : searchComplainData  }
+                    dispatch(CheckCustomerExist(requser))
+                    setOpenProfile(true);
+        }
+    }
 
 
     useEffect(() =>{
@@ -48,7 +43,6 @@ const SalesUpcomingComplainPage : FC <PropsData> = function ({ setDatactive, ope
     useEffect(() => {
         setUserComplainDataList(Complainlist ? Complainlist : [])
     }, [Complainlist]);
-    console.log("UserComplainDataList >>>>>>>>",UserComplainDataList);
 
     return (
         <>  

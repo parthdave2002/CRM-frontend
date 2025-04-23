@@ -24,9 +24,9 @@ const ConfirmationModalPage: FC<ConfirmationModalProps>= function ({ isOpenConfi
             <Modal.Header className="px-6 pt-6 pb-0"> <span className="sr-only"> Confirmation  </span></Modal.Header>
             <Modal.Body className="px-6 pt-0 pb-6">
                 <div className="flex flex-col items-center gap-y-6 "> <HiOutlineExclamationCircle className="text-7xl text-red-500" /> 
-                    <p className="text-xl text-gray-500"> Are you sure you want to {isOrderTypeModel} this order ? </p>
+                    <p className="text-xl text-gray-500"> Are you sure you want to {isOrderStatusModel} this order ? </p>
 
-                    {isOrderTypeModel == "future"  && isOrderStatusModel == "null" ?
+                    {isOrderTypeModel == "future"  && isOrderStatusModel == "extend" ?
                         <div className="flex gap-x-3">
                             <div className="self-center dark:text-gray-50"> Callback Date : </div>
                             <div className="mt-1">

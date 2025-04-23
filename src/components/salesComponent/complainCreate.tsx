@@ -125,11 +125,13 @@ const ComplainCreate : FC <ComplainCreateProps> = ({setisOpenComplainCreateModel
 
     // --------------- Add Complainlist code start --------------------
     const [isOpenSuccessOrderModel, setisOpenSuccessOrderModel ] = useState(false);
+    const [isOpenSuccessOrderMessage, setisOpenSuccessOrderMessage ] = useState("");
     const ComplainAddedlist = useSelector((state: any) => state.Complain.AddComplainlist);
     useEffect(() => {
         if(ComplainAddedlist?.success){
             setisOpenComplainCreateModel(false)
             setisOpenSuccessOrderModel(true)
+            setisOpenSuccessOrderMessage("Complain created succesfully")
             dispatch(ResetComplainlist());
             validation.values.title ="";
             validation.values.comment ="";
@@ -142,6 +144,11 @@ const ComplainCreate : FC <ComplainCreateProps> = ({setisOpenComplainCreateModel
         }
     }, [ComplainAddedlist])
     // --------------- Add Complainlist code end --------------------
+
+    const OkayCall =() =>{
+        setisOpenSuccessOrderModel(false);
+        setisOpenSuccessOrderMessage("");
+    }
 
   return (
     <>
@@ -244,7 +251,7 @@ const ComplainCreate : FC <ComplainCreateProps> = ({setisOpenComplainCreateModel
             </div>
         </Modal>
 
-        <SuccessErrorModalPage isOpenSuccessOrderModel={isOpenSuccessOrderModel} setisOpenSuccessOrderModel={setisOpenSuccessOrderModel} message="Complain created sucessfully" />
+        <SuccessErrorModalPage isOpenSuccessOrderModel={isOpenSuccessOrderModel} setisOpenSuccessOrderModel={setisOpenSuccessOrderModel} message={isOpenSuccessOrderMessage} OkayCall={OkayCall} />
     </>
   )
 }

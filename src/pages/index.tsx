@@ -43,7 +43,7 @@ const DashboardPage: FC = function () {
     setOrderData(DashboardDataList?.data?.orders);
     setUserData(DashboardDataList?.data?.users);
     setProductData(DashboardDataList?.data?.products);
-    set_total_revenueData(DashboardDataList?.data?.totalCustomers);
+    set_total_revenueData(DashboardDataList?.data?.totalRevenue);
     set_total_orderData(DashboardDataList?.data?.totalOrders );
     set_total_userData(DashboardDataList?.data?.totalUsers);
 
@@ -170,10 +170,10 @@ const DashboardPage: FC = function () {
                             <Table.Row>
                             <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 dark:text-gray-200">   <span className="font-semibold">{ item.order_id}</span> </Table.Cell>
                             <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-200">  {moment(item.added_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
-                            <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-gray-200"> {item?.customer?.customer_name}</Table.Cell>
+                            <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-gray-200 truncate max-w-[15rem]"> {item?.customer?.customer_name}</Table.Cell>
                             <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-gray-200"> {item?.advisor_name?.name} </Table.Cell>
-                            <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-gray-200"> ₹ { item?.total_amount}</Table.Cell>
-                            <Table.Cell className="flex whitespace-nowrap p-4"> <Badge color="success">{item?.status}</Badge> </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-gray-200"> ₹ { item?.total_amount.toFixed(2)}</Table.Cell>
+                            <Table.Cell className="flex whitespace-nowrap   text-center"> <Badge className="w-24 text-center justify-center truncate" color="success">{item?.status.charAt(0).toUpperCase() + item?.status.slice(1).toLowerCase() }</Badge> </Table.Cell>
                           </Table.Row>
                           ))}
                       </Table.Body>
@@ -197,8 +197,8 @@ const DashboardPage: FC = function () {
                       <li className="py-3 sm:py-4" key={k}>
                       <div className="flex justify-between items-center space-x-4">
                         <div className="min-w-0 ">
-                          <p className="truncate text-sm font-medium text-gray-900 dark:text-white"> {item?.customer_name} </p>
-                          <p className="truncate text-sm text-gray-500 dark:text-gray-400"> {item?.taluka}  </p>
+                          <p className="truncate text-sm font-medium text-gray-900 dark:text-white max-w-[7rem]"> {item?.customer_name} </p>
+                          <p className="truncate text-sm text-gray-500 dark:text-gray-400"> {item?.taluka_name}  </p>
                         </div>
                         {/* <div className="inline-flex items-center text-sm font-normal text-gray-900 dark:text-gray-300 text-center">{item.village}</div> */}
                         <div className="inline-flex items-center text-md font-normal text-gray-900 dark:text-gray-200">{item?.mobile_number}</div>
