@@ -59,12 +59,14 @@ const ProductListPage: FC = function () {
     
   // ----------- next Button  Code Start -------------
     const [TotalListData, setTotalListData] = useState(0);
-    const [CurrentUserListSize, setCurrentUserListSize] = useState();
     const [CurrentPageNo, setCurrentPageNo] = useState(0);
     const [PageNo, setPageNo] = useState(1);
-    const [RoePerPage, setRoePerPage] = useState(10);
+    const [RoePerPage, setRoePerPage] = useState(5);
 
-    const RowPerPage = (value: any) => { setRoePerPage(value)};
+    const RowPerPage = (event: any) => {
+      const value = Number(event)
+       setRoePerPage(value);
+     };
     const PageDataList = (data:any) =>{ setPageNo(data)}
   // ------------- Next button Code End -------------
 
@@ -88,7 +90,6 @@ const ProductListPage: FC = function () {
     useEffect(() => {        
       setProductList(Productlist ? Productlist?.data  :[]);
       setTotalListData(TotalProductData ? TotalProductData : 0);
-      setCurrentUserListSize(ProductlistSize ? ProductlistSize : 0);
       setCurrentPageNo(CurrentPage ? CurrentPage : 1);
     }, [Productlist,  ProductlistSize, TotalProductData, CurrentPage]);
   //  ------------- Get Data From Reducer Code end --------------
@@ -174,7 +175,7 @@ const ProductListPage: FC = function () {
               </Table.Body>
           </Table>
           
-        <ExamplePagination PageData={PageDataList} RowPerPage={RowPerPage}  PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData}/>
+          <ExamplePagination PageData={PageDataList} RowPerPage={RowPerPage}   RowsPerPageValue={RoePerPage}  PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData}/>
       </NavbarSidebarLayout>
     
         {isOpenDelteModel && (

@@ -30,8 +30,10 @@ const LogoutModal : FC <PoropsData> = ({openModal, handleClose, handleAccept}) =
   const  taglogoptions = useSelector((state: any) => state.Taglog.Tagloglist)?.map( (item: any) => ({  label: item.taglog_name,  value: item._id}));
  
   useEffect(() =>{
-    dispatch(getTagloglist())
-  },[dispatch])
+    if(openModal ==true){
+      dispatch(getTagloglist())
+    }
+  },[dispatch, openModal])
   
     const [selectedTaglogOption, setSelectedTaglogOption] = useState<{ label: string, value: string } | null>(null);
     const [selectedTaglogid, setSelectedTaglogid] = useState<string | null>(null);

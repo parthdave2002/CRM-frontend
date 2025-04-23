@@ -28,24 +28,21 @@ const SalesFarmerDetailsPage : FC  <PropsData> = function ({ setDatactive, openP
         setData(customerData?.mobile_number ? customerData?.mobile_number  : null);
     },[])
 
+    //---------    Get callback data  start--------- 
+    const [Farmerdata, setFarmerdata] = useState([])
+    const  CallBackUserList  = useSelector((state: any) => state.SalesDashboard.CallBackUserList );
+
     useEffect(() =>{
         if(data){
             let requser={   number : data  }
             dispatch(CheckCustomerExist(requser))
             setOpenProfile(true);
         }
-    },[data])
-
-    //---------    Get callback data  start--------- 
-    const [Farmerdata, setFarmerdata] = useState([])
-    const  CallBackUserList  = useSelector((state: any) => state.SalesDashboard.CallBackUserList );
-
-    useEffect(( ) => {
-        if(!data){
-        let requser= { callback : true }
-        dispatch (getCallbackdata(requser))
-    }
-    }, [])
+        else{
+            let requser= { callback : true }
+            dispatch (getCallbackdata(requser))
+        }
+    },[dispatch, data])
     
     useEffect(() =>{
         if(CallBackUserList){

@@ -9,10 +9,12 @@ interface NavbarSidebarLayoutProps {
   CurrentPageNo?: any;
   TotalListData ?: any;
   RowPerPage?: any;
+  RowsPerPageValue?: number;  
 }
 
-const ExamplePagination: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = function ({ PageData,RowPerPage , PageNo, CurrentPageNo, TotalListData}) {
-
+const ExamplePagination: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = function ({ PageData,RowPerPage, RowsPerPageValue , PageNo, CurrentPageNo, TotalListData}) {
+  const totalPages = TotalListData && RowsPerPageValue ? Math.ceil(TotalListData / RowsPerPageValue) : 1;
+  
   const NextButtoncalll = () => {
     PageData(PageNo + 1);
   };
@@ -34,7 +36,7 @@ const ExamplePagination: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = funct
             <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
               Pages&nbsp;
               <span className="font-semibold text-gray-900 dark:text-white">
-                {CurrentPageNo} / 2
+                {CurrentPageNo} / {totalPages}
               </span>
               &nbsp; Total Data : &nbsp;
               <span className="font-semibold text-gray-900 dark:text-white">
@@ -46,6 +48,7 @@ const ExamplePagination: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = funct
           <div className="mb-[2rem] md:mb-0">
             <span className="dark:text-white"> Rows Per Pages </span>
             <select className="rounded-xl dark:bg-CardColor dark:text-white" onChange={(e) => { rowData(e); }} >
+            <option value="5">5</option>
               <option value="10">10</option>
               <option value="25">25</option>
               <option value="50"> 50</option>
@@ -57,7 +60,9 @@ const ExamplePagination: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = funct
               <Button className="p-0" disabled={true}> <HiChevronLeft className="mr-1 text-base" /> Previous </Button>
             : <Button  className="p-0" onClick={() => {  PreviouesButtonCall() }}> <HiChevronLeft className="mr-1 text-base" /> Previous  </Button>}
 
-            <Button className="p-0" onClick={() => { NextButtoncalll() }} > Next <HiChevronRight className="ml-1 text-base" />  </Button>
+          {CurrentPageNo >= totalPages ?
+            <Button className="p-0"  disabled={true} > Next <HiChevronRight className="ml-1 text-base" />  </Button>
+          :<Button className="p-0" onClick={() => { NextButtoncalll() }} > Next <HiChevronRight className="ml-1 text-base" />  </Button>}
           </div>
         </div>
     </>

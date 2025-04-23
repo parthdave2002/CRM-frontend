@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { Label, Button } from "flowbite-react";
 import { FaUser, FaWindowClose } from 'react-icons/fa';
 import { Form, Input, FormFeedback } from "reactstrap";
@@ -19,9 +19,14 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
   const dispatch = useDispatch();
 
   // ------------- State Get Data From Reducer Code Start --------------
-  useEffect(() =>{
-    dispatch(getstatedatalist())
-  },[])
+  const hasStateFetchedRef = useRef(false);
+
+  const handleStateLoad = () => {
+    if (!hasStateFetchedRef.current) {
+      dispatch(getstatedatalist())
+      hasStateFetchedRef.current = true;
+    }
+  };
 
   const stateoption = useSelector((state: any) => state.Location.Statedatalist?.data)?.map( (item: any) => ({ label: item.name, value: item._id }));
   const districtoption = useSelector((state: any) => state.Location.Districtdatalist?.data)?.map((item: any) => ({ label: item.name, value: item._id  }));
@@ -250,17 +255,20 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
   };
   // -------------- Header about code end ---------
 
-   // -------------- Header about code start ---------  
+   // --------------Crop code start ---------  
+   const hasFetchedRef = useRef(false); // to persist across renders
 
       const  CropOprions= useSelector((state: any) => state.Crop.Cropdatalist )?.map(
         (item: any) => ({
           label: item.name_eng,
           value: item._id
         }));
-
-  useEffect(() =>{
-    dispatch(getCroplist() )
-  },[])
+  const handleCropLoad = () => {
+    if (!hasFetchedRef.current) {
+      dispatch(getCroplist());
+      hasFetchedRef.current = true;
+    }
+  };
 
   const [selectedcropOption, setSelectedcropOption] = useState<{ label: string, value: string } | null>(null);
   const [selectedcropid, setSelectedcropid] = useState<string | []>([]);
@@ -278,7 +286,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
       setValidatecrop(0)
     }
   };
-  // -------------- Header about code end ---------
+  // --------------Crop code end ---------
 
   // -------------- Irrigation source code start ---------
   const IrrigationSourceOptions= [
@@ -539,7 +547,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
 
           <div>
             <Label htmlFor="Status"> State <span className='text-red-500'>*</span></Label>
-            <div className="mt-1">
+            <div className="mt-1" onClick={ () => handleStateLoad ()}>
               <Select
                 className="w-full dark:text-white"
                 classNames={{
@@ -753,7 +761,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
 
           <div>
             <Label htmlFor="heard_aboutus"> Crops <span className='text-red-500'>*</span></Label>
-            <div className="mt-1">
+            <div className="mt-1" onClick={ () => handleCropLoad ()} >
               <Select
                 className="w-full dark:text-white"
                 classNames={{

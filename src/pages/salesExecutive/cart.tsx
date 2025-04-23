@@ -34,8 +34,11 @@ interface ProfileInfo{
   heard_about_agribharat:  string;
   address: string;
   district:  string;
+  district_name:  string;
   taluka:  string;
+  taluka_name:  string;
   village:  string;
+  village_name:  string;
   pincode:  number;
   created_by:  string;
   __v: number;
@@ -104,10 +107,10 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
         products : productsArray,
         customer : data_id,
         order_type :  isOrderTypeModel,
-        status : isOrderStatusModel,
+        status : isOrderStatusModel == "extend" ?  null :  isOrderStatusModel,
         total_amount : grandTotal.toFixed(2),
       }
-      if (isOrderTypeModel === "future" && isOrderStatusModel == "null" )  requser.future_order_date = SelectedFutureDate;
+      if (isOrderTypeModel === "future" && isOrderStatusModel == "extend" )  requser.future_order_date = SelectedFutureDate;
 
       if(cartOrderid){
         requser.order_id =  cartOrderid
@@ -239,7 +242,7 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
 
               <div className="flex gap-x-3 justify-end mt-6 mb-4">
                 {cartOrderid ?<div className="flex border border-indigo-500 text-indigo-500 dark:text-white hover:text-gray-100 font-semibold px-6 py-2 rounded-full gap-3 hover:bg-indigo-800 transition flex text-center cursor-pointer transition-all duration-500 ease-in-out" onClick={() => OrderplaceCall("cancel", "future" )}> <BsCartXFill   className="self-center h-5 w-5" /> Cancel Order </div> : null}
-                <div className="flex border border-indigo-500 text-indigo-500 dark:text-white hover:text-gray-100 font-semibold px-6 py-2 rounded-full gap-3 hover:bg-indigo-800 transition flex text-center cursor-pointer transition-all duration-500 ease-in-out" onClick={() => OrderplaceCall("null",  "future" )}> <FaGhost className="self-center h-5 w-5" /> Future Order </div>
+                <div className="flex border border-indigo-500 text-indigo-500 dark:text-white hover:text-gray-100 font-semibold px-6 py-2 rounded-full gap-3 hover:bg-indigo-800 transition flex text-center cursor-pointer transition-all duration-500 ease-in-out" onClick={() => OrderplaceCall("extend",  "future" )}> <FaGhost className="self-center h-5 w-5" /> Future Order </div>
                 <div className="flex border border-indigo-500 text-indigo-500 dark:text-white hover:text-gray-100 font-semibold px-6 py-2 rounded-full gap-3 hover:bg-indigo-800 transition flex text-center cursor-pointer transition-all duration-500 ease-in-out" onClick={() => OrderplaceCall("confirm", "confirm" )}> <FaCartShopping className="self-center h-5 w-5" /> Place Order </div>
               </div>
             </div>
@@ -258,9 +261,9 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
             <div className="border dark:border-gray-600 dark:bg-gray-800 p-3 rounded-xl w-full flex flex-col gap-y-3">
               <div className='dark:text-gray-300 text-[1.2rem] font-semibold'>Shipping Address</div>
               <div className='dark:text-gray-300 '>  {data?.address} </div>
-              <div className='dark:text-gray-300'> District :   {data?.district} </div>
-              <div className='dark:text-gray-300'> Taluka :  {data?.taluka} </div>
-              <div className='dark:text-gray-300'> Village :  {data?.village} </div>
+              <div className='dark:text-gray-300'> District :   {data?.district_name} </div>
+              <div className='dark:text-gray-300'> Taluka :  {data?.taluka_name} </div>
+              <div className='dark:text-gray-300'> Village :  {data?.village_name} </div>
               <div className='dark:text-gray-300'> Pincode : {data?.pincode} </div>
             </div>
             </div> 

@@ -14,11 +14,13 @@ const OrderListPage : FC = function () {
 
     // ----------- next Button  Code Start -------------
       const [UserDataList, setUserDataList] = useState([]);
-      const [TotalPage, setTotalPage] = useState(0);
       const [PageNo, setPageNo] = useState(1);
-      const [RoePerPage, setRoePerPage] = useState(10);
+      const [RoePerPage, setRoePerPage] = useState(5);
     
-      const RowPerPage = (value: any) => { setRoePerPage(value)};
+      const RowPerPage = (event: any) => {
+        const value = Number(event)
+         setRoePerPage(value);
+       };
       const PageDataList = (data:any) =>{ setPageNo(data)}
     // ------------- Next button Code End -------------
     
@@ -47,13 +49,11 @@ const OrderListPage : FC = function () {
         }));
 
       const [TotalListData, setTotalListData] = useState(0);
-      const [CurrentOrderlistSize, setCurrentUserListSize] = useState();
       const [CurrentPageNo, setCurrentPageNo] = useState(0);
       
       useEffect(() => {
         setUserDataList(Orderlist?.data ? Orderlist?.data  : Orderlist);
         setTotalListData(TotalOrderData ? TotalOrderData : 0);
-        setCurrentUserListSize(OrderlistSize ? OrderlistSize : 0);
         setCurrentPageNo(CurrentPage ? CurrentPage : 1);
       }, [Orderlist, TotalOrderData, OrderlistSize, CurrentPage]);
     //  ------------- Get  Data From Reducer Code end --------------
@@ -102,7 +102,8 @@ const OrderListPage : FC = function () {
                         ))}
                     </Table.Body>
                 </Table>
-                <ExamplePagination PageData={PageDataList} RowPerPage={RowPerPage}  PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData}/>
+                <ExamplePagination PageData={PageDataList} RowPerPage={RowPerPage}   RowsPerPageValue={RoePerPage}  PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData}/>
+
             </NavbarSidebarLayout>
         </>
     );
