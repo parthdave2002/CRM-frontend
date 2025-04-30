@@ -95,7 +95,7 @@ const AddRolePage : FC = function () {
                 <div className="mt-[2rem] bg-white dark:bg-gray-800 p-4">
                     <Form onSubmit={(e) => { e.preventDefault(); validation.handleSubmit(); return false; }} >
                         <div>
-                            <Label htmlFor="RoleName">Role Name</Label>
+                            <Label htmlFor="RoleName">Role Name <span className='text-red-500'>*</span> </Label>
                             <div className="mt-1">
                             <Input
                                 id="role_title"
@@ -123,7 +123,7 @@ const AddRolePage : FC = function () {
                         </div>
 
                         <div className="my-[1rem]">
-                            <Label htmlFor="Description">Description</Label>
+                            <Label htmlFor="Description">Description <span className='text-red-500'>*</span> </Label>
                             <div className="mt-1">
                             <Input
                                 id="description"
@@ -151,7 +151,7 @@ const AddRolePage : FC = function () {
                         </div>
                         
                         <div className="mb-[1rem]">
-                            <Label htmlFor="Description"> Status </Label>
+                            <Label htmlFor="Description"> Status <span className='text-red-500'>*</span>  </Label>
                             <div className="">
                                     <Select
                                         className="w-full dark:text-white"

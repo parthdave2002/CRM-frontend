@@ -20,12 +20,13 @@ const LogoutModal : FC <PoropsData> = ({openModal, handleClose, handleAccept}) =
 
   const dispatch = useDispatch();
       const [data, setData] = useState(null)
+      const customerDataString = Cookies.get("customer_data");
       useEffect(() => {
-          const customerDataString = Cookies.get("customer_data");
-          const customerData = customerDataString ? JSON.parse(customerDataString) : []    
+        if(customerDataString?.length){
+          const customerData = customerDataString ? JSON.parse(customerDataString) : []      
           setData(customerData?._id ? customerData?._id  : null);
-      },[]);
-
+        }
+      },[customerDataString]);
   // -------------- Taglog code start ---------
   const  taglogoptions = useSelector((state: any) => state.Taglog.Tagloglist)?.map( (item: any) => ({  label: item.taglog_name,  value: item._id}));
  

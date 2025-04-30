@@ -225,7 +225,7 @@ const AddUserPage : FC = function () {
         initialValues: initialValues,
         
         validationSchema: Yup.object({
-            name: Yup.string().required("Please Enter User Name"),
+            name: Yup.string().required("Please Enter Advisor Name"),
             email: Yup.string().required("Please Enter Email")
             .matches(/^[^@]+@[^@]+$/, "Email must contain exactly one '@'") // Ensures exactly one '@'
             .matches(/@[^@]+\.[^@]+$/, "Email must contain exactly one '.' after '@'") // Ensures '.' after '@'
@@ -296,7 +296,7 @@ const AddUserPage : FC = function () {
     });
 
     //  -------------- Get Role Data list -------------------
-        const RolesList = useSelector((state: any) => state.Role.Roleslist?.pulledData || []);
+        const RolesList = useSelector((state: any) => state.Role.Roleslist || []);
         const roleoption = RolesList && RolesList.map((role : any) => ({  label: role.role_title,  value: role._id  }));
         
         useEffect(() =>{
@@ -305,7 +305,7 @@ const AddUserPage : FC = function () {
     //  -------------- Get Role Data list -------------------
 
      //  -------------- Get Role Data list -------------------
-     const {UserAddedList} = useSelector((state: any) => state.User.AddUserlistdata || []);
+     const UserAddedList = useSelector((state: any) => state.User.AddUserlistdata || []);
      const UpdateProfileuserdata  = useSelector((state: any) => state.User.UpdateProfileuserdata || []);
 
      useEffect(() =>{
@@ -315,8 +315,8 @@ const AddUserPage : FC = function () {
             }else{
                 toast.success(UserAddedList?.msg);
             }
-            dispatch(ResetUserdatalist());
             navigate(ParentLink)
+            dispatch(ResetUserdatalist());
             validation.resetForm();
         }
      },[UserAddedList, UpdateProfileuserdata])
@@ -375,8 +375,8 @@ const AddUserPage : FC = function () {
     const minDate = new Date(today.setFullYear(today.getFullYear() - 18));
     const formattedMinDate = minDate.toISOString().split("T")[0]; // Format to yyyy-mm-dd=  
 
-    let Name =  id ? "User Update" : "User Add" ;
-    let ParentName = "User List";
+    let Name =  id ? "Advisor Update" : "Advisor Add" ;
+    let ParentName = "Advisor List";
     let ParentLink = "/users/list";
 
     return (
@@ -390,13 +390,13 @@ const AddUserPage : FC = function () {
 
                         <div className="md:flex gap-x-[2rem]">
                             <div className="flex-1 mt-[1rem]">
-                                <Label htmlFor="UserName">User Name</Label>
+                                <Label htmlFor="AdvisorName">Advisor Name <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                 <Input
                                     id="name"
                                     name="name"
                                     className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
-                                    placeholder="User Name"
+                                    placeholder="Advisor Name"
                                     type="text"
                                     onChange={validation.handleChange}
                                     onBlur={validation.handleBlur}
@@ -410,13 +410,13 @@ const AddUserPage : FC = function () {
                             </div>
 
                             <div  className="flex-1 mt-[1rem]">
-                                <Label htmlFor="email">Email</Label>
+                                <Label htmlFor="email">Email <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                 <Input
                                     id="email"
                                     name="email"
                                     className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
-                                    placeholder="User email"
+                                    placeholder="Advisor email"
                                     type="email"
                                     onChange={validation.handleChange}
                                     onBlur={validation.handleBlur}
@@ -430,7 +430,7 @@ const AddUserPage : FC = function () {
                             </div>
 
                             <div  className="flex-1 mt-[1rem]">
-                                <Label htmlFor="email">Gender</Label>
+                                <Label htmlFor="email">Gender <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                     <Select
                                         className="w-full dark:text-white"
@@ -455,7 +455,7 @@ const AddUserPage : FC = function () {
                         <div className="md:flex  gap-x-[2rem]">
                             
                             <div className="flex-1 mt-[1rem]">
-                                <Label htmlFor="UserName">Role</Label>
+                                <Label htmlFor="role">Role <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                     <Select
                                         className="w-full dark:text-white"
@@ -477,7 +477,7 @@ const AddUserPage : FC = function () {
                             </div>
                             
                             <div className="flex-1 mt-[1rem]">
-                                <Label htmlFor="password">Password</Label>
+                                <Label htmlFor="password">Password <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                 <Input
                                     id="password"
@@ -497,13 +497,13 @@ const AddUserPage : FC = function () {
                             </div>
 
                             <div  className="flex-1 mt-[1rem]">
-                                <Label htmlFor="mobile_no"> Mobile Number</Label>
+                                <Label htmlFor="mobile_no"> Mobile Number <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                 <Input
                                     id="mobile_no"
                                     name="mobile_no"
                                     className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
-                                    placeholder="User Mobile Number"
+                                    placeholder="Advisor Mobile Number"
                                     type="number"
                                     onChange={validation.handleChange}
                                     onBlur={validation.handleBlur}
@@ -520,13 +520,13 @@ const AddUserPage : FC = function () {
                         <div className="md:flex gap-x-[2rem]">
                             
                             <div className="flex-1 mt-[1rem]">
-                                <Label htmlFor="address">Address</Label>
+                                <Label htmlFor="address">Address <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                 <Input
                                     id="address"
                                     name="address"
                                     className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
-                                    placeholder="User Address"
+                                    placeholder="Advisor Address"
                                     type="text"
                                     onChange={validation.handleChange}
                                     onBlur={validation.handleBlur}
@@ -567,7 +567,7 @@ const AddUserPage : FC = function () {
                                     id="date_of_joining"
                                     name="date_of_joining"
                                     className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
-                                    placeholder="User date_of_joining"
+                                    placeholder="Advisor date_of_joining"
                                     type="date"
                                     onChange={validation.handleChange}
                                     onBlur={validation.handleBlur}
@@ -583,7 +583,7 @@ const AddUserPage : FC = function () {
 
                         <div className="md:flex gap-x-[2rem] ">
                             <div  className="flex-1 mt-[1rem]">
-                                <Label htmlFor="email"> Status</Label>
+                                <Label htmlFor="email"> Status <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                     <Select
                                         className="w-full dark:text-white"
@@ -605,7 +605,7 @@ const AddUserPage : FC = function () {
                             </div>
 
                             <div  className="flex-1 mt-[1rem]">
-                                <Label htmlFor="emergency_contact_person">Emergency contact person</Label>
+                                <Label htmlFor="emergency_contact_person">Emergency contact person <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                 <Input
                                     id="emergency_contact_person"
@@ -625,7 +625,7 @@ const AddUserPage : FC = function () {
                             </div>
 
                             <div className="flex-1 mt-[1rem]">
-                                <Label htmlFor="emergency_mobile_no">Emergency mobile no</Label>
+                                <Label htmlFor="emergency_mobile_no">Emergency mobile no <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                 <Input
                                     id="emergency_mobile_no"
@@ -647,7 +647,7 @@ const AddUserPage : FC = function () {
                         
                         <div className="md:flex gap-x-[2rem]">
                             <div className="flex-1  mt-[1rem]">
-                                <Label htmlFor="password">Aadhar card</Label>
+                                <Label htmlFor="password">Aadhar card <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                     <Select
                                         className="w-full dark:text-white"
@@ -669,7 +669,7 @@ const AddUserPage : FC = function () {
                             </div>
 
                             <div className="flex-1  mt-[1rem]">
-                                <Label htmlFor="pan_card">Pan card</Label>
+                                <Label htmlFor="pan_card">Pan card <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                     <Select
                                         className="w-full dark:text-white"
@@ -691,7 +691,7 @@ const AddUserPage : FC = function () {
                             </div>
 
                             <div className="flex-1  mt-[1rem]">
-                                <Label htmlFor="bank_passbook">Bank passbook</Label>
+                                <Label htmlFor="bank_passbook">Bank passbook <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                     <Select
                                         className="w-full dark:text-white"
@@ -714,7 +714,7 @@ const AddUserPage : FC = function () {
                         </div>
 
                         <div className="flex gap-x-3 justify-end mt-[3rem]">
-                            <Button className="bg-addbutton hover:bg-addbutton dark:bg-addbutton dark:hover:bg-addbutton" type="submit">  {id ? "Update User" : " Add User"} </Button>
+                            <Button className="bg-addbutton hover:bg-addbutton dark:bg-addbutton dark:hover:bg-addbutton" type="submit">  {id ? "Update Advisor" : " Add Advisor"} </Button>
                             <Button className="bg-deletebutton hover:bg-deletebutton dark:bg-deletebutton dark:hover:bg-deletebutton" onClick={() => navigate(ParentLink)}>  Close </Button>
                         </div>
                     </Form>

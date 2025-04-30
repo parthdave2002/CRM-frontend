@@ -12,10 +12,12 @@ import { AddCustomerDatalist, CheckCustomerExist, getCroplist, getdistrictdata, 
 interface ProfileData{
   isEditFarmer ?: boolean;
   setFarmerAdded : (value: boolean) => void;
+  CloseAddmodal: (value: any) => void;
   handleAccept : (value: boolean) => void;
+  Mobile_number : string;
 }
 
-const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAccept}) => {
+const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAccept, Mobile_number, CloseAddmodal}) => {
   const dispatch = useDispatch();
 
   // ------------- State Get Data From Reducer Code Start --------------
@@ -189,7 +191,6 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
     validationSchema: Yup.object({
       firstname: Yup.string().required("Please enter first name").matches(/^[A-Za-z\s]+$/, "Please Enter valid name"),
       lastname: Yup.string().required("Please enter last name").matches(/^[A-Za-z\s]+$/, "Please Enter valid name"),
-      mobile_number: Yup.string().required("Please enter mobile no").matches(/^\d{10}$/, "Please enter valid Mobile number (10 digits)"),
       address: Yup.string().required("Please enter address"),
       pincode: Yup.string().required("Please enter pincode").min(6, "Pincode must be minimum 6 digits") .max(6, "Pincode must be maximum 6 digits").matches(/^\d+$/, "Please enter valid pincode"),
       landarea: Yup.number().required("Please enter land area") .typeError("Please enter valid land area").min(0, "Please enter valid land area")
@@ -200,9 +201,9 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
         firstname: values?.firstname.trim().charAt(0).toUpperCase() + values?.firstname.trim().slice(1).toLowerCase(),
         middlename: values?.middlename.trim().charAt(0).toUpperCase() + values?.middlename.trim().slice(1).toLowerCase(),
         lastname: values?.lastname.trim().charAt(0).toUpperCase() + values?.lastname.trim().slice(1).toLowerCase(),
-        mobile_number: values?.mobile_number.trim(),
+        mobile_number:  Mobile_number.trim(),
         alternate_mobile_no: values?.alternate_mobile_no.trim(),
-        address: values?.address.trim(),
+        address: values?.address,
         state : selectedStateid,
         district : selectedDistrictid,
         taluka : selectedTalukaid,
@@ -370,7 +371,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
   };
 
   useEffect(() =>{
-    if(selectedRefnumber.length == 10){
+    if(selectedRefnumber.length === 10){
         let requser={   number : selectedRefnumber  }
         dispatch(CheckCustomerExist(requser))
     }
@@ -411,7 +412,8 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
       if(userAddedData?.success == true ){
         toast.success(userAddedData?.msg);
         validation.resetForm();
-        setFarmerAdded(false);
+        CloseAddmodal(false);
+        setFarmerAdded(false)
         dispatch(ResetCustomerDatalist())
       }
     },[userAddedData])
@@ -500,10 +502,8 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
                 className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
                 placeholder="Enter mobile"
                 type="tel"
-                onChange={validation.handleChange}
-                onBlur={validation.handleBlur}
-                value={validation.values?.mobile_number.trim()|| ""}
-                invalid={validation.touched?.mobile_number && validation.errors?.mobile_number ? true : false}
+                value={Mobile_number.trim()|| ""}
+                disabled
               />
               {validation.touched?.mobile_number && validation.errors?.mobile_number ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.mobile_number} </FormFeedback>) : null}
             </div>
@@ -538,7 +538,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
                 type="text"
                 onChange={validation.handleChange}
                 onBlur={validation.handleBlur}
-                value={validation.values?.address.trim()|| ""}
+                value={validation.values?.address || ""}
                 invalid={validation.touched?.address && validation.errors?.address ? true : false}
               />
               {validation.touched.address && validation.errors?.address ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.address} </FormFeedback>) : null}
@@ -782,7 +782,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
             </div>
           </div>
 
-          <div>
+          {/* <div>
             <Label htmlFor="refname"> Refrence Name </Label>
             <div className="mt-1">
               <Input
@@ -795,7 +795,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
                 value={selectedRefnumber ?? ""}
               />
             </div>
-          </div>
+          </div> */}
          
         </div>
 

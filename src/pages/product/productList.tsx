@@ -12,7 +12,6 @@ import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useNavigate } from "react-router";
 import moment from "moment";
 import Cookies from "js-cookie";
-const IMG_URL = import.meta.env["VITE_API_URL"];
 const ToastMessage = lazy(() => import("../../components/ToastMessage"));
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 
@@ -144,8 +143,7 @@ const ProductListPage: FC = function () {
                 <Table.HeadCell>Avl Qty</Table.HeadCell>
                 <Table.HeadCell>price</Table.HeadCell>
                 <Table.HeadCell>Status</Table.HeadCell>
-                <Table.HeadCell>Created At</Table.HeadCell>
-                <Table.HeadCell>Actions</Table.HeadCell>
+                {AccessList?.edit || AccessList?.delete ?  <Table.HeadCell>Actions</Table.HeadCell> : null}
               </Table.Head>
 
               <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
@@ -162,7 +160,7 @@ const ProductListPage: FC = function () {
                             {item.is_active == true ? <div className="flex items-center">  <div className="mr-2 h-2.5 w-2.5 rounded-full bg-green-400"></div> Active  </div>
                             : <div className="flex items-center">  <div className="mr-2 h-2.5 w-2.5 rounded-full bg-Red"></div> Deactive  </div>}
                           </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item?.added_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
+                          {AccessList?.edit || AccessList?.delete ?
                           <Table.Cell className="space-x-2 whitespace-nowrap py-0">
                             <div className="flex items-center gap-x-3">
                               {AccessList?.edit ? <Button gradientDuoTone="greenToBlue" onClick={() => EditPageCall(item?._id)}  > <div className="flex items-center gap-x-2">  <HiOutlinePencilAlt className="text-lg" />  Edit Product  </div></Button> : null}
@@ -170,6 +168,7 @@ const ProductListPage: FC = function () {
                               <Button  gradientDuoTone="purpleToBlue" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <FaExclamationCircle className="text-lg" /> Detail Product </div> </Button>
                             </div>
                           </Table.Cell>
+                          : null }
                         </Table.Row>
                   ))}
               </Table.Body>

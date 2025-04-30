@@ -58,9 +58,11 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
 
         useEffect(() => {
             const customerDataString = Cookies.get("customer_data");
+            if(customerDataString){
             const customerData = customerDataString ? JSON.parse(customerDataString) : []    
             setData(customerData ? customerData  : null);
             setData_id(customerData?._id ? customerData?._id  : null);
+          }
         },[]);
   // ----------- Customer data getcode end ----------------
 

@@ -77,8 +77,10 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
       const [data, setData] = useState <null | any>(null)
         useEffect(() => {
             const customerDataString = Cookies.get("customer_data");
-            const customerData = customerDataString ? JSON.parse(customerDataString) : []    
-            setData(customerData ? customerData  : null);
+            if(customerDataString?.length){
+              const customerData = customerDataString ? JSON.parse(customerDataString) : []    
+              setData(customerData ? customerData  : null);
+            }
         },[]);
 
   const packingtypeoption = openDetailIData?.products && openDetailIData?.products.map((item: any) => ({ label: item?.id?.name?.englishname, value: item?.id?._id }));

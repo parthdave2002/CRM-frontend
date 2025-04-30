@@ -84,7 +84,7 @@ const RolesPage: FC = function () {
   }, [dispatch, PageNo, RoePerPage,searchData]);
 
   useEffect(() => {
-    setRoleList(Roleslist ? Roleslist.pulledData : null);
+    setRoleList(Roleslist ? Roleslist : null);
     setTotalListData(TotalRoleListData ? TotalRoleListData : 0);
     setCurrentPageNo(CurrentPage ? CurrentPage : 1);
   }, [Roleslist, TotalRoleListData, CurrentPage]);
@@ -131,8 +131,8 @@ const RolesPage: FC = function () {
                       <Table.HeadCell>Title</Table.HeadCell>
                       <Table.HeadCell>Description</Table.HeadCell>
                       <Table.HeadCell>Status</Table.HeadCell>
-                      <Table.HeadCell className="text-center">  Actions </Table.HeadCell>
-                      <Table.HeadCell>Role Access</Table.HeadCell>
+                      {AccessList?.edit || AccessList?.delete ?  <Table.HeadCell className="text-center">  Actions </Table.HeadCell> : null }
+                      {AccessList?.add ?   <Table.HeadCell>Role Access</Table.HeadCell> : null }
             </Table.Head>
 
             <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
@@ -147,17 +147,21 @@ const RolesPage: FC = function () {
                         : <div className="flex items-center"> <div className="mr-2 h-2.5 w-2.5 rounded-full bg-Red"></div> Deactive </div>
                       }
                     </Table.Cell>
-                    <Table.Cell className="space-x-2 whitespace-nowrap py-0">
-                      <div className="flex items-center gap-x-3 justify-evenly">
-                        {AccessList?.edit ? <Button  gradientDuoTone="greenToBlue" onClick={() => getUnderGuidedata(item._id)}><div className="flex items-center gap-x-2"> <HiOutlinePencilAlt className="text-lg" /> Edit Role </div> </Button> : null} 
-                        {AccessList?.delete ? <Button gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)} > <div className="flex items-center gap-x-2"> <HiTrash className="text-lg" />  Delete Role </div> </Button> : null} 
-                      </div>
-                    </Table.Cell>
-                    <Table.Cell>  
-                      {AccessList?.add ? 
-                        <Button color="primary" className="whitespace-nowrap text-base font-normal text-gray-900 dark:text-dark"  onClick={() => ModuleListFuncall(item._id)}> <div className="flex items-center gap-x-2"> <HiKey className="text-lg" /> Role Access List </div>  </Button>  
-                      : null}    
-                    </Table.Cell>
+                    {AccessList?.edit || AccessList?.delete ?
+                      <Table.Cell className="space-x-2 whitespace-nowrap py-0">
+                        <div className="flex items-center gap-x-3 justify-evenly">
+                          {AccessList?.edit ? <Button gradientDuoTone="greenToBlue" onClick={() => getUnderGuidedata(item._id)}><div className="flex items-center gap-x-2"> <HiOutlinePencilAlt className="text-lg" /> Edit Role </div> </Button> : null}
+                          {AccessList?.delete ? <Button gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)} > <div className="flex items-center gap-x-2"> <HiTrash className="text-lg" />  Delete Role </div> </Button> : null}
+                        </div>
+                      </Table.Cell>
+                    : null}
+
+                    {AccessList?.add ?
+                      <Table.Cell>
+                        <Button color="primary" className="whitespace-nowrap text-base font-normal text-gray-900 dark:text-dark" onClick={() => ModuleListFuncall(item._id)}> <div className="flex items-center gap-x-2"> <HiKey className="text-lg" /> Role Access List </div>  </Button>
+                      </Table.Cell>
+                    : null}    
+                   
                   </Table.Row>
               ))}
             </Table.Body>

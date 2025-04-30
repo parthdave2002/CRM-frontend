@@ -41,15 +41,19 @@ const FarmeDashboard : FC <DashboardProps> = ({classData, viewButton}) => {
 
   const [data, setData] = useState<ProfileInfo>()  
     //  -------------Farmer Data get  code start ----------------------
+    const customerDataString = Cookies.get("customer_data");
         useEffect(() => {
-          const customerDataString = Cookies.get("customer_data");
-          const customerData = customerDataString ? JSON.parse(customerDataString) : []    
-          setData(customerData ? customerData  : null);
-        },[]);
+          if(customerDataString?.length){
+            const customerData = customerDataString ? JSON.parse(customerDataString) : []    
+            setData(customerData ? customerData  : null);
+          }
+        },[customerDataString]);
     //  -------------Farmer Data get  code end  ----------------------
 
   return (
-    <div className={classData}> 
+    <>
+      { data && data  ? 
+        <div className={classData}> 
         <div>
           <div className=' dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '> <div className="w-[10rem]" > Name</div> <div> :  {data?.customer_name} </div>   </div>
           <div className='dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div className="w-[10rem]" > Mobile No</div>  <div> :  {data?.mobile_number} </div>  </div>
@@ -83,8 +87,10 @@ const FarmeDashboard : FC <DashboardProps> = ({classData, viewButton}) => {
             </div>
           </div>
         : null}
-       
-    </div>
+      
+        </div>
+      : null  }
+    </>
   )
 }
 

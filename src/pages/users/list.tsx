@@ -129,8 +129,8 @@ const UserListPage: FC = function () {
     navigate(`/users/details/${id}`)
   }
 
-  let Name = "User List";
-  let Searchplaceholder = "Search For Users (Name)";
+  let Name = "Advisor List";
+  let Searchplaceholder = "Search For Advisor (Name)";
   let AddAccess = AccessList?.add;
 
   return (
@@ -140,7 +140,7 @@ const UserListPage: FC = function () {
           <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
               <Table.Head className="bg-gray-100 dark:bg-gray-700">
                 <Table.HeadCell> <Checkbox id="select-all" name="select-all" /> </Table.HeadCell>
-                <Table.HeadCell>User Name</Table.HeadCell>
+                <Table.HeadCell>Advisor Name</Table.HeadCell>
                 <Table.HeadCell>Email</Table.HeadCell>
                 <Table.HeadCell> Role </Table.HeadCell>
                 <Table.HeadCell>gender</Table.HeadCell>
@@ -167,13 +167,13 @@ const UserListPage: FC = function () {
                           <Table.Cell className="space-x-2 whitespace-nowrap py-0">
                             <div className="flex items-center gap-x-3">
                                 {AccessList?.edit ? (
-                                  <Button gradientDuoTone="greenToBlue" onClick={() => getUserData(item._id)} > <div className="flex items-center gap-x-2">  <HiOutlinePencilAlt className="text-lg" />  Edit User  </div></Button>
+                                  <Button gradientDuoTone="greenToBlue" onClick={() => getUserData(item._id)} > <div className="flex items-center gap-x-2">  <HiOutlinePencilAlt className="text-lg" />  Edit Advisor  </div></Button>
                                 ) : null}   
        
                                 {AccessList?.delete ? (
-                                  <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete User  </div> </Button>
+                                  <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete Advisor  </div> </Button>
                                 ) : null}
-                              <Button  gradientDuoTone="purpleToBlue" onClick={() => DetailsUserCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <FaExclamationCircle className="text-lg" /> Detail User  </div> </Button>
+                              <Button  gradientDuoTone="purpleToBlue" onClick={() => DetailsUserCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <FaExclamationCircle className="text-lg" /> Detail Advisor  </div> </Button>
                             </div>
                           </Table.Cell>
 

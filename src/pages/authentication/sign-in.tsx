@@ -20,17 +20,20 @@ const SignInPage: FC = function () {
 
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const validation = useFormik<{ username: string; password: string }>({
+  const validation = useFormik<{ email: string; password: string }>({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
 
     initialValues: {
-      username: "",
+      email: "",
       password: "",
     },
 
     validationSchema: Yup.object({
-      username: Yup.string().required("Please Enter Username"),
+      email: Yup.string().required("Please Enter Email")
+        .matches(/^[^@]+@[^@]+$/, "Email must contain one '@'")
+        .matches(/@[^@]+\.[^@]+$/, "Email must contain one '.' after '@'") 
+        .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email format"), 
       password: Yup.string().required("Please Enter Password")
       .min(5, "Password must be at least 5 characters long")
       .max(10, "Password must be at most 10 characters long")
@@ -114,18 +117,18 @@ const SignInPage: FC = function () {
   const [ isOpenDelteModel,setisOpenDelteModel] = useState(false);
 
   const LostPasswordCall = () =>{
-    if (validation.values.username) {
-      let data={ search: validation.values.username }
+    if (validation.values.email) {
+      let data={ search: validation.values.email }
       dispatch(CheckUserdatalist(data));
     } else {
-      toast.error("Please enter username");
+      toast.error("Please enter email");
     }
   }
 
   const LostPassword = () => {
     setisOpenDelteModel(false);
     let requser={
-      username: validation.values.username
+      email: validation.values.email
     }
     dispatch(forgotpasswordData(requser))
     toast.success("Please contact your admin");
@@ -140,21 +143,21 @@ const SignInPage: FC = function () {
 
         <Form onSubmit={(e) => { e.preventDefault(); validation.handleSubmit(); return false; }} >
           <div className="mb-4 flex flex-col gap-y-2">
-            <Label htmlFor="username">Your Username</Label>
+            <Label htmlFor="email">Your Email</Label>
 
             <Input
-              name="username"
+              name="email"
               className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
-              placeholder="Enter username"
-              type="text"
+              placeholder="Enter your email"
+              type="email"
               onChange={validation.handleChange}
               onBlur={validation.handleBlur}
-              value={validation.values.username || ""}
-              invalid={ validation.touched.username && validation.errors.username  ? true : false }
+              value={validation.values.email || ""}
+              invalid={ validation.touched.email && validation.errors.email  ? true : false }
             />
-            {validation.touched.username && validation.errors.username ? (
+            {validation.touched.email && validation.errors.email ? (
               <FormFeedback type="invalid" className="text-Red">
-                {validation.errors.username}
+                {validation.errors.email}
               </FormFeedback>
             ) : null}
           </div>

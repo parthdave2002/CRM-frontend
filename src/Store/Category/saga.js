@@ -49,7 +49,11 @@ function* onDelCategoryList({ payload: requstuser }) {
      
     if(response.success === true || response.success === "true"){
       toast.success(response?.msg)
-      const newresponse = yield call(CategorylistApi);
+      let requstuserdata={
+        page: 1,
+        size: 5
+      }
+      const newresponse = yield call(CategorylistApi, requstuserdata);
       yield put(getCategorylistSuccess(GET_CATEGORY_LIST, newresponse));
     }
   } catch (error) {

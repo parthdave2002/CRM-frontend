@@ -24,8 +24,10 @@ const SalesFarmerDetailsPage : FC  <PropsData> = function ({ setDatactive, openP
     const [data, setData] = useState(null)
     useEffect(() =>{
         const customerDataString = Cookies.get("customer_data");
+        if(customerDataString?.length){
         const customerData = customerDataString ? JSON.parse(customerDataString) : []    
         setData(customerData?.mobile_number ? customerData?.mobile_number  : null);
+        }
     },[])
 
     //---------    Get callback data  start--------- 
@@ -79,7 +81,7 @@ const SalesFarmerDetailsPage : FC  <PropsData> = function ({ setDatactive, openP
     return (
       <>
         {openProfile == true ? 
-                <SalesFarmerDashboard  setOpenProfile={CloseProfileCall} />
+                <SalesFarmerDashboard Mobile_number={Mobile_number}  setOpenProfile={CloseProfileCall} />
          : 
             <>
                 <div className="flex justify-between">

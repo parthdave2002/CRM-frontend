@@ -18,7 +18,11 @@ const Salesproductlist : FC <PorductData> = ({searchData, ProductDetailsCall, is
     const [ProductData, setProductData] = useState([]);
 
     useEffect(() => {
-        let requserdata: any = {};
+
+        let requserdata: { page: number; size: number; search?: string } = {
+          page: 1,
+          size: 5
+        };
         if (searchData) requserdata.search = searchData;
         dispatch(getProductlist(requserdata));
     }, [dispatch, searchData]);

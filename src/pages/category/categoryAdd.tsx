@@ -17,6 +17,15 @@ const CategoryAddPage : FC = function () {
     const navigate = useNavigate();
 
     const [file, setFile] = useState<File | null>(null);
+    const [validateImage, setValidateImage] = useState(0);
+
+    useEffect(() =>{
+        if(file){
+            setValidateImage(0)
+        }else{
+            setValidateImage(1)
+        }
+    }, [file])
 
     // ------ status code start ------
     const [selectedactiveOption, setSelectedactiveOption] = useState(null);
@@ -55,6 +64,7 @@ const CategoryAddPage : FC = function () {
         
         onSubmit: (values) => {
           if(selectedactiveid == null) return setValidateactive(1);
+          if(!file) return setValidateImage(1) 
           const formData = new FormData();
           formData.append("name_eng", values.name_eng);
           formData.append("name_guj", values.name_guj);
@@ -100,12 +110,15 @@ const CategoryAddPage : FC = function () {
                 <ExampleBreadcrumb  Name={Name} ParentName={ParentName} ParentLink={ParentLink}  />
                 <div className="mt-[2rem] bg-white dark:bg-gray-800 p-4">
                     <Form onSubmit={(e) => { e.preventDefault(); validation.handleSubmit(); return false; }} >
-
-                        <ImageUploadPreview onFileSelect={setFile}/>
+                        
+                        <div>
+                            <ImageUploadPreview onFileSelect={setFile}/>
+                            {validateImage == 1 ? <FormFeedback type="invalid" className="text-Red text-sm"> Please select category image </FormFeedback> : null}
+                        </div>
 
                         <div className="flex gap-x-[2rem] my-[1rem]">
                             <div className="flex-1">
-                                <Label htmlFor="Name">Category Name ( Eng )</Label>
+                                <Label htmlFor="Name">Category Name ( Eng ) <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                 <Input
                                     id="name_eng"
@@ -123,7 +136,7 @@ const CategoryAddPage : FC = function () {
                             </div>
 
                             <div className="flex-1">
-                                <Label htmlFor="Name">Category Name ( Guj )</Label>
+                                <Label htmlFor="Name">Category Name ( Guj ) <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                 <Input
                                     id="name_guj"
@@ -142,7 +155,7 @@ const CategoryAddPage : FC = function () {
                         </div>
 
                         <div className="mt-[1rem]">
-                            <Label htmlFor="Description">Description</Label>
+                            <Label htmlFor="Description">Description <span className='text-red-500'>*</span> </Label>
                             <div className="mt-1">
                             <Input
                                 id="description"
@@ -160,7 +173,7 @@ const CategoryAddPage : FC = function () {
                         </div>
 
                         <div className="mt-[1rem]">
-                            <Label htmlFor="Status">Status</Label>
+                            <Label htmlFor="Status">Status <span className='text-red-500'>*</span> </Label>
                             <div className="mt-1">
                             <Select
                                 className="w-full dark:text-white"

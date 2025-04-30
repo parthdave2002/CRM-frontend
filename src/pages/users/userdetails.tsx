@@ -8,6 +8,11 @@ import { useParams } from "react-router";
 import moment from "moment";
 const IMG_URL = import.meta.env["VITE_API_URL"];
 
+interface RoleData{
+  role_title :string;
+  _id : string;
+}
+
 interface UserData{
   aadhar_card: boolean; 
   added_at : string;
@@ -25,7 +30,7 @@ mobile_no: number;
 name: string;
 pan_card: boolean; 
 password: string;
-role: string;
+role: RoleData;
 user_pic: string;
 }
 
@@ -47,10 +52,10 @@ const UserDetailsPage: FC = function () {
   useEffect(() => {
     setUserDataList(UserView ? UserView.data  : null);
   }, [UserView]);
-  //  ------------- Get User Data From Reducer Code Start --------------
+  //  ------------- Get Advisor Data From Reducer Code Start --------------
 
-  let Name = "User Details";
-  let ParentName = "User List";
+  let Name = "Advisor Details";
+  let ParentName = "Advisor List";
   let ParentLink = "/users/list";
 
   return (
@@ -60,11 +65,11 @@ const UserDetailsPage: FC = function () {
         <div className="mt-[2rem] bg-white dark:bg-gray-800 p-4">
             <div>
               <div  className="grid grid-cols-3 gap-4">
-                 <img  className="w-20 h-20 rounded-full"  src={ UserDataList?.user_pic ? `${IMG_URL}/public/user/${UserDataList?.user_pic}` : ""}  alt="user photo"  />
+                 <img  className="w-20 h-20 rounded-full"  src={ UserDataList?.user_pic ? `${IMG_URL}/public/user/${UserDataList?.user_pic}` : ""}  alt="advisor photo"  />
 
                 {/* Name */}
                 <div className="p-4 dark:bg-gray-800 rounded-lg">
-                  <h3 className="text-gray-600 dark:text-gray-300 font-semibold">Name</h3>
+                  <h3 className="text-gray-600 dark:text-gray-300 font-semibold">Advisor Name</h3>
                   <p className="text-gray-900 dark:text-white">{UserDataList?.name || "N/A"}</p>
                 </div>
 
@@ -91,7 +96,7 @@ const UserDetailsPage: FC = function () {
                  {/* Role */}
                  <div className="p-4 dark:bg-gray-800 rounded-lg">
                   <h3 className="text-gray-600 dark:text-gray-300 font-semibold">Role</h3>
-                  <p className="text-gray-900 dark:text-white">{UserDataList?.role || "N/A"}</p>
+                  <p className="text-gray-900 dark:text-white">{UserDataList?.role?.role_title || "N/A"}</p>
                 </div>
 
                 {/* Date of Joining */}
