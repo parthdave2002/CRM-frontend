@@ -17,6 +17,15 @@ const BannerAddPage : FC = function () {
     const navigate = useNavigate();
 
     const [file, setFile] = useState<File | null>(null);
+    const [validateImage, setValidateImage] = useState(0);
+
+    useEffect(() =>{
+        if(file){
+            setValidateImage(0)
+        }else{
+            setValidateImage(1)
+        }
+    }, [file])
     
     // ------ status code start ------
     const [selectedactiveOption, setSelectedactiveOption] = useState(null);
@@ -53,7 +62,7 @@ const BannerAddPage : FC = function () {
         
         onSubmit: (values) => {
           if(selectedactiveid == null) return setValidateactive(1)
-
+          if(!file) return setValidateImage(1) 
           const formData = new FormData();
           formData.append("name", values.name);
           formData.append("description", values.description);
@@ -98,11 +107,13 @@ const BannerAddPage : FC = function () {
                 <ExampleBreadcrumb  Name={Name} ParentName={ParentName} ParentLink={ParentLink}  />
                 <div className="mt-[2rem] bg-white dark:bg-gray-800 p-4">
                     <Form onSubmit={(e) => { e.preventDefault(); validation.handleSubmit(); return false; }} >
-
-                        <ImageUploadPreview onFileSelect={setFile}/>
+                        <div>
+                            <ImageUploadPreview onFileSelect={setFile}/>
+                            {validateImage == 1 ? <FormFeedback type="invalid" className="text-Red text-sm"> Please select category image </FormFeedback> : null}
+                        </div>
 
                         <div>
-                            <Label htmlFor="Name">Name</Label>
+                            <Label htmlFor="Name">Name <span className='text-red-500'>*</span> </Label>
                             <div className="mt-1">
                             <Input
                                 id="name"
@@ -120,7 +131,7 @@ const BannerAddPage : FC = function () {
                         </div>
 
                         <div className="mt-[1rem]">
-                            <Label htmlFor="Description">Description</Label>
+                            <Label htmlFor="Description">Description <span className='text-red-500'>*</span> </Label>
                             <div className="mt-1">
                             <Input
                                 id="description"

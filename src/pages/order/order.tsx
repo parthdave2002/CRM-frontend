@@ -80,7 +80,7 @@ const OrderListPage : FC = function () {
                     <Table.Head className="bg-gray-100 dark:bg-gray-700">
                         <Table.HeadCell> <Checkbox id="select-all" name="select-all" /> </Table.HeadCell>
                         <Table.HeadCell>Order id</Table.HeadCell>
-                        <Table.HeadCell> Sales Executive </Table.HeadCell>
+                        <Table.HeadCell> Advisor Name </Table.HeadCell>
                         <Table.HeadCell>COD Amt</Table.HeadCell>
                         <Table.HeadCell>Type</Table.HeadCell>
                         <Table.HeadCell>Status</Table.HeadCell>
@@ -93,7 +93,7 @@ const OrderListPage : FC = function () {
                                 <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item?._id} onClick={() => {CheckData(item?._id)}}/>  </Table.Cell>
                                 <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => OrderDetailsCall(item._id)}>  {item.order_id} </Table.Cell>
                                 <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.advisor_name?.name} </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">₹ {item?.total_amount} </Table.Cell>
+                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">₹ {item?.total_amount.toFixed(2)} </Table.Cell>
                                 <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.order_type.charAt(0).toUpperCase() + item?.order_type.slice(1).toLowerCase() } </Table.Cell>
                                 <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.status.charAt(0).toUpperCase() + item?.status.slice(1).toLowerCase() } </Table.Cell>
                                 <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {moment(item?.createdAt).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>

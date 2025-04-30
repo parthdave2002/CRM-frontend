@@ -100,9 +100,12 @@ const OrdererDetailsPage: FC = function () {
 
           <div className="w-[794px] h-[1123px] mx-auto bg-white shadow-lg p-6 rounded-lg flex flex-col justify-between  font-sans"  ref={invoiceRef} >
               <div className="flex flex-col">
-                <div className="flex-1">  <img src={logo} alt="Company Logo" className="w-24" />  </div>
-                <div className="flex-1 text-right">  <h1 className="text-3xl font-bold text-gray-800 ">INVOICE</h1> </div>
-           
+                <div className="flex-1 text-center">  <h1 className="text-3xl font-bold text-gray-800 ">  "ખરીદી માટે આભાર" </h1> </div>
+
+                <div className="flex justify-between">
+                  <div className="flex-1">  <img src={logo} alt="Company Logo" className="w-24" />  </div>
+                  <div className="flex-1 text-right">  <h1 className="text-3xl font-bold text-gray-800 ">INVOICE</h1> </div>
+                </div>
                 <div className="flex justify-between items-center mb-6  border-b pb-4">
                   <div>
                     <h2 className="text-xl font-bold mt-2">Agri Bharat</h2>

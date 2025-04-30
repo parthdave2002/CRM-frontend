@@ -10,15 +10,17 @@ import ProductDetailData from '../../components/productdetails/salesproductDetai
 import SalesMobileInput from '../../components/input/salesMobileInput';
 import { useDispatch, useSelector } from 'react-redux';
 import CartList from './cart';
+import LoaderPage from "../../components/loader";
 import OrderDetails from '../../components/salesComponent/orderDetails';
 import { toast } from 'react-toastify';
 import Cookies from 'js-cookie';
 
 interface PropsData{
   setOpenProfile : (value: boolean) => void;
+  Mobile_number : string;
 }
 
-const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile}) => {
+const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile, Mobile_number}) => {
   const dispatch = useDispatch()
   const [farmedAdded, setFarmerAdded] = useState(false);
   const [isLoading, setisLoading] = useState(true);
@@ -46,8 +48,6 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile}) => {
     const LogOutCall = () =>  setLogoutModal(true)
     const handleClose = () =>  setLogoutModal(false)
     const handleAccept = () =>{
-      console.log("callllllll");
-      
       Cookies.remove("customer_data");
       setLogoutModal(false)
       setOpenProfile(false)
@@ -71,29 +71,20 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile}) => {
 
     const AddtoCartCall = (data: any | any[]) => {
       setCartItem((prevItems) => {
-        const newItems = Array.isArray(data) ? data : [data];
-        let isDuplicate = false;
-    const uniqueItemsToAdd = newItems.filter((item) => {
+      const newItems = Array.isArray(data) ? data : [data];
+      let isDuplicate = false;
+      const uniqueItemsToAdd = newItems.filter((item) => {
       const exists = prevItems.some((cartItem) => cartItem._id === item._id);
-      if (exists) {
-        isDuplicate = true;
-      }
+      if (exists) { isDuplicate = true; }
       return !exists;
     });
 
-    if (isDuplicate) {
-      toast.error("Some products were already in the cart");
-    }
-
+    if (isDuplicate) {  toast.error("Some products were already in the cart"); }
     if (uniqueItemsToAdd.length === 0) return prevItems;
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    window.scrollTo({ top: 0,  behavior: "smooth", });
 
     return [...prevItems, ...uniqueItemsToAdd];
-      });
+    });
     }
 
     const handleRemoveCall = (data: any) =>{
@@ -111,11 +102,16 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile}) => {
     }
   // -------- Order Details open/close code end ----------
 
+  const CloseAddmodal = () => { 
+    setFarmerAdded(false)
+    setisLoading(false)
+  }
   return (
     <>
 
+    {isLoading  ?   <LoaderPage /> : null  }
       { !isLoading && farmedAdded == true  ?
-        <SalesAddFarmer isEditFarmer={isEditFarmer} setFarmerAdded={setFarmerAdded} handleAccept={handleAccept}  />
+        <SalesAddFarmer isEditFarmer={isEditFarmer} Mobile_number={Mobile_number}  setFarmerAdded={setFarmerAdded} handleAccept={handleAccept}   CloseAddmodal ={CloseAddmodal}/>
       : farmedAdded == false && !isLoading ?
         <>
           {cartOpen == true ?

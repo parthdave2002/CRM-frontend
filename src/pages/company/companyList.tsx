@@ -145,7 +145,7 @@ const CompanyListPage: FC = function () {
                 <Table.HeadCell>Description</Table.HeadCell>
                 <Table.HeadCell>Status</Table.HeadCell>
                 <Table.HeadCell>Created At</Table.HeadCell>
-                <Table.HeadCell>Actions</Table.HeadCell>
+                {AccessList?.edit || AccessList?.delete ?  <Table.HeadCell>Actions</Table.HeadCell> : null }
                
               </Table.Head>
 
@@ -161,14 +161,14 @@ const CompanyListPage: FC = function () {
                             : <div className="flex items-center">  <div className="mr-2 h-2.5 w-2.5 rounded-full bg-Red"></div> Deactive  </div>}
                           </Table.Cell>
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item?.added_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
+                          {AccessList?.edit || AccessList?.delete ?
                           <Table.Cell className="space-x-2 whitespace-nowrap py-0">
                             <div className="flex items-center gap-x-3">
                               {AccessList?.edit ? <Button  gradientDuoTone="greenToBlue" onClick={() => ChangestatusFuncall(item?._id)}><div className="flex items-center gap-x-2 deletebutton min-w-[5rem] text-center font-semibold"> <FaExchangeAlt className="text-lg font-semibold" />  Change status </div> </Button> : null}
                               {AccessList?.delete ?  <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item?._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete Company</div> </Button> : null }  
-                              {/* <Button  gradientDuoTone="purpleToBlue" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <FaExclamationCircle className="text-lg" /> Detail Company  </div> </Button> */}
-                              
                             </div>
                           </Table.Cell>
+                          : null }
                         </Table.Row>
                   ))}
               </Table.Body>

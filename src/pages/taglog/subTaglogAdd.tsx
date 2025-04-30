@@ -96,7 +96,7 @@ const SubTaglogAddPage : FC = function () {
                 <div className="mt-[2rem] bg-white dark:bg-gray-800 p-4">
                     <Form onSubmit={(e) => { e.preventDefault(); validation.handleSubmit(); return false; }} >
                         <div>
-                            <Label htmlFor="Name">Name</Label>
+                            <Label htmlFor="Name">Name <span className='text-red-500'>*</span> </Label>
                             <div className="mt-1">
                             <Input
                                 id="name"
@@ -114,7 +114,7 @@ const SubTaglogAddPage : FC = function () {
                         </div>
 
                         <div className="mt-[1rem]">
-                            <Label htmlFor="Status">Status</Label>
+                            <Label htmlFor="Status">Status <span className='text-red-500'>*</span> </Label>
                             <div className="mt-1">
                             <Select
                                 className="w-full dark:text-white"

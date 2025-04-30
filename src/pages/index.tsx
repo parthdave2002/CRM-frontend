@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 const IMG_URL = import.meta.env["VITE_API_URL"];
 import moment from "moment";
 import {getDashboarddatalist } from "../Store/actions";
+import Cookies from "js-cookie";
 
 const DashboardPage: FC = function () {
 
@@ -21,9 +22,52 @@ const DashboardPage: FC = function () {
   weekly: number;
  }
 
-  const { DashboardDataList } = useSelector((state: any) => ({
-    DashboardDataList: state.AdminDashboard.Dashboardlist
+  //------------ Access Data Code start------------
+  interface AccessData {
+    add: boolean;
+    view: boolean;
+    edit: boolean;
+    delete: boolean;
+  }
+  const [AccessList, setAccessList] = useState<AccessData>();
+  const [ProductAccessList, setProductAccessList] = useState<AccessData>();
+  const [OrderAccessList, setOrderAccessList] = useState<AccessData>();
+  const [CustomerAccessList, setCustomerAccessList] = useState<AccessData>();
+
+  //--------- Access Data Code end------------------
+
+  const { DashboardDataList, permissionsdata } = useSelector((state: any) => ({
+    DashboardDataList: state.AdminDashboard.Dashboardlist,
+    permissionsdata: state.Login.permissionsdata
   }))
+
+  useEffect(() => {
+    const user = Cookies.get("role");
+    const fullAccess: AccessData = {
+      add: true,
+      view: true,
+      edit: true,
+      delete: true
+    };
+    if (user === "67b388a7d593423df0e24295") {
+      setAccessList(fullAccess);
+      setProductAccessList(fullAccess);
+      setOrderAccessList(fullAccess);
+      setCustomerAccessList(fullAccess);
+    }
+    else {
+      const productPermissions = permissionsdata && permissionsdata?.find((item: any) => item.module_name === "Product")?.permissions;
+      const userPermissions = permissionsdata && permissionsdata?.find((item: any) => item.module_name === "User")?.permissions;
+      const orderPermissions = permissionsdata && permissionsdata?.find((item: any) => item.module_name === "Order")?.permissions;
+      const customerPermissions = permissionsdata && permissionsdata?.find((item: any) => item.module_name === "Customer")?.permissions;
+
+      setAccessList(userPermissions || [])
+      setProductAccessList(productPermissions || [])
+      setOrderAccessList(orderPermissions || [])
+      setCustomerAccessList(customerPermissions || [])
+    }
+  }, [permissionsdata]);
+
 
   const [total_revenueData , set_total_revenueData] = useState<totalCustomer>();
   const [total_userData , set_total_userData] = useState<totalCustomer>();
@@ -45,7 +89,7 @@ const DashboardPage: FC = function () {
     setProductData(DashboardDataList?.data?.products);
     set_total_revenueData(DashboardDataList?.data?.totalRevenue);
     set_total_orderData(DashboardDataList?.data?.totalOrders );
-    set_total_userData(DashboardDataList?.data?.totalUsers);
+    set_total_userData(DashboardDataList?.data?.totalCustomers);
 
   },[DashboardDataList])
 
@@ -133,7 +177,7 @@ const DashboardPage: FC = function () {
                     </select>
                   </div>
                   <div className="text-center self-center items-start">
-                    <p className="text-md font-bold">Total User</p>
+                    <p className="text-md font-bold">Total Customer</p>
                     <p className="text-lg font-bold text-center mt-2">{ selectedUserframe == "weekly" ? total_userData?.weekly   : selectedUserframe == "monthly" ?  total_userData?.monthly :    total_userData?.daily}</p>
                   </div>
                 </div>
@@ -150,7 +194,7 @@ const DashboardPage: FC = function () {
                 <div className="mb-2 text-md lg:text-xl font-bold text-gray-900 dark:text-white"> Latest Transactions </div>
                 <span className="text-base font-normal text-gray-600 dark:text-gray-400 hidden md:block"> This is a list of latest transactions </span>
               </div>
-                <div className="inline-flex items-center rounded-lg p-2 text-sm font-medium text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700 cursor-pointer" onClick={() => ViewAllCall("order")}>  View all </div>
+              {OrderAccessList?.view ?  <div className="inline-flex items-center rounded-lg p-2 text-sm font-medium text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700 cursor-pointer" onClick={() => ViewAllCall("order")}>  View all </div> : null }
             </div>
             <div className="mt-8 flex flex-col">
               <div className="overflow-x-auto rounded-lg">
@@ -161,7 +205,7 @@ const DashboardPage: FC = function () {
                         <Table.HeadCell>Order id</Table.HeadCell>
                         <Table.HeadCell>Date &amp; Time</Table.HeadCell>
                         <Table.HeadCell>Customer Name</Table.HeadCell>
-                        <Table.HeadCell>Sales  Executive </Table.HeadCell>
+                        <Table.HeadCell>Advisor Name </Table.HeadCell>
                         <Table.HeadCell>Amount</Table.HeadCell>
                         <Table.HeadCell>Status</Table.HeadCell>
                       </Table.Head>
@@ -189,7 +233,7 @@ const DashboardPage: FC = function () {
             <div className="mb-4 h-full rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6">
                 <div className="mb-4 flex items-center justify-between">
                   <h3 className="text-xl font-bold leading-none text-gray-900 dark:text-white"> Latest Customers </h3>
-                  <div className="inline-flex items-center rounded-lg p-2 text-sm font-medium text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700 cursor-pointer" onClick={() => ViewAllCall("customer")}>  View all </div>
+                  {CustomerAccessList?.view ? <div className="inline-flex items-center rounded-lg p-2 text-sm font-medium text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700 cursor-pointer" onClick={() => ViewAllCall("customer")}>  View all </div> : null }
                 </div>
                 <div className="flow-root">
                   <ul className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -214,7 +258,7 @@ const DashboardPage: FC = function () {
             <div className="mb-4 h-full rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6">
               <div className="mb-4 flex items-center justify-between">
                 <h3 className="text-xl font-bold leading-none text-gray-900 dark:text-white"> Latest Users </h3>
-                <div className="inline-flex items-center rounded-lg p-2 text-sm font-medium text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700 cursor-pointer" onClick={() => ViewAllCall("users")}>  View all </div>
+                {AccessList?.view ? <div className="inline-flex items-center rounded-lg p-2 text-sm font-medium text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700 cursor-pointer" onClick={() => ViewAllCall("users")}>  View all </div> : null }
               </div>
               <div className="flow-root">
                 <ul className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -244,9 +288,10 @@ const DashboardPage: FC = function () {
               <div className="mb-2 text-md lg:text-xl font-bold text-gray-900 dark:text-white"> Latest Products </div>
               <span className="text-base font-normal text-gray-600 dark:text-gray-400 hidden md:block"> This is a list of latest products </span>
             </div>
-            <div className="shrink-0">
-              <div className="rounded-lg p-2 text-sm font-medium text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700 cursor-pointer" onClick={() =>ViewAllCall("product")}> View all  </div>
-            </div>
+
+            {ProductAccessList?.view ?
+              <div className="shrink-0"> <div className="rounded-lg p-2 text-sm font-medium text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700 cursor-pointer" onClick={() =>ViewAllCall("product")}> View all  </div>  </div>
+            : null}
           </div>
           <div className="mt-8 flex flex-col">
             <div className="overflow-x-auto rounded-lg">
@@ -254,26 +299,18 @@ const DashboardPage: FC = function () {
                 <div className="overflow-hidden shadow sm:rounded-lg">
                   <Table striped className="min-w-full divide-y divide-gray-200 dark:divide-gray-600" >
                     <Table.Head className="bg-gray-50 dark:bg-gray-700">
-                      <Table.HeadCell>Eng Name</Table.HeadCell>
-                      <Table.HeadCell>Guj Name</Table.HeadCell>
+                      <Table.HeadCell>Name</Table.HeadCell>
                       <Table.HeadCell>Category</Table.HeadCell>
                       <Table.HeadCell>Qty</Table.HeadCell>
-                      <Table.HeadCell>HSN</Table.HeadCell>
-                      <Table.HeadCell>Batch</Table.HeadCell>
                       <Table.HeadCell>Price</Table.HeadCell>
-                      <Table.HeadCell>Date &amp; Time</Table.HeadCell>
                     </Table.Head>
                     <Table.Body className="bg-white dark:bg-gray-800">
                         {ProductData && ProductData.map((item:any ,k:number) =>(
                           <Table.Row key={k}>
                           <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 dark:text-white"><span className="font-semibold">{item?.name?.englishname}</span>  </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 dark:text-white"><span className="font-semibold">{item?.name?.gujaratiname}</span>  </Table.Cell>
                           <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-300"> { item?.categories?.name_eng ? item?.categories?.name_eng : "N/A"}  </Table.Cell>
                           <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-gray-300"> {item?.avl_qty}  </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-gray-300"> {item?.hsn_code}  </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-gray-300"> {item?.batch_no}  </Table.Cell>
                           <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-gray-300"> {item?.price.toFixed(2)}  </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-gray-300">   {moment(item.createdAt).format("DD-MM-YYYY hh:mm:ss")}   </Table.Cell>
                           </Table.Row>
                         ))}
                     </Table.Body>

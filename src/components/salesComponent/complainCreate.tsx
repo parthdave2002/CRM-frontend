@@ -25,8 +25,10 @@ const ComplainCreate : FC <ComplainCreateProps> = ({setisOpenComplainCreateModel
     const [data, setData] = useState(null)
     useEffect(() => {
         const customerDataString = Cookies.get("customer_data");
-        const customerData = customerDataString ? JSON.parse(customerDataString) : []    
-        setData(customerData?._id ? customerData?._id  : null);
+        if(customerDataString?.length){
+            const customerData = customerDataString ? JSON.parse(customerDataString) : []    
+            setData(customerData?._id ? customerData?._id  : null);
+        }
     },[]);
 
     useEffect(() =>{

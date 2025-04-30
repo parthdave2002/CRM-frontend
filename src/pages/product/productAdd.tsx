@@ -76,6 +76,16 @@ const ProductAddPage : FC = function () {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [file, setFile] = useState<File[] | null>(null);
+    const [validateProfile, setvalidateProfile] = useState(0);
+
+    useEffect(() =>{
+        if(file){
+            setvalidateProfile(0)
+        }else{
+            setvalidateProfile(1)
+            return;
+        }
+    },[file])
 
     useEffect(() =>{
         if(CompanyListData.length == 0) dispatch(getCompanylist()); 
@@ -269,6 +279,11 @@ const ProductAddPage : FC = function () {
         }),
         
         onSubmit: (values) => {
+
+            if(!file){
+                setvalidateProfile(1)
+                return;
+            }
             if(selectedactiveid ==  null){
                 setValidateactive(1)
                 return;
@@ -317,6 +332,7 @@ const ProductAddPage : FC = function () {
                     formData.append("product_pics", data);
                 });
             }
+
             if(id){
                 formData.append("id", id);
                 dispatch(UpdateProductlist(formData));
@@ -439,16 +455,17 @@ const ProductAddPage : FC = function () {
                         return false; 
                         }} >
                         
-                        <div>
-                            <label className="dark:text-gray-100 text-[1.2rem]"> Product Image : </label>
+                        <div className="mb-4">
+                            <label className="dark:text-gray-100 text-[1.2rem]"> Product Image <span className='text-red-500'>*</span> </label>
                             <MultiImageUploadPreview onFileSelect={setFile} />
+                            {validateProfile == 1 ? ( <FormFeedback type="invalid" className="text-Red text-sm"> Please Select profile photo </FormFeedback> ) : null}
                         </div>
                         
                       
                         <div className="dark:bg-gray-800 flex-1 p-4 rounded-lg border border-gray-300 dark:border-gray-500 space-y-3 mb-4">
                             <div className="text-[1.2rem] font-bold dark:text-gray-100"> Product Name</div>
                             <div className="flex-1 mt-[1rem] ">
-                                <Label htmlFor="Name">Name ( Eng )</Label>
+                                <Label htmlFor="Name">Name ( Eng ) <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                     <Input
                                         id="englishname"
@@ -466,7 +483,7 @@ const ProductAddPage : FC = function () {
                             </div>
 
                             <div className="flex-1 mt-[1rem] ">
-                                <Label htmlFor="Name">Name ( Guj )</Label>
+                                <Label htmlFor="Name">Name ( Guj ) <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                     <Input
                                         id="gujaratiname"
@@ -487,7 +504,7 @@ const ProductAddPage : FC = function () {
                         <div className="dark:bg-gray-800  flex-1 p-4 rounded-lg border border-gray-300  dark:border-gray-500 space-y-3 mb-4">
                             <div className="text-[1.2rem] font-bold dark:text-gray-100"> Technical Name</div>
                             <div className="flex-1 mt-[1rem] ">
-                                <Label htmlFor="tech_name">Technical Name ( Eng )</Label>
+                                <Label htmlFor="tech_name">Technical Name ( Eng ) <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                     <Input
                                         id="tech_name_eng"
@@ -505,7 +522,7 @@ const ProductAddPage : FC = function () {
                             </div>
 
                             <div className="flex-1 mt-[1rem] ">
-                                <Label htmlFor="Name">Technical Name ( Guj )</Label>
+                                <Label htmlFor="Name">Technical Name ( Guj ) <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                     <Input
                                         id="gujarati_tech_name"
@@ -525,7 +542,7 @@ const ProductAddPage : FC = function () {
 
                         <div className="md:flex gap-x-[2rem]">
                             <div className="flex-1 mt-[1rem]">
-                                <Label htmlFor="packaging">Packing</Label>
+                                <Label htmlFor="packaging">Packing <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                 <Input
                                     id="packaging"
@@ -543,7 +560,7 @@ const ProductAddPage : FC = function () {
                             </div>
 
                             <div className="flex-1 mt-[1rem]">
-                                <Label htmlFor="Status">Packing Type</Label>
+                                <Label htmlFor="Status">Packing Type <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                 <Select
                                     className="w-full dark:text-white"
@@ -567,7 +584,7 @@ const ProductAddPage : FC = function () {
                             </div>
 
                             <div className="flex-1 mt-[1rem]">
-                                <Label htmlFor="Status">Category</Label>
+                                <Label htmlFor="Status">Category <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                 <Select
                                     className="w-full dark:text-white"
@@ -594,7 +611,7 @@ const ProductAddPage : FC = function () {
                         <div className="md:flex gap-x-[2rem]">
 
                             <div className="flex-1 mt-[1rem]">
-                                <Label htmlFor="qty"> QTY</Label>
+                                <Label htmlFor="qty"> QTY <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                 <Input
                                     id="avl_qty"
@@ -613,7 +630,7 @@ const ProductAddPage : FC = function () {
                             </div>
 
                             <div className="flex-1 mt-[1rem]">
-                                <Label htmlFor="price"> Price</Label>
+                                <Label htmlFor="price"> Price <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                 <Input
                                     id="price"
@@ -632,7 +649,7 @@ const ProductAddPage : FC = function () {
                             </div>
 
                             <div className="flex-1 mt-[1rem]">
-                                <Label htmlFor="discount"> Discount</Label>
+                                <Label htmlFor="discount"> Discount <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                 <Input
                                     id="discount"
@@ -655,7 +672,7 @@ const ProductAddPage : FC = function () {
                         <div className="md:flex gap-x-[2rem]">
 
                             <div className="flex-1 mt-[1rem] ">
-                                <Label htmlFor="Status">Company</Label>
+                                <Label htmlFor="Status">Company <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                 <Select
                                     className="w-full dark:text-white"
@@ -679,7 +696,7 @@ const ProductAddPage : FC = function () {
                             </div>
 
                             <div className="flex-1 mt-[1rem]">
-                                <Label htmlFor="batch_no"> Batch No</Label>
+                                <Label htmlFor="batch_no"> Batch No <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                 <Input
                                     id="batch_no"
@@ -697,7 +714,7 @@ const ProductAddPage : FC = function () {
                             </div>
 
                             <div className="flex-1 mt-[1rem]">
-                                <Label htmlFor="hsn_code"> HSN code</Label>
+                                <Label htmlFor="hsn_code"> HSN code <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                 <Input
                                     id="hsn_code"
@@ -718,7 +735,7 @@ const ProductAddPage : FC = function () {
                         <div className="md:flex gap-x-[2rem]">
 
                             <div className="flex-1 mt-[1rem] ">
-                                <Label htmlFor="c_gst"> CGST</Label>
+                                <Label htmlFor="c_gst"> CGST <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                 <Input
                                     id="c_gst"
@@ -736,7 +753,7 @@ const ProductAddPage : FC = function () {
                             </div>
 
                             <div className="flex-1 mt-[1rem] ">
-                                <Label htmlFor="s_gst"> SGST</Label>
+                                <Label htmlFor="s_gst"> SGST <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                 <Input
                                     id="s_gst"
@@ -754,7 +771,7 @@ const ProductAddPage : FC = function () {
                             </div>
 
                             <div className="flex-1 mt-[1rem] ">
-                            <Label htmlFor="Status">Status</Label>
+                            <Label htmlFor="Status">Status <span className='text-red-500'>*</span> </Label>
                             <div className="mt-1">
                             <Select
                                 className="w-full dark:text-white"

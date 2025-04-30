@@ -97,7 +97,7 @@ const AddpackingTypePage : FC = function () {
                         
                         <div className="flex gap-x-[2rem] ">
                             <div className="flex-1">
-                                <Label htmlFor="PackingType">Packing Type ( Eng )</Label>
+                                <Label htmlFor="PackingType">Packing Type ( Eng ) <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                 <Input
                                     id="packing_type_eng"
@@ -115,7 +115,7 @@ const AddpackingTypePage : FC = function () {
                             </div>
 
                             <div className="flex-1">
-                                <Label htmlFor="PackingType">Packing Type ( Guj )</Label>
+                                <Label htmlFor="PackingType">Packing Type ( Guj ) <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                 <Input
                                     id="packing_type_guj"
@@ -134,7 +134,7 @@ const AddpackingTypePage : FC = function () {
                         </div>
 
                         <div className="my-[1rem]">
-                            <Label htmlFor="Status">Status</Label>
+                            <Label htmlFor="Status">Status <span className='text-red-500'>*</span> </Label>
                             <div className="mt-1">
                             <Select
                                 className="w-full dark:text-white"

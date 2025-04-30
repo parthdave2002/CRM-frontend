@@ -10,7 +10,6 @@ import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useNavigate } from "react-router";
 import moment from "moment";
-import { FaExclamationCircle } from "react-icons/fa";
 import Cookies from "js-cookie";
 const IMG_URL = import.meta.env["VITE_API_URL"];
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
@@ -141,7 +140,7 @@ const BannerListPage: FC = function () {
                 {/* <Table.HeadCell>Description</Table.HeadCell> */}
                 <Table.HeadCell>Status</Table.HeadCell>
                 <Table.HeadCell>Created At</Table.HeadCell>
-                <Table.HeadCell>Actions</Table.HeadCell>
+                { AccessList?.delete ? <Table.HeadCell>Actions</Table.HeadCell> : null }
               </Table.Head>
 
               <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
@@ -162,13 +161,13 @@ const BannerListPage: FC = function () {
                             : <div className="flex items-center">  <div className="mr-2 h-2.5 w-2.5 rounded-full bg-Red"></div> Deactive  </div>}
                           </Table.Cell>
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item.createdAt).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
+                          {AccessList?.delete ? 
                           <Table.Cell className="space-x-2 whitespace-nowrap py-0">
                             <div className="flex items-center gap-x-3">
-                             
                               {AccessList?.delete ?    <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete  Banner </div> </Button> : null }
-                              {/* <Button  gradientDuoTone="pinkToOrange" onClick={() => DetailsPageCall(item._id)}><div className="flex items-center gap-x-2 deletebutton"> <FaExclamationCircle className="text-lg" />  Details Banner </div> </Button> */}
                             </div>
                           </Table.Cell>
+                          : null }
                         </Table.Row>
                   ))}
               </Table.Body>
