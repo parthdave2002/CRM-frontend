@@ -22,6 +22,7 @@ const INIT_STATE = {
   TotalCategoryData:0,
   CurrentPage:1,
   AddCategorylist: [],
+  deleteCategorylist:[],
   error: {},
 };
 
@@ -74,7 +75,7 @@ const Category = (state = INIT_STATE, action) => {
         case DELETE_CATEGORY_LIST:
           return {
             ...state,
-            Categorylist: action.payload.data,
+            deleteCategorylist: action.payload.data,
           };
       }
     case DELETE_CATEGORY_LIST_ERROR:
@@ -99,6 +100,7 @@ const Category = (state = INIT_STATE, action) => {
               TotalCategoryData:0,
               CurrentPage:1,
               AddCategorylist:[],
+              deleteCategorylist:[],
               error: {},
             };
         }

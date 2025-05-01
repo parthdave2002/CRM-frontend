@@ -16,10 +16,10 @@ export const GET_USER_LIST = "/api/user/get-user";
 export const GET_USER_VIEW = "/api/user/get-user";
 export const ADD_USER_LIST = "/api/user/add-user";
 export const DELETE_USER_LIST = "/api/user/deluser";
-export const UPDATE_USER_DATA_LIST = "/api/user/update";
+export const UPDATE_USER_DATA_LIST = "/api/user/update-user";
 export const CHECK_USER_LIST = "/api/user/check-user";
 export const GET_PROFILE_DATA_LIST = "/api/user/profile";
-export const UPDATE_PROFILE_DATA_LIST = "/api/user/update-user";
+export const UPDATE_PROFILE_DATA_LIST = "/api/user/update-profile";
 
 // Role Api
 export const GET_ROLES_LIST = "/api/role/get-role";
@@ -102,6 +102,7 @@ export const GET_EXPORT_DATA_LIST = "/api/export/export-data";
 // Customer
 export const GET_CUSTOMER_DATA_LIST = "/api/customer/get-customers";
 export const ADD_CUSTOMER_DATA_LIST = "/api/customer/add-customer";
+export const UPDATE_CUSTOMER_DATA_LIST = "/api/customer/update-customer";
 export const DELETE_CUSTOMER_DATA_LIST = "/api/customer/remove-customer";
 export const BLOCK_CUSTOMER_DATA_LIST = "/api/customer/change-status";
 export const CHECK_CUSTOMER_EXIST_LIST = "/api/customer/matchnumber";

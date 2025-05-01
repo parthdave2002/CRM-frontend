@@ -188,6 +188,7 @@ export const ExportDatalistApi = async (requserdata,name) => await api.get(url.G
 // Customer API
 export const CustomerlistApi = (requserdata) => api.get(url.GET_CUSTOMER_DATA_LIST, requserdata);
 export const AddCustomerlistApi = async (requserdata) => await api.create(url.ADD_CUSTOMER_DATA_LIST, requserdata);
+export const UpdateCustomerlistApi = async (requserdata) => await api.update(url.UPDATE_CUSTOMER_DATA_LIST, requserdata);
 export const DelCustomerlistApi = async (requserdata) => await api.delete(url.DELETE_CUSTOMER_DATA_LIST, requserdata);
 export const BlockCustomerlistApi = async (requserdata) => await api.update(url.BLOCK_CUSTOMER_DATA_LIST, requserdata);
 export const CheckCustomerApi = async (requserdata) => await api.get(url.CHECK_CUSTOMER_EXIST_LIST, requserdata);

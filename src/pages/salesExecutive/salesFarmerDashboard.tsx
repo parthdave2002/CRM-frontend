@@ -111,7 +111,7 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile, Mobile_number}) 
 
     {isLoading  ?   <LoaderPage /> : null  }
       { !isLoading && farmedAdded == true  ?
-        <SalesAddFarmer isEditFarmer={isEditFarmer} Mobile_number={Mobile_number}  setFarmerAdded={setFarmerAdded} handleAccept={handleAccept}   CloseAddmodal ={CloseAddmodal}/>
+        <SalesAddFarmer isEditFarmer={isEditFarmer} Mobile_number={Mobile_number}  setFarmerAdded={setFarmerAdded} handleAccept={handleAccept} CloseAddmodal ={CloseAddmodal}/>
       : farmedAdded == false && !isLoading ?
         <>
           {cartOpen == true ?

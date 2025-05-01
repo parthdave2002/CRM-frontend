@@ -4,6 +4,8 @@ import {
   getCustomerDatalistFail,
   AddCustomerDatalistSuccess,
   AddCustomerDatalistFail,
+  UpdateCustomerDatalistSuccess,
+  UpdateCustomerDatalistFail,
   DeleteCustomerDatalistSuccess,
   DeleteCustomerDatalistFail,
   ResetCustomerDatalist,
@@ -19,12 +21,13 @@ import {
 import {
   GET_CUSTOMER_DATA_LIST,
   ADD_CUSTOMER_DATA_LIST,
+  UPDATE_CUSTOMER_DATA_LIST,
   DELETE_CUSTOMER_DATA_LIST,
   REST_CUSTOMER_DATA_LIST,
   BLOCK_CUSTOMER_DATA_LIST,
   CHECK_CUSTOMER_EXIST_LIST
 } from "./actionType";
-import { CustomerlistApi, AddCustomerlistApi, DelCustomerlistApi, BlockCustomerlistApi, CheckCustomerApi} from "../../helper/Demo_helper";
+import { CustomerlistApi, AddCustomerlistApi,UpdateCustomerlistApi, DelCustomerlistApi, BlockCustomerlistApi, CheckCustomerApi} from "../../helper/Demo_helper";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 
@@ -45,6 +48,17 @@ function* onAddCustomerList({ payload: requstuser }) {
   } catch (error) {
     toast.error(error?.msg)
     yield put(AddCustomerDatalistFail(error));
+  }
+}
+
+function* onUpdateCustomerList({ payload: requstuser }) {
+  try {
+    const response = yield call(UpdateCustomerlistApi, requstuser);
+    yield put(UpdateCustomerDatalistSuccess(UPDATE_CUSTOMER_DATA_LIST, response));
+    Cookies.set('customer_data', JSON.stringify(response?.data), { expires: 1 });
+  } catch (error) {
+    toast.error(error?.msg)
+    yield put(UpdateCustomerDatalistFail(error));
   }
 }
 
@@ -96,6 +110,7 @@ function* onCheckCustomerList({ payload: requstuser }) {
 function* CustomerSaga() {
   yield takeEvery(GET_CUSTOMER_DATA_LIST, onGetCustomerDatalist);
   yield takeEvery(ADD_CUSTOMER_DATA_LIST, onAddCustomerList);
+  yield takeEvery(UPDATE_CUSTOMER_DATA_LIST, onUpdateCustomerList);
   yield takeEvery(DELETE_CUSTOMER_DATA_LIST, onDelCustomerList);
   yield takeEvery(REST_CUSTOMER_DATA_LIST, onResetCustomerList);
   yield takeEvery(BLOCK_CUSTOMER_DATA_LIST, onBlockCustomerList);

@@ -22,10 +22,7 @@ const ProfilePage : FC = function () {
     const [userData, setuserData] = useState<UserData>();
 
     // ------------- Get  Data From Reducer Code Start --------------
-        const { Profileuserdata } = useSelector((state: any) => ({
-            Profileuserdata: state.User.Profileuserdata
-        }));
-
+        const Profileuserdata  = useSelector((state: any) => state.User.Profileuserdata);
         useEffect(() => {
             setuserData(Profileuserdata.data  ? Profileuserdata.data   : null);
         }, [ Profileuserdata]);
