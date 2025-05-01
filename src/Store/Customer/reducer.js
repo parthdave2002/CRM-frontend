@@ -6,6 +6,10 @@ import {
   ADD_CUSTOMER_DATA_LIST,
   ADD_CUSTOMER_DATA_LIST_SUCCESS,
   ADD_CUSTOMER_DATA_LIST_ERROR,
+
+  UPDATE_CUSTOMER_DATA_LIST,
+  UPDATE_CUSTOMER_DATA_LIST_SUCCESS,
+  UPDATE_CUSTOMER_DATA_LIST_ERROR,
   
   DELETE_CUSTOMER_DATA_LIST,
   DELETE_CUSTOMER_DATA_LIST_SUCCESS,
@@ -30,6 +34,7 @@ const INIT_STATE = {
   TotalCustomerData:0,
   CurrentPage:1,
   AddCustomerlist: [],
+  UpdateCustomerlist:[],
   DeleteCustomerlist: [],
   BlockCustomerlist:[],
   CheckCustomerExistlist:[],
@@ -79,6 +84,27 @@ const Customer = (state = INIT_STATE, action) => {
         default:
           return { ...state };
       }
+
+
+      case UPDATE_CUSTOMER_DATA_LIST_SUCCESS:
+        switch (action.payload.actionType) {
+          case UPDATE_CUSTOMER_DATA_LIST:
+            return {
+              ...state,
+              UpdateCustomerlist: action.payload.data,
+            };
+        }
+      case UPDATE_CUSTOMER_DATA_LIST_ERROR:
+        switch (action.payload.actionType) {
+          case UPDATE_CUSTOMER_DATA_LIST:
+            return {
+              ...state,
+              error: action.payload,
+            };
+          default:
+            return { ...state };
+        }
+
 
     case DELETE_CUSTOMER_DATA_LIST_SUCCESS:
       switch (action.payload.actionType) {

@@ -47,12 +47,11 @@ const ExampleNavbar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> =
     }
 
      const [LoginUserimg, setLoginUserimg] = useState<UserImage>();
-     const { login} = useSelector((state:any) => ({
-       login: state.Login.Logincode,
-     }));
+     const login = useSelector((state:any) => state.Login.Logincode);
+     const Profileuserdata = useSelector((state:any) =>  state.User.Profileuserdata);
    
      useEffect(() => {
-       setLoginUserimg(login ? login?.data?.user_img : null);
+       setLoginUserimg( Profileuserdata?.data?.user_pic ? Profileuserdata?.data?.user_pic  :  login?.data?.user_img?.user_pic ? login?.data?.user_img?.user_pic : userphoto);
      }, [login]);
      
     return (
@@ -79,7 +78,7 @@ const ExampleNavbar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> =
                         type="button"
                       >
                         <span className="sr-only">Open user menu</span>
-                        <img  className="w-8 h-8 rounded-full"  src={ LoginUserimg?.user_pic ? `${IMG_URL}/public/user/${LoginUserimg?.user_pic}` : userphoto}  alt="user photo"  />
+                        <img  className="w-8 h-8 rounded-full"  src={`${IMG_URL}/public/user/${LoginUserimg}`}  alt="user photo"  />
                       </button>
                     </Menu.Button>
                   </div>

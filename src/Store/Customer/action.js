@@ -6,6 +6,10 @@ import {
   ADD_CUSTOMER_DATA_LIST,
   ADD_CUSTOMER_DATA_LIST_SUCCESS,
   ADD_CUSTOMER_DATA_LIST_ERROR,
+
+  UPDATE_CUSTOMER_DATA_LIST,
+  UPDATE_CUSTOMER_DATA_LIST_SUCCESS,
+  UPDATE_CUSTOMER_DATA_LIST_ERROR,
   
   DELETE_CUSTOMER_DATA_LIST,
   DELETE_CUSTOMER_DATA_LIST_SUCCESS,
@@ -51,6 +55,23 @@ export const AddCustomerDatalistSuccess = (actionType, data) => ({
 
 export const AddCustomerDatalistFail = (actionType, error) => ({
   type: ADD_CUSTOMER_DATA_LIST_ERROR,
+  payload: { actionType, error },
+});
+
+
+
+export const UpdateCustomerDatalist = (requserdata) => ({
+  type: UPDATE_CUSTOMER_DATA_LIST,
+  payload: requserdata,
+});
+
+export const UpdateCustomerDatalistSuccess = (actionType, data) => ({
+  type: UPDATE_CUSTOMER_DATA_LIST_SUCCESS,
+  payload: { actionType, data },
+});
+
+export const UpdateCustomerDatalistFail = (actionType, error) => ({
+  type: UPDATE_CUSTOMER_DATA_LIST_ERROR,
   payload: { actionType, error },
 });
 

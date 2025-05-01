@@ -100,7 +100,10 @@ const OrdererDetailsPage: FC = function () {
 
           <div className="w-[794px] h-[1123px] mx-auto bg-white shadow-lg p-6 rounded-lg flex flex-col justify-between  font-sans"  ref={invoiceRef} >
               <div className="flex flex-col">
-                <div className="flex-1 text-center">  <h1 className="text-3xl font-bold text-gray-800 ">  "ખરીદી માટે આભાર" </h1> </div>
+                <div className="flex-1 text-center"> 
+                   <h6 className="text-[0.9rem]  text-gray-500 ">  એગ્રી ભારત કંપનીમાંથી 100% ખાતરીબંધ બ્રાન્ડેડ કૃષિ પ્રોડક્ટ ઘરે બેઠા ઓર્ડર કરવા અને ખેતીને લગતી વધુ માહિતી માટે  </h6>
+                    <h6 className="text-[0.9rem]  text-gray-500 ">  હેલ્પલાઇન નંબર 9100029429/9100029329 પર સંપર્ક કરો!!!  જય કિસાન  </h6>
+                 </div>
 
                 <div className="flex justify-between">
                   <div className="flex-1">  <img src={logo} alt="Company Logo" className="w-24" />  </div>

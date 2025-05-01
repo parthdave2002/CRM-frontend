@@ -137,7 +137,7 @@ function* onGetUpdateUserdatalist({ payload: requstuser }) {
     const reponse = yield call(UpdateUserdatalistApi, requstuser);
     yield put(UpdateUserdatalistSuccess(UPDATE_USER_DATA_LIST, reponse));
     if (reponse.success == true) {
-      let requserdata = { page: 1, size: 10, search: null };
+      let requserdata = { page: 1, size: 5 };
       const reponse = yield call(UserlistApi, requserdata);
       yield put(getUserlistSuccess(GET_USER_LIST, reponse));
     } 

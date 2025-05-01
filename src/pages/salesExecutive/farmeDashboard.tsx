@@ -1,36 +1,11 @@
 import React, { FC, useEffect, useState } from 'react'
 import { MdKeyboardArrowDown, MdKeyboardArrowRight, MdKeyboardArrowUp } from 'react-icons/md'
 import Cookies from 'js-cookie';
+import { ProfileInfo } from 'types/types';
 
 interface DashboardProps{
   classData ?: string;
   viewButton : boolean;
-}
-
-interface ProfileInfo{
-    crops: [];
-    is_deleted:  boolean;
-    _id: string;
-    customer_name : string; 
-    mobile_number:  number;
-    land_area: number;
-    land_type: string;
-    irrigation_source: string;
-    irrigation_type:  string;
-    heard_about_agribharat:  string;
-    address: string;
-    district:  string;
-    district_name: string;
-    taluka:  string;
-    taluka_name:  string;
-    village:  string;
-    village_name:  string;
-    pincode:  number;
-    created_by:  string;
-    __v: number;
-    alternate_number: number;
-    added_at:  string;
-    smart_phone: boolean;
 }
 
 const FarmeDashboard : FC <DashboardProps> = ({classData, viewButton}) => {

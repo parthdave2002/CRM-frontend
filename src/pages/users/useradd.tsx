@@ -8,7 +8,7 @@ import Select from "react-select";
 import { Form, Input, FormFeedback } from "reactstrap";
 import { useNavigate, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { AddUserlist, getRoleslist, getUserView, ResetUserdatalist, UpdateProfileUserdatalist } from "../../Store/actions";
+import { AddUserlist, getRoleslist, getUserView, ResetUserdatalist, UpdateUserdatalist } from "../../Store/actions";
 import { toast } from "react-toastify";
 import ImageUploadPreview from "../../components/input/imageuploader";
 import moment from "moment";
@@ -20,6 +20,11 @@ const AddUserPage : FC = function () {
     const { id } = useParams();
     const dispatch = useDispatch();
     const [file, setFile] = useState<File | null>(null);
+
+    interface RoleData{
+        role_title: string;
+        _id: string
+    }
 
     interface UserData {
         aadhar_card: boolean | "";
@@ -37,7 +42,7 @@ const AddUserPage : FC = function () {
         name: string;
         pan_card: boolean | "";
         password: string;
-        role: string;
+        role: RoleData;
         user_pic: string;
     }
 
@@ -76,7 +81,7 @@ const AddUserPage : FC = function () {
     // ---------- get default users list ----------
     
     //---------------- Role option code start ----------------
-        const [selectedRoleOption, setSelectedRoleOption] = useState(null);
+        const [selectedRoleOption, setSelectedRoleOption] = useState<any>(null);
         const [selectedRoleid, setSelectedRoleid] = useState<string | null>(null);;
         const [ValidateRoleid, setValidateRoleid] = useState(0);
 
@@ -170,6 +175,7 @@ const AddUserPage : FC = function () {
         const [ValidatePanStatusid, setValidatePanStatusid] = useState(0);
     
         const IsActivePancarddata = (data: any) => {
+
         if (!data) {
             setValidatePanStatusid(1);
             setSelectedPancardid(null);
@@ -205,7 +211,7 @@ const AddUserPage : FC = function () {
         name: "",
         email:"",
         gender:"",
-        role:"",
+        role:{ role_title: "", _id: "" },
         password:"",
         mobile_no: "",
         address:"",
@@ -283,11 +289,11 @@ const AddUserPage : FC = function () {
             formData.append("bank_passbook",JSON.stringify(selectedBankPassbookid));
             formData.append("is_active", JSON.stringify(selectedStatusid));
             formData.append("role", selectedRoleid);
-            if (file) formData.append("user_pic", file); 
+            if (file instanceof File) formData.append("user_pic", file); 
             
             if(id){
                 formData.append("id", id);
-                dispatch(UpdateProfileUserdatalist(formData));
+                dispatch(UpdateUserdatalist(formData));
             }
             else{
                 dispatch(AddUserlist(formData));
@@ -306,12 +312,12 @@ const AddUserPage : FC = function () {
 
      //  -------------- Get Role Data list -------------------
      const UserAddedList = useSelector((state: any) => state.User.AddUserlistdata || []);
-     const UpdateProfileuserdata  = useSelector((state: any) => state.User.UpdateProfileuserdata || []);
+     const UpdateUserList  = useSelector((state: any) => state.User.UpdateUserList || []);
 
      useEffect(() =>{
-        if(UserAddedList?.success == true || UpdateProfileuserdata?.success == true){
-            if(UpdateProfileuserdata){
-                toast.success(UpdateProfileuserdata?.msg);
+        if(UserAddedList?.success == true || UpdateUserList?.success == true){
+            if(UpdateUserList){
+                toast.success(UpdateUserList?.msg);
             }else{
                 toast.success(UserAddedList?.msg);
             }
@@ -319,56 +325,60 @@ const AddUserPage : FC = function () {
             dispatch(ResetUserdatalist());
             validation.resetForm();
         }
-     },[UserAddedList, UpdateProfileuserdata])
+     },[UserAddedList, UpdateUserList])
  //  -------------- Get Role Data list -------------------
 
  useEffect(() => { 
-    validation.values.name= UserDataList?.name ?? "";
-    validation.values.email= UserDataList?.email ?? "";
-    validation.values.gender = UserDataList?.gender ?? "";
-    validation.values.mobile_no =UserDataList?.mobile_no ?? "";
-    validation.values.address= UserDataList?.address ?? "";
-    validation.values.date_of_birth= UserDataList?.date_of_birth ? moment(UserDataList.date_of_birth).format("YYYY-DD-MM") : "";
-    validation.values.date_of_joining= UserDataList?.date_of_joining ? moment(UserDataList.date_of_joining).format("YYYY-DD-MM") : "";
-    validation.values.emergency_mobile_no= UserDataList?.emergency_mobile_no ?? "";
-    validation.values.emergency_contact_person= UserDataList?.emergency_contact_person ?? "";
-    validation.values.aadhar_card= UserDataList?.aadhar_card ?? "";
-    validation.values.pan_card= UserDataList?.pan_card ?? "";
-    validation.values.bank_passbook= UserDataList?.bank_passbook ?? null;    
-    if (UserDataList?.role && roleoption.length > 0) {
-        const selectedRole = roleoption.find((role:any) => role.value === UserDataList.role);
-        setSelectedRoleOption(selectedRole || null);
-        setSelectedRoleid(selectedRole?.value);
+    if(UserDataList){
+        setinitialValues(prev => ({
+            ...prev,
+            name : UserDataList?.name ?? "",
+            email : UserDataList?.email ?? "",
+            gender : UserDataList?.gender ?? "",
+            mobile_no: UserDataList?.mobile_no,
+            address : UserDataList?.address ?? "",
+            date_of_birth : UserDataList?.date_of_birth ? moment(UserDataList.date_of_birth).format("YYYY-DD-MM") : "",
+            date_of_joining : UserDataList?.date_of_joining ? moment(UserDataList.date_of_joining).format("YYYY-DD-MM") : "",
+            emergency_mobile_no : UserDataList?.emergency_mobile_no ?? "",
+            emergency_contact_person : UserDataList?.emergency_contact_person ?? "",
+            aadhar_card : UserDataList?.aadhar_card ?? "",
+            pan_card : UserDataList?.pan_card ?? "",
+            bank_passbook : UserDataList?.bank_passbook ?? null
+        }));
+ 
+        setSelectedRoleOption({ label: UserDataList?.role.role_title,  value: UserDataList?.role._id });
+        setSelectedRoleid(UserDataList?.role?._id ? UserDataList?.role?._id : null);
+        if (UserDataList?.gender && genderoption.length > 0) {
+            const selectedGender = genderoption.find((gender:any) => gender.value === UserDataList.gender);
+            setSelectedGenderOption(selectedGender || null);
+            setSelectedGenderid(selectedGender ? String(selectedGender.value) : "");
+        }
+    
+        if (UserDataList?.is_active !== undefined && UserDataList?.is_active !== null &&  isactiveoption.length > 0) {
+            const selectedSatus :any = isactiveoption.find((gender:any) => gender.value === UserDataList.is_active);
+            setSelectedStatusOption(selectedSatus);
+            setSelectedStatusid(selectedSatus?.value ?? null);
+        }
+    
+        if (UserDataList?.aadhar_card !== undefined && UserDataList?.aadhar_card !== null && Dropdownoption.length > 0) {
+            const selectedAadhar :any = Dropdownoption.find((dropdown:any) => dropdown.value === UserDataList.aadhar_card);
+            setSelectedAadharOption(selectedAadhar || null);
+            setSelectedAadharid(selectedAadhar?.value);
+        }
+    
+        if (UserDataList?.pan_card !== undefined && UserDataList?.pan_card !== null && Dropdownoption.length > 0) {
+            const selectedPan :any = Dropdownoption.find((dropdown:any) => dropdown.value === UserDataList.pan_card);
+            setSelectedpancardOption(selectedPan || null);
+            setSelectedPancardid(selectedPan?.value);
+        }
+    
+        if (UserDataList?.bank_passbook !== undefined && UserDataList?.bank_passbook !== null &&  Dropdownoption.length > 0) {
+            const selectedSatus :any = Dropdownoption.find((dropdown:any) => dropdown.value === UserDataList.bank_passbook);
+            setSelectedBankPassbookOption(selectedSatus);
+            setSelectedBankPassbookid(selectedSatus?.value ?? null);
+        }
     }
-    if (UserDataList?.gender && genderoption.length > 0) {
-        const selectedGender = genderoption.find((gender:any) => gender.value === UserDataList.gender);
-        setSelectedGenderOption(selectedGender || null);
-        setSelectedGenderid(selectedGender ? String(selectedGender.value) : "");
-    }
-
-    if (UserDataList?.is_active !== undefined && UserDataList?.is_active !== null &&  isactiveoption.length > 0) {
-        const selectedSatus :any = isactiveoption.find((gender:any) => gender.value === UserDataList.is_active);
-        setSelectedStatusOption(selectedSatus);
-        setSelectedStatusid(selectedSatus?.value ?? null);
-    }
-
-    if (UserDataList?.aadhar_card !== undefined && UserDataList?.aadhar_card !== null && Dropdownoption.length > 0) {
-        const selectedAadhar :any = Dropdownoption.find((dropdown:any) => dropdown.value === UserDataList.aadhar_card);
-        setSelectedAadharOption(selectedAadhar || null);
-        setSelectedAadharid(selectedAadhar?.value);
-    }
-
-    if (UserDataList?.pan_card !== undefined && UserDataList?.pan_card !== null && Dropdownoption.length > 0) {
-        const selectedPan :any = Dropdownoption.find((dropdown:any) => dropdown.value === UserDataList.pan_card);
-        setSelectedpancardOption(selectedPan || null);
-        setSelectedPancardid(selectedPan?.value);
-    }
-
-    if (UserDataList?.bank_passbook !== undefined && UserDataList?.bank_passbook !== null &&  Dropdownoption.length > 0) {
-        const selectedSatus :any = Dropdownoption.find((dropdown:any) => dropdown.value === UserDataList.bank_passbook);
-        setSelectedBankPassbookOption(selectedSatus);
-        setSelectedBankPassbookid(selectedSatus?.value ?? null);
-    }
+ 
   }, [UserDataList]);
 
     const today = new Date();

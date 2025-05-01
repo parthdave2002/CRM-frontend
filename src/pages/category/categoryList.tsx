@@ -88,8 +88,6 @@ const CategoryListPage: FC = function () {
     }, [dispatch, PageNo, RoePerPage, searchData]);
 
     useEffect(() => {     
-      console.log(Categorylist);
-      
       setCategorylistdata(Categorylist? Categorylist : []);
       setTotalListData(TotalCategoryData ? TotalCategoryData : 0);
       setCurrentPageNo(CurrentPage ? CurrentPage : 1);

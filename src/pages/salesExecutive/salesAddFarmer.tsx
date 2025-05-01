@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { Label, Button } from "flowbite-react";
 import { FaUser, FaWindowClose } from 'react-icons/fa';
 import { Form, Input, FormFeedback } from "reactstrap";
@@ -7,7 +7,9 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
 import Select from "react-select";
 import { toast } from 'react-toastify';
-import { AddCustomerDatalist, CheckCustomerExist, getCroplist, getdistrictdata, getstatedatalist, gettalukadata, getvillagedata, ResetCustomerDatalist } from '../../Store/actions';
+import { AddCustomerDatalist, CheckCustomerExist, getCroplist, getdistrictdata, getstatedatalist, gettalukadata, getvillagedata, ResetCustomerDatalist, UpdateCustomerDatalist } from '../../Store/actions';
+import Cookies from 'js-cookie';
+import {ProfileInfo} from "../../types/types"
 
 interface ProfileData{
   isEditFarmer ?: boolean;
@@ -19,6 +21,59 @@ interface ProfileData{
 
 const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAccept, Mobile_number, CloseAddmodal}) => {
   const dispatch = useDispatch();
+  const [data, setData] = useState<ProfileInfo>()
+  useEffect(() => {
+    const customerDataString = Cookies.get("customer_data");
+    if (customerDataString && isEditFarmer == true) {
+      const customerData = customerDataString ? JSON.parse(customerDataString) : []
+      setData(customerData ? customerData : null);
+    }
+  }, []);
+  console.log(data);
+
+  useEffect(() => { 
+    if(data){
+      setinitialValues(prev => ({
+        ...prev,
+        firstname : data?.firstname ?? "",
+        middlename : data?.middlename ?? "",
+        lastname : data?.lastname ?? "",
+        mobile_number: data?.mobile_number ?? "",
+        alternate_number : String(data?.alternate_number ?? ""),
+        address : data?.address ?? "",
+        land_area : String(data?.land_area ?? ""),
+        pincode : String(data?.pincode ?? ""),
+      }));
+
+      // Header About
+      const matchedaboutOption = HeardAboutOprions.find(opt => opt.value === data.heard_about_agribharat);
+      if (matchedaboutOption) {
+        setSelectedheaderaboutOption(matchedaboutOption);
+        setSelectedheaderaboutid(matchedaboutOption.value);
+      }
+
+      // Land Type
+      const matchedOption = LandTypeOptions.find(opt => opt.value === data.land_type);
+      if (matchedOption) {
+        setSelectedlandtypeOption(matchedOption);
+        setSelectedlandtypeid(matchedOption.value);
+      }
+
+      // Itrrigation Type
+      const matchedItrrigationTypeOption = IrrigationTypeOptions.find(opt => opt.value === data.irrigation_type);
+      if (matchedItrrigationTypeOption) {
+        setSelectedirrigationtypeOption(matchedItrrigationTypeOption);
+        setSelectedirrigationtypeid(matchedItrrigationTypeOption.value);
+      }
+
+      // Itrrigation Source
+      const matchedSourceOption = IrrigationSourceOptions.find(opt => opt.value === data.irrigation_source);
+      if (matchedSourceOption) {
+        setSelectedirrigationsourceOption(matchedSourceOption);
+        setSelectedirrigationsourceid(matchedSourceOption.value);
+      }
+    }
+    }, [data]);
 
   // ------------- State Get Data From Reducer Code Start --------------
   const hasStateFetchedRef = useRef(false);
@@ -166,15 +221,15 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
     firstname: "",
     middlename: "",
     lastname: "",
-    mobile_number: "",
+    mobile_number: 0,
     address:"",
-    alternate_mobile_no: "",
+    alternate_number: "",
     state : "",
     district : "",
     taluka : "",
     village : "",
     pincode : "",
-    landarea : "",
+    land_area : "",
     land_type : "",
     irrigation_source : "",
     irrigation_type : "",
@@ -193,23 +248,23 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
       lastname: Yup.string().required("Please enter last name").matches(/^[A-Za-z\s]+$/, "Please Enter valid name"),
       address: Yup.string().required("Please enter address"),
       pincode: Yup.string().required("Please enter pincode").min(6, "Pincode must be minimum 6 digits") .max(6, "Pincode must be maximum 6 digits").matches(/^\d+$/, "Please enter valid pincode"),
-      landarea: Yup.number().required("Please enter land area") .typeError("Please enter valid land area").min(0, "Please enter valid land area")
+      land_area: Yup.number().required("Please enter land area") .typeError("Please enter valid land area").min(0, "Please enter valid land area")
     }),
 
     onSubmit: (values) => {
-      let requserData = {
+      let requserData :any = {
         firstname: values?.firstname.trim().charAt(0).toUpperCase() + values?.firstname.trim().slice(1).toLowerCase(),
         middlename: values?.middlename.trim().charAt(0).toUpperCase() + values?.middlename.trim().slice(1).toLowerCase(),
         lastname: values?.lastname.trim().charAt(0).toUpperCase() + values?.lastname.trim().slice(1).toLowerCase(),
         mobile_number:  Mobile_number.trim(),
-        alternate_mobile_no: values?.alternate_mobile_no.trim(),
+        alternate_number: values?.alternate_number.trim(),
         address: values?.address,
         state : selectedStateid,
         district : selectedDistrictid,
         taluka : selectedTalukaid,
         village : selectedVillageid,
         pincode : values?.pincode.trim(),
-        land_area : values?.landarea,
+        land_area : values?.land_area,
         land_type : selectedlandtypeid,
         irrigation_source : selectedirrigationsourceid,
         irrigation_type : selectedirrigationtypeid,
@@ -218,7 +273,13 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
         crops:selectedcropid,
         ref_name : selectedRef_id ?  selectedRef_id : null
       }
-      dispatch(AddCustomerDatalist(requserData));
+
+      if(isEditFarmer){
+        requserData.id = data?._id;
+        dispatch(UpdateCustomerDatalist(requserData));
+      }else{
+        dispatch(AddCustomerDatalist(requserData));
+      }
     },
   });
 
@@ -256,14 +317,10 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
   };
   // -------------- Header about code end ---------
 
-   // --------------Crop code start ---------  
-   const hasFetchedRef = useRef(false); // to persist across renders
+  // --------------Crop code start ---------  
+  const hasFetchedRef = useRef(false); // to persist across renders
 
-      const  CropOprions= useSelector((state: any) => state.Crop.Cropdatalist )?.map(
-        (item: any) => ({
-          label: item.name_eng,
-          value: item._id
-        }));
+  const CropOprions = useSelector((state: any) => state.Crop.Cropdatalist)?.map((item: any) => ({ label: item.name_eng, value: item._id }));
   const handleCropLoad = () => {
     if (!hasFetchedRef.current) {
       dispatch(getCroplist());
@@ -281,7 +338,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
       setSelectedcropOption(null);
       setValidatecrop(1)
     } else {
-      const selectedIds = data.map((item: any) => item.value); 
+      const selectedIds = data.map((item: any) => item.value);
       setSelectedcropid(selectedIds);
       setSelectedcropOption(data);
       setValidatecrop(0)
@@ -391,9 +448,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
 
   const CloseCall = () =>{
     if(isEditFarmer == true){
-
-      if(validation?.values?.firstname){  setFarmerAdded(false) }
-      else{  setFarmerAdded(false) }
+       setFarmerAdded(false)
     }
     else{
       handleAccept(false)
@@ -502,7 +557,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
                 className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
                 placeholder="Enter mobile"
                 type="tel"
-                value={Mobile_number.trim()|| ""}
+                value={Mobile_number.trim()|| validation.values.mobile_number}
                 disabled
               />
               {validation.touched?.mobile_number && validation.errors?.mobile_number ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.mobile_number} </FormFeedback>) : null}
@@ -510,20 +565,20 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
           </div>
 
           <div>
-            <Label htmlFor="alternate mobile"> Alternate Mobile No  </Label>
+            <Label htmlFor="alternate_number"> Alternate Mobile No  </Label>
             <div className="mt-1">
               <Input
-                id="alternate_mobile_no"
-                name="alternate_mobile_no"
+                id="alternate_number"
+                name="alternate_number"
                 className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
                 placeholder="Enter alternate mobile no"
                 type="text"
                 onChange={validation.handleChange}
                 onBlur={validation.handleBlur}
-                value={validation.values?.alternate_mobile_no.trim()|| ""}
-                invalid={validation.touched?.alternate_mobile_no && validation.errors?.alternate_mobile_no ? true : false}
+                value={validation.values?.alternate_number.trim()|| ""}
+                invalid={validation.touched?.alternate_number && validation.errors?.alternate_number ? true : false}
               />
-              {validation.touched.alternate_mobile_no && validation.errors?.alternate_mobile_no ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.alternate_mobile_no} </FormFeedback>) : null}
+              {validation.touched.alternate_number && validation.errors?.alternate_number ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.alternate_number} </FormFeedback>) : null}
             </div>
           </div>
 
@@ -653,20 +708,20 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
 
           <div className='flex gap-x-3'>
             <div className='flex-1'>
-              <Label htmlFor="landarea"> Land Area <span className='text-red-500'>*</span></Label>
+              <Label htmlFor="land_area"> Land Area <span className='text-red-500'>*</span></Label>
               <div className="mt-1">
                 <Input
-                  id="landarea"
-                  name="landarea"
+                  id="land_area"
+                  name="land_area"
                   className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
                   placeholder="Enter land area"
                   type="number"
                   onChange={validation.handleChange}
                   onBlur={validation.handleBlur}
-                  value={validation.values?.landarea|| ""}
-                  invalid={validation.touched?.landarea && validation.errors?.landarea ? true : false}
+                  value={validation.values?.land_area|| ""}
+                  invalid={validation.touched?.land_area && validation.errors?.land_area ? true : false}
                 />
-                {validation.touched.landarea && validation.errors?.landarea ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.landarea} </FormFeedback>) : null}
+                {validation.touched.land_area && validation.errors?.land_area ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.land_area} </FormFeedback>) : null}
               </div>
             </div>
 
@@ -716,7 +771,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
           </div>
 
           <div>
-            <Label htmlFor="land_type"> Irrigation Type <span className='text-red-500'>*</span></Label>
+            <Label htmlFor="irrigation_type"> Irrigation Type <span className='text-red-500'>*</span></Label>
             <div className="mt-1">
               <Select
                 className="w-full dark:text-white"
@@ -800,7 +855,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
         </div>
 
           <div className="flex gap-x-3 justify-end flex-end self-end mt-[1rem]">
-            <Button className="bg-gradient-to-br from-green-400 to-blue-600 text-white hover:bg-gradient-to-bl  border-0" type="submit" ><div className="flex items-center gap-x-3 text-[1.2rem]"> <FaUser className="text-xl" />  {isEditFarmer == true ? "Update Customer" : "Add Customer"} </div> </Button>
+            <Button className="bg-gradient-to-br from-green-400 to-blue-600 text-white hover:bg-gradient-to-bl  border-0" type="submit" ><div className="flex items-center gap-x-3 text-[1.2rem]"> <FaUser className="text-xl" />  {isEditFarmer == true ? "Update Farmer" : "Add Farmer"} </div> </Button>
           </div>
       </Form>
       

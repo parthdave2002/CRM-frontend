@@ -26,14 +26,12 @@ const LeftSidebar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = function ()
   }, []);
 
   const [AccessList, setAccessList] = useState<string[]>([]);
-  const { permissionsdata } = useSelector((state: any) => ({
-    permissionsdata: state.Login.permissionsdata
-  }));
+  const  permissionsdata = useSelector((state: any) =>  state.Login.permissionsdata );
 
   const user = Cookies.get("role");
   useEffect(() => {
     if (user !== "67b388a7d593423df0e24295" && permissionsdata) {
-      const userPermissions = permissionsdata.map((item: any) => item.module_name);
+      const userPermissions = permissionsdata.filter((item: any) => item.permissions.view === true).map((item: any) => item.module_name);
       setAccessList(userPermissions);
     } else {
       setAccessList([]); 
