@@ -3,7 +3,7 @@ import { FaArrowLeft } from "react-icons/fa6";
 import SalesFarmerDashboard from "./salesFarmerDashboard";
 import SalesMobileInput from "../../components/input/salesMobileInput";
 import { useDispatch, useSelector } from "react-redux";
-import { CheckCustomerExist, getFarmerComplainlist } from "../../Store/actions";
+import { CheckCustomerExist, getSalesComplainlist } from "../../Store/actions";
 import moment from "moment";
 
 interface PropsData{
@@ -35,11 +35,11 @@ const SalesUpcomingComplainPage : FC <PropsData> = function ({ setDatactive, ope
 
 
     useEffect(() =>{
-        dispatch(getFarmerComplainlist())
+        dispatch(getSalesComplainlist())
     },[])
 
     const [UserComplainDataList, setUserComplainDataList] = useState([]);
-    const Complainlist = useSelector((state: any) => state.Complain.SinglefarmerComplainlist?.data);
+    const Complainlist = useSelector((state: any) => state.Complain.SalesComplainlist);
     useEffect(() => {
         setUserComplainDataList(Complainlist ? Complainlist : [])
     }, [Complainlist]);
@@ -76,7 +76,7 @@ const SalesUpcomingComplainPage : FC <PropsData> = function ({ setDatactive, ope
 
                                 <div className="pl-3 flex justify-between">
                                     <div className="text-gray-500 dark:text-gray-50 text-[0.8rem]  text-center self-end"> {moment(item?.created_at).format("DD-MM-YYYY")} | {item?.priority} </div>
-                                    <div className="text-gray-500 dark:text-gray-50 text-[1rem] text-center border border-gray-500 rounded-md size-fit px-[4rem] cursor-pointer self-center" onClick={() => ViewCall(item?.complain_id)}> View </div>
+                                     {/* <div className="text-gray-500 dark:text-gray-50 text-[1rem] text-center border border-gray-500 rounded-md size-fit px-[4rem] cursor-pointer self-center" onClick={() => ViewCall(item?.complain_id)}> View </div> */}
                                 </div>
                             </div>
                         ))}

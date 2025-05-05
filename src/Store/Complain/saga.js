@@ -15,7 +15,9 @@ import {
   ResetComplainlistFail,
   getFarmerComplainlist,
   getFarmerComplainlistSuccess,
-  getFarmerComplainlistFail
+  getFarmerComplainlistFail,
+  getSalesComplainlistSuccess,
+  getSalesComplainlistFail
 } from "./action";
 import {
   GET_COMPLAIN_LIST,
@@ -24,9 +26,10 @@ import {
   DELETE_COMPLAIN_LIST,
   REST_COMPLAIN_LIST,
   UPDATE_COMPLAIN_LIST,
-  GET_FARMER_COMPLAIN_LIST
+  GET_FARMER_COMPLAIN_LIST,
+  GET_SALES_COMPLAIN_LIST
 } from "./actionType";
-import { ComplainlistApi, AddComplainlistApi, DelComplainlistApi, UpdateComplainlistApi, ComplainDetailslistApi, FarmerComplainlistApi } from "../../helper/Demo_helper";
+import { ComplainlistApi, SalesComplainlistApi ,AddComplainlistApi, DelComplainlistApi, UpdateComplainlistApi, ComplainDetailslistApi, FarmerComplainlistApi } from "../../helper/Demo_helper";
 import { toast } from "react-toastify";
 
 function* onGetComplainList({ payload: requstuser }) {
@@ -36,6 +39,16 @@ function* onGetComplainList({ payload: requstuser }) {
   } catch (error) {
     toast.error(error.msg);
     yield put(getComplainlistFail(error));
+  }
+}
+
+function* onGetSalesComplainList({ payload: requstuser }) {
+  try {
+    const response = yield call(SalesComplainlistApi, requstuser);
+    yield put(getSalesComplainlistSuccess(GET_SALES_COMPLAIN_LIST, response));
+  } catch (error) {
+    toast.error(error.msg);
+    yield put(getSalesComplainlistFail(error));
   }
 }
 
@@ -113,6 +126,6 @@ function* ComplainSaga() {
   yield takeEvery(DELETE_COMPLAIN_LIST, onDelComplainList);
   yield takeEvery(REST_COMPLAIN_LIST, onResetComplainList);
   yield takeEvery(GET_FARMER_COMPLAIN_LIST, onGetFarmerComplainList);
-
+  yield takeEvery(GET_SALES_COMPLAIN_LIST, onGetSalesComplainList);
 }
 export default ComplainSaga;

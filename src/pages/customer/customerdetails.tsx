@@ -150,7 +150,7 @@ const CustomerDetailsPage: FC = function () {
 
                 <div className="p-4 dark:bg-gray-800 rounded-lg">
                   <h3 className="text-gray-600 dark:text-gray-300 font-semibold">Status</h3>
-                  <p className="text-white text-sm font-bold  rounded-lg">
+                  <p className="text-gray-900 dark:text-white text-sm font-bold  rounded-lg">
                     {data?.is_deleted ==false  ? "Active" : "Inactive"}
                   </p>
                 </div>

@@ -135,6 +135,7 @@ const Customer = (state = INIT_STATE, action) => {
             TotalCustomerData: 0,
             CurrentPage: 1,
             AddCustomerlist: [],
+            UpdateCustomerlist:[],
             DeleteCustomerlist: [],
             CheckCustomerExistlist:[],
             error: {},

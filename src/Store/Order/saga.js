@@ -13,18 +13,21 @@ import {
   ResetOrderlist,
   ResetOrderlistSuccess,
   getFarmerOrderlistSuccess,
-  getFarmerOrderlistFail
+  getFarmerOrderlistFail,
+  getSalesExecutiveOrderlistSuccess,
+  getSalesExecutiveOrderlistFail
 } from "./action";
 import {
   GET_UPDATE_ORDER_LIST,
   GET_ORDER_LIST,
   GET_FARMER_ORDER_LIST,
+  GET_SALES_EXECUTIVE_ORDER_LIST,
   ADD_ORDER_LIST,
   DELETE_ORDER_LIST,
   RESET_ORDER_LIST,
   GET_ORDER_DETAILS_LIST
 } from "./actionType";
-import { UpdateOrderlistApi,OrderlistApi, AddOrderlistApi, DelOrderlistApi, OrderDetaillistApi, FermerOrderlistApi} from "../../helper/Demo_helper";
+import { UpdateOrderlistApi,OrderlistApi, AddOrderlistApi, DelOrderlistApi, OrderDetaillistApi, FermerOrderlistApi, SalesOrderlistApi} from "../../helper/Demo_helper";
 import { toast } from "react-toastify";
 
 
@@ -43,6 +46,15 @@ function* onGetOrderList({ payload: requstuser }) {
     yield put(getOrderlistSuccess(GET_ORDER_LIST, response));
   } catch (error) {
     yield put(getOrderlistFail(error));
+  }
+}
+
+function* onGetSalesOrderList({ payload: requstuser }) {
+  try {
+    const response = yield call(SalesOrderlistApi, requstuser);
+    yield put(getSalesExecutiveOrderlistSuccess(GET_SALES_EXECUTIVE_ORDER_LIST, response));
+  } catch (error) {
+    yield put(getSalesExecutiveOrderlistFail(error));
   }
 }
 
@@ -101,5 +113,6 @@ function* OrderSaga() {
   yield takeEvery(GET_ORDER_DETAILS_LIST, onGetDetailsOrderList);
   yield takeEvery(RESET_ORDER_LIST, onResetOrderList);
   yield takeEvery(GET_FARMER_ORDER_LIST, onGetFarmerOrderList);
+  yield takeEvery(GET_SALES_EXECUTIVE_ORDER_LIST, onGetSalesOrderList);
 }
 export default OrderSaga;

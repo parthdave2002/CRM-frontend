@@ -396,8 +396,8 @@ const ProductAddPage : FC = function () {
         validation.values.avl_qty = ProductList?.avl_qty ?? "";
         validation.values.price = ProductList?.price ?? "";
         validation.values.discount = ProductList?.discount ?? 0;
-        validation.values.batch_no =ProductList?.batch_no ? JSON.parse(ProductList.batch_no) : "";
-        validation.values.hsn_code = ProductList?.hsn_code ? JSON.parse(ProductList.hsn_code) : ""; 
+        // validation.values.batch_no =ProductList?.batch_no ? JSON.stringify(ProductList.batch_no) : "";
+        // validation.values.hsn_code = ProductList?.hsn_code ? JSON.parse(ProductList.hsn_code) : ""; 
         validation.values.c_gst = ProductList?.c_gst ?? "";
         validation.values.s_gst = ProductList?.s_gst ?? "";
         if (ProductList?.description) {

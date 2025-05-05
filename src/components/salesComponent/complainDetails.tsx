@@ -10,6 +10,7 @@ import { ResetComplainlist, UpdateComplainlist } from '../../Store/actions';
 import { FaPuzzlePiece, FaQuestionCircle } from 'react-icons/fa';
 
 interface ComplainProps{
+    isComplainData : any;
     setisOpenComplainModel :  ( value :  boolean ) => void;
     isOpenComplainModel ? : boolean;
 } 
@@ -36,16 +37,16 @@ interface ComplainData{
     resolution : string;
 }
 
-const ComplainDetails : FC <ComplainProps> = ({setisOpenComplainModel,isOpenComplainModel }) => {
+const ComplainDetails : FC <ComplainProps> = ({setisOpenComplainModel,isOpenComplainModel, isComplainData }) => {
 
     const dispatch = useDispatch();
     const [complainResolution, setComplainResolution] = useState("");
-    const Complainlist = useSelector((state: any) => state.Complain.SinglefarmerComplainlist?.data );
+
     const [UserComplainDataList, setUserComplainDataList] = useState<ComplainData>();
 
     useEffect(() => {
-      setUserComplainDataList(  Complainlist ? Complainlist[0]  : [])
-    }, [Complainlist]);
+      setUserComplainDataList(  isComplainData ? isComplainData  : [])
+    }, [isComplainData]);
 
     const priorityoption =[
         {  label :"High",  value : "high"  },
@@ -100,7 +101,6 @@ const ComplainDetails : FC <ComplainProps> = ({setisOpenComplainModel,isOpenComp
             dispatch(UpdateComplainlist(requserdata)); 
         },
     });
-
 
     // --------------- Update Complainlist code start --------------------
         const ComplainUpdatedlist = useSelector((state: any) => state.Complain.updateComplainlist);
@@ -169,9 +169,9 @@ const ComplainDetails : FC <ComplainProps> = ({setisOpenComplainModel,isOpenComp
                           </div>
                           <div className='flex gap-x-3 justify-end'>
                              <Button type='submit' className='mt-3 mt-3 bg-gradient-to-br from-green-400 to-blue-600 text-white hover:bg-gradient-to-bl border-0' onClick={() => setComplainResolution("open") } ><div className='flex items-center gap-x-3'> <FaQuestionCircle  className="text-xl "  /> Add Comment </div> </Button>
-                            {/* {UserComplainDataList?.is_resolved_by ?   */}
+                            {UserComplainDataList?.is_resolved_by == true ?  
                             <Button type='submit' className='mt-3 mt-3 bg-gradient-to-br from-green-400 to-blue-600 text-white hover:bg-gradient-to-bl border-0' onClick={() => setComplainResolution("close") } ><div className='flex items-center gap-x-3'> <FaPuzzlePiece  className="text-xl "/> Resolved   </div>   </Button> 
-                             {/* : null  }  */}
+                              : null  }  
                           </div>                
                       </div>
                 </Form>

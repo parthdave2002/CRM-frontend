@@ -186,7 +186,7 @@ const DashboardPage: FC = function () {
           </div>
         </div>
 
-        <div className="my-6 lg:grid  grid-flow-row gap-4 flex flex-col"> <SalesThisWeek /> </div>
+        {/* <div className="my-6 lg:grid  grid-flow-row gap-4 flex flex-col"> <SalesThisWeek /> </div> */}
         <div className="my-6 ">
           <div className="rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6 xl:p-8">
             <div className="mb-4 flex items-center justify-between">
@@ -217,7 +217,7 @@ const DashboardPage: FC = function () {
                             <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-gray-200 truncate max-w-[15rem]"> {item?.customer?.customer_name}</Table.Cell>
                             <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-gray-200"> {item?.advisor_name?.name} </Table.Cell>
                             <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-gray-200"> ₹ { item?.total_amount.toFixed(2)}</Table.Cell>
-                            <Table.Cell className="flex whitespace-nowrap   text-center"> <Badge className="w-24 text-center justify-center truncate" color="success">{item?.status.charAt(0).toUpperCase() + item?.status.slice(1).toLowerCase() }</Badge> </Table.Cell>
+                            <Table.Cell className="flex whitespace-nowrap   text-center"> <Badge className="w-24 text-center justify-center truncate" color="success">{item?.status  ? item?.status.charAt(0).toUpperCase() + item?.status.slice(1).toLowerCase() : "-"}</Badge> </Table.Cell>
                           </Table.Row>
                           ))}
                       </Table.Body>

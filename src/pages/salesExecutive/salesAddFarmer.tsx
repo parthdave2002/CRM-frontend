@@ -16,7 +16,7 @@ interface ProfileData{
   setFarmerAdded : (value: boolean) => void;
   CloseAddmodal: (value: any) => void;
   handleAccept : (value: boolean) => void;
-  Mobile_number : string;
+  Mobile_number ?: string;
 }
 
 const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAccept, Mobile_number, CloseAddmodal}) => {
@@ -29,8 +29,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
       setData(customerData ? customerData : null);
     }
   }, []);
-  console.log(data);
-
+  
   useEffect(() => { 
     if(data){
       setinitialValues(prev => ({
@@ -44,6 +43,28 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
         land_area : String(data?.land_area ?? ""),
         pincode : String(data?.pincode ?? ""),
       }));
+      setSelectedRefnumber(data?.ref_name)
+
+     if (Array.isArray(data?.crops)) {
+      const cropOptions = data.crops.map((crop: any) => ({
+        label: crop.name_eng,
+        value: crop._id
+      }));
+      // setSelectedcropOption(cropOptions);
+      // setSelectedcropid(data.crops.map((crop: any) => crop._id));
+    }
+    
+      setSelectedStateOption({label : data?.state?.name, value : data?.state?._id })
+      setSelectedStateid(data?.state?._id)
+
+      setSelectedDistrictOption({ label : data?.district_name, value :data?.district })
+      setSelectedDistrictid(data?.district)
+
+      setSelectedTalukaOption({ label : data?.taluka_name, value :data?.taluka })
+      setSelectedTalukaid(data?.taluka)
+
+      setSelectedVillageOption({ label : data?.village_name, value :data?.village })
+      setSelectedVillageid(data?.village)
 
       // Header About
       const matchedaboutOption = HeardAboutOprions.find(opt => opt.value === data.heard_about_agribharat);
@@ -256,7 +277,6 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
         firstname: values?.firstname.trim().charAt(0).toUpperCase() + values?.firstname.trim().slice(1).toLowerCase(),
         middlename: values?.middlename.trim().charAt(0).toUpperCase() + values?.middlename.trim().slice(1).toLowerCase(),
         lastname: values?.lastname.trim().charAt(0).toUpperCase() + values?.lastname.trim().slice(1).toLowerCase(),
-        mobile_number:  Mobile_number.trim(),
         alternate_number: values?.alternate_number.trim(),
         address: values?.address,
         state : selectedStateid,
@@ -271,13 +291,14 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
         heard_about_agribharat : selectedheaderaboutid,
         smart_phone: true,
         crops:selectedcropid,
-        ref_name : selectedRef_id ?  selectedRef_id : null
+        ref_name : selectedRefnumber ?  selectedRefnumber : null
       }
 
       if(isEditFarmer){
         requserData.id = data?._id;
         dispatch(UpdateCustomerDatalist(requserData));
       }else{
+        requserData.mobile_number =   Mobile_number?.trim(),
         dispatch(AddCustomerDatalist(requserData));
       }
     },
@@ -328,14 +349,14 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
     }
   };
 
-  const [selectedcropOption, setSelectedcropOption] = useState<{ label: string, value: string } | null>(null);
+  const [selectedcropOption, setSelectedcropOption] = useState<{ label: string, value: string } | []>([]);
   const [selectedcropid, setSelectedcropid] = useState<string | []>([]);
   const [validatecrop, setValidatecrop] = useState(0);
 
   const Iscropdata = (data: any) => {
     if (!data || data.length === 0) {
       setSelectedcropid([]);
-      setSelectedcropOption(null);
+      setSelectedcropOption([]);
       setValidatecrop(1)
     } else {
       const selectedIds = data.map((item: any) => item.value);
@@ -421,29 +442,29 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
   // -------------- Land type code end ---------
 
   // -------------- Ref name code start ---------------
-  const [selectedRefnumber, setSelectedRefnumber] = useState<string>("");
+  const [selectedRefnumber, setSelectedRefnumber] = useState<string | number>("");
   const [selectedRef_id, setSelectedRef_id] = useState<string>("");
   const handlePhoneNumberChange  =(data:string) => {
     setSelectedRefnumber(data);
   };
 
-  useEffect(() =>{
-    if(selectedRefnumber.length === 10){
-        let requser={   number : selectedRefnumber  }
-        dispatch(CheckCustomerExist(requser))
-    }
-  },[selectedRefnumber])
+  // useEffect(() =>{
+  //   if(selectedRefnumber.length === 10){
+  //       let requser={   number : selectedRefnumber  }
+  //       dispatch(CheckCustomerExist(requser))
+  //   }
+  // },[selectedRefnumber])
 
-  const CheckCustomerExistlist = useSelector((state: any) => state.Customer.CheckCustomerExistlist);
-    useEffect(() => {
-      if (selectedRefnumber && CheckCustomerExistlist?.success == true) {
-        setSelectedRef_id(CheckCustomerExistlist?.data?._id);
-      }
-      else if (selectedRefnumber && CheckCustomerExistlist?.success == false) {
-       toast.error(CheckCustomerExistlist?.msg);
-       setSelectedRef_id("")
-      }
-    }, [CheckCustomerExistlist, selectedRefnumber]);
+  // const CheckCustomerExistlist = useSelector((state: any) => state.Customer.CheckCustomerExistlist);
+  //   useEffect(() => {
+  //     if (selectedRefnumber && CheckCustomerExistlist?.success == true) {
+  //       setSelectedRef_id(CheckCustomerExistlist?.data?._id);
+  //     }
+  //     else if (selectedRefnumber && CheckCustomerExistlist?.success == false) {
+  //      toast.error(CheckCustomerExistlist?.msg);
+  //      setSelectedRef_id("")
+  //     }
+  //   }, [CheckCustomerExistlist, selectedRefnumber]);
   // -------------- Ref name code end ---------------
 
   const CloseCall = () =>{
@@ -457,21 +478,32 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
 
   // ------------- Get  Data From Reducer Code Start --------------
     const  AddCustomerlist = useSelector((state: any) => state.Customer.AddCustomerlist)
+    const  UpdateCustomerlist = useSelector((state: any) => state.Customer.UpdateCustomerlist)
     const [ userAddedData, setUserAddedData] = useState<any>(null)
-    
+    const [ userUpdatedData, setUserUpdatedData] = useState<any>(null)
     useEffect(() => {
-      setUserAddedData(AddCustomerlist ? AddCustomerlist  : null);
-    }, [AddCustomerlist]);
+      if(UpdateCustomerlist) {
+        setUserUpdatedData(UpdateCustomerlist ? UpdateCustomerlist : null);
+      }else{
+        setUserAddedData(AddCustomerlist ? AddCustomerlist  : null);
+      }
+    }, [AddCustomerlist, UpdateCustomerlist]);
+
 
     useEffect(() =>{  
-      if(userAddedData?.success == true ){
-        toast.success(userAddedData?.msg);
+
+      if(userAddedData?.success == true || userUpdatedData?.success  == true){
+        if(userUpdatedData){
+          toast.success(userUpdatedData?.msg);
+        }else{
+          toast.success(userAddedData?.msg);
+        }
         validation.resetForm();
         CloseAddmodal(false);
         setFarmerAdded(false)
         dispatch(ResetCustomerDatalist())
       }
-    },[userAddedData])
+    },[userAddedData, userUpdatedData])
   //  ------------- Get  Data From Reducer Code end --------------
 
   return (
@@ -557,7 +589,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
                 className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
                 placeholder="Enter mobile"
                 type="tel"
-                value={Mobile_number.trim()|| validation.values.mobile_number}
+                value={Mobile_number?.trim()|| validation.values.mobile_number}
                 disabled
               />
               {validation.touched?.mobile_number && validation.errors?.mobile_number ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.mobile_number} </FormFeedback>) : null}
@@ -837,20 +869,20 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
             </div>
           </div>
 
-          {/* <div>
-            <Label htmlFor="refname"> Refrence Name </Label>
+          <div>
+            <Label htmlFor="refname"> Refrence Number </Label>
             <div className="mt-1">
               <Input
                 id="refname"
                 name="refname"
                 className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
-                placeholder="Enter refname"
+                placeholder="Enter refrence number"
                 type="tel"
                 onChange={ (e:any) =>handlePhoneNumberChange(e.target.value)}
                 value={selectedRefnumber ?? ""}
               />
             </div>
-          </div> */}
+          </div>
          
         </div>
 

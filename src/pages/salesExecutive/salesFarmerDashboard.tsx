@@ -17,7 +17,7 @@ import Cookies from 'js-cookie';
 
 interface PropsData{
   setOpenProfile : (value: boolean) => void;
-  Mobile_number : string;
+  Mobile_number ?: string;
 }
 
 const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile, Mobile_number}) => {
