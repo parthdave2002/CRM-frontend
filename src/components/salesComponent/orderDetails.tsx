@@ -122,7 +122,7 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
       <div className='flex justify-between'>
         <div className="flex gap-x-5"> 
           <span className='text-[2rem] font-semibold text-gray-900 dark:text-gray-100'> Order ID :  {orderId}  </span> 
-          <Badge  color="warning" size="md" className=' self-center '>  { openDetailIData?.status.charAt(0).toUpperCase() + openDetailIData?.status.slice(1).toLowerCase()}  </Badge>
+          {openDetailIData?.status ?   <Badge  color="warning" size="md" className=' self-center '>  { openDetailIData?.status ? openDetailIData?.status.charAt(0).toUpperCase() + openDetailIData?.status.slice(1).toLowerCase() :  "-"}  </Badge> : null }
         </div>
         <div className="text-[2rem] font-semibold text-gray-900 dark:text-gray-100 flex self-center cursor-pointer " onClick={() => Closecall()}> <FaWindowClose /> </div>
       </div>

@@ -4,6 +4,7 @@ const IMG_URL = import.meta.env["VITE_API_URL"];
 import { getProductlist } from '../../Store/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaCartArrowDown } from 'react-icons/fa';
+import ExamplePagination from '../../components/pagination';
 
 interface PorductData  {
     searchData ?: string;
@@ -13,22 +14,34 @@ interface PorductData  {
 }
 
 const Salesproductlist : FC <PorductData> = ({searchData, ProductDetailsCall, isLoggedin, AddtoCartCall}) => {
+  const dispatch =useDispatch();
+  const [ProductData, setProductData] = useState([]);
+  // ----------- next Button  Code Start -------------
+    const [TotalListData, setTotalListData] = useState(0);
+    const [CurrentPageNo, setCurrentPageNo] = useState(0);
+    const [PageNo, setPageNo] = useState(1);
+    const [RoePerPage, setRoePerPage] = useState(5);
 
-    const dispatch =useDispatch();
-    const [ProductData, setProductData] = useState([]);
+    const RowPerPage = (event: any) => {
+      const value = Number(event)
+      setRoePerPage(value);
+    };
+    const PageDataList = (data:any) =>{ setPageNo(data)}
+  // ------------- Next button Code End -------------
 
     useEffect(() => {
-
         let requserdata: { page: number; size: number; search?: string } = {
-          page: 1,
-          size: 5
+          page: PageNo,
+          size: RoePerPage
         };
         if (searchData) requserdata.search = searchData;
         dispatch(getProductlist(requserdata));
-    }, [dispatch, searchData]);
+    }, [dispatch, searchData, PageNo,RoePerPage ]);
   
     const Productlist = useSelector((state: any) => state.Product.Productlist);
     useEffect(() => {
+      setCurrentPageNo(Productlist?.page)
+      setTotalListData(Productlist?.totalData)
       setProductData(Productlist?.data);
     }, [Productlist]);
 
@@ -67,6 +80,8 @@ const Salesproductlist : FC <PorductData> = ({searchData, ProductDetailsCall, is
           ))}
         </Table.Body>
       </Table>
+
+      <ExamplePagination  PageData={PageDataList} RowPerPage={RowPerPage}   RowsPerPageValue={RoePerPage}  PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData} />
     </div>
   )
 }

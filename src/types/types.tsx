@@ -32,4 +32,6 @@ export interface ProfileInfo{
     alternate_number: number;
     added_at:  string;
     smart_phone: boolean;
+    ref_name: number | string;
+    state : { name: string;  _id:string }
   }

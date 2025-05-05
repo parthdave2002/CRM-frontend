@@ -141,6 +141,7 @@ export const StatusCompanylistApi = async (requserdata) => await api.delete(url.
 
 // Complain API
 export const ComplainlistApi = (requserdata) => api.get(url.GET_COMPLAIN_LIST, requserdata);
+export const SalesComplainlistApi = (requserdata) => api.get(url.GET_SALES_COMPLAIN_LIST, requserdata);
 export const FarmerComplainlistApi = (requserdata) => api.get(url.GET_FARMER_COMPLAIN_LIST, requserdata);
 export const ComplainDetailslistApi = (requserdata) => api.get(url.GET_COMPLAIN_DETAILS_LIST, requserdata);
 export const AddComplainlistApi = async (requserdata) => await api.create(url.ADD_COMPLAIN_LIST, requserdata);
@@ -158,6 +159,7 @@ export const DetailProductlistApi = (requserdata) => api.get(url.GET_PRODUCT_LIS
 // Order API
 export const UpdateOrderlistApi = (requserdata) => api.update(url.GET_UPDATE_ORDER_LIST, requserdata);
 export const OrderlistApi = (requserdata) => api.get(url.GET_ORDER_LIST, requserdata);
+export const SalesOrderlistApi = (requserdata) => api.get(url.GET_SALES_EXECUTIVE_ORDER_LIST, requserdata);
 export const FermerOrderlistApi = (requserdata) => api.get(url.GET_FARMER_ORDER_LIST, requserdata);
 export const OrderDetaillistApi = (requserdata) => api.get(url.GET_ORDER_DETAILS_LIST, requserdata);
 export const AddOrderlistApi = async (requserdata) => await api.create(url.ADD_ORDER_LIST, requserdata);

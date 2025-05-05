@@ -124,14 +124,17 @@ const SubTaglogListPage: FC = function () {
     dispatch(ChangeStatusSubTagloglist(rqeuserdata))
   }
 
-  let Name = "SubTaglog List";
+  let Name = "Sub-Taglog List";
   let Searchplaceholder = "Search For SubTaglog (Name)";
   let AddAccess = AccessList?.add;
+  let ParentName = "Taglog List";
+  let ParentLink = "/taglog/list";
+
 
   return (
     <>
       <NavbarSidebarLayout isFooter={false}  isSidebar={true} isNavbar={true} isRightSidebar={true}>
-        <ExampleBreadcrumb  Name={Name} Searchplaceholder={Searchplaceholder} searchData={searchData} Changename= {Changename} />
+        <ExampleBreadcrumb  Name={Name} ParentName={ParentName} ParentLink={ParentLink} Searchplaceholder={Searchplaceholder} searchData={searchData} Changename= {Changename} />
     
           <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
               <Table.Head className="bg-gray-100 dark:bg-gray-700">

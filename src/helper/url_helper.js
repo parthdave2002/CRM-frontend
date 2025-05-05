@@ -57,6 +57,7 @@ export const CHANGE_STATUS_COMPANY_LIST = "/api/company/status-company-list";
 
 // Complain
 export const GET_COMPLAIN_LIST = "/api/complain/get-complain";
+export const GET_SALES_COMPLAIN_LIST = "/api/complain/get-sales-complain";
 export const GET_FARMER_COMPLAIN_LIST = "/api/complain/getbyid";
 export const GET_COMPLAIN_DETAILS_LIST = "/api/complain/get-complain";
 export const ADD_COMPLAIN_LIST = "/api/complain/add-complain";
@@ -73,6 +74,7 @@ export const GET_RELATED_PRODUCT_LIST = "/api/product/product-related";
 // Order
 export const GET_UPDATE_ORDER_LIST = "/api/order/update-order";
 export const GET_ORDER_LIST = "/api/order/get-order";
+export const GET_SALES_EXECUTIVE_ORDER_LIST  = "/api/order/get-order-sales-executive";
 export const GET_FARMER_ORDER_LIST = "/api/order/get-order";
 export const GET_ORDER_DETAILS_LIST = "/api/order/get-order";
 export const DELETE_ORDER_LIST = "/api/order/remove-order";
