@@ -20,17 +20,19 @@ const SalesCRMPage : FC = function () {
         setActive(data)
     }
 
-    const [data, setData] = useState(null)
+    const [data, setData] = useState(null);
+    const customerDataString = Cookies.get("customer_data");
     useEffect(() =>{
-          const customerDataString = Cookies.get("customer_data");
-        try {
-            const customerData = customerDataString ? JSON.parse(customerDataString) : null    
-            setData(customerData?._id ? customerData?._id  : null);
-        } catch (error) {
-            console.error("Failed to parse customer data", error);
-            Cookies.remove("customer_data");
-            navigate("/login");
-            toast.error("Invalid session data");
+        if (customerDataString && customerDataString !== "undefined") {
+            try {
+                const customerData = customerDataString ? JSON.parse(customerDataString) : null    
+                setData(customerData?._id ? customerData?._id  : null);
+            } catch (error) {
+                console.error("Failed to parse customer data", error);
+                Cookies.remove("customer_data");
+                navigate("/login");
+                toast.error("Invalid session data");
+            }
         }
     },[])
 

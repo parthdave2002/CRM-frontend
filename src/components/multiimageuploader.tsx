@@ -3,12 +3,14 @@ import { toast } from "react-toastify";
 import ToastMessage from "./ToastMessage";
 
 interface MultiImageUploadPreviewProps {
-  onFileSelect: (files: File[] | null) => void; 
-  defaultImage?: string;
+  onFileSelect: (files: File[]) => void; 
+  onDefaultImageChange?: (images: string[]) => void;
+  defaultImage?: any;
 }
 
 const MultiImageUploadPreview: React.FC<MultiImageUploadPreviewProps> = ({
   onFileSelect,
+  onDefaultImageChange,
   defaultImage,
 }) => {
   const [fileNames, setFileNames] = useState<string[]>([]); 
@@ -18,7 +20,11 @@ const MultiImageUploadPreview: React.FC<MultiImageUploadPreviewProps> = ({
 
   useEffect(() => {
     if (defaultImage) {
-      setPreviewSrcs([defaultImage]);
+      if (Array.isArray(defaultImage)) {
+        setPreviewSrcs(defaultImage); 
+      } else if (typeof defaultImage === 'string') {
+        setPreviewSrcs([defaultImage]);
+      }
     }
   }, [defaultImage]);
 
@@ -63,6 +69,13 @@ const MultiImageUploadPreview: React.FC<MultiImageUploadPreviewProps> = ({
 
   const handleRemoveImage = (index: number, event: React.MouseEvent) => {
     event.stopPropagation();
+    if (index < previewSrcs.length - files.length) {
+      // Removing a default image
+      const newDefaultImages = [...previewSrcs];
+      newDefaultImages.splice(index, 1);
+      setPreviewSrcs(newDefaultImages);
+      onDefaultImageChange?.(newDefaultImages);
+    } 
 
     const newFileNames = [...fileNames];
     const newPreviewSrcs = [...previewSrcs];
@@ -76,7 +89,7 @@ const MultiImageUploadPreview: React.FC<MultiImageUploadPreviewProps> = ({
     setPreviewSrcs(newPreviewSrcs);
     setFiles(newFiles);
 
-    onFileSelect(newFiles.length > 0 ? newFiles : null); 
+    onFileSelect(newFiles.length > 0 ? newFiles : []); 
   };
 
   return (
@@ -111,7 +124,7 @@ const MultiImageUploadPreview: React.FC<MultiImageUploadPreviewProps> = ({
             {previewSrcs.map((src, index) => (
               <div key={index} className="relative w-20 h-20 mb-4">
                 <img src={src}  alt={`Selected ${index}`}  className="w-full h-full object-cover rounded-full" />
-                <button onClick={(e) => handleRemoveImage(index, e)} className="absolute top-0 right-0 bg-red-600 text-white w-6 h-6 flex items-center justify-center rounded-full shadow-lg hover:bg-red-700 transition" >  x </button>
+                <button type="button" onClick={(e) => handleRemoveImage(index, e)} className="absolute top-0 right-0 bg-red-600 text-white w-6 h-6 flex items-center justify-center rounded-full shadow-lg hover:bg-red-700 transition" >  x </button>
               </div>
             ))}
           </div>

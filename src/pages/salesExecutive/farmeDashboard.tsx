@@ -14,16 +14,23 @@ const FarmeDashboard : FC <DashboardProps> = ({classData, viewButton}) => {
     setExpanded(!expanded);
   };
 
-  const [data, setData] = useState<ProfileInfo>()  
-    //  -------------Farmer Data get  code start ----------------------
+  const [data, setData] = useState<ProfileInfo | null>()  
+  //  -------------Farmer Data get  code start ----------------------
     const customerDataString = Cookies.get("customer_data");
-        useEffect(() => {
-          if(customerDataString?.length){
-            const customerData = customerDataString ? JSON.parse(customerDataString) : []    
-            setData(customerData ? customerData  : null);
-          }
-        },[customerDataString]);
-    //  -------------Farmer Data get  code end  ----------------------
+    useEffect(() => {
+      if (customerDataString && customerDataString !== "undefined") {
+        try {
+          const customerData = JSON.parse(customerDataString);
+          setData(customerData || null);
+        } catch (error) {
+          console.error("Failed to parse customer_data:", error);
+          setData(null);
+        }
+      } else {
+        setData(null);
+      }
+    }, [customerDataString]);
+  //  -------------Farmer Data get  code end  ----------------------
 
   return (
     <>
@@ -38,6 +45,7 @@ const FarmeDashboard : FC <DashboardProps> = ({classData, viewButton}) => {
           <div className='dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div className="w-[10rem]" > Taluka </div> <div> :     {data?.taluka_name ? data?.taluka_name : "-"}</div>   </div>
           <div className='dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div className="w-[10rem]" > Village </div> <div> :    {data?.village_name ? data?.village_name : "-"}</div>   </div>
           <div className='dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div className="w-[10rem]" > Pincode </div> <div> :    {data?.pincode ? data?.pincode : "-"}</div>   </div>
+          <div className='dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div className="w-[10rem]" > Post Office </div> <div> :    {data?.post_office ? data?.post_office : "-"}</div>   </div>
 
           {expanded && (
             <>

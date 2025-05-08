@@ -21,12 +21,20 @@ const SalesFarmerDetailsPage : FC  <PropsData> = function ({ setDatactive, openP
 
     const dispatch =useDispatch();
 
-    const [data, setData] = useState(null)
+    const [data, setData] = useState(null);
+    const customerDataString = Cookies.get("customer_data");
     useEffect(() =>{
-        const customerDataString = Cookies.get("customer_data");
-        if(customerDataString?.length){
-        const customerData = customerDataString ? JSON.parse(customerDataString) : []    
-        setData(customerData?.mobile_number ? customerData?.mobile_number  : null);
+        if (customerDataString && customerDataString !== "undefined") {
+            try {
+                const customerData = JSON.parse(customerDataString);
+                setData(customerData?.mobile_number ?customerData?.mobile_number : null);
+            } catch (error) {
+                console.error("Failed to parse customer_data:", error);
+                setData(null);
+            }
+        }
+        else{
+            setData(null)
         }
     },[])
 

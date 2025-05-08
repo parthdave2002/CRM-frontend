@@ -22,9 +22,17 @@ const LogoutModal : FC <PoropsData> = ({openModal, handleClose, handleAccept}) =
       const [data, setData] = useState(null)
       const customerDataString = Cookies.get("customer_data");
       useEffect(() => {
-        if(customerDataString?.length){
-          const customerData = customerDataString ? JSON.parse(customerDataString) : []      
-          setData(customerData?._id ? customerData?._id  : null);
+        if (customerDataString && customerDataString !== "undefined") {
+          try {
+            const customerData = JSON.parse(customerDataString);
+            setData(customerData?._id ?customerData?._id : null);
+          } catch (error) {
+            console.error("Failed to parse customer_data:", error);
+            setData(null);
+          }
+        }
+        else{
+          setData(null);
         }
       },[customerDataString]);
   // -------------- Taglog code start ---------

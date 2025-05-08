@@ -77,8 +77,6 @@ const Complain = (state = INIT_STATE, action) => {
       case GET_SALES_COMPLAIN_LIST_SUCCESS:
         switch (action.payload.actionType) {
           case GET_SALES_COMPLAIN_LIST:
-            console.log(action.payload.data);
-            
             return {
               ...state,
               SalesComplainlist: action.payload.data.data,

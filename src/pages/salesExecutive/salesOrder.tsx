@@ -6,6 +6,8 @@ import SalesFarmerDashboard from './salesFarmerDashboard';
 import moment from 'moment';
 import { CheckCustomerExist, getCallbackdata } from "../../Store/actions";
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import LoaderPage from '../../components/loader';
 
 interface PropsData{
   setDatactive :any;
@@ -14,48 +16,59 @@ interface PropsData{
 }
 const SalesOrder : FC <PropsData> = function ({ setDatactive, openProfile,setOpenProfile })  {
   const dispatch = useDispatch()
+  const [isLoading, setisLoading] = useState(false);
+  const [inialTime, setinialTime] = useState(true);
   const DashboardCall = (data:string) => setDatactive(data)
-  const [ orderId, set_OrderId] = useState("");
+  const [ orderId, set_OrderId] = useState<string>("");
   
   const handleClickCall = () => {
-      if(orderId.length){
-            let requser={   order_id : orderId  }
-            dispatch(CheckCustomerExist(requser))
-            setOpenProfile(true);
-        }
+    if (!orderId) {
+       toast.error("Please enter order id");
+    }else{
+      let requser = { order_id: orderId }
+      setisLoading(true);
+      setinialTime(false)
+      dispatch(CheckCustomerExist(requser))
+    }
   }
 
-  const handleChange = (data: string) => {
-    set_OrderId(data)
-  }
-
+  const handleChange = (data: string) => set_OrderId(data);
+  
   const CloseProfileCall = () => {
     setOpenProfile(false);
     setDatactive("Farmer")
   }
 
-  const CallBackCall = (data :string) => {
-    set_OrderId(data);
-  }
+  const CallBackCall = (data :string) =>  set_OrderId(data);
 
-    //---------    Get callback data  start--------- 
-  const [Farmerdata, setFarmerdata] = useState([])
-  const  CallBackUserList  = useSelector((state: any) => state.SalesDashboard.CallBackUserList );
-  
-  useEffect(( ) => {
-    dispatch(getCallbackdata())
-  }, [dispatch])
+  //---------    Get callback data  start--------- 
+    const [Farmerdata, setFarmerdata] = useState([])
+    const CallBackUserList = useSelector((state: any) => state.SalesDashboard.CallBackUserList);
 
-  useEffect(() =>{
-    if(CallBackUserList){
+    useEffect(() => {
+      dispatch(getCallbackdata())
+    }, [dispatch])
+
+    useEffect(() => {
+      if (CallBackUserList) {
         setFarmerdata(CallBackUserList?.data)
-    } 
-  },[CallBackUserList])
-//---------    Get callback data end--------- 
+      }
+    }, [CallBackUserList])
+  //---------    Get callback data end--------- 
+
+  // --------------- check complain data and the login start ---------------
+    const CheckCustomerExistlist = useSelector((state: any) => state.Customer.CheckCustomerExistlist);
+    useEffect(() => {
+      if (CheckCustomerExistlist?.success == true && inialTime == false) {
+        setOpenProfile(true);
+        setisLoading(false)
+      }
+    }, [CheckCustomerExistlist?.success])
+  // --------------- check complain data and the login start ---------------
 
   return (
     <>
-
+      {isLoading ? <LoaderPage /> : null  }
       {openProfile == true ?
             <SalesFarmerDashboard setOpenProfile={CloseProfileCall} />
         :
@@ -65,7 +78,7 @@ const SalesOrder : FC <PropsData> = function ({ setDatactive, openProfile,setOpe
               <div className="text-[0.9rem] text-blue-500 flex gap-x-3 cursor-pointer w-fit " onClick={() => DashboardCall("Dashboard")}  >  <FaArrowLeft style={{ alignSelf: "center" }} /> Back to Dashboard  </div>
               <div className="text-[2rem] font-semibold text-gray-900 dark:text-gray-100">Future Orders  </div>
             </div>
-            <SalesMobileInput placeholder="Search Order" className="py-2 px-6 border-0  rounded-full text-[2rem] text-gray-500 font-bold relative shadow-xl dark:shadow-xl  shadow-inner shadow-indigo-200  dark:shadow-gray-500/50 dark:bg-gray-700 dark:text-gray-100" value={orderId} handleClickCall={handleClickCall} handleChange={handleChange} />
+            <SalesMobileInput placeholder="Search Order" className="py-2 px-6 border-0  rounded-full text-[2rem] text-gray-500 font-bold relative shadow-xl dark:shadow-xl  shadow-inner shadow-indigo-200  dark:shadow-gray-500/50 dark:bg-gray-700 dark:text-gray-100" value={orderId} handleClickCall={handleClickCall} handleChange={(data) =>handleChange(data)} />
           </div>
 
           <div className="grid  xl:grid-cols-4 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -91,15 +104,15 @@ const SalesOrder : FC <PropsData> = function ({ setDatactive, openProfile,setOpe
 
                           <div className="flex justify-between mt-2">
                             <div className="text-gray-700 dark:text-gray-100  text-[1rem]  flex-1 ">  Created Date    </div>
-                            <div className="text-gray-700 dark:text-gray-100 text-[1rem] truncate flex-1 text-end">   {moment(item.order_date).format("DD-MM-YYYY")}  </div>
+                            <div className="text-gray-700 dark:text-gray-100 text-[1rem] truncate flex-1 text-end">   {moment(item?.order_date).format("DD-MM-YYYY")}  </div>
                           </div>
 
                           <div className="flex justify-between mt-2">
                             <div className="text-gray-700 dark:text-gray-100 text-[1rem] truncate flex-1">  Followup Date  </div>
-                            <div className="text-gray-700 dark:text-gray-100  text-[1rem] text-end flex-1 ">   {moment(item.future_order_date).format("DD-MM-YYYY")}   </div>
+                            <div className="text-gray-700 dark:text-gray-100  text-[1rem] text-end flex-1 ">   {moment(item?.future_order_date).format("DD-MM-YYYY")}   </div>
                           </div>
 
-                          <div className="text-gray-500 mt-3 text-[1.2rem] text-center border border-gray-500 rounded-md size-fit px-2 cursor-pointer self-center px-[4rem]" onClick={() => CallBackCall(item.mobile)}>   Call    </div>
+                          <div className="text-gray-500 mt-3 text-[1.2rem] text-center border border-gray-500 rounded-md size-fit px-2 cursor-pointer self-center px-[4rem]" onClick={() => CallBackCall(item?.mobile)}>   Call    </div>
                         </div>
 
                         <div className="py-[0.5rem] rounded-xl flex justify-around">

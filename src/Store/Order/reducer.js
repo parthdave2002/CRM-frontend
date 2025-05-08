@@ -43,6 +43,7 @@ const INIT_STATE = {
   AddOrderdatalist:[],
   SingleFarmerOrderlist:[],
   SalesExeOrderlist:[],
+  UpdateOrderlist:[],
   error: {},
 };
 
@@ -54,10 +55,7 @@ const Order = (state = INIT_STATE, action) => {
         case GET_UPDATE_ORDER_LIST:
           return {
             ...state,
-            Orderlist: action.payload.data,
-            OrderlistSize: action.payload.data.size,
-            TotalOrderData: action.payload.data.totalData,
-            CurrentPage: action.payload.data.page,
+            UpdateOrderlist: action.payload.data,
           };
       }
     case GET_UPDATE_ORDER_LIST_ERROR:
@@ -205,6 +203,7 @@ const Order = (state = INIT_STATE, action) => {
             DeleteOrderlist:[],
             AddOrderdatalist:[],
             SingleFarmerOrderlist:[],
+            UpdateOrderlist:[],
           };
       }
  
