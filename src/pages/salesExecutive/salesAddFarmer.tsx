@@ -21,12 +21,19 @@ interface ProfileData{
 
 const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAccept, Mobile_number, CloseAddmodal}) => {
   const dispatch = useDispatch();
-  const [data, setData] = useState<ProfileInfo>()
+  const [data, setData] = useState<ProfileInfo | null>()
   useEffect(() => {
     const customerDataString = Cookies.get("customer_data");
-    if (customerDataString && isEditFarmer == true) {
-      const customerData = customerDataString ? JSON.parse(customerDataString) : []
-      setData(customerData ? customerData : null);
+    if (customerDataString && customerDataString !== "undefined") {
+      try {
+        const customerData = JSON.parse(customerDataString);
+        setData(customerData ? customerData : null);
+      } catch (error) {
+        console.error("Failed to parse customer_data:", error);
+        setData(null);
+      }
+    }else{
+      setData(null);
     }
   }, []);
   
@@ -42,6 +49,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
         address : data?.address ?? "",
         land_area : String(data?.land_area ?? ""),
         pincode : String(data?.pincode ?? ""),
+        post_office: String(data?.post_office ?? ""),
       }));
       setSelectedRefnumber(data?.ref_name)
 
@@ -250,6 +258,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
     taluka : "",
     village : "",
     pincode : "",
+    post_office : "",
     land_area : "",
     land_type : "",
     irrigation_source : "",
@@ -269,6 +278,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
       lastname: Yup.string().required("Please enter last name").matches(/^[A-Za-z\s]+$/, "Please Enter valid name"),
       address: Yup.string().required("Please enter address"),
       pincode: Yup.string().required("Please enter pincode").min(6, "Pincode must be minimum 6 digits") .max(6, "Pincode must be maximum 6 digits").matches(/^\d+$/, "Please enter valid pincode"),
+      post_office: Yup.string().required("Please enter post office"),
       land_area: Yup.number().required("Please enter land area") .typeError("Please enter valid land area").min(0, "Please enter valid land area")
     }),
 
@@ -284,6 +294,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
         taluka : selectedTalukaid,
         village : selectedVillageid,
         pincode : values?.pincode.trim(),
+        post_office : values?.post_office.trim(),
         land_area : values?.land_area,
         land_type : selectedlandtypeid,
         irrigation_source : selectedirrigationsourceid,
@@ -735,6 +746,24 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
                 invalid={validation.touched?.pincode && validation.errors?.pincode ? true : false}
               />
               {validation.touched.pincode && validation.errors?.pincode ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.pincode} </FormFeedback>) : null}
+            </div>
+          </div>
+
+          <div>
+            <Label htmlFor="post_office"> Post Office <span className='text-red-500'>*</span></Label>
+            <div className="mt-1">
+              <Input
+                id="post_office"
+                name="post_office"
+                className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
+                placeholder="Enter post office"
+                type="text"
+                onChange={validation.handleChange}
+                onBlur={validation.handleBlur}
+                value={validation.values?.post_office.trim()|| ""}
+                invalid={validation.touched?.post_office && validation.errors?.post_office ? true : false}
+              />
+              {validation.touched.post_office && validation.errors?.post_office ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.post_office} </FormFeedback>) : null}
             </div>
           </div>
 

@@ -5,6 +5,8 @@ import SalesMobileInput from "../../components/input/salesMobileInput";
 import { useDispatch, useSelector } from "react-redux";
 import { CheckCustomerExist, getSalesComplainlist } from "../../Store/actions";
 import moment from "moment";
+import { toast } from "react-toastify";
+import LoaderPage from "../../components/loader";
 
 interface PropsData{
     setDatactive :any;
@@ -15,7 +17,9 @@ interface PropsData{
 const SalesUpcomingComplainPage : FC <PropsData> = function ({ setDatactive, openProfile, setOpenProfile})  {
     
     const dispatch = useDispatch()
-    
+    const [isLoading, setisLoading] = useState(false);
+    const [inialTime, setinialTime] = useState(true);
+
     const DashboardCall = (data:string) => setDatactive(data)
     const CloseProfileCall = () => {
         setOpenProfile(false);
@@ -26,15 +30,19 @@ const SalesUpcomingComplainPage : FC <PropsData> = function ({ setDatactive, ope
     const [searchComplainData, setSearchComplainData] = useState<string>("");
     const handleChange = (data: string) => setSearchComplainData(data);
     const handleClickCall = () => {
-        if(searchComplainData.length){
-                    let requser={   complain_id : searchComplainData  }
-                    dispatch(CheckCustomerExist(requser))
-                    setOpenProfile(true);
+        if (!searchComplainData) {
+            toast.error("Please enter complain id");
+        }
+        else{
+            let requser={ complain_id : searchComplainData.trim()  }
+            setisLoading(true);
+            setinialTime(false)
+            dispatch(CheckCustomerExist(requser))
         }
     }
 
-
     useEffect(() =>{
+        setinialTime(true)
         dispatch(getSalesComplainlist())
     },[])
 
@@ -44,8 +52,19 @@ const SalesUpcomingComplainPage : FC <PropsData> = function ({ setDatactive, ope
         setUserComplainDataList(Complainlist ? Complainlist : [])
     }, [Complainlist]);
 
+    // --------------- check complain data and the login start ---------------
+    const CheckCustomerExistlist = useSelector((state: any) => state.Customer.CheckCustomerExistlist);
+    useEffect(() => {
+        if (CheckCustomerExistlist?.success == true && inialTime == false ) {
+            setOpenProfile(true);
+            setisLoading(false)
+        }
+    }, [CheckCustomerExistlist?.success])
+    // --------------- check complain data and the login start ---------------
+
     return (
         <>  
+            {isLoading ? <LoaderPage /> : null  }
             {openProfile == true ?
                 <SalesFarmerDashboard setOpenProfile={CloseProfileCall} />
                 : 
@@ -55,7 +74,7 @@ const SalesUpcomingComplainPage : FC <PropsData> = function ({ setDatactive, ope
                             <div className="text-[0.9rem] text-blue-500 flex gap-x-3 cursor-pointer w-fit " onClick={() => DashboardCall("Dashboard")}> <FaArrowLeft style={{ alignSelf: "center" }} /> Back to Dashboard</div>
                             <div className="text-[2rem] font-semibold text-gray-900 dark:text-gray-100"> Total Complain ({String(UserComplainDataList?.length).padStart(2, '0')}) </div>
                         </div>
-                        <SalesMobileInput placeholder="Search Complain" className="py-2 px-6 border-0  rounded-full text-[2rem] text-gray-500 font-bold relative shadow-xl dark:shadow-xl  shadow-inner shadow-indigo-200  dark:shadow-gray-500/50 dark:bg-gray-700 dark:text-gray-100" value={searchComplainData} handleClickCall={handleClickCall} handleChange={handleChange} />
+                        <SalesMobileInput placeholder="Search Complain" className="py-2 px-6 border-0  rounded-full text-[2rem] text-gray-500 font-bold relative shadow-xl dark:shadow-xl  shadow-inner shadow-indigo-200  dark:shadow-gray-500/50 dark:bg-gray-700 dark:text-gray-100" value={searchComplainData} handleChange={(data) =>handleChange(data)} handleClickCall={handleClickCall}  />
                     </div>
 
                     <div className="grid md:grid-cols-2 gap-4 mt-[2rem]">

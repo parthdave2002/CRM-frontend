@@ -15,13 +15,14 @@ interface FarmerHistoryProps{
   setOpenDetailsmodal : ( value : boolean) => void;
   setOpenDetailIData : ( value : any) => void;
   AddtoCartCall : ( value : any) => void;
+  FuturOrderDate : ( value : any) => void;
   setCartOrderid : ( value : any) => void;
 }
 
-const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetailsmodal, setOpenDetailIData, AddtoCartCall, setCartOrderid}) => {
+const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetailsmodal, setOpenDetailIData, AddtoCartCall,FuturOrderDate, setCartOrderid}) => {
   const dispatch = useDispatch()
 
-    // ----------- Tabnavbar code start --------------------
+  // ----------- Tabnavbar code start --------------------
     const [selectedTabbar, setselectedTabbar] = useState("Order");
 
     const TabData = [
@@ -35,7 +36,7 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
     }
   // ----------- Tabnavbar code end --------------------
 
-    // ----------- next Button  Code Start -------------
+  // ----------- next Button  Code Start -------------
     const [TotalListData, setTotalListData] = useState(0);
     const [CurrentPageNo, setCurrentPageNo] = useState(0);
     const [PageNo, setPageNo] = useState(1);
@@ -53,7 +54,9 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
     let customerData = null;
   
     try {
-      customerData = customerDataString ? JSON.parse(customerDataString) : null;
+      if (customerDataString && customerDataString !== "undefined") {
+        customerData = JSON.parse(customerDataString);
+      }
     } catch (error) {
       console.error("Failed to parse customer_data:", error);
     }
@@ -108,24 +111,25 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
   //  ------------- Get  Data From Reducer Code end --------------
 
   // -------------  Order  Details Call start -------------------
-  const OderDetailsCall = ( id:string , data:any) => {
-    setOpenDetailId(id);
-    setOpenDetailIData(data);
-    setOpenDetailsmodal(true)
-  }
+    const OderDetailsCall = ( id:string , data:any) => {
+      setOpenDetailId(id);
+      setOpenDetailIData(data);
+      setOpenDetailsmodal(true)
+    }
   // -------------  Order  Details Call end -------------------
 
   // -------------  Future Order  to Cart Call start -------------------
-  const FuturaOrderCall = ( id:string , data:any) => {
-    const productIds = data?.products?.map((item: any) => item?.id);
-    AddtoCartCall(productIds);
-    setCartOrderid(id);
-  }
+    const FuturaOrderCall = ( id:string , data:any) => {
+      const productIds = data?.products?.map((item: any) => item?.id);
+      AddtoCartCall(productIds);
+      FuturOrderDate(data?.future_order_date)
+      setCartOrderid(id);
+    }
   // -------------  Future Order  to Cart Call end -------------------
 
   // ------------complain details page ------------------
-      const [isOpenComplainModel , setisOpenComplainModel ]  = useState(false);
-      const [isComplainData , setisComplainData ]  = useState([]);
+    const [isOpenComplainModel , setisOpenComplainModel ]  = useState(false);
+    const [isComplainData , setisComplainData ]  = useState([]);
     const ComplainCall = ( id:string,data: any) =>{
       setisOpenComplainModel(true);
       setisComplainData(data);

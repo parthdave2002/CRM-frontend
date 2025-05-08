@@ -16,14 +16,14 @@ interface OrderDetailsProps{
 } 
 
 const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openDetailIData}) => {
-
-  console.log("openDetailId", openDetailIData);
   
   const dispatch = useDispatch();
 
     const [isOpenSuccessOrderModel, setisOpenSuccessOrderModel ] = useState(false);
     const [isOpenSuccessOrderMessage, setisOpenSuccessOrderMessage ] = useState("");
-    const UpdateOrderdatalist = useSelector((state: any) => state.Order.Orderlist);
+    const UpdateOrderdatalist = useSelector((state: any) => state.Order.UpdateOrderlist);
+    console.log("UpdateOrderdatalist", UpdateOrderdatalist);
+    
     useEffect(() => {
           if ( UpdateOrderdatalist?.success ) {
             setisOpenSuccessOrderModel(true)
@@ -51,8 +51,6 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
       let totalDiscount = 0;
 
       openDetailIData?.products?.forEach((item: any) => {
-        console.log("item", item);
-        
         const price = item?.id?.price || 0;
         const discount = item?.id?.discount || 0;
         const gstRate = item?.id?.s_gst || 0;
@@ -74,13 +72,20 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
 
 
 
-      const [data, setData] = useState <null | any>(null)
+      const [data, setData] = useState <null | any>(null);
+      const customerDataString = Cookies.get("customer_data");
         useEffect(() => {
-            const customerDataString = Cookies.get("customer_data");
-            if(customerDataString?.length){
-              const customerData = customerDataString ? JSON.parse(customerDataString) : []    
-              setData(customerData ? customerData  : null);
+          if (customerDataString && customerDataString !== "undefined") {
+            try {
+              const customerData = JSON.parse(customerDataString);
+              setData(customerData ? customerData : null);
+            } catch (error) {
+              console.error("Failed to parse customer_data:", error);
+              setData(null);
             }
+          }else{
+            setData(null);
+          }
         },[]);
 
   const packingtypeoption = openDetailIData?.products && openDetailIData?.products.map((item: any) => ({ label: item?.id?.name?.englishname, value: item?.id?._id }));
@@ -177,9 +182,9 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
         </div>
         
         <div className="md:w-[20rem] w-full flex flex-col gap-4 mt-5">
-          <div className="border dark:border-gray-600 dark:bg-gray-800 p-3 rounded-xl w-full flex flex-col gap-y-3">
+          {/* <div className="border dark:border-gray-600 dark:bg-gray-800 p-3 rounded-xl w-full flex flex-col gap-y-3">
             <div className='dark:text-gray-300 text-[1.2rem] font-semibold'>Invoice</div>  
-          </div>
+          </div> */}
 
           <div className="border dark:border-gray-600 dark:bg-gray-800 p-3 rounded-xl w-full flex flex-col gap-y-3">
             <div className='dark:text-gray-300 text-[1.2rem] font-semibold'>Customer</div>

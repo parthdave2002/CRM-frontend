@@ -75,17 +75,18 @@ const ProductAddPage : FC = function () {
     const { id } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [file, setFile] = useState<File[] | null>(null);
-    const [validateProfile, setvalidateProfile] = useState(0);
+    const [file, setFile] = useState<File[] >([]);
+    const [productImage, setProductImage] = useState<File[] | string[]>([]);
+    const [validateProduct, setvalidateProduct] = useState(0);
 
     useEffect(() =>{
-        if(file){
-            setvalidateProfile(0)
-        }else{
-            setvalidateProfile(1)
+        if(file?.length && file?.length > 0 || productImage?.length && productImage?.length > 0){
+            setvalidateProduct(0)
+        }else if(file?.length == 0 ){
+            setvalidateProduct(1)
             return;
         }
-    },[file])
+    },[file, productImage])
 
     useEffect(() =>{
         if(CompanyListData.length == 0) dispatch(getCompanylist()); 
@@ -280,8 +281,8 @@ const ProductAddPage : FC = function () {
         
         onSubmit: (values) => {
 
-            if(!file){
-                setvalidateProfile(1)
+            if(file?.length === 0 && productImage?.length === 0){
+                setvalidateProduct(1)
                 return;
             }
             if(selectedactiveid ==  null){
@@ -315,8 +316,8 @@ const ProductAddPage : FC = function () {
             formData.append("packagingtype",  String(selectedpackingTypeid));
             formData.append("company", String(selectedCompanyid));
             formData.append("categories", String(selectedCategoryid));
-            formData.append("batch_no", JSON.stringify(values?.batch_no));
-            formData.append("hsn_code", JSON.stringify(values?.hsn_code));
+            formData.append("batch_no", values?.batch_no);
+            formData.append("hsn_code", values?.hsn_code);
             formData.append("c_gst",  JSON.stringify(values?.c_gst));
             formData.append("s_gst",  JSON.stringify(values?.s_gst));
             formData.append("avl_qty",  JSON.stringify(values?.avl_qty));
@@ -388,21 +389,31 @@ const ProductAddPage : FC = function () {
     }, [Productlist]);
 
     useEffect(() => {
-        validation.values.name.englishname = ProductList?.name?.englishname ?? "";
-        validation.values.name.gujaratiname = ProductList?.name?.gujaratiname ?? "";
-        validation.values.tech_name.english_tech_name = ProductList?.tech_name?.english_tech_name ?? "";
-        validation.values.tech_name.gujarati_tech_name = ProductList?.tech_name?.gujarati_tech_name ?? "";
-        validation.values.packaging = ProductList?.packaging ?? "";
-        validation.values.avl_qty = ProductList?.avl_qty ?? "";
-        validation.values.price = ProductList?.price ?? "";
-        validation.values.discount = ProductList?.discount ?? 0;
-        // validation.values.batch_no =ProductList?.batch_no ? JSON.stringify(ProductList.batch_no) : "";
-        // validation.values.hsn_code = ProductList?.hsn_code ? JSON.parse(ProductList.hsn_code) : ""; 
-        validation.values.c_gst = ProductList?.c_gst ?? "";
-        validation.values.s_gst = ProductList?.s_gst ?? "";
+        setinitialValues(prev => ({
+            ...prev,
+            name: {
+                ...prev.name,
+                englishname: ProductList?.name?.englishname ?? "",
+                gujaratiname: ProductList?.name?.gujaratiname ?? ""
+            },
+            tech_name: {
+                ...prev.tech_name,
+                english_tech_name: ProductList?.tech_name?.english_tech_name ?? "",
+                gujarati_tech_name: ProductList?.tech_name?.gujarati_tech_name ?? ""
+            },
+            packaging: ProductList?.packaging ?? "",
+            avl_qty: ProductList?.avl_qty ?? "",
+            price: ProductList?.price ?? "",
+            discount: ProductList?.discount ?? 0,
+            batch_no: ProductList?.batch_no ? JSON.parse(ProductList.batch_no) : "",
+            hsn_code: ProductList?.hsn_code ? JSON.parse(ProductList.hsn_code) : "",
+            c_gst: ProductList?.c_gst ?? "",
+            s_gst: ProductList?.s_gst ?? "",
+        }));
+
         if (ProductList?.description) {
-            const formattedDescription = ProductList?.description.map((desc) => ({
-              id: desc.id,
+            const formattedDescription = ProductList?.description.map((desc:any) => ({
+              id: desc._id,
               englishHeader: desc.englishHeader,
               englishValue: desc.englishValue,
               gujaratiHeader: desc.gujaratiHeader,
@@ -412,10 +423,12 @@ const ProductAddPage : FC = function () {
             setInputs(formattedDescription);
         }
 
-        // if (ProductList?.product_pics) {
-        //     const formattedDescription = ProductList?.product_pics.map((desc) =>  desc );
-        //     setFile(formattedDescription);
-        // }
+        if (ProductList?.product_pics) {
+            const formattedDescription = ProductList?.product_pics.map((desc) =>  desc );
+            setFile([]);
+            setProductImage(formattedDescription);
+            setvalidateProduct(0)
+        }
         if (ProductList?.company && companyoption.length > 0) {
             const selectedRole = companyoption.find((role: any) => role.value === ProductList?.company?._id);
             setSelectedCompanyOption(selectedRole || null);
@@ -457,8 +470,8 @@ const ProductAddPage : FC = function () {
                         
                         <div className="mb-4">
                             <label className="dark:text-gray-100 text-[1.2rem]"> Product Image <span className='text-red-500'>*</span> </label>
-                            <MultiImageUploadPreview onFileSelect={setFile} />
-                            {validateProfile == 1 ? ( <FormFeedback type="invalid" className="text-Red text-sm"> Please Select profile photo </FormFeedback> ) : null}
+                            <MultiImageUploadPreview onFileSelect={setFile} defaultImage={productImage} onDefaultImageChange={setProductImage} />
+                            {validateProduct == 1 ? ( <FormFeedback type="invalid" className="text-Red text-sm"> Please select product photo </FormFeedback> ) : null}
                         </div>
                         
                       

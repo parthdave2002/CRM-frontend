@@ -388,3 +388,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .dark .react-select__single-value {
   @apply text-white;
 }
+
+@media print {
+  .page-break {
+    page-break-after: always;
+    break-after: page;
+  }
+}

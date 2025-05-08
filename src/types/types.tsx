@@ -27,6 +27,7 @@ export interface ProfileInfo{
     village:  string;
     village_name:  string;
     pincode:  number;
+    post_office : string;
     created_by:  string;
     __v: number;
     alternate_number: number;

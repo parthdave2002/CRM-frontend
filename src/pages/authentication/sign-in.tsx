@@ -13,11 +13,12 @@ import { useNavigate } from "react-router";
 import ToastMessage from "../../components/ToastMessage";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
+import LoaderPage from "../../components/loader";
 
 const SignInPage: FC = function () {
   const navigation = useNavigate();
   const dispatch = useDispatch();
-
+  const [isLoading, setisLoading] = useState(true);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const validation = useFormik<{ email: string; password: string }>({
@@ -42,6 +43,7 @@ const SignInPage: FC = function () {
       .matches(/[@$!%*?&]/, "Password must contain at least one special character (@$!%*?&)"),
     }),
     onSubmit: (values) => {
+      setisLoading(true)
       dispatch(insertlogin(values));
 
     },
@@ -56,6 +58,7 @@ const SignInPage: FC = function () {
   }));
 
   useEffect(() => {
+    setisLoading(false)
     setLogin(login ? login.success : null);
     setLoginRols(login ? login?.data?.roles : null);
   }, [login]);
@@ -115,7 +118,6 @@ const SignInPage: FC = function () {
   //--------------  if User Alredy login redirect to their page code end --------------
 
   const [ isOpenDelteModel,setisOpenDelteModel] = useState(false);
-
   const LostPasswordCall = () =>{
     if (validation.values.email) {
       let data={ search: validation.values.email }
@@ -135,88 +137,92 @@ const SignInPage: FC = function () {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center px-6 lg:h-screen lg:gap-y-12">
-      <div className="my-6 flex items-center gap-x-1 lg:my-0"> <img alt="Flowbite logo" src={LOGO} className="mr-3 h-12" /> </div>
+    <>
+      {isLoading ? <LoaderPage /> : null  }
 
-      <Card horizontal imgSrc="/images/authentication/login_6.png" imgAlt=""  className="w-full lg:max-w-screen-lg md:max-w-screen-md [&>img]:hidden md:[&>img]:w-[31rem] md:[&>img]:p-0 md:[&>*]:w-full md:[&>*]:p-16 lg:[&>img]:block" >
-        <h1 className="mb-3 text-2xl font-bold dark:text-white md:text-3xl"> Sign in </h1>
+      <div className="flex flex-col items-center justify-center px-6 lg:h-screen lg:gap-y-12">
+        <div className="my-6 flex items-center gap-x-1 lg:my-0"> <img alt="Flowbite logo" src={LOGO} className="mr-3 h-12" /> </div>
 
-        <Form onSubmit={(e) => { e.preventDefault(); validation.handleSubmit(); return false; }} >
-          <div className="mb-4 flex flex-col gap-y-2">
-            <Label htmlFor="email">Your Email</Label>
+        <Card horizontal imgSrc="/images/authentication/login_6.png" imgAlt=""  className="w-full lg:max-w-screen-lg md:max-w-screen-md [&>img]:hidden md:[&>img]:w-[31rem] md:[&>img]:p-0 md:[&>*]:w-full md:[&>*]:p-16 lg:[&>img]:block" >
+          <h1 className="mb-3 text-2xl font-bold dark:text-white md:text-3xl"> Sign in </h1>
 
-            <Input
-              name="email"
-              className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
-              placeholder="Enter your email"
-              type="email"
-              onChange={validation.handleChange}
-              onBlur={validation.handleBlur}
-              value={validation.values.email || ""}
-              invalid={ validation.touched.email && validation.errors.email  ? true : false }
-            />
-            {validation.touched.email && validation.errors.email ? (
-              <FormFeedback type="invalid" className="text-Red">
-                {validation.errors.email}
-              </FormFeedback>
-            ) : null}
-          </div>
+          <Form onSubmit={(e) => { e.preventDefault(); validation.handleSubmit(); return false; }} >
+            <div className="mb-4 flex flex-col gap-y-2">
+              <Label htmlFor="email">Your Email</Label>
 
-          <div className="mb-6 flex flex-col gap-y-2">
-            <Label htmlFor="password">Your password</Label>
-                        <div>
-                          <div className="relative w-full">
-                            <Input
-                              name="password"
-                              className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
-                              placeholder="Enter password"
-                              type={showConfirmPassword ? "text" : "password"}
-                              onChange={validation.handleChange}
-                              onBlur={validation.handleBlur}
-                              value={validation.values.password || ""}
-                              invalid={validation.touched.password && validation.errors.password ? true : false}
-                            />
-                              <button type="button" className="absolute inset-y-0 right-3 flex items-center text-gray-500 dark:text-gray-100" onClick={() => setShowConfirmPassword(!showConfirmPassword)} > {showConfirmPassword ? <FaRegEyeSlash size={20} /> : <FaRegEye size={20} />} </button>
+              <Input
+                name="email"
+                className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
+                placeholder="Enter your email"
+                type="email"
+                onChange={validation.handleChange}
+                onBlur={validation.handleBlur}
+                value={validation.values.email || ""}
+                invalid={ validation.touched.email && validation.errors.email  ? true : false }
+              />
+              {validation.touched.email && validation.errors.email ? (
+                <FormFeedback type="invalid" className="text-Red">
+                  {validation.errors.email}
+                </FormFeedback>
+              ) : null}
+            </div>
+
+            <div className="mb-6 flex flex-col gap-y-2">
+              <Label htmlFor="password">Your password</Label>
+                          <div>
+                            <div className="relative w-full">
+                              <Input
+                                name="password"
+                                className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
+                                placeholder="Enter password"
+                                type={showConfirmPassword ? "text" : "password"}
+                                onChange={validation.handleChange}
+                                onBlur={validation.handleBlur}
+                                value={validation.values.password || ""}
+                                invalid={validation.touched.password && validation.errors.password ? true : false}
+                              />
+                                <button type="button" className="absolute inset-y-0 right-3 flex items-center text-gray-500 dark:text-gray-100" onClick={() => setShowConfirmPassword(!showConfirmPassword)} > {showConfirmPassword ? <FaRegEyeSlash size={20} /> : <FaRegEye size={20} />} </button>
+                            </div>
+                            {validation.touched.password && validation.errors.password ? ( <FormFeedback type="invalid" className="text-Red"> {validation.errors.password} </FormFeedback>) : null}
                           </div>
-                          {validation.touched.password && validation.errors.password ? ( <FormFeedback type="invalid" className="text-Red"> {validation.errors.password} </FormFeedback>) : null}
-                        </div>
-            {/* <Input
-              id="password"
-              className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
-              name="password"
-              placeholder="Enter Password"
-              type="password"
-              onChange={validation.handleChange}
-              onBlur={validation.handleBlur}
-              value={validation.values.password || ""}
-              invalid={ validation.touched.password && validation.errors.password ? true : false }
-            />
-            {validation.touched.password && validation.errors.password ? ( <FormFeedback type="invalid" className="text-Red"> {validation.errors.password} </FormFeedback>) : null} */}
-          </div>
+              {/* <Input
+                id="password"
+                className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
+                name="password"
+                placeholder="Enter Password"
+                type="password"
+                onChange={validation.handleChange}
+                onBlur={validation.handleBlur}
+                value={validation.values.password || ""}
+                invalid={ validation.touched.password && validation.errors.password ? true : false }
+              />
+              {validation.touched.password && validation.errors.password ? ( <FormFeedback type="invalid" className="text-Red"> {validation.errors.password} </FormFeedback>) : null} */}
+            </div>
 
-          <div className="mb-6 flex items-center justify-between">
-            <div className="flex items-center gap-x-3"> <Checkbox id="rememberMe" name="rememberMe" /> <Label htmlFor="rememberMe">Remember me</Label>  </div>
-            <a onClick={() => LostPasswordCall() } className="w-1/2 text-right text-sm text-primary-600 dark:text-primary-300 cursor-pointer"  > Lost Password? </a>
-          </div>
+            <div className="mb-6 flex items-center justify-between">
+              <div className="flex items-center gap-x-3"> <Checkbox id="rememberMe" name="rememberMe" /> <Label htmlFor="rememberMe">Remember me</Label>  </div>
+              <a onClick={() => LostPasswordCall() } className="w-1/2 text-right text-sm text-primary-600 dark:text-primary-300 cursor-pointer"  > Lost Password? </a>
+            </div>
 
-          <div className="mb-6">  <Button type="submit" className="w-full ">  Login to your account  </Button> </div>
-        </Form>
+            <div className="mb-6">  <Button type="submit" className="w-full ">  Login to your account  </Button> </div>
+          </Form>
 
-      </Card>
+        </Card>
 
-      <Modal onClose={() => setisOpenDelteModel(false)}  show={isOpenDelteModel} size="md">
-          <Modal.Header className="px-6 pt-6 pb-0"> <span className="sr-only"> Send Email to admin</span></Modal.Header>
-            <Modal.Body className="px-6 pt-0 pb-6">
-                <div className="flex flex-col items-center gap-y-6 text-center">  <p className="text-xl text-gray-500"> Are you sure? You want  to send email to admin? </p>
-                    <div className="flex items-center gap-x-3">
-                        <Button color="failure"   onClick={() => LostPassword()}>  Yes, I'm sure </Button> 
-                        <Button color="gray"  onClick={() => setisOpenDelteModel(false)}> No, cancel </Button> 
-                    </div>
-                </div>
-            </Modal.Body>
-      </Modal>
-      <ToastMessage />
-    </div>
+        <Modal onClose={() => setisOpenDelteModel(false)}  show={isOpenDelteModel} size="md">
+            <Modal.Header className="px-6 pt-6 pb-0"> <span className="sr-only"> Send Email to admin</span></Modal.Header>
+              <Modal.Body className="px-6 pt-0 pb-6">
+                  <div className="flex flex-col items-center gap-y-6 text-center">  <p className="text-xl text-gray-500"> Are you sure? You want  to send email to admin? </p>
+                      <div className="flex items-center gap-x-3">
+                          <Button color="failure"   onClick={() => LostPassword()}>  Yes, I'm sure </Button> 
+                          <Button color="gray"  onClick={() => setisOpenDelteModel(false)}> No, cancel </Button> 
+                      </div>
+                  </div>
+              </Modal.Body>
+        </Modal>
+        <ToastMessage />
+      </div>
+    </>
   );
 };
 

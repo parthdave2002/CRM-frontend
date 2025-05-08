@@ -10,10 +10,11 @@ interface ConfirmationModalProps{
     setisOpenConfirmModel: (value: boolean) => void;
     PlaceCall: () => void;
     setSelectedFutureDate: (value : any) => void;
+    future_date ?:any;
 }
 
-const ConfirmationModalPage: FC<ConfirmationModalProps>= function ({ isOpenConfirmModel, setisOpenConfirmModel, isOrderTypeModel,isOrderStatusModel, PlaceCall, setSelectedFutureDate }) {
-
+const ConfirmationModalPage: FC<ConfirmationModalProps>= function ({ isOpenConfirmModel, setisOpenConfirmModel, isOrderTypeModel,isOrderStatusModel, PlaceCall, setSelectedFutureDate,future_date }) {
+    
     const today = new Date();
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
@@ -24,7 +25,7 @@ const ConfirmationModalPage: FC<ConfirmationModalProps>= function ({ isOpenConfi
             <Modal.Header className="px-6 pt-6 pb-0"> <span className="sr-only"> Confirmation  </span></Modal.Header>
             <Modal.Body className="px-6 pt-0 pb-6">
                 <div className="flex flex-col items-center gap-y-6 "> <HiOutlineExclamationCircle className="text-7xl text-red-500" /> 
-                    <p className="text-xl text-gray-500"> Are you sure you want to {isOrderStatusModel} this order ? </p>
+                    <p className="text-xl text-gray-500"> Are you sure you want to {isOrderStatusModel == "extend" ? "Create future" : isOrderStatusModel} this order ? </p>
 
                     {isOrderTypeModel == "future"  && isOrderStatusModel == "extend" ?
                         <div className="flex gap-x-3">
@@ -36,6 +37,7 @@ const ConfirmationModalPage: FC<ConfirmationModalProps>= function ({ isOpenConfi
                                     className="w-[15rem] bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2 rounded-lg text-gray-900 text-sm w-full"
                                     type="date"
                                     min={formattedMinDate}
+                                    value={future_date}
                                     onChange={(e) => setSelectedFutureDate(e.target.value)}
                                 />
                             </div>

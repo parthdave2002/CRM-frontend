@@ -11,6 +11,7 @@ import { AddOrderlist, getUpdateOrderlist, ResetOrderlist } from '../../Store/ac
 import { toast } from 'react-toastify';
 import { BsCartXFill } from 'react-icons/bs';
 import Cookies from 'js-cookie';
+import moment from 'moment';
 
 interface Cartprops{
   setCartOpen : (value : boolean) => void;
@@ -19,6 +20,7 @@ interface Cartprops{
   setCartItem: (value : any) => void;
   cartOrderid ?: any;
   setCartOrderid: (value : any) => void;
+  future_date ?:any;
 }
 
 interface ProfileInfo{
@@ -47,21 +49,27 @@ interface ProfileInfo{
   smart_phone: boolean;
 }
 
-const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCartItem, cartOrderid, setCartOrderid}) => {
+const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCartItem, cartOrderid, setCartOrderid, future_date}) => {
   const dispatch = useDispatch();
-  
   const [cartItems, setCartItems] = useState(CartData || [])
 
   // ----------- Customer data getcode start ----------------
-        const [data, setData] = useState<ProfileInfo>()
+        const [data, setData] = useState<ProfileInfo | null>()
         const [data_id, setData_id] = useState(null)
-
+        const customerDataString = Cookies.get("customer_data");
         useEffect(() => {
-            const customerDataString = Cookies.get("customer_data");
-            if(customerDataString){
-            const customerData = customerDataString ? JSON.parse(customerDataString) : []    
-            setData(customerData ? customerData  : null);
-            setData_id(customerData?._id ? customerData?._id  : null);
+          if (customerDataString && customerDataString !== "undefined") {
+            try {
+              const customerData = JSON.parse(customerDataString);
+              setData(customerData ? customerData  : null);
+              setData_id(customerData?._id ?customerData?._id : null);
+            } catch (error) {
+              console.error("Failed to parse customer_data:", error);
+              setData(null);
+            }
+          }
+          else{
+            setData(null);
           }
         },[]);
   // ----------- Customer data getcode end ----------------
@@ -157,12 +165,13 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
         updatedQty[item._id] = 1;
       });
       setProductQty(updatedQty);
+      setSelectedFutureDate(moment(future_date).format("YYYY-MM-DD"))
     }, [CartData]);
 
   // --------------- Add Order Suucess/ error code start ----------------
     const AddOrderdatalist = useSelector((state: any) => state.Order.AddOrderdatalist);
-    const UpdateOrderdatalist = useSelector((state: any) => state.Order.Orderlist);;
-    
+    const UpdateOrderdatalist = useSelector((state: any) => state.Order.UpdateOrderlist);;
+    console.log("UpdateOrderdatalist >>>>>>", UpdateOrderdatalist);
     useEffect(() => {
       if (AddOrderdatalist?.success || UpdateOrderdatalist?.success ) {
         setisOpenSuccessOrderModel(true);
@@ -276,7 +285,7 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
       </div> 
 
       <SuccessErrorModalPage isOpenSuccessOrderModel={isOpenSuccessOrderModel} setisOpenSuccessOrderModel={setisOpenSuccessOrderModel} message={isOpenSuccessOrderMessage} OkayCall={OkayCall} />
-      <ConfirmationModalPage isOpenConfirmModel={isOpenConfirmModel} setisOpenConfirmModel={setisOpenConfirmModel} isOrderTypeModel={isOrderTypeModel} isOrderStatusModel={isOrderStatusModel} PlaceCall={PlaceCall} setSelectedFutureDate={setSelectedFutureDate}  />
+      <ConfirmationModalPage isOpenConfirmModel={isOpenConfirmModel} setisOpenConfirmModel={setisOpenConfirmModel} isOrderTypeModel={isOrderTypeModel} isOrderStatusModel={isOrderStatusModel} PlaceCall={PlaceCall} setSelectedFutureDate={setSelectedFutureDate} future_date={SelectedFutureDate}  />
     </>
   )
 }

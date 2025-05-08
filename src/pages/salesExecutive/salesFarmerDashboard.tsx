@@ -66,6 +66,7 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile, Mobile_number}) 
     const [ cartOpen, setCartOpen] = useState(false); 
     const [ cartItem, setCartItem] = useState<any[]>([]); 
     const [ cartOrderid, setCartOrderid] = useState(null); 
+    const [ future_date, setfuture_date] = useState(null); 
 
     const OpenCartCall = () => setCartOpen(true);    
 
@@ -115,7 +116,7 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile, Mobile_number}) 
       : farmedAdded == false && !isLoading ?
         <>
           {cartOpen == true ?
-            <div>  <CartList setCartOpen={setCartOpen} setCartItem={setCartItem} CartData={cartItem} handleRemoveCall={handleRemoveCall} cartOrderid={cartOrderid} setCartOrderid={setCartOrderid} /> </div>
+            <div>  <CartList setCartOpen={setCartOpen} setCartItem={setCartItem} CartData={cartItem} handleRemoveCall={handleRemoveCall} cartOrderid={cartOrderid} setCartOrderid={setCartOrderid} future_date={future_date} /> </div>
             : openDetailsmodal == true?
               <OrderDetails orderId={openDetailId} closeOrderDetail={closeOrderDetail} openDetailIData={openDetailIData} /> 
             :
@@ -142,12 +143,12 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile, Mobile_number}) 
                   <>
                     <div className='flex mt-[2rem] mb-2'>
                       <div className='flex-1 flex text-[2rem] dark:text-gray-400 font-bold self-end '> Personal Info</div>
-                      <div className='flex-1 flex justify-end  self-end '> <div className='border border-indigo-500 text-indigo-500 dark:text-white hover:text-gray-100 font-semibold px-6 py-2 rounded-full  gap-3 hover:bg-indigo-800 transition flex text-center cursor-pointer  transition-all duration-500 ease-in-out' onClick={() => EditFarmerCall()}> <FaPencilAlt className='self-center h-5 w-5' /> Edit Customer </div> </div>
+                      <div className='flex-1 flex justify-end  self-end '> <div className='border border-indigo-500 text-indigo-500 dark:text-white hover:text-gray-100 font-semibold px-6 py-2 rounded-full  gap-3 hover:bg-indigo-800 transition flex text-center cursor-pointer  transition-all duration-500 ease-in-out' onClick={() => EditFarmerCall()}> <FaPencilAlt className='self-center h-5 w-5' />Update Farmer  </div> </div>
                     </div>
                     <FarmeDashboard viewButton={true} classData="border dark:border-gray-600 rounded-xl w-full py-2 px-4 transition-all duration-800 ease-in-out" />
 
                     <div className='mt-[2rem] text-[2rem] dark:text-gray-400 font-bold'> History </div>
-                    <FarmerHistory setOpenDetailId={setOpenDetailId} setOpenDetailIData={setOpenDetailIData}  setOpenDetailsmodal={setOpenDetailsmodal}  AddtoCartCall={AddtoCartCall} setCartOrderid={setCartOrderid} />
+                    <FarmerHistory setOpenDetailId={setOpenDetailId} setOpenDetailIData={setOpenDetailIData}  setOpenDetailsmodal={setOpenDetailsmodal}  AddtoCartCall={AddtoCartCall} setCartOrderid={setCartOrderid} FuturOrderDate={setfuture_date} />
 
                     <div className='flex mt-[1rem]'>
                       <div className='flex-1 self-end text-[2rem] dark:text-gray-400 font-bold'> Products Data</div>
