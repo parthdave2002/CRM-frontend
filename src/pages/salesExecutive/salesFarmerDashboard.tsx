@@ -70,23 +70,85 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile, Mobile_number}) 
 
     const OpenCartCall = () => setCartOpen(true);    
 
+    // const AddtoCartCall = (data: any | any[]) => {
+    //   setCartItem((prevItems) => {
+    //   const newItems = Array.isArray(data) ? data : [data];
+      
+    //   let isDuplicate = false;
+    //   const uniqueItemsToAdd = newItems.filter((item) => {
+    //   const exists = prevItems.some((cartItem) => cartItem._id === item._id);
+    //   if (exists) { isDuplicate = true; }
+    //   return !exists;
+    // });
+
+    // if (isDuplicate) {  toast.error("Some products were already in the cart"); }
+    // if (uniqueItemsToAdd.length === 0) return prevItems;
+    // window.scrollTo({ top: 0,  behavior: "smooth", });
+
+    // return [...prevItems, ...uniqueItemsToAdd];
+    // });
+    // }
+
     const AddtoCartCall = (data: any | any[]) => {
       setCartItem((prevItems) => {
-      const newItems = Array.isArray(data) ? data : [data];
-      let isDuplicate = false;
-      const uniqueItemsToAdd = newItems.filter((item) => {
-      const exists = prevItems.some((cartItem) => cartItem._id === item._id);
-      if (exists) { isDuplicate = true; }
-      return !exists;
-    });
-
-    if (isDuplicate) {  toast.error("Some products were already in the cart"); }
-    if (uniqueItemsToAdd.length === 0) return prevItems;
-    window.scrollTo({ top: 0,  behavior: "smooth", });
-
-    return [...prevItems, ...uniqueItemsToAdd];
-    });
-    }
+        const newItems = Array.isArray(data) ? data : [data];
+        const normalizedNewItems = newItems.map((item) => {
+          console.log("item", item);
+          
+          if (item.id) {
+            return {
+              name: item.id.name,
+              tech_name: item.id.tech_name,
+              price: item.id.price,
+              discount: item.id.discount,
+              product_pics: item.id.product_pics,
+              s_gst: item.id.s_gst,
+              c_gst: item.id.c_gst,
+              avl_qty: item.id.avl_qty,
+              rating: item.id.rating,
+              is_active: item.id.is_active,
+              is_deleted: item.id.is_deleted,
+              _id: item.id._id,
+              packaging: item.id.packaging,
+              packagingtype: item.id.packagingtype,
+              company: item.id.company,
+              categories: item.id.categories,
+              batch_no: item.id.batch_no,
+              hsn_code: item.id.hsn_code,
+              description: item.id.description,
+              added_at: item.id.added_at,
+              out_of_stock: false,
+              quantity: item.quantity || 1, 
+            };
+          }
+          // If it doesn't have the 'id' field, return the item as-is (second format)
+          return {
+            ...item,
+            quantity: item.quantity || 1, // fallback to 1 if no quantity is provided
+          };
+        });
+    
+        let isDuplicate = false;
+        const uniqueItemsToAdd = normalizedNewItems.filter((item) => {
+          const exists = prevItems.some((cartItem) => cartItem._id === item._id);
+          if (exists) {
+            isDuplicate = true;
+          }
+          return !exists;
+        });
+    
+        if (isDuplicate) {
+          toast.error("Some products were already in the cart");
+        }
+    
+        if (uniqueItemsToAdd.length === 0) return prevItems;
+    
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    
+        return [...prevItems, ...uniqueItemsToAdd];
+      });
+    };
+    
 
     const handleRemoveCall = (data: any) =>{
       setCartItem((prevItems) => prevItems.filter((item) => item._id !== data));

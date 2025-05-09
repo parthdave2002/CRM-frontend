@@ -19,7 +19,7 @@ interface FarmerHistoryProps{
   setCartOrderid : ( value : any) => void;
 }
 
-const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetailsmodal, setOpenDetailIData, AddtoCartCall,FuturOrderDate, setCartOrderid}) => {
+const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetailsmodal, setOpenDetailIData, AddtoCartCall, FuturOrderDate, setCartOrderid}) => {
   const dispatch = useDispatch()
 
   // ----------- Tabnavbar code start --------------------
@@ -35,6 +35,15 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
       setselectedTabbar(data)
     }
   // ----------- Tabnavbar code end --------------------
+
+  // ------------complain details page ------------------
+    const [isOpenComplainModel , setisOpenComplainModel ]  = useState(false);
+    const [isComplainData , setisComplainData ]  = useState([]);
+    const ComplainCall = ( id:string,data: any) =>{
+      setisOpenComplainModel(true);
+      setisComplainData(data);
+    }
+  // ------------complain details page ------------------
 
   // ----------- next Button  Code Start -------------
     const [TotalListData, setTotalListData] = useState(0);
@@ -72,13 +81,13 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
       if(selectedTabbar == "Order"){
         dispatch(getFarmerOrderlist(requser));
       }
-      else if(selectedTabbar == "Complain"){
+      else if(selectedTabbar == "Complain" && isOpenComplainModel == false){
         dispatch(getFarmerComplainlist(requser));
       }else if(selectedTabbar == "Taglog"){
         dispatch(getCustomerTagloglist(requser));
       }
     }
-  },[dispatch, selectedTabbar, PageNo, RoePerPage ])
+  },[dispatch, selectedTabbar, PageNo, RoePerPage, isOpenComplainModel ])
 
   // ------------- Get  Data From Reducer Code Start --------------
   
@@ -120,21 +129,15 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
 
   // -------------  Future Order  to Cart Call start -------------------
     const FuturaOrderCall = ( id:string , data:any) => {
-      const productIds = data?.products?.map((item: any) => item?.id);
+      const productIds = data?.products?.map((item: any) => ({
+        id: item?.id,
+        quantity: item?.quantity,
+      }));
       AddtoCartCall(productIds);
       FuturOrderDate(data?.future_order_date)
       setCartOrderid(id);
     }
   // -------------  Future Order  to Cart Call end -------------------
-
-  // ------------complain details page ------------------
-    const [isOpenComplainModel , setisOpenComplainModel ]  = useState(false);
-    const [isComplainData , setisComplainData ]  = useState([]);
-    const ComplainCall = ( id:string,data: any) =>{
-      setisOpenComplainModel(true);
-      setisComplainData(data);
-    }
-  // ------------complain details page ------------------
 
   return (
     <>

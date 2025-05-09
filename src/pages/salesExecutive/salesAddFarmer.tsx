@@ -39,7 +39,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
   
   useEffect(() => { 
     if(data){
-      setinitialValues(prev => ({
+      setinitialValues((prev :any) => ({
         ...prev,
         firstname : data?.firstname ?? "",
         middlename : data?.middlename ?? "",
@@ -50,8 +50,9 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
         land_area : String(data?.land_area ?? ""),
         pincode : String(data?.pincode ?? ""),
         post_office: String(data?.post_office ?? ""),
+        ref_name : data?.ref_name ?? "",
       }));
-      setSelectedRefnumber(data?.ref_name)
+      // setSelectedRefnumber(data?.ref_name)
 
      if (Array.isArray(data?.crops)) {
       const cropOptions = data.crops.map((crop: any) => ({
@@ -266,7 +267,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
     smart_phone : "",
     crop : [],
     heard_about : "",
-    refname : ""
+    ref_name : ""
   });
 
   const validation = useFormik({
@@ -279,7 +280,9 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
       address: Yup.string().required("Please enter address"),
       pincode: Yup.string().required("Please enter pincode").min(6, "Pincode must be minimum 6 digits") .max(6, "Pincode must be maximum 6 digits").matches(/^\d+$/, "Please enter valid pincode"),
       post_office: Yup.string().required("Please enter post office"),
-      land_area: Yup.number().required("Please enter land area") .typeError("Please enter valid land area").min(0, "Please enter valid land area")
+      land_area: Yup.number().required("Please enter land area") .typeError("Please enter valid land area").min(0, "Please enter valid land area"),
+      alternate_number: Yup.string().trim().test('is-empty-or-10-digit', 'Alternate number must be 10 digit mobile number',  value => { return !value || (/^\d{10}$/.test(value));}),
+      ref_name: Yup.string().trim().test('is-empty-or-10-digit', 'Refrence number must be 10 digit mobile number',  value => { return !value || (/^\d{10}$/.test(value));}),
     }),
 
     onSubmit: (values) => {
@@ -504,15 +507,20 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
     useEffect(() =>{  
 
       if(userAddedData?.success == true || userUpdatedData?.success  == true){
-        if(userUpdatedData){
-          toast.success(userUpdatedData?.msg);
-        }else{
-          toast.success(userAddedData?.msg);
+        try {
+          if(userUpdatedData){
+            toast.success(userUpdatedData?.msg);
+          }else{
+            toast.success(userAddedData?.msg);
+          }
+        } catch (error) {
+          toast.error(String(error));
+        }finally{
+          validation.resetForm();
+          CloseAddmodal(false);
+          setFarmerAdded(false)
+          dispatch(ResetCustomerDatalist())
         }
-        validation.resetForm();
-        CloseAddmodal(false);
-        setFarmerAdded(false)
-        dispatch(ResetCustomerDatalist())
       }
     },[userAddedData, userUpdatedData])
   //  ------------- Get  Data From Reducer Code end --------------
@@ -600,7 +608,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
                 className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
                 placeholder="Enter mobile"
                 type="tel"
-                value={Mobile_number?.trim()|| validation.values.mobile_number}
+                value={Mobile_number|| validation.values.mobile_number}
                 disabled
               />
               {validation.touched?.mobile_number && validation.errors?.mobile_number ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.mobile_number} </FormFeedback>) : null}
@@ -899,20 +907,22 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
           </div>
 
           <div>
-            <Label htmlFor="refname"> Refrence Number </Label>
+            <Label htmlFor="ref_name"> Refrence Number </Label>
             <div className="mt-1">
               <Input
-                id="refname"
-                name="refname"
+                id="ref_name"
+                name="ref_name"
                 className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
                 placeholder="Enter refrence number"
                 type="tel"
-                onChange={ (e:any) =>handlePhoneNumberChange(e.target.value)}
-                value={selectedRefnumber ?? ""}
+                onChange={validation.handleChange}
+                onBlur={validation.handleBlur}
+                value={validation.values?.ref_name || ""}
+                invalid={validation.touched?.ref_name && validation.errors?.ref_name ? true : false}
               />
+              {validation.touched.ref_name && validation.errors?.ref_name ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.ref_name} </FormFeedback>) : null}
             </div>
           </div>
-         
         </div>
 
           <div className="flex gap-x-3 justify-end flex-end self-end mt-[1rem]">
