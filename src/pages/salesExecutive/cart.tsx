@@ -162,7 +162,7 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
       setCartItems(CartData || []);
       const updatedQty: { [key: string]: number } = {};
       CartData?.forEach((item: any) => {
-        updatedQty[item._id] = 1;
+        updatedQty[item._id] = item?.quantity;
       });
       setProductQty(updatedQty);
       setSelectedFutureDate(moment(future_date).format("YYYY-MM-DD"))
@@ -171,7 +171,6 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
   // --------------- Add Order Suucess/ error code start ----------------
     const AddOrderdatalist = useSelector((state: any) => state.Order.AddOrderdatalist);
     const UpdateOrderdatalist = useSelector((state: any) => state.Order.UpdateOrderlist);;
-    console.log("UpdateOrderdatalist >>>>>>", UpdateOrderdatalist);
     useEffect(() => {
       if (AddOrderdatalist?.success || UpdateOrderdatalist?.success ) {
         setisOpenSuccessOrderModel(true);
