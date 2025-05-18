@@ -140,10 +140,10 @@ const SignInPage: FC = function () {
     <>
       {isLoading ? <LoaderPage /> : null  }
 
-      <div className="flex flex-col items-center justify-center px-6 lg:h-screen lg:gap-y-12">
-        <div className="my-6 flex items-center gap-x-1 lg:my-0"> <img alt="Flowbite logo" src={LOGO} className="mr-3 h-12" /> </div>
+      <div className="flex flex-col items-center justify-center px-6 lg:h-screen lg:gap-y-6">
+        <div className="my-6 flex items-center gap-x-1 lg:my-0"> <img alt="logo" src={LOGO} className="mr-3 h-12" /> </div>
 
-        <Card horizontal imgSrc="/images/authentication/login_6.png" imgAlt=""  className="w-full lg:max-w-screen-lg md:max-w-screen-md [&>img]:hidden md:[&>img]:w-[31rem] md:[&>img]:p-0 md:[&>*]:w-full md:[&>*]:p-16 lg:[&>img]:block" >
+        <Card horizontal imgSrc="/images/authentication/login_3.png" imgAlt=""  className="w-full lg:max-w-screen-lg md:max-w-screen-md [&>img]:hidden md:[&>img]:w-[31rem] md:[&>img]:p-0 md:[&>*]:w-full md:[&>*]:p-16 lg:[&>img]:block" >
           <h1 className="mb-3 text-2xl font-bold dark:text-white md:text-3xl"> Sign in </h1>
 
           <Form onSubmit={(e) => { e.preventDefault(); validation.handleSubmit(); return false; }} >

@@ -59,8 +59,8 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
         label: crop.name_eng,
         value: crop._id
       }));
-      // setSelectedcropOption(cropOptions);
-      // setSelectedcropid(data.crops.map((crop: any) => crop._id));
+      setSelectedcropOption(cropOptions);
+      setSelectedcropid(data.crops.map((crop: any) => crop._id));
     }
     
       setSelectedStateOption({label : data?.state?.name, value : data?.state?._id })
@@ -363,8 +363,8 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
     }
   };
 
-  const [selectedcropOption, setSelectedcropOption] = useState<{ label: string, value: string } | []>([]);
-  const [selectedcropid, setSelectedcropid] = useState<string | []>([]);
+  const [selectedcropOption, setSelectedcropOption] = useState<{ label: string, value: string }[] | []>([]);
+  const [selectedcropid, setSelectedcropid] = useState<string | string[]>([]);
   const [validatecrop, setValidatecrop] = useState(0);
 
   const Iscropdata = (data: any) => {
@@ -379,6 +379,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
       setValidatecrop(0)
     }
   };
+
   // --------------Crop code end ---------
 
   // -------------- Irrigation source code start ---------
@@ -493,25 +494,15 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
   // ------------- Get  Data From Reducer Code Start --------------
     const  AddCustomerlist = useSelector((state: any) => state.Customer.AddCustomerlist)
     const  UpdateCustomerlist = useSelector((state: any) => state.Customer.UpdateCustomerlist)
-    const [ userAddedData, setUserAddedData] = useState<any>(null)
-    const [ userUpdatedData, setUserUpdatedData] = useState<any>(null)
-    useEffect(() => {
-      if(UpdateCustomerlist) {
-        setUserUpdatedData(UpdateCustomerlist ? UpdateCustomerlist : null);
-      }else{
-        setUserAddedData(AddCustomerlist ? AddCustomerlist  : null);
-      }
-    }, [AddCustomerlist, UpdateCustomerlist]);
-
 
     useEffect(() =>{  
-
-      if(userAddedData?.success == true || userUpdatedData?.success  == true){
+      if(AddCustomerlist?.success == true || UpdateCustomerlist?.success  == true){
         try {
-          if(userUpdatedData){
-            toast.success(userUpdatedData?.msg);
-          }else{
-            toast.success(userAddedData?.msg);
+          if(UpdateCustomerlist?.success){
+            toast.success(UpdateCustomerlist?.msg || "Customer updated successfully");
+          }else if(AddCustomerlist.success){
+            toast.success(AddCustomerlist?.msg || "Customer added successfully");
+            CloseAddmodal(false);
           }
         } catch (error) {
           toast.error(String(error));
@@ -522,7 +513,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
           dispatch(ResetCustomerDatalist())
         }
       }
-    },[userAddedData, userUpdatedData])
+    },[AddCustomerlist, UpdateCustomerlist])
   //  ------------- Get  Data From Reducer Code end --------------
 
   return (
@@ -768,7 +759,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
                 type="text"
                 onChange={validation.handleChange}
                 onBlur={validation.handleBlur}
-                value={validation.values?.post_office.trim()|| ""}
+                value={validation.values?.post_office || ""}
                 invalid={validation.touched?.post_office && validation.errors?.post_office ? true : false}
               />
               {validation.touched.post_office && validation.errors?.post_office ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.post_office} </FormFeedback>) : null}

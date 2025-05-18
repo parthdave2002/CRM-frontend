@@ -59,7 +59,7 @@ const SalesUpcomingComplainPage : FC <PropsData> = function ({ setDatactive, ope
             setOpenProfile(true);
             setisLoading(false)
         }
-    }, [CheckCustomerExistlist?.success])
+    }, [CheckCustomerExistlist])
     // --------------- check complain data and the login start ---------------
 
     return (
