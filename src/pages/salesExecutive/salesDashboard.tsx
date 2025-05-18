@@ -226,7 +226,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
                     <div className="p-3 rounded-full bg-purple-500 self-center">
                       <FaHandHoldingDollar className="text-white w-6 h-6" />
                     </div>
-                    <div className="">
+                    <div className="self-center">
                       <select className="border border-gray-300 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily" onChange={(e) => OrderDropDownCall(e)}>
                         <option value="daily">Daily</option>
                         <option value="weekly">Weekly</option>

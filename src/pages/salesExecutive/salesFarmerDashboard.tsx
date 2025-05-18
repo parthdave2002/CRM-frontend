@@ -36,7 +36,7 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile, Mobile_number}) 
       setFarmerAdded(true)
       setisLoading(false)
     }
-  }, [CheckCustomerExistlist?.success])
+  }, [CheckCustomerExistlist])
 
   const EditFarmerCall = () => {
     setFarmerAdded(true) 
@@ -93,8 +93,7 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile, Mobile_number}) 
       setCartItem((prevItems) => {
         const newItems = Array.isArray(data) ? data : [data];
         const normalizedNewItems = newItems.map((item) => {
-          console.log("item", item);
-          
+
           if (item.id) {
             return {
               name: item.id.name,
@@ -148,7 +147,6 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile, Mobile_number}) 
         return [...prevItems, ...uniqueItemsToAdd];
       });
     };
-    
 
     const handleRemoveCall = (data: any) =>{
       setCartItem((prevItems) => prevItems.filter((item) => item._id !== data));
@@ -169,6 +167,7 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile, Mobile_number}) 
     setFarmerAdded(false)
     setisLoading(false)
   }
+  
   return (
     <>
 

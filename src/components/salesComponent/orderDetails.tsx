@@ -22,7 +22,6 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
     const [isOpenSuccessOrderModel, setisOpenSuccessOrderModel ] = useState(false);
     const [isOpenSuccessOrderMessage, setisOpenSuccessOrderMessage ] = useState("");
     const UpdateOrderdatalist = useSelector((state: any) => state.Order.UpdateOrderlist);
-    console.log("UpdateOrderdatalist", UpdateOrderdatalist);
     
     useEffect(() => {
           if ( UpdateOrderdatalist?.success ) {

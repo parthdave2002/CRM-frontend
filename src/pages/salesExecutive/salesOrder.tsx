@@ -33,13 +33,16 @@ const SalesOrder : FC <PropsData> = function ({ setDatactive, openProfile,setOpe
   }
 
   const handleChange = (data: string) => set_OrderId(data);
-  
   const CloseProfileCall = () => {
     setOpenProfile(false);
     setDatactive("Farmer")
   }
 
-  const CallBackCall = (data :string) =>  set_OrderId(data);
+  const CallBackCall = (data :string) =>{
+    const newData = data.replace(/^#/, ''); 
+    set_OrderId(newData);
+    handleClickCall()
+  } 
 
   //---------    Get callback data  start--------- 
     const [Farmerdata, setFarmerdata] = useState([])
@@ -63,7 +66,7 @@ const SalesOrder : FC <PropsData> = function ({ setDatactive, openProfile,setOpe
         setOpenProfile(true);
         setisLoading(false)
       }
-    }, [CheckCustomerExistlist?.success])
+    }, [CheckCustomerExistlist])
   // --------------- check complain data and the login start ---------------
 
   return (
@@ -112,7 +115,7 @@ const SalesOrder : FC <PropsData> = function ({ setDatactive, openProfile,setOpe
                             <div className="text-gray-700 dark:text-gray-100  text-[1rem] text-end flex-1 ">   {moment(item?.future_order_date).format("DD-MM-YYYY")}   </div>
                           </div>
 
-                          <div className="text-gray-500 mt-3 text-[1.2rem] text-center border border-gray-500 rounded-md size-fit px-2 cursor-pointer self-center px-[4rem]" onClick={() => CallBackCall(item?.mobile)}>   Call    </div>
+                          <div className="text-gray-500 mt-3 text-[1.2rem] text-center border border-gray-500 rounded-md size-fit px-2 cursor-pointer self-center px-[4rem]" onClick={() => CallBackCall(item?.order_id)}>   Call    </div>
                         </div>
 
                         <div className="py-[0.5rem] rounded-xl flex justify-around">
