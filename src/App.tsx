@@ -4,7 +4,6 @@ import { BrowserRouter } from "react-router-dom";
 import PrivateRoute from "./routes/PrivateRoute";
 import LoaderPage from "./components/loader";
 import { useSelector } from "react-redux";
-
 const DashboardPage = lazy(() => import("./pages"));
 const ManagerDashboardPage = lazy(() => import("./pages/mdashboard/dashoboard"));
 const SignInPage = lazy(() => import("./pages/authentication/sign-in"));
@@ -51,6 +50,8 @@ const CropsListPage = lazy(() => import("./pages/crops/cropsList"));
 const AddCropsPage = lazy(() => import("./pages/crops/cropsAdd"));
 const CropsDetailsPage = lazy(() => import("./pages/crops/cropsDetails"));
 const SalesCRMPage = lazy(() => import("./pages/salesExecutive"));
+const CouponListPage = lazy(() => import("./pages/coupon/couponList"));
+const AddCouponPage = lazy(() => import("./pages/coupon/couponAdd"));
 
 const App: FC = function () {
   const isAuthenticated = useSelector((state: any) => state.Login.Logincode?.success);
@@ -114,6 +115,9 @@ const App: FC = function () {
             <Route path="/crop/add" element={<AddCropsPage />} />
             <Route path="/crop/:id" element={<AddCropsPage />} />
             <Route path="/crop/details/:id" element={<CropsDetailsPage />} />
+
+            <Route path="/coupon/list" element={<CouponListPage />} />
+            <Route path="/coupon/add" element={<AddCouponPage />} />
             {/* Sales Routes */}
             <Route path="/sales-crm" element={<SalesCRMPage />} />
           </Route>

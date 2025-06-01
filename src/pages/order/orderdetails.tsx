@@ -11,7 +11,7 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import logo from "../../img/logo.webp";
 import { Button } from "flowbite-react";
-import { FaFacebookSquare, FaInstagram, FaWhatsapp, FaYoutube } from "react-icons/fa";
+import { FaPrint } from "react-icons/fa6";
 
 const OrdererDetailsPage: FC = function () {
   const dispatch = useDispatch();
@@ -33,6 +33,7 @@ const OrdererDetailsPage: FC = function () {
     pincode : string;
     taluka_name:string;
     village_name : string;
+    state :any;
   }
 
   interface ProductData {
@@ -95,156 +96,89 @@ const OrdererDetailsPage: FC = function () {
     const input = invoiceRef.current;
     if (!input) return;
 
-    const canvas = await html2canvas(input, { scale: 2 });
-    const imgData = canvas.toDataURL("image/png");
+
+  const canvas = await html2canvas(input, {
+    scale: 2,            // Reduce resolution
+    useCORS: true,       // Enables logo/image loading from external URLs
+    allowTaint: false,
+    logging: false
+  });
+  const imgData = canvas.toDataURL("image/jpeg", 0.7);
 
     const pdf = new jsPDF("p", "mm", "a4");
     const imgWidth = 210; // A4 width in mm
     const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-    pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+    pdf.addImage(imgData, "JPEG", 0, 0, imgWidth, imgHeight);
     pdf.save(`Invoice_${UserDataList?.order_id}.pdf`);
   };
+
+  const printPDF = () =>{
+  if (!invoiceRef.current) return;
+
+  const printWindow = window.open("", "_blank", "width=900,height=1000");
+  if (!printWindow) {
+    alert("Failed to open print window.");
+    return;
+  }
+  const invoiceContent = invoiceRef.current.outerHTML;
+
+ printWindow.document.write(`
+    <html>
+      <head>
+        <title>Invoice</title>
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+        <style>
+          @page {
+            size: A4;
+            margin: 1in;
+          }
+          @media print {
+            body {
+              -webkit-print-color-adjust: exact;
+              print-color-adjust: exact;
+            }
+            header, footer {
+              display: none !important;
+            }
+            .page-break {
+              page-break-after: always;
+            }
+          }
+          body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #000;
+          }
+        </style>
+      </head>
+      <body onload="window.print(); setTimeout(() => window.close(), 100);">
+        ${invoiceContent}
+      </body>
+    </html>
+  `);
+
+    printWindow.document.close();
+    // printWindow.focus();
+    // printWindow.print();
+    // printWindow.close();
+  }
 
   return (
     <>
       <NavbarSidebarLayout isFooter={false}  isSidebar={true} isNavbar={true} isRightSidebar={true}  >
         <ExampleBreadcrumb  Name={Name}  ParentName={ParentName}  ParentLink={ParentLink}  />
         <div className="mt-[2rem] bg-gray-100 dark:bg-gray-800 p-4">
-          <div className="mb-4 flex justify-end">
-            <Button color="primary" onClick={downloadPDF}>   <MdFileDownload className="w-6 h-6" /> Download PDF  </Button>
+          <div className="mb-4 flex justify-end gap-x-3">
+            <Button color="primary" onClick={printPDF} >  <FaPrint  className="w-4 h-6 mx-2" /> <div className="text-[1rem]"> Print Invoice </div>   </Button>
+            <Button color="primary" onClick={downloadPDF} >  <MdFileDownload className="w-6 h-6" /> <div className="text-[1rem]"> Download PDF </div>   </Button>
           </div>
-
-          {/* <div className="w-[794px] h-[1123px] mx-auto bg-white shadow-lg p-6 rounded-lg flex flex-col justify-between  font-sans"  ref={invoiceRef} >
-              <div className="flex flex-col">
-                <div className="flex-1 text-center"> 
-                   <h6 className="text-[0.9rem]  text-gray-500 ">  એગ્રી ભારત કંપનીમાંથી 100% ખાતરીબંધ બ્રાન્ડેડ કૃષિ પ્રોડક્ટ ઘરે બેઠા ઓર્ડર કરવા અને ખેતીને લગતી વધુ માહિતી માટે  </h6>
-                    <h6 className="text-[0.9rem]  text-gray-500 ">  હેલ્પલાઇન નંબર 9100029429/9100029329 પર સંપર્ક કરો!!!  જય કિસાન  </h6>
-                 </div>
-
-                <div className="flex justify-between">
-                  <div className="flex-1">  <img src={logo} alt="Company Logo" className="w-24" />  </div>
-                  <div className="flex-1 text-right">  <h1 className="text-3xl font-bold text-gray-800 ">INVOICE</h1> </div>
-                </div>
-                <div className="flex justify-between items-center mb-2  border-b pb-2">
-                  <div>
-                    <h2 className="text-xl font-bold mt-2">Agri Bharat</h2>
-                    <p className="text-gray-500">Location 1: Shop-1, Ravi Shopping Center, </p>
-                    <p className="text-gray-500">Opp. New Bus Stand, Kapadwanj - 387620</p>
-                    <p className="text-gray-500">  Dist.: Kheda, Gujarat </p>
-                    <p className="text-gray-500">  GST :  </p>
-
-                  </div>
-
-                  <div className="flex-1 text-right align-end self-end">
-                  <p className="text-gray-500 text-sm"> Dispatched from: Kapadvanj / Una warehouse </p>
-                    <p className="text-gray-500 text-sm"><strong> Pesticide Lic No: </strong>  KHF/FP1240001586/2024-25</p>
-                    <p className="text-gray-500 text-sm"><strong> Seeds Lic No: </strong>  KHF/FSR240001647/2024-25	 </p>
-                    <p className="text-gray-500 text-sm"> <strong> Ferlitizer Lic No: </strong> KHF/FFR240001682/2024-25 </p>
-                 
-                  </div>
-                </div>
-
-                <div className="flex justify-between items-center mb-6  border-b pb-4">
-                  <div>
-                    <p className="text-gray-500 text-[0.9rem]"> Warehouse-1, Diu Road, </p>
-                    <p className="text-gray-500 text-[0.9rem]">At: Kesariya - 362560, Ta.: Una,</p>
-                    <p className="text-gray-500 text-[0.9rem]">  Dist.: Gir Somnath, Gujarat </p>
-                    <p className="text-gray-500 text-[0.9rem]">  GST :  </p>
-
-                  </div>
-
-                  <div className="flex-1 text-right align-end self-end">
-                    <p className="text-gray-500 text-sm"><strong> Pesticide Lic No: </strong> GRS/FP1230000664/2023-24 </p>
-                    <p className="text-gray-500 text-sm"><strong> Seeds Lic No: </strong>  GRS/FSR230000774/2023-24	 </p>
-                    <p className="text-gray-500 text-sm"> <strong> Ferlitizer Lic No: </strong> GRS/FFR230000775/2023-24 </p>
-                    <p className="text-gray-500 text-sm"> E-mail: agribharat2023@gmail.com</p>
-                    <p className="text-gray-500 text-sm"> Contact : 91000 29329/91000 29429 </p>
-                  </div>
-                </div>
-
-                <div className="mb-6 grid grid-cols-2 gap-4">
-                  <div>
-                    <p className="font-semibold">Bill To:</p>
-                    <p>{UserDataList?.customer?.customer_name}</p>
-                    <p className="text-gray-600 text-[0.9rem]">  {UserDataList?.customer?.address}   </p>
-                    <p className="text-gray-600 text-[0.9rem]">  {UserDataList?.customer?.district_name}, {UserDataList?.customer?.taluka_name}, {UserDataList?.customer?.village_name}  </p>
-                    <p className="text-gray-600 text-[0.9rem]">  Contact : {UserDataList?.customer?.mobile_number}, {UserDataList?.customer?.alternate_number} </p>
-                  </div>
-                  <div className="text-right">
-                    <p> <strong>Invoice :</strong> {UserDataList?.order_id}  </p>
-                    <p> <strong>Invoice Date:</strong>  {moment(UserDataList?.added_at).format("DD-MM-YYYY")} </p>
-                  </div>
-                </div>
-            </div>
-
-            <div>
-            <table className="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
-              <thead>
-                <tr className="bg-gray-700 text-white">
-                  <th className="border p-2 text-[0.9rem] text-left">Item Description</th>
-                  <th className="border p-2 text-[0.9rem]">HSN</th>
-                  <th className="border p-2 text-[0.9rem]">Batch</th>
-                  <th className="border p-2 text-[0.9rem]">Rate</th>
-                  <th className="border p-2 text-[0.9rem]">Qty</th>
-                  <th className="border p-2 text-[0.9rem]">Amount</th>
-                  <th className="border p-2 text-[0.9rem]">Dis</th>
-                  <th className="border p-2 text-[0.9rem]">GST</th>
-                  <th className="border p-2 text-[0.9rem]">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                {(UserDataList?.products ?? []).map((item: any, k: number) => (
-                  <tr  key={k} className="border text-center bg-gray-50 hover:bg-gray-100 transition-all"  >
-                    <td className="border p-2 text-[0.8rem] text-left w-[18rem] max-w-[18rem] whitespace-normal break-words"> <p> {item?.id?.name?.englishname} {item?.id?.packaging} {item?.id?.packagingtype?.type_eng} </p></td>
-                    <td className="border p-2 text-[0.8rem]">{item?.hsn_code}</td>
-                    <td className="border p-2 text-[0.8rem]">{item?.batch_no}</td>
-                    <td className="border p-2 text-[0.8rem]">{item?.price}</td>
-                    <td className="border p-2 text-[0.8rem]">{item?.quantity}</td>
-                    <td className="border p-2 text-[0.8rem]"> {item?.quantity * item?.price}  </td>
-                    <td className="border p-2 text-[0.8rem]">{item?.discount}</td>
-                    <td className="border p-2 text-[0.8rem]"> {((item?.quantity * item?.price - item?.discount) *  (item?.c_gst*2 / 100)).toFixed(2) } </td> 
-                    <td className="border p-2 text-[0.8rem]"> {item?.quantity * item?.price -item?.discount   + (item?.quantity * item?.price -  item?.discount) *  (item?.c_gst*2 / 100)} </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-
-            <div className="mt-6  text-gray-700 flex ">
-                <div className="flex-1">
-                    <p className="text-[0.8rem]"> A/c Holder : AGRI BHARAT</p>   
-                    <p className="text-[0.8rem]"> A/c No: 50200102495365   </p> 
-                    <p className="text-[0.8rem]"> Bank: HDFC BANK   Branch: KAPADWANJ GUJARAT  </p>
-                    <p className="text-[0.8rem]"> IFSC Code: HDFC0000748 </p>
-                </div>
-                <div className="flex-1 text-right">
-                  <p className="text-lg">  <strong>Total Amout: </strong> ₹{finalsubtotal?.toFixed(2) ?? "0.00"}  </p>
-                  <p className="text-lg"> <strong>Total Discount:</strong> ₹{finaldiscount?.toFixed(2) ?? "0.00"} </p>
-                  <p className="text-lg"> <strong>Total gst :</strong> ₹{finalgst ? finalgst.toFixed(2): 0} </p>
-                </div>
-            </div>
-            <p className="text-2xl font-bold bg-gray-700 text-white p-3 mt-3 text-right self-center"> Grand Total: ₹{total?.toFixed(2) ?? "0.00"}  </p>
-            </div>
-
-            <div className="mt-6 text-left text-gray-700">
-              <p className="text-md">   <strong>Terms & Condition:</strong>  </p>
-              <p className="text-[0.8rem]">  (1) All products are intended for lawful agricultural use only. </p>
-              <p className="text-[0.8rem]">  (2) Product performance depends on factors like weather, soil, etc…, beyond our control. We are not accepting any liability for crop failure or reduced yield or quality. </p>
-              <p className="text-[0.8rem]">  (3) The battery Pump and Torch have a limited warranty of 6 months for battery only. Do not use electric items while charging, use original adaptor and avoid overcharge or charge in low voltage as it may damage battery.  </p>
-              <p className="text-[0.8rem]">  (4) All disputes are subject to the jurisdiction of Una or Kapadvanj. E & O.E  </p>
-
-              <div className="flex-1 mt-5 "> 
-                   <h6 className="text-[1.2rem]  text-gray-500 text-center">  🙏એગ્રી ભારતમાંથી ખરીદી કરવા બદલ આભાર ! 🙏 </h6>
-                  <h6 className="text-[0.9rem]  text-gray-500 text-center flex justify-center gap-x-2 items-center "> Follow us on  <FaFacebookSquare />  <FaInstagram  />   <FaYoutube  /> <FaWhatsapp /> </h6>
-              </div>
-            </div>
-            
-          </div> */}
-
-          {productChunks.map((productChunk, pageIndex) => (
-            <div
-              key={pageIndex}
-              className="w-[794px] h-[1123px] mx-auto bg-white shadow-lg p-6 rounded-lg flex flex-col justify-between font-sans page-break"
+         
+          {productChunks.map((productChunk, pageIndex) => {
+             return(
+            <div key={pageIndex}
+              className="w-[794px] h-[1123px] mx-auto bg-white shadow-lg p-6 rounded-lg flex flex-col justify-between font-sans page-break "
               ref={pageIndex === 0 ? invoiceRef : undefined}
             >
               {/* --- Static Top Content --- */}
@@ -280,7 +214,8 @@ const OrdererDetailsPage: FC = function () {
                     <p className="font-semibold">Bill To:</p>
                     <p>{UserDataList?.customer?.customer_name}</p>
                     <p className="text-gray-600 text-[0.9rem]">  {UserDataList?.customer?.address}   </p>
-                    <p className="text-gray-600 text-[0.9rem]">  {UserDataList?.customer?.district_name}, {UserDataList?.customer?.taluka_name}, {UserDataList?.customer?.village_name}  </p>
+                    <p className="text-gray-600 text-[0.9rem]">  {UserDataList?.customer?.village_name}, {UserDataList?.customer?.taluka_name},  {UserDataList?.customer?.district_name},  </p>
+                    <p className="text-gray-600 text-[0.9rem]">  {UserDataList?.customer?.state?.name} -  {UserDataList?.customer?.pincode}  </p>
                     <p className="text-gray-600 text-[0.9rem]">  Contact : {UserDataList?.customer?.mobile_number}, {UserDataList?.customer?.alternate_number} </p>
                   </div>
                   <div className="text-right">
@@ -339,10 +274,13 @@ const OrdererDetailsPage: FC = function () {
                     </div>
                   </div>
 
-                  <p className="text-2xl font-bold bg-gray-700 text-white p-3 mt-3 text-right">Grand Total: ₹{total?.toFixed(2) ?? "0.00"}</p>
+                  <p className="text-2xl font-bold bg-gray-700 text-white px-3 py-1 mt-3 text-right">Grand Total: ₹{total?.toFixed(2) ?? "0.00"}</p>
 
                   <div className="mt-4 text-[0.8rem] text-gray-700">
-                    <p><strong>Terms & Conditions:</strong></p>
+                      <div className="flex justify-between"> 
+                          <div className="text-[1.2rem]" ><strong>Terms & Conditions:</strong>  </div>
+                          <div className="mb-3 border border-dashed border-gray-400 rounded-md p-2 w-[10rem] h-[2.5rem]"> </div>
+                      </div>
                     <p className="text-[0.8rem]">  (1) All products are intended for lawful agricultural use only. </p>
                     <p className="text-[0.8rem]">  (2) Product performance depends on factors like weather, soil, etc…, beyond our control. We are not accepting any liability for crop failure or reduced yield or quality. </p>
                     <p className="text-[0.8rem]">  (3) The battery Pump and Torch have a limited warranty of 6 months for battery only. Do not use electric items while charging, use original adaptor and avoid overcharge or charge in low voltage as it may damage battery.  </p>
@@ -350,13 +288,24 @@ const OrdererDetailsPage: FC = function () {
                   </div>
 
                   <div className="mt-4 text-center text-gray-600">
-                    <h6 className="text-[1rem]">🙏એગ્રી ભારતમાંથી ખરીદી કરવા બદલ આભાર !🙏</h6>
-                    <div className="flex justify-center gap-2 items-center text-[0.9rem]"> Follow us on <FaFacebookSquare /> <FaInstagram /> <FaYoutube /> <FaWhatsapp />  </div>
+                     <h6 className="text-[1rem] leading-none">
+                        <span role="img" aria-label="pray" className="mr-1">🙏</span>
+                        એગ્રી ભારતમાંથી ખરીદી કરવા બદલ આભાર !
+                        <span role="img" aria-label="pray" className="ml-1">🙏</span>
+                      </h6>
+                    <div className="flex justify-center items-center gap-x-3 mt-3 text-[0.9rem]"> 
+                      <img src="/images/products/facebook.png" className="w-5 h-5  align-middle" alt="Facebook" /> 
+                      <img src="/images/products/instagram.png"  className="w-6 h-6  align-middle" alt="Insta" /> 
+                      <img src="/images/products/whatsapp.png"  className="w-6 h-6  align-middle" alt="WhatsApp" /> 
+                      <img src="/images/products/youtube.png"  className="w-6 h-6  align-middle" alt="Youtube" /> 
+                      <img src="/images/products/website.png"   className="w-5 h-5  align-middle" alt="Website" />  
+                      </div>
                   </div>
                 </>
               )}
             </div>
-          ))}
+            )
+          })}
 
         </div>
       </NavbarSidebarLayout>

@@ -16,6 +16,7 @@ import Taglog from "./Taglog/reducer";
 import ExportData from "./ExportData/reducer";
 import Customer from "./Customer/reducer";
 import Crop from "./Crop/reducer";
+import Coupon from "./Coupon/reducer";
 import Lead from "./Lead/reducer";
 import Complain from "./Complain/reducer";
 import Location from "./Location/reducer";
@@ -40,6 +41,7 @@ const rootReducer = combineReducers({
     ExportData,
     Customer,
     Crop,
+    Coupon,
     Lead,
     Complain,
     SalesDashboard,
