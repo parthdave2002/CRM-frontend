@@ -305,7 +305,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
         heard_about_agribharat : selectedheaderaboutid,
         smart_phone: true,
         crops:selectedcropid,
-        ref_name : selectedRefnumber ?  selectedRefnumber : null
+        ref_name : values?.ref_name
       }
 
       if(isEditFarmer){
@@ -358,7 +358,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
   const CropOprions = useSelector((state: any) => state.Crop.Cropdatalist)?.map((item: any) => ({ label: item.name_eng, value: item._id }));
   const handleCropLoad = () => {
     if (!hasFetchedRef.current) {
-      dispatch(getCroplist());
+      dispatch(getCroplist({all:"true"}));
       hasFetchedRef.current = true;
     }
   };
@@ -497,12 +497,17 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
 
     useEffect(() =>{  
       if(AddCustomerlist?.success == true || UpdateCustomerlist?.success  == true){
+        console.log("UpdateCustomerlist?.success",UpdateCustomerlist?.success);
+        
         try {
           if(UpdateCustomerlist?.success){
-            toast.success(UpdateCustomerlist?.msg || "Customer updated successfully");
+              toast.success(UpdateCustomerlist?.msg || "Customer updated successfully");
+              CloseAddmodal(false);
+              setFarmerAdded(false);
           }else if(AddCustomerlist.success){
             toast.success(AddCustomerlist?.msg || "Customer added successfully");
             CloseAddmodal(false);
+            setFarmerAdded(false);
           }
         } catch (error) {
           toast.error(String(error));
@@ -621,6 +626,29 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
                 invalid={validation.touched?.alternate_number && validation.errors?.alternate_number ? true : false}
               />
               {validation.touched.alternate_number && validation.errors?.alternate_number ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.alternate_number} </FormFeedback>) : null}
+            </div>
+          </div>
+
+           <div>
+            <Label htmlFor="heard_aboutus"> Crops <span className='text-red-500'>*</span></Label>
+            <div className="mt-1" onClick={ () => handleCropLoad ()} >
+              <Select
+                className="w-full dark:text-white"
+                classNames={{
+                  control: () => "react-select__control",
+                  singleValue: () => "react-select__single-value",
+                  menu: () => "react-select__menu",
+                  option: ({ isSelected }) =>
+                    isSelected ? "react-select__option--is-selected" : "react-select__option",
+                  placeholder: () => "react-select__placeholder",
+                }}
+                value={selectedcropOption}
+                onChange={(e) => { Iscropdata(e) }}
+                options={CropOprions}
+                isClearable={true}
+                isMulti={true}
+              />
+              {validatecrop == 1 ? (<FormFeedback type="invalid" className="text-Red text-sm"> Please select crop </FormFeedback>) : null}
             </div>
           </div>
 
@@ -874,28 +902,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
             </div>
           </div>
 
-          <div>
-            <Label htmlFor="heard_aboutus"> Crops <span className='text-red-500'>*</span></Label>
-            <div className="mt-1" onClick={ () => handleCropLoad ()} >
-              <Select
-                className="w-full dark:text-white"
-                classNames={{
-                  control: () => "react-select__control",
-                  singleValue: () => "react-select__single-value",
-                  menu: () => "react-select__menu",
-                  option: ({ isSelected }) =>
-                    isSelected ? "react-select__option--is-selected" : "react-select__option",
-                  placeholder: () => "react-select__placeholder",
-                }}
-                value={selectedcropOption}
-                onChange={(e) => { Iscropdata(e) }}
-                options={CropOprions}
-                isClearable={true}
-                isMulti={true}
-              />
-              {validatecrop == 1 ? (<FormFeedback type="invalid" className="text-Red text-sm"> Please select crop </FormFeedback>) : null}
-            </div>
-          </div>
+         
 
           <div>
             <Label htmlFor="ref_name"> Refrence Number </Label>

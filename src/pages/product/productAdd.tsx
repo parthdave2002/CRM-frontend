@@ -9,7 +9,7 @@ import { HiTrash} from "react-icons/hi";
 import { Form, Input, FormFeedback } from "reactstrap";
 import { useNavigate, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { AddProductlist, getCategorylist, getCompanylist, getPackingTypelist, GetProductViewlist, ResetProductlist, UpdateProductlist } from "../../Store/actions";
+import { AddProductlist, getCategorylist, getCompanylist, getCroplist, getPackingTypelist, GetProductViewlist, ResetProductlist, UpdateProductlist } from "../../Store/actions";
 import MultiImageUploadPreview from "../../components/multiimageuploader";
 import { toast } from "react-toastify";
   interface DescriptionData {
@@ -60,6 +60,7 @@ import { toast } from "react-toastify";
     s_gst: number | string;
     company: CompanyData;
     categories: Category;
+    crops: Category;
     price: number | string;
     discount: number;
     packaging: number | string;
@@ -92,6 +93,7 @@ const ProductAddPage : FC = function () {
         if(CompanyListData.length == 0) dispatch(getCompanylist()); 
         if (PackingTypeListData.length == 0) dispatch(getPackingTypelist());
         if (CategoryListData.length == 0) dispatch(getCategorylist());
+        if (CropListData.length == 0) dispatch(getCroplist({all:"true"}));
     },[])
 
     // ------------- Company Get Data From Reducer Code Start --------------
@@ -168,6 +170,32 @@ const ProductAddPage : FC = function () {
             }
         };
     //  ------------- Category Get Data From Reducer Code end --------------
+    
+    // ------------- Crop Get Data From Reducer Code Start --------------
+        const [CropListData, setCropListData] = useState([]);
+        const  Croplist  = useSelector((state: any) => state.Crop.Cropdatalist);
+        const cropoption = CropListData && CropListData?.filter((item: any) => item.is_active).map((item: any) => ({ label: item.name_eng, value: item._id }));
+  const [selectedcropOption, setSelectedcropOption] = useState<{ label: string, value: string }[] | []>([]);
+        const [selectedCropid, setSelectedCropid] = useState<string | string[]>([]);
+        const [validateCrop, setValidateCrop] = useState(0);
+
+        useEffect(() => {
+            setCropListData(Croplist ? Croplist : []);
+        }, [Croplist]);
+
+        const IsCropdata = (data: any) => {
+            if (!data) {
+                setSelectedCropid([]);
+                setSelectedcropOption([]);
+                setValidateCrop(1)
+            } else {
+                const selectedIds = data.map((item: any) => item.value);
+                setSelectedCropid(selectedIds);
+                setSelectedcropOption(data);
+                setValidateCrop(0)
+            }
+        };
+    //  ------------- Crop Get Data From Reducer Code end --------------
 
     // -------------------- product description code start -----------------
         const [inputs, setInputs] = useState<DescriptionData[]>([   { id: "", gujaratiHeader: "", englishHeader: "", gujaratiValue: "", englishValue: "" }]);
@@ -224,6 +252,11 @@ const ProductAddPage : FC = function () {
             name_eng: '',
             name_guj: ''
         },
+        crops: {
+            _id: '',   
+            name_eng: '',
+            name_guj: ''
+        },
         description: [ {
             id: "",
             englishHeader: "",
@@ -276,7 +309,6 @@ const ProductAddPage : FC = function () {
           batch_no: Yup.string().required("Please enter product batch number"),
           hsn_code: Yup.string().required("Please enter product hsn code"),
           c_gst: Yup.string().required("Please enter product cgst"),
-          s_gst: Yup.string().required("Please enter product sgst"),
         }),
         
         onSubmit: (values) => {
@@ -292,6 +324,11 @@ const ProductAddPage : FC = function () {
 
             if(selectedCategoryid == null){
                 setValidateCategory(1)
+                return;
+            }
+
+            if(selectedCropid.length === 0){
+                setValidateCrop(1)
                 return;
             }
 
@@ -316,10 +353,11 @@ const ProductAddPage : FC = function () {
             formData.append("packagingtype",  String(selectedpackingTypeid));
             formData.append("company", String(selectedCompanyid));
             formData.append("categories", String(selectedCategoryid));
+            formData.append("crops",  JSON.stringify(selectedCropid));
             formData.append("batch_no", values?.batch_no);
             formData.append("hsn_code", values?.hsn_code);
             formData.append("c_gst",  JSON.stringify(values?.c_gst));
-            formData.append("s_gst",  JSON.stringify(values?.s_gst));
+            formData.append("s_gst",  JSON.stringify(values?.c_gst));
             formData.append("avl_qty",  JSON.stringify(values?.avl_qty));
             inputs.forEach((item, index) => {
                 formData.append(`description[${index}][gujaratiHeader]`, item.gujaratiHeader);
@@ -450,6 +488,21 @@ const ProductAddPage : FC = function () {
             const selectedCategory: any = categoryoption.find((dropdown: any) => dropdown.value === ProductList.categories?._id);
             setSelectedCategoryOption(selectedCategory || null);
             setSelectedCategoryid(selectedCategory?.value);
+        }
+
+        // if (ProductList?.crops && cropoption.length > 0) {
+        //     const selectedCrops: any = cropoption.find((dropdown: any) => dropdown.value === ProductList.crops?._id);
+        //     setSelectedCropOption(selectedCrops || null);
+        //     setSelectedCropid(selectedCrops?.value);
+        // }
+
+         if (Array.isArray(ProductList?.crops)) {
+            const cropOptions = ProductList?.crops.map((crop: any) => ({
+                label: crop.name_eng,
+                value: crop._id
+            }));
+            setSelectedcropOption(cropOptions);
+            setSelectedCropid(ProductList.crops.map((crop: any) => crop._id));
         }
     }, [ProductList]);
     // -------------  Sigle Data from reducer --------------
@@ -623,6 +676,31 @@ const ProductAddPage : FC = function () {
 
                         <div className="md:flex gap-x-[2rem]">
 
+                              <div className="flex-1 mt-[1rem]">
+                                <Label htmlFor="Status">Crop <span className='text-red-500'>*</span> </Label>
+                                <div className="mt-1">
+                                <Select
+                                    className="w-full dark:text-white"
+                                    classNames={{
+                                        control: () => "react-select__control",
+                                        singleValue: () => "react-select__single-value",
+                                        menu: () => "react-select__menu",
+                                       option: ({ isSelected }) =>
+                                            isSelected ? "react-select__option--is-selected" : "react-select__option",
+                                            placeholder: () => "react-select__placeholder",
+                                        }}
+                                    value={selectedcropOption}
+                                    onChange={(e) => { IsCropdata(e) }}
+                                    options={cropoption}
+                                    isClearable={true}
+                                     isMulti={true}
+                                />
+                                {validateCrop == 1 ? (
+                                    <FormFeedback type="invalid" className="text-Red text-sm"> Please Select crop </FormFeedback>
+                                ) : null}
+                                </div>
+                            </div>
+
                             <div className="flex-1 mt-[1rem]">
                                 <Label htmlFor="qty"> QTY <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
@@ -660,8 +738,10 @@ const ProductAddPage : FC = function () {
                                 {validation.touched.price && validation.errors.price ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.price} </FormFeedback> ) : null}
                                 </div>
                             </div>
+                        </div>
 
-                            <div className="flex-1 mt-[1rem]">
+                        <div className="md:flex gap-x-[2rem]">
+                             <div className="flex-1 mt-[1rem]">
                                 <Label htmlFor="discount"> Discount <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                 <Input
@@ -679,10 +759,6 @@ const ProductAddPage : FC = function () {
                                 {validation.touched.discount && validation.errors.discount ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.discount} </FormFeedback> ) : null}
                                 </div>
                             </div>
-
-                        </div>
-
-                        <div className="md:flex gap-x-[2rem]">
 
                             <div className="flex-1 mt-[1rem] ">
                                 <Label htmlFor="Status">Company <span className='text-red-500'>*</span> </Label>
@@ -725,8 +801,10 @@ const ProductAddPage : FC = function () {
                                 {validation.touched.batch_no && validation.errors.batch_no ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.batch_no} </FormFeedback> ) : null}
                                 </div>
                             </div>
+                        </div>
 
-                            <div className="flex-1 mt-[1rem]">
+                        <div className="md:flex gap-x-[2rem]">
+                             <div className="flex-1 mt-[1rem]">
                                 <Label htmlFor="hsn_code"> HSN code <span className='text-red-500'>*</span> </Label>
                                 <div className="mt-1">
                                 <Input
@@ -743,43 +821,42 @@ const ProductAddPage : FC = function () {
                                 {validation.touched.hsn_code && validation.errors.hsn_code ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.hsn_code} </FormFeedback> ) : null}
                                 </div>
                             </div>
-                        </div>
-
-                        <div className="md:flex gap-x-[2rem]">
-
-                            <div className="flex-1 mt-[1rem] ">
-                                <Label htmlFor="c_gst"> CGST <span className='text-red-500'>*</span> </Label>
-                                <div className="mt-1">
-                                <Input
-                                    id="c_gst"
-                                    name="c_gst"
-                                    className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
-                                    placeholder="Product CGST"
-                                    type="number"
-                                    onChange={validation.handleChange}
-                                    onBlur={validation.handleBlur}
-                                    value={validation.values.c_gst}
-                                    invalid={ validation.touched.c_gst && validation.errors.c_gst ? true : false}
-                                />
-                                {validation.touched.c_gst && validation.errors.c_gst ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.c_gst} </FormFeedback> ) : null}
+                            
+                            <div className="flex gap-x-2">
+                                <div className="flex-1 mt-[1rem] ">
+                                    <Label htmlFor="c_gst"> CGST <span className='text-red-500'>*</span> </Label>
+                                    <div className="mt-1">
+                                    <Input
+                                        id="c_gst"
+                                        name="c_gst"
+                                        className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-[10rem]"
+                                        placeholder="Product CGST"
+                                        type="number"
+                                        onChange={validation.handleChange}
+                                        onBlur={validation.handleBlur}
+                                        value={validation.values.c_gst}
+                                        invalid={ validation.touched.c_gst && validation.errors.c_gst ? true : false}
+                                    />
+                                    {validation.touched.c_gst && validation.errors.c_gst ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.c_gst} </FormFeedback> ) : null}
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div className="flex-1 mt-[1rem] ">
-                                <Label htmlFor="s_gst"> SGST <span className='text-red-500'>*</span> </Label>
-                                <div className="mt-1">
-                                <Input
-                                    id="s_gst"
-                                    name="s_gst"
-                                    className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
-                                    placeholder="Product SGST"
-                                    type="number"
-                                    onChange={validation.handleChange}
-                                    onBlur={validation.handleBlur}
-                                    value={validation.values.s_gst }
-                                    invalid={ validation.touched.s_gst && validation.errors.s_gst ? true : false}
-                                />
-                                {validation.touched.s_gst && validation.errors.s_gst ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.s_gst} </FormFeedback> ) : null}
+                                <div className="flex-1 mt-[1rem] ">
+                                    <Label htmlFor="s_gst"> SGST <span className='text-red-500'>*</span> </Label>
+                                    <div className="mt-1">
+                                    <Input
+                                        id="s_gst"
+                                        name="s_gst"
+                                        className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm  w-[10rem]"
+                                        placeholder="Product SGST"
+                                        type="number"
+                                        onChange={validation.handleChange}
+                                        onBlur={validation.handleBlur}
+                                        value={validation.values.c_gst }
+                                        invalid={ validation.touched.s_gst && validation.errors.s_gst ? true : false}
+                                    />
+                                    {validation.touched.s_gst && validation.errors.s_gst ? ( <FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors.s_gst} </FormFeedback> ) : null}
+                                    </div>
                                 </div>
                             </div>
 

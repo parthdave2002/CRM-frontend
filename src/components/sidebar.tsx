@@ -7,7 +7,7 @@ import { GiWheat } from "react-icons/gi";
 import { FaUser, FaTags  } from "react-icons/fa";
 import { FaSackDollar } from "react-icons/fa6";
 import { BsCloudArrowUpFill, BsBuildingsFill } from "react-icons/bs";
-import { BiCategoryAlt } from "react-icons/bi";
+import { BiCategoryAlt, BiSolidCoupon } from "react-icons/bi";
 import type { FC, PropsWithChildren } from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -75,11 +75,11 @@ const LeftSidebar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = function ()
       icon: TbReportSearch,
       to: "/lead/list",
     },
-    {
-      name: "Report",
-      icon: MdLeaderboard,
-      to: "/report",
-    },
+    // {
+    //   name: "Report",
+    //   icon: MdLeaderboard,
+    //   to: "/report",
+    // },
   ];
 
   const SubMasterMenu = [
@@ -117,6 +117,11 @@ const LeftSidebar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = function ()
       name: "Crop",
       icon:  GiWheat,
       to: "/crop/list",
+    },
+    {
+      name: "Coupon",
+      icon:  BiSolidCoupon,
+      to: "/coupon/list",
     },
   ]
 

@@ -164,17 +164,20 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile, Mobile_number}) 
   // -------- Order Details open/close code end ----------
 
   const CloseAddmodal = () => { 
-    setFarmerAdded(false)
-    setisLoading(false)
+    setisLoading(false);
+    setFarmerAdded(false);
   }
   
   return (
     <>
 
     {isLoading  ?   <LoaderPage /> : null  }
-      { !isLoading && farmedAdded == true  ?
-        <SalesAddFarmer isEditFarmer={isEditFarmer} Mobile_number={Mobile_number}  setFarmerAdded={setFarmerAdded} handleAccept={handleAccept} CloseAddmodal ={CloseAddmodal}/>
-      : farmedAdded == false && !isLoading ?
+
+    {farmedAdded && !isLoading && (
+      <SalesAddFarmer  isEditFarmer={isEditFarmer} Mobile_number={Mobile_number} setFarmerAdded={setFarmerAdded} handleAccept={handleAccept} CloseAddmodal={CloseAddmodal} /> 
+    )}
+      
+      { farmedAdded == false && !isLoading ?
         <>
           {cartOpen == true ?
             <div>  <CartList setCartOpen={setCartOpen} setCartItem={setCartItem} CartData={cartItem} handleRemoveCall={handleRemoveCall} cartOrderid={cartOrderid} setCartOrderid={setCartOrderid} future_date={future_date} /> </div>

@@ -10,11 +10,25 @@ import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { AddCroplist, ResetCroplist } from "../../Store/actions";
 import { toast } from "react-toastify";
+import MultiImageUploadPreview from "../../components/multiimageuploader";
 
 const AddCropsPage : FC = function () {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    
+
+    const [file, setFile] = useState<File[] >([]);
+    const [cropImage, setcropImage] = useState<File[] | string[]>([]);
+    const [validateCrop, setvalidateCrop] = useState(0);
+
+    useEffect(() =>{
+        if(file?.length && file?.length > 0 || cropImage?.length && cropImage?.length > 0){
+            setvalidateCrop(0)
+        }else if(file?.length == 0 ){
+            setvalidateCrop(1)
+            return;
+        }
+    },[file, cropImage])
+
     // ------ status code start ------
     const [selectedactiveOption, setSelectedactiveOption] = useState(null);
     const [selectedactiveid, setSelectedactiveid] = useState<boolean | null>(null);
@@ -39,6 +53,7 @@ const AddCropsPage : FC = function () {
         description_eng:"",
         description_guj:"",
         status: "",
+        crop_pics: [],
     });
 
     const validation = useFormik({
@@ -54,14 +69,19 @@ const AddCropsPage : FC = function () {
         
         onSubmit: (values) => {
           if(selectedactiveid == null) return setValidateactive(1);
-          let requserdata = {
-            name_eng: values?.name_eng,
-            name_guj: values?.name_guj,
-            description_guj:values?.description_guj,
-            description_eng : values?.description_eng,
-            is_active: selectedactiveid,
-          };
-          dispatch(AddCroplist(requserdata));
+
+            const formData = new FormData();
+            formData.append("name_eng",values?.name_eng);
+            formData.append("name_guj", values?.name_guj);
+            formData.append("description_guj",  values?.description_guj);
+            formData.append("description_eng", values?.description_eng);
+            formData.append("is_active", JSON.stringify(selectedactiveid));
+            if (file) {
+                file.forEach((data) => {
+                    formData.append("crop_pics", data);
+                });
+            }
+          dispatch(AddCroplist(formData));
         },
     });
 
@@ -98,6 +118,13 @@ const AddCropsPage : FC = function () {
                 <ExampleBreadcrumb  Name={Name} ParentName={ParentName} ParentLink={ParentLink}  />
                 <div className="mt-[2rem] bg-white dark:bg-gray-800 p-4">
                     <Form onSubmit={(e) => { e.preventDefault(); validation.handleSubmit(); return false; }} >
+
+                    <div className="mb-4">
+                            <label className="dark:text-gray-100 text-[1.2rem]"> Product Image <span className='text-red-500'>*</span> </label>
+                            <MultiImageUploadPreview onFileSelect={setFile} defaultImage={cropImage} onDefaultImageChange={setcropImage} />
+                            {validateCrop == 1 ? ( <FormFeedback type="invalid" className="text-Red text-sm"> Please select Crop photo </FormFeedback> ) : null}
+                    </div>
+
                         <div className="flex gap-x-[2rem]">
                             <div className="flex-1">
                                 <Label htmlFor="name">Crop Name ( Eng ) <span className='text-red-500'>*</span> </Label>

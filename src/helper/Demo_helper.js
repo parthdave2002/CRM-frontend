@@ -197,9 +197,15 @@ export const CheckCustomerApi = async (requserdata) => await api.get(url.CHECK_C
 
 // Crops API
 export const CroplistApi = (requserdata) => api.get(url.GET_CROP_LIST, requserdata);
-export const AddCroplistApi = async (requserdata) => await api.create(url.ADD_CROP_LIST, requserdata);
+export const AddCroplistApi = async (requserdata) => await api.postMultipart(url.ADD_CROP_LIST, requserdata);
 export const DelCroplistApi = async (requserdata) => await api.delete(url.DELETE_CROP_LIST, requserdata);
 export const StatusCroplistApi = async (requserdata) => await api.delete(url.CHANGE_STATUS_CROP_LIST, requserdata);
+
+// Coupon API
+export const CouponlistApi = (requserdata) => api.get(url.GET_COUPON_LIST, requserdata);
+export const AddCouponlistApi = async (requserdata) => await api.create(url.ADD_COUPON_LIST, requserdata);
+export const DelCouponlistApi = async (requserdata) => await api.delete(url.DELETE_COUPON_LIST, requserdata);
+export const StatusCouponlistApi = async (requserdata) => await api.delete(url.CHANGE_STATUS_COUPON_LIST, requserdata);
 
 // Lead API
 export const LeadlistApi = (requserdata) => api.get(url.GET_LEAD_LIST, requserdata);

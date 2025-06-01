@@ -42,18 +42,19 @@ const SignInPage: FC = function () {
       .matches(/\d/, "Password must contain at least one numeric digit (0-9)")
       .matches(/[@$!%*?&]/, "Password must contain at least one special character (@$!%*?&)"),
     }),
-    onSubmit: (values) => {
-      setisLoading(true)
-      dispatch(insertlogin(values));
-
+    onSubmit: async(values) => {
+        setisLoading(true)
+       dispatch(insertlogin(values));
+       setisLoading(false)
     },
   });
 
   const [Login, setLogin] = useState(false);
   const [LoginRols, setLoginRols] = useState("");
 
-  const { login,  CheckUserList} = useSelector((state:any) => ({
+  const { login,error,  CheckUserList} = useSelector((state:any) => ({
     login: state.Login.Logincode,
+    error :state.Login.error,
     CheckUserList: state.User.CheckUserList,
   }));
 
@@ -73,6 +74,9 @@ const SignInPage: FC = function () {
   },[CheckUserList])
   
   useEffect(() => {
+    console.log("error", error);
+    
+    setisLoading(false)
     if (Login == true) {  
       validation.resetForm();
       if( LoginRols == "67b1195be442284118ab89bf"){
@@ -83,9 +87,12 @@ const SignInPage: FC = function () {
         navigation("/dashboard");
         location.reload();
       }
+    }else if(error){
+        validation.resetForm();
+        dispatch(resetinsertlogin());
     }
-    // dispatch(resetinsertlogin());
-  }, [Login]); 
+    // 
+  }, [Login, error]); 
 
   //--------------  if User Alredy login redirect to their page code start --------------
     // useEffect(() =>{

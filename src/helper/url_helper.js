@@ -114,6 +114,11 @@ export const ADD_CROP_LIST = "/api/crop/add-crop";
 export const DELETE_CROP_LIST = "/api/crop/remove-crop";
 export const CHANGE_STATUS_CROP_LIST = "/api/crop/status-crop";
 
+export const GET_COUPON_LIST = "/api/coupon/get-coupon";
+export const ADD_COUPON_LIST = "/api/coupon/add-coupon";
+export const DELETE_COUPON_LIST = "/api/coupon/remove-coupon";
+export const CHANGE_STATUS_COUPON_LIST = "/api/coupon/status-coupon";
+
 export const GET_LEAD_LIST = "/api/lead/get-lead";
 export const ADD_LEAD_LIST = "/api/lead/add-lead";
 export const MARK_AS_READ_LEAD_LIST = "/api/lead/mark-lead";

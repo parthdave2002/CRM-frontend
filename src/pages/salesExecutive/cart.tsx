@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
-import { Table } from "flowbite-react";
+import { Button, Table } from "flowbite-react";
 import { FaGhost, FaPhoneVolume, FaUserAlt, FaWindowClose } from 'react-icons/fa'
 import { HiTrash } from 'react-icons/hi';
 import { FaCartShopping } from 'react-icons/fa6';
@@ -7,7 +7,7 @@ import SuccessErrorModalPage from '../../components/modal/successErrorModal';
 import ConfirmationModalPage from '../../components/modal/confirmationModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { Input } from 'reactstrap';
-import { AddOrderlist, getUpdateOrderlist, ResetOrderlist } from '../../Store/actions';
+import { AddOrderlist, getUpdateOrderlist, ResetOrderlist, getCouponlist } from '../../Store/actions';
 import { toast } from 'react-toastify';
 import { BsCartXFill } from 'react-icons/bs';
 import Cookies from 'js-cookie';
@@ -75,17 +75,34 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
   // ----------- Customer data getcode end ----------------
 
   // ----------- Product Qty Change data getcode start ----------------
-    const [productQty, setProductQty] = useState<{ [key: string]: number }>({});
-    const ProductQtychange  = (id: string, value: number) => {
+    const [productQty, setProductQty] = useState<{ [key: string]: string }>({});
+    const ProductQtychange  = (id: string, value: string) => {
+      if (!/^\d*$/.test(value)) return;
+
       const updatedCart = cartItems.map((item: any) =>
         item._id === id ? { ...item, quantity: value } : item
       );
       setCartItems(updatedCart)
     
-      setProductQty((prev) => ({
+      setProductQty((prev:any) => ({
         ...prev,
         [id]: value,
       }));
+    };
+
+    const handleQtyBlur = (id: string) => {
+      const rawValue = productQty[id];
+      const fixedValue = rawValue === "" || rawValue === undefined ? "1" : rawValue;
+
+      setProductQty((prev:any) => ({
+        ...prev,
+        [id]: prev[id] === "" || prev[id] === undefined ? 1 : prev[id],
+      }));
+
+    setCartItems((prev: any[]) =>
+      prev.map((item) =>
+        item._id === id ? { ...item, quantity: Number(fixedValue) } : item
+      ));
     };
   // ----------- Product Qty Change data getcode start ----------------
 
@@ -139,10 +156,14 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
       let totalDiscount = 0;
 
       CartData?.forEach((item: any) => {
+
+        const rawQty = productQty[item._id];
+        const quantity = rawQty === "" || rawQty === undefined ? 1 : Number(rawQty);
+
         const price = item?.price || 0;
         const discount = item?.discount || 0;
         const gstRate = item?.s_gst || 0;
-        const quantity = productQty[item._id] || 1;
+        // const quantity = productQty[item._id] || 1;
 
         const discountedPrice = (price - discount) * quantity;
         const gstAmount = (discountedPrice * gstRate * 2) / 100;
@@ -160,9 +181,10 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
 
     useEffect(() => {
       setCartItems(CartData || []);
-      const updatedQty: { [key: string]: number } = {};
+      const updatedQty: { [key: string]: string } = {};
       CartData?.forEach((item: any) => {
-        updatedQty[item._id] = item?.quantity;
+        const quantity = typeof item?.quantity === "number" && item.quantity > 0 ? item.quantity : 1;
+        updatedQty[item._id] = quantity.toString();
       });
       setProductQty(updatedQty);
       setSelectedFutureDate(moment(future_date).format("YYYY-MM-DD"))
@@ -188,6 +210,15 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
     setCartOpen(false);
     setCartItem([])
     setCartOrderid(null)
+  }
+
+    const [CouponName, setCouponName] = useState< string>();
+
+  const ApplyCoupon = (data:any) =>{
+    setCouponName(data)
+  }
+  const AppliedCoupon = () =>{
+    dispatch(getCouponlist({name :CouponName?.toUpperCase() }))
   }
 
   return (
@@ -224,10 +255,12 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
                         </Table.Cell>
                         <Table.Cell style={{ padding: "10px" }} className="whitespace-nowrap font-normal text-gray-900 dark:text-white text-center"> {item?.price} </Table.Cell>
                         <Table.Cell style={{ padding: "10px" }} className="whitespace-nowrap font-medium text-gray-900 dark:text-white text-center"> {item?.discount} </Table.Cell>
-                        <Table.Cell style={{ padding: "10px" }} className="whitespace-nowrap font-normal text-gray-900 dark:text-white text-center"> <Input className='w-[3rem] px-2 py-2 rounded-xl dark:bg-gray-800' value={productQty[item._id] || 1} onChange={(e) => ProductQtychange(item._id, Number(e.target.value))} />   </Table.Cell>
-                        <Table.Cell style={{ padding: "10px" }} className="whitespace-nowrap font-medium text-gray-900 dark:text-white text-center"> {((item.price - item.discount) * (productQty[item._id] || 1)).toFixed(2)}  </Table.Cell>
-                        <Table.Cell style={{ padding: "10px" }} className="whitespace-nowrap font-medium text-gray-900 dark:text-white text-center"> {(((item.price - item.discount) * (productQty[item._id] || 1)) * (item?.s_gst * 2 / 100)).toFixed(2)}  </Table.Cell>
-                        <Table.Cell style={{ padding: "10px" }} className="whitespace-nowrap font-medium text-gray-900 dark:text-white text-center"> {(((item.price - item.discount) * (productQty[item._id] || 1)) + (((item.price - item.discount) * (productQty[item._id] || 1)) * (item?.s_gst * 2 / 100))).toFixed(2)} </Table.Cell>
+                        <Table.Cell style={{ padding: "10px" }} className="whitespace-nowrap font-normal text-gray-900 dark:text-white text-center"> 
+                          <Input className='w-[3rem] px-2 py-2 rounded-xl dark:bg-gray-800' value={productQty[item._id] ?? "1"} defaultValue={1} onChange={(e) => ProductQtychange(item._id, e.target.value)}  onBlur={() => handleQtyBlur(item._id)}  inputMode="numeric" />   
+                          </Table.Cell>
+                        <Table.Cell style={{ padding: "10px" }} className="whitespace-nowrap font-medium text-gray-900 dark:text-white text-center"> {((item.price - item.discount) * (Number(productQty[item._id] || 1))).toFixed(2)}  </Table.Cell>
+                        <Table.Cell style={{ padding: "10px" }} className="whitespace-nowrap font-medium text-gray-900 dark:text-white text-center"> {(((item.price - item.discount) * (Number(productQty[item._id] || 1))) * (item?.s_gst * 2 / 100)).toFixed(2)}  </Table.Cell>
+                        <Table.Cell style={{ padding: "10px" }} className="whitespace-nowrap font-medium text-gray-900 dark:text-white text-center"> {(((item.price - item.discount) * (Number(productQty[item._id] || 1))) + (((item.price - item.discount) * (Number(productQty[item._id] || 1))) * (item?.s_gst * 2 / 100))).toFixed(2)} </Table.Cell>
                         <Table.Cell style={{ padding: "10px" }} className="space-x-2 whitespace-nowrap"> <div className="flex items-center gap-x-2 bg-red-500 hover:bg-red-600 text-gray-200 px-1 py-1 rounded-lg cursor-pointer" onClick={() => handleRemoveCall(item?._id)}>  <HiTrash className="text-lg" /> Remove </div>  </Table.Cell>
                       </Table.Row>
                     ))}
@@ -236,7 +269,15 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
               </div>
 
               <div className="border border-gray-300 dark:border-gray-600 dark:bg-gray-800 my-4 p-4 rounded-xl w-full mt-auto">
+                
+                <div className='flex justify-between'>
                 <div className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-8">Order Summary</div>
+                <div className='flex gap-x-3'>
+                   <div className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-8">  <Input className=' px-2 py-2 rounded-xl dark:bg-gray-800' onChange={(e) =>ApplyCoupon(e.target.value)} />  </div>
+                  <div className='bg-green-500 hover:bg-green-600 cursor-pointer text-gray-50 px-3 py-1 rounded-md ' onClick={AppliedCoupon}> Apply</div>
+                </div>
+
+                </div>
 
                 <div className="flex flex-col items-end space-y-1">
                   <div className="text-[1rem] font-semibold text-gray-500 dark:text-gray-300 flex justify-between w-full max-w-xs"> <span>Total Subtotal</span> <span>: {totalSubtotal.toFixed(2)} Rs.</span> </div>
