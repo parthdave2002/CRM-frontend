@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { Label, Button } from "flowbite-react";
 import { FaUser, FaWindowClose } from 'react-icons/fa';
 import { Form, Input, FormFeedback } from "reactstrap";
@@ -290,7 +290,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
         firstname: values?.firstname.trim().charAt(0).toUpperCase() + values?.firstname.trim().slice(1).toLowerCase(),
         middlename: values?.middlename.trim().charAt(0).toUpperCase() + values?.middlename.trim().slice(1).toLowerCase(),
         lastname: values?.lastname.trim().charAt(0).toUpperCase() + values?.lastname.trim().slice(1).toLowerCase(),
-        alternate_number: values?.alternate_number.trim(),
+        alternate_number: values?.alternate_number,
         address: values?.address,
         state : selectedStateid,
         district : selectedDistrictid,
@@ -319,7 +319,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
   });
 
   // -------------- Header about code start ---------
-  const HeardAboutOprions= [
+  const HeardAboutOprions = useMemo(() => [
     { label :"Newspaper", value : "newspaper"},
     { label :"TV Ad", value : "tv add"},
     { label :"Magazine", value : "magazine"},
@@ -333,7 +333,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
     { label :"Agro shop", value : "shop"},
     { label :"Field office", value : "officer"},
     { label :"Other farmer", value : "other farmer"},
-  ]
+  ], []);
 
   const [selectedheaderaboutOption, setSelectedheaderaboutOption] = useState<{ label: string, value: string } | null>(null);
   const [selectedheaderaboutid, setSelectedheaderaboutid] = useState<string | null>(null);
@@ -484,7 +484,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
 
   const CloseCall = () =>{
     if(isEditFarmer == true){
-       setFarmerAdded(false)
+      setFarmerAdded(false)
     }
     else{
       handleAccept(false)
@@ -619,10 +619,10 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
                 name="alternate_number"
                 className="bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white disabled:cursor-not-allowed disabled:opacity-50 focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
                 placeholder="Enter alternate mobile no"
-                type="text"
+                type="number"
                 onChange={validation.handleChange}
                 onBlur={validation.handleBlur}
-                value={validation.values?.alternate_number.trim()|| ""}
+                value={validation.values?.alternate_number}
                 invalid={validation.touched?.alternate_number && validation.errors?.alternate_number ? true : false}
               />
               {validation.touched.alternate_number && validation.errors?.alternate_number ? (<FormFeedback type="invalid" className="text-Red text-sm"> {validation.errors?.alternate_number} </FormFeedback>) : null}

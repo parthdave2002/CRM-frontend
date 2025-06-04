@@ -32,7 +32,7 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile, Mobile_number}) 
       setFarmerAdded(false)
       setisLoading(false)
     }
-    else {
+    else if (CheckCustomerExistlist?.success == false) {
       setFarmerAdded(true)
       setisLoading(false)
     }
