@@ -1,12 +1,15 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useEffect, type FC, type PropsWithChildren } from "react";
+import {  type FC, type PropsWithChildren } from "react";
+import Cookies from "js-cookie";
 
 interface NavbarSidebarLayoutProps {
   isAuthenticated ?: any;
 }
 
 const PrivateRoute:  FC<PropsWithChildren<NavbarSidebarLayoutProps>> = ({ isAuthenticated }) => {
-  return isAuthenticated == true ? <Outlet /> : <Navigate to="/login" />;
+   const token = Cookies.get("token");
+  
+  return isAuthenticated == true  || token ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export default PrivateRoute;

@@ -7,7 +7,7 @@ import SuccessErrorModalPage from '../../components/modal/successErrorModal';
 import ConfirmationModalPage from '../../components/modal/confirmationModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { Input } from 'reactstrap';
-import { AddOrderlist, getUpdateOrderlist, ResetOrderlist, getCouponlist } from '../../Store/actions';
+import { AddOrderlist, getUpdateOrderlist, ResetOrderlist, getCouponlist, ResetCouponlist } from '../../Store/actions';
 import { toast } from 'react-toastify';
 import { BsCartXFill } from 'react-icons/bs';
 import Cookies from 'js-cookie';
@@ -51,8 +51,11 @@ interface ProfileInfo{
 
 const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCartItem, cartOrderid, setCartOrderid, future_date}) => {
   const dispatch = useDispatch();
+  const [CouponName, setCouponName] = useState< string>();
+  const [CouponAmt, setCouponAmt] = useState(0);
+  const [Couponid, setCouponId] = useState("");
   const [cartItems, setCartItems] = useState(CartData || [])
-
+  
   // ----------- Customer data getcode start ----------------
         const [data, setData] = useState<ProfileInfo | null>()
         const [data_id, setData_id] = useState(null)
@@ -92,13 +95,13 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
 
     const handleQtyBlur = (id: string) => {
       const rawValue = productQty[id];
-      const fixedValue = rawValue === "" || rawValue === undefined ? "1" : rawValue;
+      const fixedValue = !rawValue || rawValue === "0"  ? "1" : rawValue;
 
-      setProductQty((prev:any) => ({
-        ...prev,
-        [id]: prev[id] === "" || prev[id] === undefined ? 1 : prev[id],
-      }));
-
+    setProductQty((prev: any) => ({
+      ...prev,
+      [id]: fixedValue,
+    }));
+    
     setCartItems((prev: any[]) =>
       prev.map((item) =>
         item._id === id ? { ...item, quantity: Number(fixedValue) } : item
@@ -120,6 +123,9 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
       setCartOpen(false);
       setCartItem([])
       setCartOrderid(null)
+      setCouponAmt(0);
+      setCouponId("");
+      dispatch(ResetCouponlist())
     }
 
     const OrderplaceCall = (data:string, item:string) =>{
@@ -129,6 +135,12 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
     }
 
     const PlaceCall = () =>{
+
+      if(isOrderTypeModel == "future" && CouponName){
+          toast.error("Coupon could not apply on future order");
+          return false
+      }
+
       const productsArray = Object.entries(productQty).map(([id, quantity]) => ({ id, quantity}));
       let requser :any = {
         products : productsArray,
@@ -136,6 +148,7 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
         order_type :  isOrderTypeModel,
         status : isOrderStatusModel == "extend" ?  null :  isOrderStatusModel,
         total_amount : grandTotal.toFixed(2),
+       ...(CouponName && { coupon: CouponName.toUpperCase() })
       }
       if (isOrderTypeModel === "future" && isOrderStatusModel == "extend" )  requser.future_order_date = SelectedFutureDate;
 
@@ -154,6 +167,7 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
       let totalSubtotal = 0;
       let totalGST = 0;
       let totalDiscount = 0;
+      let totalGrandTotal = 0
 
       CartData?.forEach((item: any) => {
 
@@ -171,9 +185,11 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
         totalSubtotal += discountedPrice;
         totalDiscount += discount * quantity;
         totalGST += gstAmount;
+        const totalBeforeCoupon =   totalSubtotal + totalGST;
+        totalGrandTotal = Math.max(0, totalBeforeCoupon - (CouponAmt ?? 0));
       });
 
-      return { totalSubtotal, totalDiscount, totalGST, grandTotal: totalSubtotal + totalGST };
+      return { totalSubtotal, totalDiscount, totalGST, grandTotal: totalGrandTotal };
     };
 
     const { totalSubtotal, totalDiscount, totalGST, grandTotal } = calculateOrderSummary();
@@ -192,8 +208,11 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
 
   // --------------- Add Order Suucess/ error code start ----------------
     const AddOrderdatalist = useSelector((state: any) => state.Order.AddOrderdatalist);
-    const UpdateOrderdatalist = useSelector((state: any) => state.Order.UpdateOrderlist);;
+    const UpdateOrderdatalist = useSelector((state: any) => state.Order.UpdateOrderlist);
+      console.log("UpdateOrderdatalist", UpdateOrderdatalist);
+
     useEffect(() => {
+      
       if (AddOrderdatalist?.success || UpdateOrderdatalist?.success ) {
         setisOpenSuccessOrderModel(true);
         setisOpenSuccessOrderMessage(UpdateOrderdatalist?.msg ? UpdateOrderdatalist?.msg : AddOrderdatalist?.msg);
@@ -206,20 +225,44 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
     }, [AddOrderdatalist, UpdateOrderdatalist])
   // --------------- Add Order Suucess/ error code start ----------------
 
-  const CloseCall = () =>{
-    setCartOpen(false);
-    setCartItem([])
-    setCartOrderid(null)
-  }
+    const CloseCall = () =>{
+      setCartOpen(false);
+      setCartItem([])
+      setCartOrderid(null);
+      setCouponAmt(0);
+      setCouponId("");
+      dispatch(ResetCouponlist())
+    }
+    // ------------- Get  Data From Reducer Code Start --------------
+      const ApplyCoupon = (data:any) =>{
+        setCouponName(data)
+      }
+      const AppliedCoupon = () =>{
+        dispatch(getCouponlist({name :CouponName?.toUpperCase() }))
+      }
 
-    const [CouponName, setCouponName] = useState< string>();
+      const  AddCoupondatalist  = useSelector((state: any) =>  state.Coupon.Coupondatalist);
 
-  const ApplyCoupon = (data:any) =>{
-    setCouponName(data)
-  }
-  const AppliedCoupon = () =>{
-    dispatch(getCouponlist({name :CouponName?.toUpperCase() }))
-  }
+          useEffect(() => {  
+            if(AddCoupondatalist?.amount){
+              setCouponAmt(AddCoupondatalist?.amount);
+              setCouponId(AddCoupondatalist?._id);
+            }else{
+              setCouponAmt(0);
+              setCouponId("")
+            }
+        
+              // if(AddCoupondatalist?.success == true){
+              //     // c)
+              //     toast.success(AddCoupondatalist?.msg);
+              //     navigate("/coupon/list")
+              //     validation.resetForm();
+              //     setSelectedactiveid(null);
+              //     setSelectedactiveOption(null);
+              //     setValidateactive(1)
+              // }
+          }, [AddCoupondatalist]);
+    //  ------------- Get Data From Reducer Code end --------------
 
   return (
     <>
@@ -270,19 +313,21 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
 
               <div className="border border-gray-300 dark:border-gray-600 dark:bg-gray-800 my-4 p-4 rounded-xl w-full mt-auto">
                 
-                <div className='flex justify-between'>
-                <div className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-8">Order Summary</div>
-                <div className='flex gap-x-3'>
-                   <div className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-8">  <Input className=' px-2 py-2 rounded-xl dark:bg-gray-800' onChange={(e) =>ApplyCoupon(e.target.value)} />  </div>
-                  <div className='bg-green-500 hover:bg-green-600 cursor-pointer text-gray-50 px-3 py-1 rounded-md ' onClick={AppliedCoupon}> Apply</div>
-                </div>
+                <div className='flex'>
+                  <div className='flext-1'>
+                    <div className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-8">Order Summary</div>
+                    <div className='flex gap-x-3'>
+                      <div className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-8">  <Input className=' px-2 py-2 rounded-xl dark:bg-gray-800' placeholder='Enter coupon code' onChange={(e) =>ApplyCoupon(e.target.value)} />  </div>
+                      <button onClick={AppliedCoupon} className="mb-8 inline-flex items-center justify-center px-5 py-2 rounded-xl bg-green-500 text-white font-medium shadow-md hover:bg-green-600 hover:scale-105 active:scale-100 transition-all duration-200" > Apply </button>
+                    </div>
+                  </div>
 
-                </div>
-
-                <div className="flex flex-col items-end space-y-1">
-                  <div className="text-[1rem] font-semibold text-gray-500 dark:text-gray-300 flex justify-between w-full max-w-xs"> <span>Total Subtotal</span> <span>: {totalSubtotal.toFixed(2)} Rs.</span> </div>
-                  <div className="text-[1rem] font-semibold text-gray-500 dark:text-gray-300 flex justify-between w-full max-w-xs">  <span>Total Discount</span> <span>: {totalDiscount.toFixed(2)} Rs.</span> </div>
-                  <div className="text-[1rem] font-semibold text-gray-500 dark:text-gray-300 flex justify-between w-full max-w-xs"> <span>Total GST</span> <span>: {totalGST.toFixed(2)} Rs.</span>  </div>
+                  <div className="flex-1 flex flex-col items-end space-y-1">
+                    <div className="text-[1rem] font-semibold text-gray-500 dark:text-gray-300 flex justify-between w-full max-w-xs">  <span>Total Discount</span> <span>: {totalDiscount.toFixed(2)} Rs.</span> </div>
+                    <div className="text-[1rem] font-semibold text-gray-500 dark:text-gray-300 flex justify-between w-full max-w-xs"> <span>Total Subtotal</span> <span>: {totalSubtotal.toFixed(2)} Rs.</span> </div>
+                    <div className="text-[1rem] font-semibold text-gray-500 dark:text-gray-300 flex justify-between w-full max-w-xs"> <span>Total GST</span> <span>: {totalGST.toFixed(2)} Rs.</span>  </div>
+                    {CouponAmt ?  <div className="text-[1rem] font-semibold text-gray-500 dark:text-gray-300 flex justify-between w-full max-w-xs"> <span> Coupon Amount</span> <span>: - {CouponAmt.toFixed(2)} Rs.</span>  </div> : null }
+                  </div>
                 </div>
 
                 <div className="flex justify-end items-center text-xl font-semibold text-gray-500 dark:text-gray-300 mt-4 gap-x-4">

@@ -48,6 +48,7 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
       let totalSubtotal = 0;
       let totalGST = 0;
       let totalDiscount = 0;
+      let totalGrandTotal = 0
 
       openDetailIData?.products?.forEach((item: any) => {
         const price = item?.id?.price || 0;
@@ -61,15 +62,15 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
         totalSubtotal += discountedPrice;
         totalDiscount += discount * quantity;
         totalGST += gstAmount;
+        const totalBeforeCoupon =   totalSubtotal + totalGST;
+        totalGrandTotal = Math.max(0, totalBeforeCoupon - (openDetailIData?.coupon?.amount ?? 0));
       });
 
-      return { totalSubtotal, totalDiscount, totalGST, grandTotal: totalSubtotal + totalGST };
+      return { totalSubtotal, totalDiscount, totalGST, grandTotal: totalSubtotal + totalGST, totalGrandTotal };
     };
 
-    const { totalSubtotal, totalDiscount, totalGST, grandTotal } = calculateOrderSummary();
+    const { totalSubtotal, totalDiscount, totalGST, grandTotal, totalGrandTotal } = calculateOrderSummary();
   // ---------------- Calculation Logic End ----------------
-
-
 
       const [data, setData] = useState <null | any>(null);
       const customerDataString = Cookies.get("customer_data");
@@ -163,13 +164,41 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
           <div className="border dark:border-gray-600 dark:bg-gray-800 my-4 p-4 rounded-xl w-full">
             <div className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-8"> Order Summary </div>
 
-            <div className="flex flex-col items-end space-y-3">
-              <div className="text-lg font-semibold text-gray-500 dark:text-gray-300 flex justify-between w-full max-w-xs"> <span>Total Subtotal </span> <span > : {totalSubtotal.toFixed(2)} Rs.</span></div>
+            {/* <div className="flex flex-col items-end space-y-3">
               <div className="text-lg font-semibold text-gray-500 dark:text-gray-300 flex justify-between w-full max-w-xs"> <span>Total Discount </span> <span >: {totalDiscount.toFixed(2)} Rs.</span> </div>
+              <div className="text-lg font-semibold text-gray-500 dark:text-gray-300 flex justify-between w-full max-w-xs"> <span>Total Subtotal </span> <span > : {totalSubtotal.toFixed(2)} Rs.</span></div>
               <div className="text-lg font-semibold text-gray-500 dark:text-gray-300 flex justify-between w-full max-w-xs"> <span>Total GST </span> <span > : {totalGST.toFixed(2)} Rs.</span> </div>
-            </div>
+              {openDetailIData?.coupon?.amount ? 
+                <div className="text-lg font-semibold text-gray-500 dark:text-gray-300 flex justify-between w-full max-w-xs"> <span> Coupon </span> <span > : - {openDetailIData?.coupon?.amount.toFixed(2)} Rs.</span> </div>
+              : null}
+              
+            </div> */}
 
-            <div className="flex justify-end items-center text-xl font-semibold text-gray-500 dark:text-gray-300 mt-4 gap-x-4 "> <span className='text-[1.5rem]'>Grand Total</span> <span className='min-w-[11rem] text-end'> : {grandTotal.toFixed(2)} Rs.</span> </div>
+            <div className="flex flex-col justify-self-end w-full max-w-md  bg-white dark:bg-gray-800  space-y-4">
+                <div className="flex justify-between w-full text-base md:text-lg font-medium text-gray-600 dark:text-gray-300">
+                  <span>Total Discount</span>
+                  <span className="font-semibold text-gray-800 dark:text-white">{totalDiscount.toFixed(2)} Rs.</span>
+                </div>
+                
+                <div className="flex justify-between w-full text-base md:text-lg font-medium text-gray-600 dark:text-gray-300">
+                  <span>Total Subtotal</span>
+                  <span className="font-semibold text-gray-800 dark:text-white">{totalSubtotal.toFixed(2)} Rs.</span>
+                </div>
+                
+                <div className="flex justify-between w-full text-base md:text-lg font-medium text-gray-600 dark:text-gray-300">
+                  <span>Total GST</span>
+                  <span className="font-semibold text-gray-800 dark:text-white">{totalGST.toFixed(2)} Rs.</span>
+                </div>
+                
+                {openDetailIData?.coupon?.amount && (
+                  <div className="flex justify-between w-full text-base md:text-lg font-medium text-green-600 dark:text-green-400">
+                    <span>Coupon</span>
+                    <span className="font-semibold">- {openDetailIData?.coupon?.amount.toFixed(2)} Rs.</span>
+                  </div>
+                )}
+              </div>
+
+            <div className="flex justify-end items-center text-xl font-semibold text-gray-500 dark:text-gray-300 mt-4 gap-x-4 "> <span className='text-[1.5rem]'>Grand Total</span> <span className='min-w-[11rem] text-end'> : {totalGrandTotal.toFixed(2)} Rs.</span> </div>
           </div>
 
           { openDetailIData?.status == "confirm" ?

@@ -74,8 +74,6 @@ const SignInPage: FC = function () {
   },[CheckUserList])
   
   useEffect(() => {
-    console.log("error", error);
-    
     setisLoading(false)
     if (Login == true) {  
       validation.resetForm();

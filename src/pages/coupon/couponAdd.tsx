@@ -52,7 +52,7 @@ const AddCouponPage : FC = function () {
           if(selectedactiveid == null) return setValidateactive(1);
 
             let Requser ={
-                name : values?.coupon_name.toUpperCase(),
+                name : values?.coupon_name.toUpperCase().trim(),
                 amount : values?.coupon_amt,
                 is_active : selectedactiveid
             }

@@ -199,6 +199,7 @@ const ProductAddPage : FC = function () {
 
     // -------------------- product description code start -----------------
         const [inputs, setInputs] = useState<DescriptionData[]>([   { id: "", gujaratiHeader: "", englishHeader: "", gujaratiValue: "", englishValue: "" }]);
+        const [descriptionErrors, setDescriptionErrors] = useState<{ [key: string]: Partial<DescriptionData> }>({});
         const handleChange = (id: string, field: keyof DescriptionData, newValue: string) => {
             setInputs((prev) =>
                 prev.map((item) => (item.id === id ? { ...item, [field]: newValue } : item))
@@ -289,6 +290,26 @@ const ProductAddPage : FC = function () {
         _id: ''
     });
 
+    const validateDescriptions = () => {
+    const errors: { [key: string]: Partial<DescriptionData> } = {};
+
+    inputs.forEach((item) => {
+        const fieldErrors: Partial<DescriptionData> = {};
+
+        if (!item.englishHeader?.trim()) fieldErrors.englishHeader = "English Header is required";
+        if (!item.gujaratiHeader?.trim()) fieldErrors.gujaratiHeader = "Gujarati Header is required";
+        if (!item.englishValue?.trim()) fieldErrors.englishValue = "English Value is required";
+        if (!item.gujaratiValue?.trim()) fieldErrors.gujaratiValue = "Gujarati Value is required";
+
+        if (Object.keys(fieldErrors).length > 0) {
+        errors[item.id] = fieldErrors;
+        }
+    });
+
+    setDescriptionErrors(errors);
+    return Object.keys(errors).length === 0;
+    };
+
     const validation = useFormik({
         enableReinitialize: true,
         initialValues: initialValues,
@@ -312,6 +333,11 @@ const ProductAddPage : FC = function () {
         }),
         
         onSubmit: (values) => {
+              const isValidDescriptions = validateDescriptions();
+                if (!isValidDescriptions) {
+                    toast.error("Please fill all product descriptions.");
+                    return;
+                }
 
             if(file?.length === 0 && productImage?.length === 0){
                 setvalidateProduct(1)
@@ -443,7 +469,7 @@ const ProductAddPage : FC = function () {
             avl_qty: ProductList?.avl_qty ?? "",
             price: ProductList?.price ?? "",
             discount: ProductList?.discount ?? 0,
-            batch_no: ProductList?.batch_no ? JSON.parse(ProductList.batch_no) : "",
+            batch_no: ProductList?.batch_no ?? "",
             hsn_code: ProductList?.hsn_code ? JSON.parse(ProductList.hsn_code) : "",
             c_gst: ProductList?.c_gst ?? "",
             s_gst: ProductList?.s_gst ?? "",
@@ -889,7 +915,7 @@ const ProductAddPage : FC = function () {
                         <div className=" text-white r w-full mt-[2rem] mx-auto">
                             <div className="flex justify-between">
                             <div className="mb-4 dark:text-gray-100 text-gray-900 text-[1.5rem] font-semibold"> Product Description</div>
-                            <div onClick={handleAddField} className="mb-4 px-4 py-1 w-[8rem] text-center bg-blue-500 hover:bg-blue-600 text-white rounded-lg cursor-pointer"> Add Field </div>
+                            <div onClick={handleAddField} className="mb-4 px-2 py-1 w-[12rem] text-center bg-blue-500 hover:bg-blue-600 text-white rounded-lg cursor-pointer"> Add New Description </div>
                             </div>
 
                             {inputs.map((item, index) => (
@@ -902,8 +928,19 @@ const ProductAddPage : FC = function () {
                                                 placeholder="Header"
                                                 value={item.englishHeader}
                                                 onChange={(e) => handleChange(item.id, "englishHeader", e.target.value)}
+                                                onBlur={() => {
+                                                    if (!item.englishHeader?.trim()) {
+                                                        setDescriptionErrors(prev => ({
+                                                        ...prev,
+                                                        [item.id]: { ...prev[item.id], englishHeader: "English Header is required" }
+                                                        }));
+                                                    }
+                                                }}
                                                 className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white  bg-gray-200 text-gray-700"
                                             />
+                                            {descriptionErrors?.[item.id]?.englishHeader && (
+                                                <p className="text-red-500 text-sm mt-1">{descriptionErrors[item.id]?.englishHeader}</p>
+                                            )}
                                         </div>
 
                                         <div>
@@ -913,8 +950,19 @@ const ProductAddPage : FC = function () {
                                                 placeholder="Header"
                                                 value={item.gujaratiHeader}
                                                 onChange={(e) => handleChange(item.id, "gujaratiHeader", e.target.value)}
+                                                  onBlur={() => {
+                                                    if (!item.gujaratiHeader?.trim()) {
+                                                        setDescriptionErrors(prev => ({
+                                                        ...prev,
+                                                        [item.id]: { ...prev[item.id], gujaratiHeader: "Gujarati Header is required" }
+                                                        }));
+                                                    }
+                                                }}
                                                 className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white  bg-gray-200 text-gray-700"
                                             />
+                                            {descriptionErrors?.[item.id]?.gujaratiHeader && (
+                                                <p className="text-red-500 text-sm mt-1">{descriptionErrors[item.id]?.gujaratiHeader}</p>
+                                            )}
                                         </div>  
                                     </div>
 
@@ -926,8 +974,19 @@ const ProductAddPage : FC = function () {
                                                 placeholder="Value"
                                                 value={item.englishValue}
                                                 onChange={(e) => handleChange(item.id, "englishValue", e.target.value)}
+                                                 onBlur={() => {
+                                                    if (!item.englishValue?.trim()) {
+                                                        setDescriptionErrors(prev => ({
+                                                        ...prev,
+                                                        [item.id]: { ...prev[item.id], englishValue: "English value is required" }
+                                                        }));
+                                                    }
+                                                }}
                                                 className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white bg-gray-200 text-gray-800"
                                             />
+                                            {descriptionErrors?.[item.id]?.englishValue && (
+                                                <p className="text-red-500 text-sm mt-1">{descriptionErrors[item.id]?.englishValue}</p>
+                                            )}
                                         </div>
 
                                         <div>
@@ -937,8 +996,19 @@ const ProductAddPage : FC = function () {
                                                 placeholder="Value"
                                                 value={item.gujaratiValue}
                                                 onChange={(e) => handleChange(item.id, "gujaratiValue", e.target.value)}
+                                                 onBlur={() => {
+                                                    if (!item.gujaratiValue?.trim()) {
+                                                        setDescriptionErrors(prev => ({
+                                                        ...prev,
+                                                        [item.id]: { ...prev[item.id], gujaratiValue: "Gujarati value is required" }
+                                                        }));
+                                                    }
+                                                }}
                                                 className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white bg-gray-200 text-gray-800"
                                             />
+                                             {descriptionErrors?.[item.id]?.gujaratiValue && (
+                                                <p className="text-red-500 text-sm mt-1">{descriptionErrors[item.id]?.gujaratiValue}</p>
+                                            )}
                                         </div>
                                     </div>
 
