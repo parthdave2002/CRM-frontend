@@ -36,6 +36,7 @@ function* onGetUpdateOrderList({ payload: requstuser }) {
     const response = yield call(UpdateOrderlistApi, requstuser);
     yield put(getUpdateOrderlistSuccess(GET_UPDATE_ORDER_LIST, response));
   } catch (error) {
+    toast.error(error?.msg)
     yield put(getUpdateOrderlistFail(error));
   }
 }

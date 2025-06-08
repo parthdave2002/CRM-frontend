@@ -91,13 +91,17 @@ const SalesProductDetailData : FC<PropsData> = ({ProductDetails, ProductCLoseCal
         <div className='flex px-3 mt-[2rem]'>
             <div className='flex-1'>
                   <div className="relative w-full">
-                      <div className="relative h-56 overflow-hidden rounded-lg md:h-96">
+                      <div className="relative h-56 overflow-hidden rounded-lg md:h-96 bg-white">
                           {Product_data?.product_pics && Product_data?.product_pics.map((src:any, index:number) => (
                               <img
                                   key={index}
                                   src= {  `${IMG_URL}/public/product/${src}`}
                                   alt={`Slide ${index + 1}`}
-                                  className={`absolute block w-full transition-opacity duration-700 ease-in-out top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${index === currentIndex ? "opacity-100" : "opacity-0"}`}
+                                  className={`absolute top-1/2 left-1/2 
+              -translate-x-1/2 -translate-y-1/2 
+              w-full h-full object-contain 
+              transition-opacity duration-700 ease-in-out
+              ${index === currentIndex ? "opacity-100" : "opacity-0"}`}
                               />
                           ))}
                       </div>

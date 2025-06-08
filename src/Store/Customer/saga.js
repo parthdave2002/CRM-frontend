@@ -44,7 +44,7 @@ function* onAddCustomerList({ payload: requstuser }) {
   try {
     const response = yield call(AddCustomerlistApi, requstuser);
     yield put(AddCustomerDatalistSuccess(ADD_CUSTOMER_DATA_LIST, response));
-    Cookies.set('customer_data', JSON.stringify(response?.data), { expires: 1 });
+    Cookies.set('customer_data', JSON.stringify(response?.data[0]), { expires: 1 });
   } catch (error) {
     toast.error(error?.msg)
     yield put(AddCustomerDatalistFail(error));
