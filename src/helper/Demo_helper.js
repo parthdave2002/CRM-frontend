@@ -210,7 +210,7 @@ export const StatusCouponlistApi = async (requserdata) => await api.delete(url.C
 // Lead API
 export const LeadlistApi = (requserdata) => api.get(url.GET_LEAD_LIST, requserdata);
 export const AddLeadlistApi = async (requserdata) => await api.create(url.ADD_LEAD_LIST, requserdata);
-export const MarkAsReadLeadlistApi = async (requserdata) => await api.create(url.MARK_AS_READ_LEAD_LIST, requserdata);
+export const MarkAsReadLeadlistApi = async (requserdata) => await api.get(url.MARK_AS_READ_LEAD_LIST, requserdata);
 export const DelLeadlistApi = async (requserdata) => await api.delete(url.DELETE_LEAD_LIST, requserdata);
 
 // ==========  sales executive API =========================

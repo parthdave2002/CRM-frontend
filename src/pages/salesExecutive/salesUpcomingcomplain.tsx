@@ -85,7 +85,7 @@ const SalesUpcomingComplainPage : FC <PropsData> = function ({ setDatactive, ope
                                 <div className="pl-3 lg:flex justify-between">
                                     <div className="flex-1 overflow-hidden text-gray-500 dark:text-gray-50 max-w-[15rem] truncate whitespace-nowrap"> {item?.title} </div>
                                     <div className="lg:flex justify-end flex-1">
-                                        <div className="text-[0.8rem] xl:text-[0.9rem] text-gray-500 dark:text-gray-50"> {item?.customer_id?.firstname} {item?.customer_id?.lastname}  |  {item?.complain_id} </div>
+                                        <div className="text-[0.8rem] xl:text-[0.9rem] text-gray-500 dark:text-gray-50"> {item?.customer_id?.firstname} {item?.customer_id?.lastname}  |  {item?.complain_id?.replace('#', '')} </div>
                                     </div>
                                 </div>
 

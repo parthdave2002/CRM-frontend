@@ -61,11 +61,11 @@ const Salesproductlist : FC <PorductData> = ({searchData, ProductDetailsCall, is
         <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
           {ProductData && ProductData.map((item: any, k) => (
             <Table.Row key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
-              <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => ProductDetailsCall(item?._id)} >
+              <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer max-w-[35rem]" onClick={() => ProductDetailsCall(item?._id)} >
                 <div className='flex gap-x-2'>
                   <img className='w-[3rem] h-[3rem] flex self-center rounded-md' src={`${IMG_URL}/public/product/${item.product_pics?.[0]}`} alt='product' />
                   <div className='flex flex-col'>
-                    <span>{item?.name?.englishname}  ( {item?.company?.name_eng} )  </span>
+                    <span className='truncate max-w-[30rem] overflow-hidden  text-ellipsis'>{item?.name?.englishname}  ( {item?.company?.name_eng} )  </span>
                     <span className='dark:text-gray-400  text-gray-500 text-[0.9rem]'>{item?.tech_name?.english_tech_name} </span>
                   </div>
                 </div>
