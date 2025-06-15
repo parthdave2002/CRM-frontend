@@ -1,18 +1,20 @@
 import { FC, useEffect, useRef, useState } from "react";
-import { MdKeyboardArrowRight } from "react-icons/md";
+import { MdKeyboardArrowRight, MdReport } from "react-icons/md";
 import  userimage from "../../img/group.jpg"
 import { FaHandHoldingDollar } from "react-icons/fa6";
-import { FaAngleDown, FaRupeeSign, FaUser } from "react-icons/fa";
+import { FaAngleDown, FaRegClock, FaRupeeSign, FaUser } from "react-icons/fa";
 import SalesFarmerDashboard from "./salesFarmerDashboard";
-import { DarkThemeToggle,  Button, Table } from "flowbite-react";
+import { DarkThemeToggle,  Button, Table, Modal } from "flowbite-react";
 import userphoto from "../../img/profile-picture-3.jpg";
 import { FiLogOut } from "react-icons/fi";
 import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import ExamplePagination from '../../components/pagination';
-import { getsalesDashboard, getSalesExecutiveOrderlist, resetinsertlogin } from "../../Store/actions";
+import { getleadlist, getsalesDashboard, getSalesExecutiveOrderlist, MarkasReadLeadlist, resetinsertlogin } from "../../Store/actions";
 import moment from "moment";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { BsCartCheckFill } from "react-icons/bs";
 const IMG_URL = import.meta.env["VITE_API_URL"];
 
   interface PropsData {
@@ -47,6 +49,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
   const login = useSelector((state:any) => state.Login.Logincode);
   const DashboardDataList = useSelector((state: any) => state.SalesDashboard.DashboardDataList?.data);
   const OrderDataList = useSelector((state: any) => state.Order.SalesExeOrderlist);
+  const LeadDataList = useSelector((state: any) => state.Lead.Leaddatalist);
   const [SalesOrderData, setSalesOrderData] = useState([])
   // ----------- next Button  Code Start -------------
     const [TotalListData, setTotalListData] = useState(0);
@@ -67,6 +70,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
     const decodedUsername = usernameDataString ? decodeURIComponent(usernameDataString) : null;
     setData(decodedUsername);
     dispatch(getsalesDashboard())
+    dispatch(getleadlist())
   }, [])
 
   useEffect(() =>{
@@ -83,6 +87,18 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
     setSalesOrderData(OrderDataList?.data)
     setCurrentPageNo(1)
   },[OrderDataList])
+
+    const [leadData, setLeadData] = useState([])
+    const [TotalLeadListData, setTotalLeadListData] = useState(0);
+    const [leadCurrentPageNo, setleadCurrentPageNo] = useState(0);
+    const [LeadPageNo, setLeadPageNo] = useState(1);
+    const [RowLeadPerPage, setRowLeadPerPage] = useState(5);
+
+    useEffect(() =>{
+    setTotalLeadListData(LeadDataList?.totalData)
+    setLeadData(LeadDataList?.data)
+    setleadCurrentPageNo( LeadDataList?.page)
+  },[LeadDataList])
 
   useEffect(() => {
     if (DashboardDataList?.data) {
@@ -161,6 +177,42 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
       setLoginUserimg(login?.data?.user_img?.user_pic );
     }, [login]);
 
+    const [confirmationModal, setConfirmationModal] = useState(false);
+    const [LeadeId, setLeadeId] = useState("");
+
+    const OPenConfirmModal =(data:string) =>{
+      setConfirmationModal(true)
+      setLeadeId(data)
+    }
+
+    const DelCall = () =>{
+      let requser={
+        status :"completed",
+        _id : LeadeId
+      }
+      dispatch(MarkasReadLeadlist(requser))
+      setConfirmationModal(false);
+    }
+
+      const [UserOrderDataList, setUserOrderDataList] = useState([]);
+      const [UserComplainDataList, setUserComplainDataList] = useState([]);
+      const [UserTaglogDataList, setUserTaglogDataList] = useState([]);
+
+    // ----------- Tabnavbar code start --------------------
+        const [selectedTabbar, setselectedTabbar] = useState("Order");
+    
+        const TabData = [
+          { title: "Order", icon: <BsCartCheckFill  size={20} /> },
+          { title: "Help", icon: <MdReport  size={20} /> },
+          { title: "Contactus", icon: <FaRegClock  size={20} /> },
+        ]
+    
+        const TabSelection = (data: string) => {
+          setselectedTabbar(data)
+        }
+      // ----------- Tabnavbar code end --------------------
+    
+
     return (
         <> 
         
@@ -214,7 +266,14 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
                     </div>
                     <div className="text-center self-center items-start">
                       <p className="text-md font-bold"> Revenue</p>
-                      <p className="text-lg font-bold text-center mt-2"> {selectedRevenueframe == "weekly" ? TotalRevenue?.weekly : selectedRevenueframe == "monthly" ? TotalRevenue?.monthly : TotalRevenue?.daily}</p>
+                      <p className="text-lg font-bold text-center mt-2"> {(
+                          selectedRevenueframe === "weekly"
+                              ? TotalRevenue?.weekly
+                              : selectedRevenueframe === "monthly"
+                              ? TotalRevenue?.monthly
+                              : TotalRevenue?.daily
+                          )?.toFixed(2)}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -309,7 +368,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
               {ComplainData &&  ComplainData.length ?
                 <div className="bg-[#ffff] dark:bg-gray-900 rounded-xl py-3 px-5  w-[20rem] ">
                   <div className="flex justify-between">
-                    <div className="text-[1.3rem] font-semibold text-gray-900 dark:text-gray-200"> Complain </div>
+                    <div className="text-[1.3rem] font-semibold text-gray-900 dark:text-gray-200"> Complain ({ComplainData.length})</div>
                     <div className="flex  self-center align-center text-blue-500 hover:text-blue-800 cursor-pointer" onClick={() => ViweAllCall("Complain")}> <div> View all  </div>  <MdKeyboardArrowRight style={{ alignSelf: "center" }} /></div>
                   </div>
 
@@ -367,6 +426,151 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
               </div>
             : null }
 
+              {leadData && leadData.length > 0 ?
+              <div className="mt-[4rem]">
+              <h3 className="mb-4 text-xl font-bold leading-none text-gray-900 dark:text-white"> Lead List </h3>
+
+               <div className="flex items-center gap-x-6 bg-gray-100 dark:bg-gray-900 p-3 rounded-xl">
+                  <ul className="flex items-center gap-x-6">
+                    {TabData.map((data: any, k: number) => (
+                      <li key={k} className={`relative flex flex-col items-center justify-center gap-1 py-2 px-2 cursor-pointer transition-all duration-300 ease-in-out font-medium text-sm ${selectedTabbar === data.title ? "text-blue-500 font-semibold" : "text-gray-500 dark:text-gray-400"}`} onClick={() => TabSelection(data.title)} >
+                        <span className="flex items-center text-[1rem] font-semibold gap-x-4">{data.icon} {data.title}</span>
+                        {selectedTabbar === data.title && (<span className="px-2 absolute bottom-[-4px] left-0 w-full h-[2px] bg-blue-500"></span>)}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                {/* {leadData && leadData.length > 0 ?
+                  <>
+                    <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
+                      <Table.Head className="bg-gray-100 dark:bg-gray-700">
+                        <Table.HeadCell>name</Table.HeadCell>
+                        <Table.HeadCell>mobile Number</Table.HeadCell>
+                        <Table.HeadCell> Email</Table.HeadCell>
+                        <Table.HeadCell>Lead From</Table.HeadCell>
+                        <Table.HeadCell>Reason</Table.HeadCell>
+                        <Table.HeadCell>comment</Table.HeadCell>
+                        <Table.HeadCell>Status</Table.HeadCell>
+                        <Table.HeadCell>Created Date</Table.HeadCell>
+                        <Table.HeadCell>Action</Table.HeadCell>
+                      </Table.Head>
+
+                      <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
+                        {leadData && leadData.map((item: any, k: number) => (
+                          <Table.Row key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.name} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.mobile_number} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.email ? item?.email  : "-"} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.type ?   item?.type.charAt(0).toUpperCase() + item?.type.slice(1).toLowerCase() :  "-"} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> { item?.user_type ? item?.user_type ?.split('_') .map((word :any) => word.charAt(0).toUpperCase() + word.slice(1)) .join(' ') : "-"}</Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.comment ? item?.comment  : "-"} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.status ? item?.status.charAt(0).toUpperCase() + item?.status.slice(1).toLowerCase() : "-"} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item?.created_at).format("DD-MM-YYYY")}</Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.status =="pending" ? <Button onClick={() => OPenConfirmModal(item._id) }> Mark As Read</Button> :  "-" } </Table.Cell>
+                          </Table.Row>
+                        ))}
+                      </Table.Body>
+                    </Table>
+
+                    <ExamplePagination PageData={PageDataList} RowPerPage={RowPerPage} RowsPerPageValue={RoePerPage} PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData} />
+                  </>
+                : null} */}
+
+
+                 <div className='mt-[1.5rem] px-4'>
+                          {selectedTabbar == "Order" ?
+                            <>
+                              {UserOrderDataList && UserOrderDataList.length > 0 ?
+                                <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
+                                  <Table.Head className="bg-gray-100 dark:bg-gray-700">
+                                    <Table.HeadCell>Order id</Table.HeadCell>
+                                    <Table.HeadCell>Order Date</Table.HeadCell>
+                                    <Table.HeadCell> Order Type</Table.HeadCell>
+                                    <Table.HeadCell>Callback Date</Table.HeadCell>
+                                    <Table.HeadCell>COD Amt</Table.HeadCell>
+                                    <Table.HeadCell>Created By</Table.HeadCell>
+                                    <Table.HeadCell>Status</Table.HeadCell>
+                                    <Table.HeadCell> Action</Table.HeadCell>
+                                  </Table.Head>
+                
+                                  <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
+                                    {UserOrderDataList && UserOrderDataList.map((item: any, k: number) => (
+                                      <Table.Row key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
+                                        {/* <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => OderDetailsCall(item?.order_id, item)}>  {item?.order_id} </Table.Cell> */}
+                                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item?.added_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
+                                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.order_type ? item?.order_type.charAt(0).toUpperCase() + item?.order_type.slice(1).toLowerCase() : "-"} </Table.Cell>
+                                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.order_type == "future" ? moment(item?.future_order_date).format("DD-MM-YYYY") : "-"} </Table.Cell>
+                                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.total_amount.toFixed(2)} </Table.Cell>
+                                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.advisor_name?.name} </Table.Cell>
+                                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.status ? item?.status.charAt(0).toUpperCase() + item?.status.slice(1).toLowerCase() : "-"} </Table.Cell>
+                                       
+                                      </Table.Row>
+                                    ))}
+                                  </Table.Body>
+                                </Table>
+                                : <div className='text-center py-4 dark:text-gray-50'>No DataFound </div>}
+                            </>
+                
+                            : selectedTabbar == "Help" ?
+                              <>
+                                {UserComplainDataList && UserComplainDataList.length > 0 ?
+                                  <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
+                                    <Table.Head className="bg-gray-100 dark:bg-gray-700">
+                                      <Table.HeadCell>Complain id</Table.HeadCell>
+                                      <Table.HeadCell>Complain Date</Table.HeadCell>
+                                      <Table.HeadCell> Product </Table.HeadCell>
+                                      <Table.HeadCell> Status </Table.HeadCell>
+                                      <Table.HeadCell> Type </Table.HeadCell>
+                                      <Table.HeadCell>Created By</Table.HeadCell>
+                                    </Table.Head>
+                
+                                    <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
+                                      {UserComplainDataList && UserComplainDataList.map((item: any, k: number) => (
+                                        <Table.Row key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
+                                          {/* <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => ComplainCall(item?.complain_id ,item)}>  {item?.complain_id} </Table.Cell> */}
+                                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item?.created_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
+                                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.product_id?.map((product: any, index: number) => (<div key={index}>{product?.name?.englishname}</div>))}</Table.Cell>
+                                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.resolution.charAt(0).toUpperCase() + item?.resolution.slice(1).toLowerCase()} </Table.Cell>
+                                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.priority.charAt(0).toUpperCase() + item?.priority.slice(1).toLowerCase()} </Table.Cell>
+                                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.created_by?.name} </Table.Cell>
+                                        </Table.Row>
+                                      ))}
+                                    </Table.Body>
+                                  </Table>
+                                  : <div className='text-center py-4 dark:text-gray-50'>No DataFound </div>}
+                              </>
+                
+                              : selectedTabbar == "Contactus" ?
+                                <>
+                                  {UserTaglogDataList && UserTaglogDataList.length > 0 ?
+                                    <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
+                                      <Table.Head className="bg-gray-100 dark:bg-gray-700">
+                                        <Table.HeadCell> Taglog </Table.HeadCell>
+                                        <Table.HeadCell> SubTaglog </Table.HeadCell>
+                                        <Table.HeadCell> Comment </Table.HeadCell>
+                                        <Table.HeadCell>Created Date</Table.HeadCell>
+                                      </Table.Head>
+                
+                                      <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
+                                        {UserTaglogDataList && UserTaglogDataList.map((item: any, k: number) => (
+                                          <Table.Row key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
+                                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.taglog?.taglog_name} </Table.Cell>
+                                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.subtaglog?.name} </Table.Cell>
+                                            <Table.Cell className="max-w-[20rem] text-base font-medium text-gray-900 dark:text-white py-0 "> {item?.comment} </Table.Cell>
+                                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item.created_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
+                                          </Table.Row>
+                                        ))}
+                                      </Table.Body>
+                                    </Table>
+                                    : <div className='text-center py-4 dark:text-gray-50'>No DataFound </div>}
+                                </>
+                
+                                : null
+                          }
+                        </div>
+              </div>
+            : null }
+            
             {/* <div className="mt-[4rem]">
               <h3 className="mb-4 text-xl font-bold leading-none text-gray-900 dark:text-white"> Complain List </h3>
               {ComplainData && ComplainData.length > 0 ?
@@ -397,6 +601,20 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
                 </>
               : null}
             </div> */}
+
+            {confirmationModal  ?
+                      <Modal onClose={() => setConfirmationModal(false)}  show={confirmationModal} size="md">
+                          <Modal.Header className="px-6 pt-6 pb-0"> <span className="sr-only"> Change status</span></Modal.Header>
+                          <Modal.Body className="px-6 pt-0 pb-6">
+                              <div className="flex flex-col items-center gap-y-6 text-center"> <HiOutlineExclamationCircle className="text-7xl text-red-500" /> <p className="text-xl text-gray-500"> Are you sure you want to chnage status ? </p>
+                                  <div className="flex items-center gap-x-3">
+                                      <Button color="failure"   onClick={() => DelCall()}>  Yes, I'm sure </Button> 
+                                      <Button color="gray"  onClick={() => setConfirmationModal(false)}> No, cancel </Button> 
+                                  </div>
+                              </div>
+                          </Modal.Body>
+                      </Modal>
+            : null}
           </>
         }
         </>

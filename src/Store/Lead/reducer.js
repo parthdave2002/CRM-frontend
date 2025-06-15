@@ -36,10 +36,7 @@ const LeadData = (state = INIT_STATE, action) => {
         case GET_LEAD_LIST:
           return {
             ...state,
-            Leaddatalist: action.payload.data.data,
-            LeadlistSize: action.payload.data.size,
-            TotalLeadData: action.payload.data.totalData,
-            CurrentPage: action.payload.data.page,
+            Leaddatalist: action.payload.data,
           };
       }
     case GET_LEAD_LIST_ERROR:

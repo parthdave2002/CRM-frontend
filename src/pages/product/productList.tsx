@@ -150,7 +150,7 @@ const ProductListPage: FC = function () {
                   {ProductList && ProductList.map((item: any, k) => (
                         <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
                           <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item?._id} onClick={() => {CheckData(item?._id)}}/>  </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => DetailsPageCall(item?._id)}>  {item?.name?.englishname} </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap max-w-[35rem] truncate text-ellipsis text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => DetailsPageCall(item?._id)}>  {item?.name?.englishname} </Table.Cell>
 
                           {/* <Table.Cell className="whitespace-nowrap overflow-hidden text-ellipsis max-w-[400px] text-base font-medium text-gray-900 dark:text-white py-0">  {item.description}</Table.Cell> */}
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.categories?.name_eng} </Table.Cell> 

@@ -77,7 +77,7 @@ const SignInPage: FC = function () {
     setisLoading(false)
     if (Login == true) {  
       validation.resetForm();
-      if( LoginRols == "67b1195be442284118ab89bf"){
+      if( LoginRols == "67b1195be442284118ab89bf" || LoginRols == "68331b9e271c0b706832de91"){
         navigation("/sales-crm");
         location.reload();
       }
@@ -114,9 +114,9 @@ const SignInPage: FC = function () {
       const role = Cookies.get("role");
       const token = Cookies.get("token");
 
-      if(token  && role  != "67b1195be442284118ab89bf" ){
+      if(token  && role  != "67b1195be442284118ab89bf" || token  && role  != "68331b9e271c0b706832de91" ){
           navigation("/dashboard");
-      }else if(token  && role == "67b1195be442284118ab89bf"){
+      }else if(token  && role == "67b1195be442284118ab89bf" || token  && role == "68331b9e271c0b706832de91"){
         navigation("/sales-crm");
       }
     },[])
