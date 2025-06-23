@@ -319,10 +319,10 @@ const ProductAddPage : FC = function () {
                 englishname: Yup.string().required("Please enter english product name"),
                 gujaratiname: Yup.string().required("Please enter gujarati product name"),
             }),
-            tech_name: Yup.object({
-                english_tech_name: Yup.string().required("Please enter english product technical name"),
-                gujarati_tech_name: Yup.string().required("Please enter gujarati product technical  name"),
-            }),
+            // tech_name: Yup.object({
+            //     english_tech_name: Yup.string().required("Please enter english product technical name"),
+            //     gujarati_tech_name: Yup.string().required("Please enter gujarati product technical  name"),
+            // }),
           packaging: Yup.string().required("Please enter product packing"),
           avl_qty: Yup.string().required("Please enter product qty"),
           price: Yup.string().required("Please enter product price"),
@@ -353,10 +353,10 @@ const ProductAddPage : FC = function () {
                 return;
             }
 
-            if(selectedCropid.length === 0){
-                setValidateCrop(1)
-                return;
-            }
+            // if(selectedCropid.length === 0){
+            //     setValidateCrop(1)
+            //     return;
+            // }
 
             if(selectedpackingTypeid == null){
                 setValidatepackingType(1)
@@ -596,7 +596,7 @@ const ProductAddPage : FC = function () {
                         <div className="dark:bg-gray-800  flex-1 p-4 rounded-lg border border-gray-300  dark:border-gray-500 space-y-3 mb-4">
                             <div className="text-[1.2rem] font-bold dark:text-gray-100"> Technical Name</div>
                             <div className="flex-1 mt-[1rem] ">
-                                <Label htmlFor="tech_name">Technical Name ( Eng ) <span className='text-red-500'>*</span> </Label>
+                                <Label htmlFor="tech_name">Technical Name ( Eng )</Label>
                                 <div className="mt-1">
                                     <Input
                                         id="tech_name_eng"
@@ -614,7 +614,7 @@ const ProductAddPage : FC = function () {
                             </div>
 
                             <div className="flex-1 mt-[1rem] ">
-                                <Label htmlFor="Name">Technical Name ( Guj ) <span className='text-red-500'>*</span> </Label>
+                                <Label htmlFor="Name">Technical Name ( Guj )  </Label>
                                 <div className="mt-1">
                                     <Input
                                         id="gujarati_tech_name"
@@ -703,7 +703,7 @@ const ProductAddPage : FC = function () {
                         <div className="md:flex gap-x-[2rem]">
 
                               <div className="flex-1 mt-[1rem]">
-                                <Label htmlFor="Status">Crop <span className='text-red-500'>*</span> </Label>
+                                <Label htmlFor="Status">Crop  </Label>
                                 <div className="mt-1">
                                 <Select
                                     className="w-full dark:text-white"
@@ -721,9 +721,9 @@ const ProductAddPage : FC = function () {
                                     isClearable={true}
                                      isMulti={true}
                                 />
-                                {validateCrop == 1 ? (
+                                {/* {validateCrop == 1 ? (
                                     <FormFeedback type="invalid" className="text-Red text-sm"> Please Select crop </FormFeedback>
-                                ) : null}
+                                ) : null} */}
                                 </div>
                             </div>
 

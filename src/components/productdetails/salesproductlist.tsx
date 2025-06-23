@@ -75,7 +75,12 @@ const Salesproductlist : FC <PorductData> = ({searchData, ProductDetailsCall, is
               <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.price ? (item?.price).toFixed(2) :  0} </Table.Cell>
               <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.discount ? (item?.discount).toFixed(2) : 0}</Table.Cell>
               <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.price - item?.discount ? (item?.price - item?.discount).toFixed(2) : 0}  </Table.Cell>
-              {isLoggedin ? <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> <Button className=' bg-gradient-to-br from-green-400 to-blue-600 text-white hover:bg-gradient-to-bl border-0' onClick={() => AddtoCartCall(item)} > <div className="flex items-center gap-x-3"> <FaCartArrowDown className='text-xl'  /> Add to Cart </div> </Button> </Table.Cell> : null}
+              {isLoggedin  ?  
+              <>
+                  {item?.avl_qty  != 0?
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> <Button className=' bg-gradient-to-br from-green-400 to-blue-600 text-white hover:bg-gradient-to-bl border-0' onClick={() => AddtoCartCall(item)} > <div className="flex items-center gap-x-3"> <FaCartArrowDown className='text-xl'  /> Add to Cart </div> </Button> </Table.Cell>
+                  : <div className='text-center flex justify-center  self-center p-4'> - </div>}
+              </> : null}
             </Table.Row>
           ))}
         </Table.Body>

@@ -174,7 +174,7 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
               
             </div> */}
 
-            <div className="flex flex-col justify-self-end w-full max-w-md  bg-white dark:bg-gray-800  space-y-4">
+            <div className="flex flex-col justify-self-end w-full max-w-md  dark:bg-gray-800  space-y-4">
                 <div className="flex justify-between w-full text-base md:text-lg font-medium text-gray-600 dark:text-gray-300">
                   <span>Total Discount</span>
                   <span className="font-semibold text-gray-800 dark:text-white">{totalDiscount.toFixed(2)} Rs.</span>
@@ -210,9 +210,9 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
         </div>
         
         <div className="md:w-[20rem] w-full flex flex-col gap-4 mt-5">
-          {/* <div className="border dark:border-gray-600 dark:bg-gray-800 p-3 rounded-xl w-full flex flex-col gap-y-3">
+          <div className="border dark:border-gray-600 dark:bg-gray-800 p-3 rounded-xl w-full flex flex-col gap-y-3 cursor-pointer">
             <div className='dark:text-gray-300 text-[1.2rem] font-semibold'>Invoice</div>  
-          </div> */}
+          </div>
 
           <div className="border dark:border-gray-600 dark:bg-gray-800 p-3 rounded-xl w-full flex flex-col gap-y-3">
             <div className='dark:text-gray-300 text-[1.2rem] font-semibold'>Customer</div>
