@@ -66,6 +66,8 @@ const CropsListPage: FC = function () {
     const RowPerPage = (event: any) => {
       const value = Number(event)
        setRoePerPage(value);
+       setCurrentPageNo(0)
+       setPageNo(1)
      };
     const PageDataList = (data:any) =>{ setPageNo(data)}
   // ------------- Next button Code End -------------

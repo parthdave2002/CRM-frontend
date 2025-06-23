@@ -96,7 +96,7 @@ const OrderListPage : FC = function () {
                                 <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">₹ {item?.total_amount.toFixed(2)} </Table.Cell>
                                 <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.order_type.charAt(0).toUpperCase() + item?.order_type.slice(1).toLowerCase() } </Table.Cell>
                                 <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.status ? item?.status.charAt(0).toUpperCase() + item?.status.slice(1).toLowerCase()  : "-"} </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {moment(item?.createdAt).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
+                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {moment(item?.added_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
 
                             </Table.Row>
                         ))}

@@ -306,7 +306,7 @@ const OrdererDetailsPage: FC = function () {
                               <img src="/images/authentication/signature.webp" className="mb-3 border-b border-dashed border-gray-400 pb-1 w-[8rem] h-[3rem]" /> 
                           </div>
                         <p className="text-[0.8rem]">  (1) All products are intended for lawful agricultural use only. </p>
-                        <p className="text-[0.8rem]">  (2) Product performance depends on factors like weather, soil, etc…, beyond our control. We are not accepting any liability for crop failure or reduced yield or quality. </p>
+                        <p className="text-[0.8rem]">  (2) Product performance depends on various external factors such as weather, soil conditions, and usage methods. The company shall not be held responsible for crop failure, yield loss, or quality issues. </p>
                         <p className="text-[0.8rem]">  (3) The battery Pump and Torch have a limited warranty of 6 months for battery only. Do not use electric items while charging, use original adaptor and avoid overcharge or charge in low voltage as it may damage battery.  </p>
                         <p className="text-[0.8rem]">  (4) All disputes are subject to the jurisdiction of Una or Kapadvanj. E & O.E  </p>
                       </div>
