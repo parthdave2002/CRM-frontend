@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { toast } from "react-toastify";
 import ToastMessage from "./ToastMessage";
+const IMG_URL = import.meta.env["VITE_API_URL"];
 
 interface MultiImageUploadPreviewProps {
   onFileSelect: (files: File[]) => void; 
@@ -18,15 +19,34 @@ const MultiImageUploadPreview: React.FC<MultiImageUploadPreviewProps> = ({
   const [files, setFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
+  // useEffect(() => {
+  //   if (defaultImage) {
+  //     if (Array.isArray(defaultImage)) {
+  //       setPreviewSrcs(defaultImage); 
+  //     } else if (typeof defaultImage === 'string') {
+  //       setPreviewSrcs([defaultImage]);
+  //     }
+  //   }
+  // }, [defaultImage]);
+
   useEffect(() => {
-    if (defaultImage) {
-      if (Array.isArray(defaultImage)) {
-        setPreviewSrcs(defaultImage); 
-      } else if (typeof defaultImage === 'string') {
-        setPreviewSrcs([defaultImage]);
-      }
+  if (defaultImage) {
+    if (Array.isArray(defaultImage)) {
+      const urls = defaultImage.map(img =>
+        typeof img === 'string' && !img.startsWith('http')
+          ? `${IMG_URL}/public/product/${img}`
+          : img
+      );
+      setPreviewSrcs(urls);
+    } else if (typeof defaultImage === 'string') {
+      const url = defaultImage.startsWith('http')
+        ? defaultImage
+        : `${IMG_URL}/public/product/${defaultImage}`;
+      setPreviewSrcs([url]);
     }
-  }, [defaultImage]);
+  }
+}, [defaultImage]);
+
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = event.target.files;

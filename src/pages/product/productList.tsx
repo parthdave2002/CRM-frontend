@@ -65,6 +65,8 @@ const ProductListPage: FC = function () {
     const RowPerPage = (event: any) => {
       const value = Number(event)
        setRoePerPage(value);
+       setPageNo(1);
+       setCurrentPageNo(0)
      };
     const PageDataList = (data:any) =>{ setPageNo(data)}
   // ------------- Next button Code End -------------

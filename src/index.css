@@ -322,7 +322,7 @@
 }
 /* Kanban Code start */
 
-/* ::-webkit-scrollbar {
+::-webkit-scrollbar {
   display: none;
 }
 
@@ -330,7 +330,7 @@
 ::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
-} */
+}
 
 input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(0.6); /* This inverts the icon color, useful for dark modes */

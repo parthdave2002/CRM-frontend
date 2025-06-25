@@ -94,9 +94,9 @@ const ProductDetailsPage: FC = function () {
        
           <div className="mt-[2rem] bg-white dark:bg-gray-800 p-4">
                       <div>
-                        <div className="flex gap-x-3">
+                        <div className="flex gap-x-5">
                               {ProductDatalist && ProductDatalist?.product_pics.map((item:any) =>(
-                                <img  className="w-28 h-28 rounded-xl"  src={  `${IMG_URL}/public/product/${item}`}  alt="product photo"  />
+                                <img  className="w-28 h-28 rounded-full"  src={  `${IMG_URL}/public/product/${item}`}  alt="product photo"   />
                               ))}
                           </div>
                         <div className="grid grid-cols-3 gap-3 mt-[3rem]">

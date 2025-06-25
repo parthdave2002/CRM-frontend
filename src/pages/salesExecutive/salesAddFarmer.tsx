@@ -286,6 +286,17 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
     }),
 
     onSubmit: (values) => {
+
+      if (!selectedheaderaboutid) return setValidateheaderabout(1) 
+        if (!selectedirrigationtypeid) return setValidateirrigationtype(1) 
+        if (!selectedirrigationsourceid) return setValidateirrigationsource(1)
+        if (!selectedlandtypeid) return setValidatelandtype(1)
+        if (!selectedVillageid) return setValidateVaillage(1)
+        if (!selectedTalukaid) return setValidateTaluka(1)
+        if (!selectedDistrictid) return setValidateDistrict(1)
+        if (!selectedStateid) return setValidateState(1)
+        if (!selectedcropid) return setValidatecrop(1);
+
       let requserData :any = {
         firstname: values?.firstname.trim().charAt(0).toUpperCase() + values?.firstname.trim().slice(1).toLowerCase(),
         middlename: values?.middlename.trim().charAt(0).toUpperCase() + values?.middlename.trim().slice(1).toLowerCase(),
@@ -497,8 +508,6 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
 
     useEffect(() =>{  
       if(AddCustomerlist?.success == true || UpdateCustomerlist?.success  == true){
-        console.log("UpdateCustomerlist?.success",UpdateCustomerlist?.success);
-        
         try {
           if(UpdateCustomerlist?.success){
               toast.success(UpdateCustomerlist?.msg || "Customer updated successfully");

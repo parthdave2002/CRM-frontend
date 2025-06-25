@@ -10,13 +10,23 @@ interface PropsData{
 }
 
 const SalesHeaderPage : FC<PropsData> = function ({ active, setDatactive, openProfile}) {
-    const menuItems = [
-      { name: "Dashboard", icon: <MdGridView size={20}  /> },
-      { name: "Farmer", icon: <FaAccessibleIcon   size={20}  /> },
-      { name: "Products", icon: <FaCapsules   size={20}  /> },
-      { name: "Order", icon: <FaOpencart   size={20}  /> },
-      { name: "Complain", icon: <BiShocked   size={20}  /> },
+    // const menuItems = [
+    //   { name: "Dashboard", icon: <MdGridView size={20}  /> },
+    //   { name: "Farmer", icon: <FaAccessibleIcon   size={20}  /> },
+    //   { name: "Products", icon: <FaCapsules   size={20}  /> },
+    //   { name: "Order", icon: <FaOpencart   size={20}  /> },
+    //   { name: "Complain", icon: <BiShocked   size={20}  /> },
+    // ];
+
+
+        const menuItems = [
+      { name: "Dashboard", icon: <img src="/images/icon/dashboard.webp" alt="Dashboard" width={30} height={30} /> },
+      { name: "Farmer", icon: <img src="/images/icon/farmer.webp" alt="Farmer" width={30} height={30} />},
+      { name: "Products", icon: <img src="/images/icon/product.webp" alt="Product" width={30} height={30} /> },
+      { name: "Order", icon: <img src="/images/icon/order.webp" alt="Order" width={30} height={30} /> },
+      { name: "Complain", icon: <img src="/images/icon/complain.webp" alt="Complain" width={30} height={30} /> },
     ];
+
 
     return (
       <div className="flex justify-end  ">
