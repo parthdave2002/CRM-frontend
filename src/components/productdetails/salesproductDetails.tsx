@@ -110,7 +110,7 @@ const SalesProductDetailData : FC<PropsData> = ({ProductDetails, ProductCLoseCal
 
               <div className='flex-1 px-[3rem]'>
 
-                  <div className='dark:text-gray-100 text-[1.5rem] font-bold'> {Product_data?.name?.englishname} ({Product_data?.categories?.name_eng})</div>
+                  <div className='dark:text-gray-100 text-[1.5rem] font-bold'> {Product_data?.name?.englishname} </div>
                   <div className='dark:text-gray-400 text-[1rem] mt-3'> {Product_data?.tech_name?.english_tech_name} </div>
                   <div className='dark:text-gray-400 text-[1rem] mt-3 flex gap-x-3'> <div className='w-[8rem]'>Packing </div> : {Product_data?.packaging}  {Product_data?.packagingtype?.type_eng}  </div>
                   <div className='dark:text-gray-400 text-[1rem] mt-3 flex gap-x-3'> <div className='w-[8rem]'> Available Qty </div> : {Product_data?.avl_qty} </div>

@@ -41,6 +41,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
   //---------    Get Dashboard data  start--------- 
   const [ComplainData, setComplainData] = useState([])
   const [FarmerData, setFarmerData] = useState([])
+  const [MyFarmerCount, setMyFarmerCount] = useState(0)
   const [TotalRevenue, setTotalRevenue] = useState<DashboardCount>()
   const [TotalOrder, setTotalOrder] = useState<DashboardCount>()
   const [TotalFutureOrder, setTotalFutureOrder] = useState<DashboardCount>()
@@ -110,6 +111,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
     if (DashboardDataList?.data) {
       setComplainData(DashboardDataList?.data?.complain)
       setFarmerData(DashboardDataList?.data?.customers);
+      setMyFarmerCount(DashboardDataList?.data?.totalMyFarmer);
       setTotalRevenue(DashboardDataList?.data?.totalRevenue)
       setTotalOrder(DashboardDataList?.data?.totalOrder)
       setTotalFutureOrder(DashboardDataList?.data?.totalFutureOrder)
@@ -356,7 +358,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
               {FarmerData && FarmerData.length ?
                 <div className="bg-[#ffff] dark:bg-gray-800 rounded-xl p-4 ">
                   <div className="flex justify-between ">
-                    <div className="text-[1.4rem] font-semibold text-gray-900 dark:text-gray-200"> Farmer Profile </div>
+                    <div className="text-[1.4rem] font-semibold text-gray-900 dark:text-gray-200"> Farmer Profile  ({MyFarmerCount})</div>
                     <div className="flex  self-center align-center text-blue-500 hover:text-blue-800 cursor-pointer" onClick={() => ViweAllCall("Farmer")}> <div> View all  </div>  <MdKeyboardArrowRight style={{ alignSelf: "center" }} /></div>
                   </div>
 
@@ -417,7 +419,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
                       <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
                         {SalesOrderData && SalesOrderData.map((item: any, k: number) => (
                           <Table.Row key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
-                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.order_id} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.order_id?.replace(/^#/, '')} </Table.Cell>
                             <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item?.added_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
                             <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.order_type ? item?.order_type.charAt(0).toUpperCase() + item?.order_type.slice(1).toLowerCase() : "-"} </Table.Cell>
                             <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.order_type == "future" ? moment(item?.future_order_date).format("DD-MM-YYYY") : "-"} </Table.Cell>
@@ -531,7 +533,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
                                           {/* <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => ComplainCall(item?.complain_id ,item)}>  {item?.complain_id} </Table.Cell> */}
                                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> { item?.name} </Table.Cell>
                                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.mobile_number ? item?.mobile_number : "-"} </Table.Cell>
-                                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.comment ? item?.comment : "-"} </Table.Cell>
+                                        <Table.Cell className="truncate max-w-[15rem] text-base font-medium text-gray-900 dark:text-white py-0"> {item?.comment ? item?.comment : "-"} </Table.Cell>
                                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.status ? item?.status.charAt(0).toUpperCase() + item?.status.slice(1).toLowerCase() : "-"} </Table.Cell>
                                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item?.added_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
                                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.status == "pending" ?  <Button onClick={() => OPenConfirmModal(item._id) }> Mark As Read</Button> : "-"} </Table.Cell>
@@ -564,7 +566,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
                                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.user_type  ? item?.user_type.charAt(0).toUpperCase() + item?.user_type.slice(1).toLowerCase() : "-"} </Table.Cell>
                                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.mobile_number ? item?.mobile_number : "-"} </Table.Cell>
                                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.email ? item?.email : "-"} </Table.Cell>
-                                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.comment ? item?.comment : "-"} </Table.Cell>
+                                        <Table.Cell className="truncate max-w-[15rem] text-base font-medium text-gray-900 dark:text-white py-0"> {item?.comment ? item?.comment : "-"} </Table.Cell>
                                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.status ? item?.status.charAt(0).toUpperCase() + item?.status.slice(1).toLowerCase() : "-"} </Table.Cell>
                                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item?.added_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
                                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.status == "pending" ?  <Button onClick={() => OPenConfirmModal(item._id) }> Mark As Read</Button> : "-"} </Table.Cell>

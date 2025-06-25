@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AddProductlist, getCategorylist, getCompanylist, getCroplist, getPackingTypelist, GetProductViewlist, ResetProductlist, UpdateProductlist } from "../../Store/actions";
 import MultiImageUploadPreview from "../../components/multiimageuploader";
 import { toast } from "react-toastify";
+
   interface DescriptionData {
     id: string;
     englishHeader: string;
@@ -77,7 +78,7 @@ const ProductAddPage : FC = function () {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [file, setFile] = useState<File[] >([]);
-    const [productImage, setProductImage] = useState<File[] | string[]>([]);
+    const [productImage, setProductImage] = useState <(File | string)[]>([]);
     const [validateProduct, setvalidateProduct] = useState(0);
 
     useEffect(() =>{
@@ -90,7 +91,7 @@ const ProductAddPage : FC = function () {
     },[file, productImage])
 
     useEffect(() =>{
-        if(CompanyListData.length == 0) dispatch(getCompanylist()); 
+        if(CompanyListData.length == 0) dispatch(getCompanylist({all:"true"})); 
         if (PackingTypeListData.length == 0) dispatch(getPackingTypelist());
         if (CategoryListData.length == 0) dispatch(getCategorylist());
         if (CropListData.length == 0) dispatch(getCroplist({all:"true"}));

@@ -53,6 +53,7 @@ function* onAddProductlist({ payload: requstuser }) {
     const response = yield call(AddProductlistApi, requstuser);
     yield put(AddProductlistSuccess(ADD_PRODUCT_LIST, response));
   } catch (error) {
+    toast.error(error?.msg)
     yield put(AddProductlistFail(error));
   }
 }
@@ -66,6 +67,7 @@ function* onUpdateProductlist({ payload: requstuser }) {
       yield put(getProductlistSuccess(GET_PRODUCT_LIST, newresponse));
     }
   } catch (error) {
+    toast.error(error?.msg)
     yield put(UpdateProductlistFail(error));
   }
 }
