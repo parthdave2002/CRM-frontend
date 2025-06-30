@@ -228,6 +228,7 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
                         <Table.HeadCell> Taglog </Table.HeadCell>
                         <Table.HeadCell> SubTaglog </Table.HeadCell>
                         <Table.HeadCell> Comment </Table.HeadCell>
+                        <Table.HeadCell>Advisor Name</Table.HeadCell>
                         <Table.HeadCell>Created Date</Table.HeadCell>
                       </Table.Head>
 
@@ -236,7 +237,8 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
                           <Table.Row key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
                             <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.taglog?.taglog_name} </Table.Cell>
                             <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.subtaglog?.name} </Table.Cell>
-                            <Table.Cell className="max-w-[20rem] text-base font-medium text-gray-900 dark:text-white py-0 "> {item?.comment} </Table.Cell>
+                            <Table.Cell className="max-w-[20rem] truncate text-base font-medium text-gray-900 dark:text-white py-0 "> {item?.comment} </Table.Cell>
+                              <Table.Cell className="max-w-[15rem] truncate text-base font-medium text-gray-900 dark:text-white py-0 "> {item?.added_by?.name ? item?.added_by?.name : "-"} </Table.Cell>
                             <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item.created_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
                           </Table.Row>
                         ))}

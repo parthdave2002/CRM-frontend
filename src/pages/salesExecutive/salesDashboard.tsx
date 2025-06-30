@@ -66,6 +66,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
   // ------------- Next button Code End -------------
 
   const [data, setData] = useState<string | null>(null);
+  const role = Cookies.get("role");
   useEffect(() => {
     const usernameDataString = Cookies.get("username");
     const decodedUsername = usernameDataString ? decodeURIComponent(usernameDataString) : null;
@@ -436,7 +437,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
               </div>
             : null }
 
-              {leadData && leadData.length > 0 ?
+              {role === "68331b9e271c0b706832de91" ?
               <div className="mt-[4rem]">
               <h3 className="mb-4 text-[2rem] font-bold leading-none text-gray-900 dark:text-white"> Lead List </h3>
 
@@ -582,7 +583,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
                           <ExamplePagination PageData={LeadPageDataList} RowPerPage={LeadRowPerPage} RowsPerPageValue={RowLeadPerPage} PageNo={LeadPageNo} CurrentPageNo={leadCurrentPageNo} TotalListData={TotalLeadListData} />
                   </div>
               </div>
-            : null }
+             : null } 
             
             {/* <div className="mt-[4rem]">
               <h3 className="mb-4 text-xl font-bold leading-none text-gray-900 dark:text-white"> Complain List </h3>
