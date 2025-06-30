@@ -80,6 +80,9 @@ const SignInPage: FC = function () {
       if( LoginRols == "67b1195be442284118ab89bf" || LoginRols == "68331b9e271c0b706832de91"){
         navigation("/sales-crm");
         location.reload();
+      }else if(LoginRols == "685c305069eaa1084c92c5fe"){
+         navigation("/warehouse");
+         location.reload();
       }
       else{
         navigation("/dashboard");
@@ -113,11 +116,12 @@ const SignInPage: FC = function () {
     useEffect(()=>{
       const role = Cookies.get("role");
       const token = Cookies.get("token");
-
       if(token  && role  != "67b1195be442284118ab89bf" || token  && role  != "68331b9e271c0b706832de91" ){
           navigation("/dashboard");
       }else if(token  && role == "67b1195be442284118ab89bf" || token  && role == "68331b9e271c0b706832de91"){
         navigation("/sales-crm");
+      }else if(token  && role == "685c305069eaa1084c92c5fe" ){
+        navigation("/warehouse");
       }
     },[])
   //--------------  if User Alredy login redirect to their page code end --------------

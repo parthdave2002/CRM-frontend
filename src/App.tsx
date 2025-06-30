@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import PrivateRoute from "./routes/PrivateRoute";
 import LoaderPage from "./components/loader";
 import { useSelector } from "react-redux";
+
 const DashboardPage = lazy(() => import("./pages"));
 const ManagerDashboardPage = lazy(() => import("./pages/mdashboard/dashoboard"));
 const SignInPage = lazy(() => import("./pages/authentication/sign-in"));
@@ -52,6 +53,7 @@ const CropsDetailsPage = lazy(() => import("./pages/crops/cropsDetails"));
 const SalesCRMPage = lazy(() => import("./pages/salesExecutive"));
 const CouponListPage = lazy(() => import("./pages/coupon/couponList"));
 const AddCouponPage = lazy(() => import("./pages/coupon/couponAdd"));
+const WarehousePage = lazy(() => import("./pages/warehouse/warehouse"));
 
 const App: FC = function () {
   const isAuthenticated = useSelector((state: any) => state.Login.Logincode?.success);
@@ -120,6 +122,7 @@ const App: FC = function () {
             <Route path="/coupon/add" element={<AddCouponPage />} />
             {/* Sales Routes */}
             <Route path="/sales-crm" element={<SalesCRMPage />} />
+            <Route path="/warehouse" element={<WarehousePage />} />
           </Route>
 
           <Route path="/login" element={<SignInPage />} index />
