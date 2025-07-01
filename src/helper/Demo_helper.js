@@ -164,7 +164,7 @@ export const FermerOrderlistApi = (requserdata) => api.get(url.GET_FARMER_ORDER_
 export const OrderDetaillistApi = (requserdata) => api.get(url.GET_ORDER_DETAILS_LIST, requserdata);
 export const AddOrderlistApi = async (requserdata) => await api.create(url.ADD_ORDER_LIST, requserdata);
 export const DelOrderlistApi = async (requserdata) => await api.delete(url.DELETE_ORDER_LIST, requserdata);
-
+export const ReturnOrderlistApi = async (requserdata) => await api.get(url.RETURN_ORDER_LIST, requserdata);
 
 // Banner API
 export const BannerlistApi = (requserdata) => api.get(url.GET_BANNER_LIST, requserdata);

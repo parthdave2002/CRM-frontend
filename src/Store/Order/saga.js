@@ -15,7 +15,9 @@ import {
   getFarmerOrderlistSuccess,
   getFarmerOrderlistFail,
   getSalesExecutiveOrderlistSuccess,
-  getSalesExecutiveOrderlistFail
+  getSalesExecutiveOrderlistFail,
+  ReturnOrderlistSuccess,
+  ReturnOrderlistFail
 } from "./action";
 import {
   GET_UPDATE_ORDER_LIST,
@@ -25,11 +27,11 @@ import {
   ADD_ORDER_LIST,
   DELETE_ORDER_LIST,
   RESET_ORDER_LIST,
-  GET_ORDER_DETAILS_LIST
+  GET_ORDER_DETAILS_LIST,
+  RETURN_ORDER_LIST
 } from "./actionType";
-import { UpdateOrderlistApi,OrderlistApi, AddOrderlistApi, DelOrderlistApi, OrderDetaillistApi, FermerOrderlistApi, SalesOrderlistApi} from "../../helper/Demo_helper";
+import { UpdateOrderlistApi,OrderlistApi, AddOrderlistApi, DelOrderlistApi, ReturnOrderlistApi, OrderDetaillistApi, FermerOrderlistApi, SalesOrderlistApi} from "../../helper/Demo_helper";
 import { toast } from "react-toastify";
-
 
 function* onGetUpdateOrderList({ payload: requstuser }) {
   try {
@@ -106,6 +108,21 @@ function* onResetOrderList() {
     yield put(ResetOrderlistSuccess(RESET_ORDER_LIST, response)); 
 }
 
+function* onGetRetunOrderList({ payload: requstuser }) {
+  try {
+    const response = yield call(ReturnOrderlistApi, requstuser);
+    yield put(ReturnOrderlistSuccess(RETURN_ORDER_LIST, response));
+      if(response.success === true || response.success === "true"){
+        let data ={ returnOrder : true }
+        const response = yield call(OrderlistApi ,data);
+        yield put(getOrderlistSuccess(GET_ORDER_LIST, response));
+      }
+  } catch (error) {
+    yield put(ReturnOrderlistFail(error));
+  }
+}
+
+
 function* OrderSaga() {
   yield takeEvery(GET_UPDATE_ORDER_LIST, onGetUpdateOrderList);
   yield takeEvery(GET_ORDER_LIST, onGetOrderList);
@@ -115,5 +132,6 @@ function* OrderSaga() {
   yield takeEvery(RESET_ORDER_LIST, onResetOrderList);
   yield takeEvery(GET_FARMER_ORDER_LIST, onGetFarmerOrderList);
   yield takeEvery(GET_SALES_EXECUTIVE_ORDER_LIST, onGetSalesOrderList);
+  yield takeEvery(RETURN_ORDER_LIST, onGetRetunOrderList);
 }
 export default OrderSaga;

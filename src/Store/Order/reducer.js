@@ -31,6 +31,10 @@ import {
   GET_SALES_EXECUTIVE_ORDER_LIST,
   GET_SALES_EXECUTIVE_ORDER_LIST_ERROR,
   GET_SALES_EXECUTIVE_ORDER_LIST_SUCCESS,
+
+  RETURN_ORDER_LIST,
+  RETURN_ORDER_LIST_ERROR,
+  RETURN_ORDER_LIST_SUCCESS
 } from "./actionType";
 
 const INIT_STATE = {
@@ -44,6 +48,7 @@ const INIT_STATE = {
   SingleFarmerOrderlist:[],
   SalesExeOrderlist:[],
   UpdateOrderlist:[],
+  ReturnOrderdatalist:[],
   error: {},
 };
 
@@ -190,6 +195,25 @@ const Order = (state = INIT_STATE, action) => {
               return { ...state };
           }
 
+          case RETURN_ORDER_LIST_SUCCESS:
+          switch (action.payload.actionType) {
+            case RETURN_ORDER_LIST:
+              return {
+                ...state,
+                ReturnOrderdatalist: action.payload.data,
+              };
+          }
+        case RETURN_ORDER_LIST_ERROR:
+          switch (action.payload.actionType) {
+            case RETURN_ORDER_LIST:
+              return {
+                ...state,
+                error: action.payload,
+              };
+            default:
+              return { ...state };
+          }
+
     case RESET_ORDER_LIST_SUCCESS:
       switch (action.payload.actionType) {
         case RESET_ORDER_LIST:
@@ -204,6 +228,7 @@ const Order = (state = INIT_STATE, action) => {
             AddOrderdatalist:[],
             SingleFarmerOrderlist:[],
             UpdateOrderlist:[],
+            ReturnOrderdatalist:[]
           };
       }
  

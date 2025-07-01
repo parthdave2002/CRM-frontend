@@ -3,7 +3,7 @@ import { Button, Table, Modal } from "flowbite-react";
 import moment from "moment";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
-import { getOrderlist } from "../../Store/actions";
+import { getOrderlist, ReturnOrderlist } from "../../Store/actions";
 import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 const IMG_URL = import.meta.env["VITE_API_URL"];
@@ -29,7 +29,7 @@ const WarehousePage  = function ()  {
 
                const DelCall = () =>{
                   let requser={  order_id : LeadeId}
-                  // dispatch(MarkasReadLeadlist(requser))
+                  dispatch(ReturnOrderlist(requser))
                   setConfirmationModal(false);
                 }
 
@@ -59,8 +59,8 @@ const WarehousePage  = function ()  {
       // ---------------- Search code end ----------------
           
         useEffect(() => {          
-          dispatch(getOrderlist({returnOrder : true}))
-        }, [])
+          dispatch(getOrderlist({returnOrder : true, search : searchData}))
+        }, [dispatch, searchData])
 
       let Name = "Warehouse ";
       let Searchplaceholder = "Search For order id";

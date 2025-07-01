@@ -30,6 +30,10 @@ import {
   DELETE_ORDER_LIST,
   DELETE_ORDER_LIST_SUCCESS,
   DELETE_ORDER_LIST_ERROR,
+
+  RETURN_ORDER_LIST,
+  RETURN_ORDER_LIST_ERROR,
+  RETURN_ORDER_LIST_SUCCESS
 } from "./actionType";
 
 export const getUpdateOrderlist = (requserdata) => ({
@@ -46,8 +50,6 @@ export const getUpdateOrderlistFail = (actionType, error) => ({
   type: GET_UPDATE_ORDER_LIST_ERROR,
   payload: { actionType, error },
 });
-
-
 
 export const getOrderlist = (requserdata) => ({
   type: GET_ORDER_LIST,
@@ -154,5 +156,20 @@ export const DeleteOrderlistSuccess = (actionType, data) => ({
 
 export const DeleteOrderlistFail = (actionType, error) => ({
   type: DELETE_ORDER_LIST_ERROR,
+  payload: { actionType, error },
+});
+
+export const ReturnOrderlist = (requserdata) => ({
+  type: RETURN_ORDER_LIST,
+  payload: requserdata,
+});
+
+export const ReturnOrderlistSuccess = (actionType, data) => ({
+  type: RETURN_ORDER_LIST_SUCCESS,
+  payload: { actionType, data },
+});
+
+export const ReturnOrderlistFail = (actionType, error) => ({
+  type: RETURN_ORDER_LIST_ERROR,
   payload: { actionType, error },
 });

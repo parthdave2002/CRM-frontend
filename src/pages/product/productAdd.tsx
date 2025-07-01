@@ -208,11 +208,11 @@ const ProductAddPage : FC = function () {
         };
 
         const handleAddField = () => {
-            if(inputs.length !== 5 ){
+            if(inputs.length !== 10 ){
                 setInputs([...inputs, { id: String(Date.now()), gujaratiHeader: "", englishHeader: "", gujaratiValue: "", englishValue: "" }]);
             }
             else{
-                toast.error("Only 5 description added for product")
+                toast.error("Only 10 description added for product")
             }
         };
 

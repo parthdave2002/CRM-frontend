@@ -79,6 +79,7 @@ export const GET_FARMER_ORDER_LIST = "/api/order/get-order";
 export const GET_ORDER_DETAILS_LIST = "/api/order/get-order";
 export const DELETE_ORDER_LIST = "/api/order/remove-order";
 export const ADD_ORDER_LIST = "/api/order/add-order";
+export const RETURN_ORDER_LIST = "/api/order/add-return-product";
 
 // Banner
 export const GET_BANNER_LIST = "/api/banner/get-banner";
