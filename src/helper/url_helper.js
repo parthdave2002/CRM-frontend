@@ -9,7 +9,7 @@ export const LOGOUT ="/api/user/logout";
 
 // Dashboard Api
 export const GET_DASHBOARD_DATA_LIST = "/api/dashboard/details";
-export const GET_REPORT_DATA_LIST = "/api/dashboard/report";
+export const GET_REPORT_DATA_LIST = "/api/report/get-report";
 
 // User Api
 export const GET_USER_LIST = "/api/user/get-user";

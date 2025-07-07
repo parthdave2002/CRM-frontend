@@ -75,11 +75,11 @@ const LeftSidebar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = function ()
       icon: TbReportSearch,
       to: "/lead/list",
     },
-    // {
-    //   name: "Report",
-    //   icon: MdLeaderboard,
-    //   to: "/report",
-    // },
+    {
+      name: "Report",
+      icon: MdLeaderboard,
+      to: "/report",
+    },
   ];
 
   const SubMasterMenu = [
@@ -127,7 +127,6 @@ const LeftSidebar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = function ()
 
   const filteredSidebarData = user === "67b388a7d593423df0e24295" ? SidebarData : SidebarData.filter((item:any) => AccessList.includes(item.name));
   const filteredSubMasterMenu = user === "67b388a7d593423df0e24295" ? SubMasterMenu : SubMasterMenu.filter((item:any) => AccessList.includes(item.name));
-
 
   return (
     <div className="hidden lg:block">

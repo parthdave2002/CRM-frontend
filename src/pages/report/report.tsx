@@ -29,16 +29,18 @@ const ReportPage: FC = function () {
   }));
   
   useEffect(() =>{
-    setExportdata(GetReportDatalist);
-    if(selectedStatusid == "user"){
+    console.log("GetReportDatalist",GetReportDatalist);
+    
+    setExportdata(GetReportDatalist?.data);
+    if(selectedStatusid == "advisor"){
       setshowReportData(true);
       setUserdata(GetReportDatalist?.data)
     }
-    else if(selectedStatusid == "customer"){
+    else if(selectedStatusid == "farmer"){
       setshowReportData(true);
       setCustomerdata(GetReportDatalist?.data)
     }
-    else if(selectedStatusid == "product"){
+    else if(selectedStatusid == "lead"){
       setshowReportData(true);
       setProductdata(GetReportDatalist?.data)
     }
@@ -63,9 +65,9 @@ const ReportPage: FC = function () {
     };
 
     const isactiveoption = [
-      { label : "User", value:"user" },
-      { label : "Customer", value:"customer" },
-      { label : "Product", value:"product" },
+      { label : "Advisor", value:"advisor" },
+      { label : "Farmer", value:"farmer" },
+      // { label : "Lead", value:"lead" },
       { label : "Order", value:"order" }
     ]
   //---------------- Satus option code end ----------------
@@ -90,8 +92,8 @@ const ReportPage: FC = function () {
 
   const GetdataCall = () =>{
     let requserData= {
-      startDate: startDateData,
-      endDate: endDateData,
+      ...(startDateData && { startDate: startDateData }),
+      ...(endDateData && { endDate: endDateData }),
       type : selectedStatusid
     }
     dispatch(getReportDatalist(requserData))
@@ -110,6 +112,29 @@ const ReportPage: FC = function () {
         <div className="min-h-screen">
           <ExampleBreadcrumb Name={Name} />
           <div className="bg-white dark:bg-gray-800 p-4 flex gap-x-4 ">
+
+            <div>
+              <Select
+              className="w-[15rem] dark:text-white"
+              classNames={{
+                control: () => "react-select__control",
+                singleValue: () => "react-select__single-value",
+                menu: () => "react-select__menu",
+                option: ({ isSelected }) =>
+                  isSelected
+                    ? "react-select__option--is-selected"
+                    : "react-select__option",
+                placeholder: () => "react-select__placeholder",
+              }}
+              value={selectedStatusOption}
+              onChange={(e) => {
+                IsActivedata(e);
+              }}
+              options={isactiveoption}
+              isClearable={true}
+            />
+            </div>
+
             <div className="relative">
               <DatePicker
                 selectsRange
@@ -133,49 +158,34 @@ const ReportPage: FC = function () {
               <IoCalendarNumberSharp className="absolute left-3 top-2.5 w-5 h-5 text-gray-400" />
             </div>
 
-            <Select
-              className="w-[15rem] dark:text-white"
-              classNames={{
-                control: () => "react-select__control",
-                singleValue: () => "react-select__single-value",
-                menu: () => "react-select__menu",
-                option: ({ isSelected }) =>
-                  isSelected
-                    ? "react-select__option--is-selected"
-                    : "react-select__option",
-                placeholder: () => "react-select__placeholder",
-              }}
-              value={selectedStatusOption}
-              onChange={(e) => {
-                IsActivedata(e);
-              }}
-              options={isactiveoption}
-              isClearable={true}
-            />
+            
 
-            {selectedStatusid != "" &&  startDateData != null && endDate != null ? 
+            {selectedStatusid != "" ? 
               <Button  gradientDuoTone="purpleToPink"  onClick={() => GetdataCall()} > <div className="flex items-center gap-x-3 w-[5rem] text-center"> <FaSearch /> Submit </div>  </Button>
              : null}
 
-            {selectedStatusid != "" &&  startDateData != null && endDate != null ? 
+            {selectedStatusid != ""  && showReportData == true ? 
               <div className="flex-1 justify-items-end self-center">  <Suspense fallback={<div>Loading...</div>}>  <ExportDataModal data={Exportdata} name={selectedStatusid} />  </Suspense>  </div>
             : null}
           </div>
 
           <div className="mt-[2rem] bg-white dark:bg-gray-800 p-4">
-            {showReportData && selectedStatusid == "user" ? (
+            {showReportData && selectedStatusid == "advisor" ? (
               <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
                 <Table.Head className="bg-gray-100 dark:bg-gray-700">
-                  <Table.HeadCell>
-                    <Checkbox id="select-all" name="select-all" />
-                  </Table.HeadCell>
                   <Table.HeadCell>Name</Table.HeadCell>
                   <Table.HeadCell>email</Table.HeadCell>
-                  <Table.HeadCell>role</Table.HeadCell>
                   <Table.HeadCell>gender</Table.HeadCell>
                   <Table.HeadCell>mobile no</Table.HeadCell>
+                  <Table.HeadCell>role</Table.HeadCell>
                   <Table.HeadCell>date of joining</Table.HeadCell>
                   <Table.HeadCell>date of birth</Table.HeadCell>
+                  <Table.HeadCell>Address</Table.HeadCell>
+                  <Table.HeadCell>Emergency contact person</Table.HeadCell>
+                  <Table.HeadCell>Emergency mobile no</Table.HeadCell>
+                  <Table.HeadCell>Aadhar card</Table.HeadCell>
+                  <Table.HeadCell>Pan card</Table.HeadCell>
+                  <Table.HeadCell>Bank passbook</Table.HeadCell>
                   <Table.HeadCell>Status</Table.HeadCell>
                   <Table.HeadCell>Created Date</Table.HeadCell>
                 </Table.Head>
@@ -183,14 +193,19 @@ const ReportPage: FC = function () {
                 <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
                   {Userdata && Userdata.map((item: any, k: any) => (
                       <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700"  >
-                        <Table.Cell className="w-4 py-0"  style={{ paddingTop: "1", paddingBottom: "1" }}> <Checkbox /> </Table.Cell>
-                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.name} </Table.Cell>
-                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.email}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.name} </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.email}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.gender} </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.mobile_no}</Table.Cell>
                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.role?.role_title} </Table.Cell>
-                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.gender} </Table.Cell>
-                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.mobile_no}</Table.Cell>
-                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.date_of_joining}  </Table.Cell>
-                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.date_of_birth} </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.date_of_joining}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.date_of_birth} </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.address}</Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.emergency_contact_person} </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.emergency_mobile_no}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.aadhar_card == true ? "Yes"  : "No"} </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.pan_card == true ? "Yes"  : "No"} </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.bank_passbook == true ? "Yes"  : "No"} </Table.Cell>
 
                       <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white">
                         {item.is_active == true ?  
@@ -203,33 +218,53 @@ const ReportPage: FC = function () {
                     ))}
                 </Table.Body>
               </Table>
-            ) : showReportData && selectedStatusid == "customer" ? (
+            ) : showReportData && selectedStatusid == "farmer" ? (
               <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
                 <Table.Head className="bg-gray-100 dark:bg-gray-700">
-                  <Table.HeadCell> <Checkbox id="select-all" name="select-all" />  </Table.HeadCell>
                   <Table.HeadCell>Name</Table.HeadCell>
                   <Table.HeadCell>Mobile</Table.HeadCell>
+                  <Table.HeadCell>Alternate mobile</Table.HeadCell>
+                  <Table.HeadCell>Land Area</Table.HeadCell>
+                  <Table.HeadCell>Land Type</Table.HeadCell>
+                  <Table.HeadCell>Irrigation source</Table.HeadCell>
+                  <Table.HeadCell>Irrigation Type</Table.HeadCell>
+                  <Table.HeadCell>Heard about agribharat</Table.HeadCell>
                   <Table.HeadCell>address</Table.HeadCell>
+                  <Table.HeadCell>district</Table.HeadCell>
+                  <Table.HeadCell>taluka</Table.HeadCell>
                   <Table.HeadCell>village</Table.HeadCell>
-                  <Table.HeadCell>city</Table.HeadCell>
+                  <Table.HeadCell>pincode</Table.HeadCell>
+                  <Table.HeadCell>postoffice</Table.HeadCell>
+                  <Table.HeadCell>Refrence</Table.HeadCell>
                   <Table.HeadCell>created at</Table.HeadCell>
+                  <Table.HeadCell>created by</Table.HeadCell>
                 </Table.Head>
 
                 <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
                   {Customerdata && Customerdata.map((item: any, k: any) => (
                       <Table.Row  key={k}  className="hover:bg-gray-100 dark:hover:bg-gray-700">
-                        <Table.Cell  className="w-4 py-0"  style={{ paddingTop: "1", paddingBottom: "1" }}  >  <Checkbox /> </Table.Cell>
-                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.customer_name} </Table.Cell>
-                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.mobile_number} </Table.Cell>
-                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.address}  </Table.Cell>
-                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item.village}  </Table.Cell>
-                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.taluka} </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.customer_name} </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.mobile_number} </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.alternate_number ?  item?.alternate_number : "-"} </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.land_area} </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.land_type} </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.irrigation_source} </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.irrigation_type} </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.heard_about_agribharat} </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.address}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.district_name}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.taluka_name}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.village_name}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.pincode}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.post_office}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.ref_name ? item?.ref_name : "-"}  </Table.Cell>
                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {moment(item.added_at).format("DD-MM-YYYY hh:mm:ss")}   </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.created_by?.name}  </Table.Cell>
                       </Table.Row>
                     ))}
                 </Table.Body>
               </Table>
-            ) : showReportData && selectedStatusid == "product" ? 
+            ) : showReportData && selectedStatusid == "lead" ? 
               <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
                 <Table.Head className="bg-gray-100 dark:bg-gray-700">
                   <Table.HeadCell> <Checkbox id="select-all" name="select-all" /> </Table.HeadCell>
@@ -265,24 +300,55 @@ const ReportPage: FC = function () {
            : showReportData && selectedStatusid == "order" ? (
               <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
                 <Table.Head className="bg-gray-100 dark:bg-gray-700">
-                  {/* <Table.HeadCell>  <Checkbox id="select-all" name="select-all" />  </Table.HeadCell> */}
-                  <Table.HeadCell>Order Date</Table.HeadCell>
                   <Table.HeadCell>Order id</Table.HeadCell>
-                  <Table.HeadCell>Customer Name</Table.HeadCell>
-                  <Table.HeadCell> Amount </Table.HeadCell>
+                  <Table.HeadCell> Farmer name</Table.HeadCell>
+                  <Table.HeadCell> Address</Table.HeadCell>
+                  <Table.HeadCell> District</Table.HeadCell>
+                  <Table.HeadCell> Taluka</Table.HeadCell>
+                  <Table.HeadCell> village </Table.HeadCell>
+                  <Table.HeadCell> post office</Table.HeadCell>
+                  <Table.HeadCell> pincode</Table.HeadCell>
+                  <Table.HeadCell> Mobile</Table.HeadCell>
+                  <Table.HeadCell> Alternate Mobile</Table.HeadCell>
+                  <Table.HeadCell> Products / Packing / Quantity</Table.HeadCell>
+                  <Table.HeadCell> Coupon code</Table.HeadCell>
+                  <Table.HeadCell> Discount amount </Table.HeadCell>
+                  <Table.HeadCell> Final  amount </Table.HeadCell>
+                  <Table.HeadCell> Advisor Name </Table.HeadCell>
                   <Table.HeadCell>Status</Table.HeadCell>
+                  <Table.HeadCell>Order Date</Table.HeadCell>
                 </Table.Head>
 
                 <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
                   {Orderdata &&
                     Orderdata.map((item: any, k: any) => (
                       <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700"  >
-                        {/* <Table.Cell  className="w-4 py-0"  style={{ paddingTop: "1", paddingBottom: "1" }} >   <Checkbox />   </Table.Cell> */}
-                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {moment (item.added_at).format("DD-MM-YYYY hh:mm:ss")}  </Table.Cell>
-                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item.order_id}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.order_id}  </Table.Cell>
                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.customer?.customer_name}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.customer?.address}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.customer?.district_name}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.customer?.taluka_name}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.customer?.village_name}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.customer?.post_office}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.customer?.pincode}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.customer?.mobile_number}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.customer?.alternate_number ? item?.customer?.alternate_number  : "-"}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.products?.length ? 
+                            item.products
+                                .map((p:any) => {
+                                  const name = p?.id?.name?.englishname || '';
+                                  const pack = p?.id?.packaging || '';
+                                  const packType = p?.id?.packagingtype?.type_eng || '';
+                                  return `${name} (${pack} ${packType})`;
+                                })
+                                .join(', ')
+                        : "-"}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white"> { item?.coupon?.name ?  item?.coupon?.name : "-"} </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white"> { item?.coupon?.amount ? item?.coupon?.amount : "-"} </Table.Cell>
                         <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white"> { item?.total_amount} </Table.Cell>
-                        <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white"> { item?.status} </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white"> { item?.advisor_name?.name} </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white"> { item?.status.charAt(0).toUpperCase() + item?.status.slice(1).toLowerCase()} </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {moment (item.added_at).format("DD-MM-YYYY")}  </Table.Cell>
                       </Table.Row>
                     ))}
                 </Table.Body>

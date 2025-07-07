@@ -150,7 +150,7 @@ const RolesPage: FC = function () {
                     {AccessList?.edit || AccessList?.delete ?
                       <Table.Cell className="space-x-2 whitespace-nowrap py-0">
                         <div className="flex items-center gap-x-3 justify-evenly">
-                          {AccessList?.edit ? <Button gradientDuoTone="greenToBlue" onClick={() => getUnderGuidedata(item._id)}><div className="flex items-center gap-x-2"> <HiOutlinePencilAlt className="text-lg" /> Edit Role </div> </Button> : null}
+                          {/* {AccessList?.edit ? <Button gradientDuoTone="greenToBlue" onClick={() => getUnderGuidedata(item._id)}><div className="flex items-center gap-x-2"> <HiOutlinePencilAlt className="text-lg" /> Edit Role </div> </Button> : null} */}
                           {AccessList?.delete ? <Button gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)} > <div className="flex items-center gap-x-2"> <HiTrash className="text-lg" />  Delete Role </div> </Button> : null}
                         </div>
                       </Table.Cell>

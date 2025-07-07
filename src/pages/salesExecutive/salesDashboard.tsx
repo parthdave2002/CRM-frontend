@@ -65,22 +65,38 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
     const PageDataList = (data: any) => { setPageNo(data) }
   // ------------- Next button Code End -------------
 
+  // ----------- next Button Farmer Code Start -------------
+      const [TotalFarmerListData, setTotalFarmerListData] = useState(0);
+      const [CurrentFarmerPageNo, setCurrentFarmerPageNo] = useState(0);
+      const [PageFarmerNo, setPageFarmerNo] = useState(1);
+      const [RoePerFarmerPage, setRoePerFarmerPage] = useState(5);
+
+      const RowPerFarmerPageLoad = (event: any) => {
+        const value = Number(event)
+        setRoePerFarmerPage(value);
+      };
+      const PageFarmerDataList = (data: any) => { setPageFarmerNo(data) }
+  // ------------- Next button  Farmer  Code End -------------
+
+
   const [data, setData] = useState<string | null>(null);
   const role = Cookies.get("role");
   useEffect(() => {
     const usernameDataString = Cookies.get("username");
     const decodedUsername = usernameDataString ? decodeURIComponent(usernameDataString) : null;
     setData(decodedUsername);
-    dispatch(getsalesDashboard())
-    dispatch(getleadlist({ type: "order"}))
-  }, [])
+      const requser = {
+        page: PageFarmerNo,
+        size: RoePerFarmerPage
+      };
+    dispatch(getsalesDashboard(requser))
+  }, [dispatch, RoePerFarmerPage,PageFarmerNo])
 
   useEffect(() =>{
     const requser = {
       page: PageNo,
       size: RoePerPage
     };
-
     dispatch(getSalesExecutiveOrderlist(requser))
   },[dispatch,PageNo, RoePerPage ])
 
@@ -111,7 +127,10 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
   useEffect(() => {
     if (DashboardDataList?.data) {
       setComplainData(DashboardDataList?.data?.complain)
-      setFarmerData(DashboardDataList?.data?.customers);
+      setFarmerData(DashboardDataList?.data?.customers?.data);
+      setTotalFarmerListData(DashboardDataList?.data?.customers?.total);
+      setCurrentFarmerPageNo(DashboardDataList?.data?.customers?.page);
+      setPageFarmerNo(DashboardDataList?.data?.customers?.page);
       setMyFarmerCount(DashboardDataList?.data?.totalMyFarmer);
       setTotalRevenue(DashboardDataList?.data?.totalRevenue)
       setTotalOrder(DashboardDataList?.data?.totalOrder)
@@ -215,8 +234,10 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
         }
 
       useEffect(() =>{
-            dispatch(getleadlist({ type: selectedTabbar, page: LeadPageNo, size: RowLeadPerPage }))
-      },[selectedTabbar, LeadPageNo, RowLeadPerPage])
+        if(role == "68331b9e271c0b706832de91"){
+          dispatch(getleadlist({ type: selectedTabbar, page: LeadPageNo, size: RowLeadPerPage }))
+        }
+      },[dispatch,selectedTabbar, LeadPageNo, RowLeadPerPage])
       // ----------- Tabnavbar code end --------------------
     
     const [ProductModal, setProductModal] = useState(false);
@@ -359,13 +380,13 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
               {FarmerData && FarmerData.length ?
                 <div className="bg-[#ffff] dark:bg-gray-800 rounded-xl p-4 ">
                   <div className="flex justify-between ">
-                    <div className="text-[1.4rem] font-semibold text-gray-900 dark:text-gray-200"> Farmer Profile  ({MyFarmerCount})</div>
-                    <div className="flex  self-center align-center text-blue-500 hover:text-blue-800 cursor-pointer" onClick={() => ViweAllCall("Farmer")}> <div> View all  </div>  <MdKeyboardArrowRight style={{ alignSelf: "center" }} /></div>
+                    <div className="text-[1.4rem] font-semibold text-gray-900 dark:text-gray-200"> Farmer Profile  ({TotalFarmerListData})</div>
+                    {/* <div className="flex  self-center align-center text-blue-500 hover:text-blue-800 cursor-pointer" onClick={() => ViweAllCall("Farmer")}> <div> View all  </div>  <MdKeyboardArrowRight style={{ alignSelf: "center" }} /></div> */}
                   </div>
 
-                  <div className="grid grid-cols-2  xl:grid-cols-4 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-3">
+                  <div className="grid grid-cols-2 my-6  xl:grid-cols-5 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-3">
                     {FarmerData && FarmerData.map((item: any, k: number) => (
-                      <div className="bg-[#f4f9fd] dark:bg-gray-700 px-[2rem] py-3 rounded-xl flex flex-col gap-y-2" key={k}>
+                      <div className="bg-[#f4f9fd] w-[12rem] dark:bg-gray-700 px-[2rem] py-3 rounded-xl flex flex-col gap-y-2" key={k}>
                         <img src={userimage} alt="" className="h-16 w-16 rounded-full self-center border-2 border-blue-600 p-1" />
                         <div className="text-gray-500 dark:text-gray-100 text-[0.9rem] text-center max-w-[15rem] truncate"> {item?.customer_name} </div>
                         <div className="text-gray-500 dark:text-gray-100 text-[0.9rem] text-center"> {item?.mobile_number}</div>
@@ -373,6 +394,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
                       </div>
                     ))}
                   </div>
+                    <ExamplePagination PageData={PageFarmerDataList} RowPerPage={RowPerFarmerPageLoad} RowsPerPageValue={RoePerFarmerPage} PageNo={PageFarmerNo} CurrentPageNo={CurrentFarmerPageNo} TotalListData={TotalFarmerListData} />
                 </div>
               : null}
 
