@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import Cookies from 'js-cookie';
 import SuccessErrorModalPage from '../../components/modal/successErrorModal';
 import moment from 'moment';
+import { BsCartXFill } from 'react-icons/bs';
 const IMG_URL = import.meta.env["VITE_API_URL"];
 
 interface OrderDetailsProps{
@@ -57,6 +58,7 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
     const [isOpenSuccessOrderModel, setisOpenSuccessOrderModel ] = useState(false);
     const [isOpenSuccessOrderMessage, setisOpenSuccessOrderMessage ] = useState("");
     const UpdateOrderdatalist = useSelector((state: any) => state.Order.UpdateOrderlist);
+    const Todaydate = moment(new Date()).format("DD-MM-YYYY")
     
     useEffect(() => {
           if ( UpdateOrderdatalist?.success ) {
@@ -142,15 +144,18 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
   
   // --------------  Return Order modal open/close code start ----------
   const [isOpenReturnOrderModel, setisOpenReturnOrderModel] = useState(false);
-  const ReturnComplainCall = () => {
+  const [isReturn, setisReturn] = useState("");
+  const ReturnComplainCall = (data:string) => {
     setisOpenReturnOrderModel(true);
+    setisReturn(data)
   }
 
   const ReturnCall = () =>{
     let requser ={
+      customer: openDetailIData?.customer?.id, 
       order_id : orderId,
       order_type : "confirm",
-      status : "return"
+      status : isReturn 
     }
       dispatch(getUpdateOrderlist(requser))
       setisOpenReturnOrderModel(false)
@@ -249,7 +254,6 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
               {openDetailIData?.coupon?.amount ? 
                 <div className="text-lg font-semibold text-gray-500 dark:text-gray-300 flex justify-between w-full max-w-xs"> <span> Coupon </span> <span > : - {openDetailIData?.coupon?.amount.toFixed(2)} Rs.</span> </div>
               : null}
-              
             </div> */}
 
             <div className="flex flex-col justify-self-end w-full max-w-md  dark:bg-gray-800  space-y-4">
@@ -281,7 +285,12 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
 
           { openDetailIData?.status == "confirm" ?
           <div className='flex justify-end gap-x-4'>
-            <div className='text-center self-center  bg-red-600 border border-red-600 hover:bg-red-600 hover:border-red-500 rounded-lg cursor-pointer flex gap-x-2 px-4 py-2 text-gray-100'  onClick={() => ReturnComplainCall()}  > <FaTruck className='self-center h-6 w-6' /> Return </div>
+            {moment(openDetailIData?.added_at).format("DD-MM-YYYY") === Todaydate ?
+              // <div className='text-center self-center  bg-red-600 border border-red-600 hover:bg-red-600 hover:border-red-500 rounded-lg cursor-pointer flex gap-x-2 px-4 py-2 text-gray-100'  onClick={() => ReturnComplainCall()}  > <FaTruck className='self-center h-6 w-6' /> Cancel </div>
+              <div className="flex border border-indigo-500 text-indigo-500 dark:text-white hover:text-gray-100 font-semibold px-6 py-2 rounded-full gap-3 hover:bg-indigo-800 transition flex text-center cursor-pointer transition-all duration-500 ease-in-out" onClick={() => ReturnComplainCall("cancel")}> <BsCartXFill  className="self-center h-5 w-5" /> Cancel Order </div>
+              :
+              <div className='text-center self-center  bg-red-600 border border-red-600 hover:bg-red-600 hover:border-red-500 rounded-lg cursor-pointer flex gap-x-2 px-4 py-2 text-gray-100'  onClick={() => ReturnComplainCall("return")}  > <FaTruck className='self-center h-6 w-6' /> Return </div>
+            }
             <div className='text-center self-center  bg-indigo-600 hover:bg-indigo-700 text-gray-100 rounded-lg cursor-pointer  flex gap-x-2 px-4 py-2' onClick={() => CreateComplainCall()}> <FaExclamationTriangle className='self-center '  /> Complain </div>
           </div>
           : null }
@@ -316,7 +325,7 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
       </div>
 
       <ComplainCreate isOpenComplainCreateModel={isOpenComplainCreateModel}  setisOpenComplainCreateModel={setisOpenComplainCreateModel}  orderId={orderId} product_id={complainProductId} orderItem={packingtypeoption} />
-      <ReturnOrderModalPage  isOpenReturnOrderModel={isOpenReturnOrderModel}  setisOpenReturnOrderModel={setisOpenReturnOrderModel} ReturnCall={ReturnCall} /> 
+      <ReturnOrderModalPage  isOpenReturnOrderModel={isOpenReturnOrderModel}  setisOpenReturnOrderModel={setisOpenReturnOrderModel} ReturnCall={ReturnCall} modal={isReturn} /> 
       <SuccessErrorModalPage isOpenSuccessOrderModel={isOpenSuccessOrderModel} setisOpenSuccessOrderModel={setisOpenSuccessOrderModel} message={isOpenSuccessOrderMessage} OkayCall={OkayCall} />
 
       <Modal  className="fixed inset-0 z-50 flex lef-[-9rem] items-center justify-center bg-black bg-opacity-50"  onClick={() => setisOpeninvoiceModel(false)}  onClose={() => setisOpeninvoiceModel(false)}   show={isOpeninvoiceModel}>

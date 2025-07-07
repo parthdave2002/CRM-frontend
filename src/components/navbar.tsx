@@ -43,7 +43,13 @@ const ExampleNavbar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> =
     }
 
     const handleNavigationdashboard = () =>{
-      navigate("/dashboard");
+      const role = Cookies.get("role");
+      if(role === "685c305069eaa1084c92c5fe"){
+        navigate("/warehouse");
+      }else{
+        navigate("/dashboard");
+      }
+
     }
 
      const [LoginUserimg, setLoginUserimg] = useState<UserImage>();
@@ -60,7 +66,7 @@ const ExampleNavbar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> =
           <div className="flex items-center justify-between">
               <div className="flex items-center">
                   <Navbar.Brand onClick={handleNavigationdashboard}>
-                    <img alt="" src={logo} className="mr-3 h-6 sm:h-10 ml-16" />
+                    <img alt="logo" src={logo} className="mr-3 h-6 sm:h-10 ml-16 cursor-pointer" />
                   </Navbar.Brand>
               </div>
 
