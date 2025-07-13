@@ -65,6 +65,7 @@ const SubTaglogListPage: FC = function () {
     const RowPerPage = (event: any) => {
       const value = Number(event)
        setRoePerPage(value);
+       setPageNo(1)
      };
     const PageDataList = (data:any) =>{ setPageNo(data)}
   // ------------- Next button Code End -------------

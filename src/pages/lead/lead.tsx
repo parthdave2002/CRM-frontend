@@ -57,7 +57,7 @@ const LeadListPage : FC = function () {
      };
  
      const isactiveoption = [
-       { label : "Contactus Page", value:"contactus" },
+       { label : "Contact Us Page", value:"contactus" },
        { label : "Help Page", value:"help" },
        { label : "Order", value:"order" }
      ]

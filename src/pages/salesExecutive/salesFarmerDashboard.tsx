@@ -8,7 +8,7 @@ import { TiShoppingCart } from "react-icons/ti";
 import Salesproductlist from '../../components/productdetails/salesproductlist';
 import ProductDetailData from '../../components/productdetails/salesproductDetails';
 import SalesMobileInput from '../../components/input/salesMobileInput';
-import { useDispatch, useSelector } from 'react-redux';
+import {  useSelector } from 'react-redux';
 import CartList from './cart';
 import LoaderPage from "../../components/loader";
 import OrderDetails from '../../components/salesComponent/orderDetails';
@@ -21,7 +21,6 @@ interface PropsData{
 }
 
 const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile, Mobile_number}) => {
-  const dispatch = useDispatch()
   const [farmedAdded, setFarmerAdded] = useState(false);
   const [isLoading, setisLoading] = useState(true);
   const [ isEditFarmer, setIsEditFarmer] = useState(false);
@@ -69,25 +68,6 @@ const SalesFarmerDashboard : FC<PropsData> = ( {setOpenProfile, Mobile_number}) 
     const [ future_date, setfuture_date] = useState(null); 
 
     const OpenCartCall = () => setCartOpen(true);    
-
-    // const AddtoCartCall = (data: any | any[]) => {
-    //   setCartItem((prevItems) => {
-    //   const newItems = Array.isArray(data) ? data : [data];
-      
-    //   let isDuplicate = false;
-    //   const uniqueItemsToAdd = newItems.filter((item) => {
-    //   const exists = prevItems.some((cartItem) => cartItem._id === item._id);
-    //   if (exists) { isDuplicate = true; }
-    //   return !exists;
-    // });
-
-    // if (isDuplicate) {  toast.error("Some products were already in the cart"); }
-    // if (uniqueItemsToAdd.length === 0) return prevItems;
-    // window.scrollTo({ top: 0,  behavior: "smooth", });
-
-    // return [...prevItems, ...uniqueItemsToAdd];
-    // });
-    // }
 
     const AddtoCartCall = (data: any | any[]) => {
       setCartItem((prevItems) => {

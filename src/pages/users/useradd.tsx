@@ -550,7 +550,7 @@ const AddUserPage : FC = function () {
                             </div>
                             
                             <div className="flex-1 mt-[1rem]">
-                                <Label htmlFor="date_of_birth">Date of Birth</Label>
+                                <Label htmlFor="date_of_birth">Date of Birth  <span className='text-red-500'>*</span></Label>
                                 <div className="mt-1">
                                 <Input
                                     id="date_of_birth"
@@ -571,7 +571,7 @@ const AddUserPage : FC = function () {
                             </div>
 
                             <div  className="flex-1 mt-[1rem]">
-                                <Label htmlFor="date_of_joining">Date of Joining</Label>
+                                <Label htmlFor="date_of_joining">Date of Joining  <span className='text-red-500'>*</span></Label>
                                 <div className="mt-1">
                                 <Input
                                     id="date_of_joining"

@@ -33,11 +33,11 @@ const CouponListPage: FC = function () {
 
   //--------- Access Data Code end------------------
 
-    const { Coupondatalist,  CroplistSize, TotalCropData, CurrentPage, permissionsdata } = useSelector((state: any) => ({
+    const { Coupondatalist,  CouponlistSize, TotalCouponData, CurrentPage, permissionsdata } = useSelector((state: any) => ({
       Coupondatalist: state.Coupon.Coupondatalist,
-      CroplistSize: state.Crop.CroplistSize,
-      TotalCropData: state.Crop.TotalCropData,
-      CurrentPage: state.Crop.CurrentPage,
+      CouponlistSize: state.Coupon.CouponlistSize,
+      TotalCouponData: state.Coupon.TotalCouponData,
+      CurrentPage: state.Coupon.CurrentPage,
       permissionsdata: state.Login.permissionsdata
     }));
 
@@ -66,6 +66,7 @@ const CouponListPage: FC = function () {
     const RowPerPage = (event: any) => {
       const value = Number(event)
        setRoePerPage(value);
+       setPageNo(1)
      };
     const PageDataList = (data:any) =>{ setPageNo(data)}
   // ------------- Next button Code End -------------
@@ -89,9 +90,9 @@ const CouponListPage: FC = function () {
 
     useEffect(() => {  
       setCroplist(Coupondatalist ? Coupondatalist : null);
-      setTotalListData(TotalCropData ? TotalCropData : 0);
+      setTotalListData(TotalCouponData ? TotalCouponData : 0);
       setCurrentPageNo(CurrentPage ? CurrentPage : 1);
-    }, [Coupondatalist,  CroplistSize, TotalCropData, CurrentPage]);
+    }, [Coupondatalist,  CouponlistSize, TotalCouponData, CurrentPage]);
   //  ------------- Get Data From Reducer Code end --------------
 
   // ------------  Delete Code Start ------------

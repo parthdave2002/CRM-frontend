@@ -48,7 +48,11 @@ function* onDelCouponList({ payload: requstuser }) {
      
     if(response.success === true || response.success === "true"){
       toast.success(response?.msg);
-      const newresponse = yield call(CroplistApi);
+      let requ ={
+        page :1,
+        size: 5
+      }
+      const newresponse = yield call(CouponlistApi, requ);
       yield put(getCouponlistSuccess(GET_COUPON_LIST, newresponse));
     }
   } catch (error) {
@@ -64,7 +68,11 @@ function* onChangeCouponList({ payload: requstuser }) {
      
     if(response.success === true || response.success === "true"){
       toast.success(response?.msg);
-      const newresponse = yield call(CroplistApi);
+      let requ ={
+        page :1,
+        size: 5
+      }
+      const newresponse = yield call(CouponlistApi, requ);
       yield put(getCouponlistSuccess(GET_COUPON_LIST, newresponse));
     }
   } catch (error) {

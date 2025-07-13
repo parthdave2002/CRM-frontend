@@ -41,6 +41,7 @@ const RolesPage: FC = function () {
  const RowPerPage = (event: any) => {
   const value = Number(event)
    setRoePerPage(value);
+   setPageNo(1)
  };
 
  const PageDataList = (data:any) =>{ setPageNo(data)}
@@ -131,7 +132,7 @@ const RolesPage: FC = function () {
                       <Table.HeadCell>Title</Table.HeadCell>
                       <Table.HeadCell>Description</Table.HeadCell>
                       <Table.HeadCell>Status</Table.HeadCell>
-                      {AccessList?.edit || AccessList?.delete ?  <Table.HeadCell className="text-center">  Actions </Table.HeadCell> : null }
+                      {/* {AccessList?.edit || AccessList?.delete ?  <Table.HeadCell className="text-center">  Actions </Table.HeadCell> : null } */}
                       {AccessList?.add ?   <Table.HeadCell>Role Access</Table.HeadCell> : null }
             </Table.Head>
 
@@ -147,14 +148,14 @@ const RolesPage: FC = function () {
                         : <div className="flex items-center"> <div className="mr-2 h-2.5 w-2.5 rounded-full bg-Red"></div> Deactive </div>
                       }
                     </Table.Cell>
-                    {AccessList?.edit || AccessList?.delete ?
+                    {/* {AccessList?.edit || AccessList?.delete ?
                       <Table.Cell className="space-x-2 whitespace-nowrap py-0">
                         <div className="flex items-center gap-x-3 justify-evenly">
-                          {/* {AccessList?.edit ? <Button gradientDuoTone="greenToBlue" onClick={() => getUnderGuidedata(item._id)}><div className="flex items-center gap-x-2"> <HiOutlinePencilAlt className="text-lg" /> Edit Role </div> </Button> : null} */}
+                          {AccessList?.edit ? <Button gradientDuoTone="greenToBlue" onClick={() => getUnderGuidedata(item._id)}><div className="flex items-center gap-x-2"> <HiOutlinePencilAlt className="text-lg" /> Edit Role </div> </Button> : null}
                           {AccessList?.delete ? <Button gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item._id)} > <div className="flex items-center gap-x-2"> <HiTrash className="text-lg" />  Delete Role </div> </Button> : null}
                         </div>
                       </Table.Cell>
-                    : null}
+                    : null} */}
 
                     {AccessList?.add ?
                       <Table.Cell>
