@@ -24,6 +24,7 @@ const OrderListPage : FC = function () {
       const RowPerPage = (event: any) => {
         const value = Number(event)
          setRoePerPage(value);
+         setPageNo(1)
        };
       const PageDataList = (data:any) =>{ setPageNo(data)}
     // ------------- Next button Code End -------------
@@ -133,7 +134,7 @@ const OrderListPage : FC = function () {
                                 <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.order_type.charAt(0).toUpperCase() + item?.order_type.slice(1).toLowerCase() } </Table.Cell>
                                 <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.status ? item?.status.charAt(0).toUpperCase() + item?.status.slice(1).toLowerCase()  : "-"} </Table.Cell>
                                 <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {moment(item?.added_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  <Button onClick={() => OpenParcelModal(item) }> Parcel cover </Button></Table.Cell>
+                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">   {item?.status && item?.status === "confirm" ?<Button onClick={() => OpenParcelModal(item) }> Parcel cover </Button> : "-" }</Table.Cell>
                             </Table.Row>
                         ))}
                     </Table.Body>
@@ -141,64 +142,69 @@ const OrderListPage : FC = function () {
                 <ExamplePagination PageData={PageDataList} RowPerPage={RowPerPage}   RowsPerPageValue={RoePerPage}  PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData}/>  
             </NavbarSidebarLayout>
 
-            <Modal onClose={() => setparcelModal(false)} show={parcelModal} size="xl" dismissible >
-              <Modal.Header className="p-2 pb-0">  <Button  className="text-lg font-semibold" onClick={Downloadcall} > Download</Button >   </Modal.Header>
-              <Modal.Body className="px-6 py-3"  >
-                <div className="text-sm px-4  text-black font-[sans-serif] mx-auto" ref={invoiceRef}  style={{
-                    width: "100%",               // Take full available width
-                    maxWidth: "fit-content",     // Prevent overflow
-                    padding: "24px",
-                    margin: "0 auto",            // Center it
-                    backgroundColor: "white",
-                    fontSize: "14px",
-                    color: "#000",
-                    fontFamily: "Arial, sans-serif",
-                  }}>
-                  <div className="text-red-600 my-2 text-[0.9rem] font-semibold">
+            <Modal onClose={() => setparcelModal(false)} show={parcelModal} size="xl" dismissible>
+              <Modal.Header className="flex justify-between items-center px-6 py-3 border-b border-gray-200 ">
+                <h2 className="text-lg font-semibold">COD Parcel Invoice</h2>
+                <button   onClick={Downloadcall}   className="inline-flex items-center gap-2 bg-blue-600 text-white text-sm font-medium px-3 py-1.5 rounded hover:bg-blue-700 transition" >   Download  </button>
+              </Modal.Header>
+
+              <Modal.Body className="px-6 py-4 bg-gray-50 max-h-[30rem] overflow-scroll">
+                <div
+                  ref={invoiceRef}
+                  className="bg-white shadow-md rounded-lg overflow-hidden p-6 text-sm text-black font-[sans-serif] mx-auto max-w-2xl"
+                >
+                  {/* Top Notice */}
+                  <div className="text-red-600 mb-4 text-[0.9rem] space-y-1 font-semibold">
                     <p>[1] ગ્રાહક બહારગામ હોય તો પાર્સલ 7 દિવસ સુધી હોલ્ડ માં રાખવું.</p>
                     <p>[2] કોઈ પણ સંજોગોમાં ગ્રાહક જોડેથી COD કરતા વધુ ચાર્જ લેવો નહિં.</p>
                     <p>[3] ગ્રાહકને પાર્સલ ઘર સુધી પહોંચાડવું અને ફરજીયાત ફોન કરવો.</p>
                   </div>
 
-                  <div className="border-t border-b border-black py-2 ">
-                    <p className="font-bold text-[1rem] text-center">COD Book Parcel - Under Business Parcel BNPL Service</p>
+                  {/* Header */}
+                  <div className="border-y border-black py-2 text-center">
+                    <p className="font-bold text-base">COD Book Parcel - Under Business Parcel BNPL Service</p>
                   </div>
 
-                  <div className=" border-b border-black py-2 text-[1rem] ">
-                    <p><strong>COD Amount - Rs:</strong> {parcelModalData?.total_amount}</p>
-                    <div className="flex justify-between">
-                       <p><strong>Biller ID:</strong> {parcelModalData?.order_id}</p>
-                      <p><strong>Date:</strong> {moment(parcelModalData?.added_at).format("DD-MM-YYYY")}</p>
+                  {/* COD Info */}
+                  <div className="border-b border-black py-3 space-y-1">
+                    <p className="font-bold text-xl">COD Amount: ₹ {parcelModalData?.total_amount}</p>
+                    <p><span className="font-semibold">Biller ID:</span> 0000054470 / 0000057616 / 0000058794</p>
+                    <p><span className="font-semibold">Date:</span> {moment(parcelModalData?.added_at).format("DD-MM-YYYY")}</p>
+                  </div>
+
+                  {/* Delivery Address */}
+                  <div className="border-b border-black py-3 space-y-1">
+                    <p className="font-semibold underline">Delivery Address</p>
+                    <p><span className="font-semibold">To:</span> {parcelModalData?.customer?.customer_name}</p>
+                    <p><span className="font-semibold">Mo.:</span> {parcelModalData?.customer?.mobile_number} / {parcelModalData?.customer?.alternate_number}</p>
+                    <p><span className="font-semibold">Address:</span> {parcelModalData?.customer?.address}</p>
+                    <p><span className="font-semibold">AT:</span> {parcelModalData?.customer?.village_name}</p>
+                    <p><span className="font-semibold">TA:</span> {parcelModalData?.customer?.taluka_name}</p>
+                    <p><span className="font-semibold">Dist:</span> {parcelModalData?.customer?.district_name} - {parcelModalData?.customer?.pincode}</p>
+                    <p><span className="font-semibold">Post:</span> {parcelModalData?.customer?.post_office}</p>
+                  </div>
+
+                  {/* Sender Info */}
+                  <div className="py-3 space-y-1">
+                    <p className="font-semibold underline">From: AGRI BHARAT</p>
+                    <p><span className="font-semibold">Phone:</span> 9100029429 / 7990987972 / 9624696200</p>
+                    <p><span className="font-semibold">Post Office:</span> Una Branch</p>
+                    <p><span className="font-semibold">Office Address:</span> Warehouse No:1, Olvan Road, Near Market Paldi</p>
+                    <div className="grid grid-cols-2 gap-2 mt-1">
+                      <p><span className="font-semibold">AT:</span> Paldi (Post - Delwada)</p>
+                      <p><span className="font-semibold">TA:</span> Una</p>
+                      <p><span className="font-semibold">Dist:</span> Gir Somnath - 362510</p>
                     </div>
-                  </div>
 
-                  <div className="border-b border-black py-1">
-                    <p className="font-semibold">DELIVERY ADDRESS:</p>
-                      <p><strong>To:</strong>{parcelModalData?.customer?.customer_name}</p>
-                      <p><strong>Mo.:</strong> {parcelModalData?.customer?.mobile_number} / {parcelModalData?.customer?.alternate_number}</p>     
-                    <p><strong>Address:</strong> {parcelModalData?.customer?.address} </p>
-                    <p><strong> AT: </strong> {parcelModalData?.customer?.village_name}</p>
-                    <p><strong> TA:  </strong> {parcelModalData?.customer?.taluka_name}</p>
-                    <p><strong> Dist: </strong> {parcelModalData?.customer?.district_name} - {parcelModalData?.customer?.pincode}</p>
-                    <p><strong>Post: </strong> {parcelModalData?.customer?.post_office}</p>
-                  </div>
-
-                  <div className="py-1">
-                    <p className="font-semibold">FROM : AGRI BHARAT</p>
-                    <p><strong>Phone:  </strong> 9100029429 / 7990987972 / 9624696200</p>
-                    <p><strong>Post Office: </strong> Una Branch</p>
-                    <p><strong>Office Address: </strong> Warehouse No:1, Olvan Road, Near Market Paldi</p>
-                   
-                    <div className="flex justify-between ">
-                       <p><strong>AT: </strong> Paldi (Post - Delwada)</p>
-                        <p> <strong>TA: </strong> Una</p>
-                        <p> <strong>Dist: </strong> Gir Somnath - 362510</p>
+                    {/* Logo aligned to right */}
+                    <div className="flex justify-end mt-3">
+                      <img src={logo} alt="Logo" className="w-24 h-auto" />
                     </div>
-                    <div className="flex-end justify-items-end">  <img src={logo} alt="Logo" className="w-28" style={{ width: "100px", height: "auto" }} /> </div>
                   </div>
                 </div>
               </Modal.Body>
             </Modal>
+
 
         </>
     );

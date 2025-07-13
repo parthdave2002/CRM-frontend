@@ -1,6 +1,7 @@
 import { Sidebar } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { HiShoppingBag, HiCube, HiPuzzle, HiUsers, HiChartPie, HiLibrary } from "react-icons/hi";
+import { FaWarehouse } from "react-icons/fa";
 import { MdLeaderboard } from "react-icons/md"; 
 import { TbReportSearch } from "react-icons/tb";
 import { GiWheat } from "react-icons/gi";
@@ -44,6 +45,11 @@ const LeftSidebar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = function ()
       name: "Dashboard",
       icon: HiChartPie, // Reference the actual icon component
       to: "/dashboard",
+    },
+     {
+      name: "Warehouse",
+      icon: FaWarehouse, // Reference the actual icon component
+      to: "/warehouse",
     },
     {
       name: "User",

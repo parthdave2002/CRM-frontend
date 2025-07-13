@@ -61,6 +61,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
     const RowPerPage = (event: any) => {
       const value = Number(event)
       setRoePerPage(value);
+      setPageNo(1)
     };
     const PageDataList = (data: any) => { setPageNo(data) }
   // ------------- Next button Code End -------------
@@ -74,6 +75,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
       const RowPerFarmerPageLoad = (event: any) => {
         const value = Number(event)
         setRoePerFarmerPage(value);
+        setPageFarmerNo(1)
       };
       const PageFarmerDataList = (data: any) => { setPageFarmerNo(data) }
   // ------------- Next button  Farmer  Code End -------------
@@ -103,7 +105,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
   useEffect(() =>{
     setTotalListData(OrderDataList?.totalData)
     setSalesOrderData(OrderDataList?.data)
-    setCurrentPageNo(1)
+    setCurrentPageNo(OrderDataList?.page)
   },[OrderDataList])
 
     const [leadData, setLeadData] = useState<any>(null)
@@ -298,13 +300,13 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
                     </div>
                     <div className="text-center self-center items-start">
                       <p className="text-md font-bold"> Revenue</p>
-                      <p className="text-lg font-bold text-center mt-2"> {(
+                      <p className="text-lg font-bold text-center mt-2"> { Math.round(
                           selectedRevenueframe === "weekly"
-                              ? TotalRevenue?.weekly
+                              ? TotalRevenue?.weekly ?? 0
                               : selectedRevenueframe === "monthly"
-                              ? TotalRevenue?.monthly
-                              : TotalRevenue?.daily
-                          )?.toFixed(2)}
+                              ? TotalRevenue?.monthly ?? 0
+                              : TotalRevenue?.daily ?? 0
+                          )}
                       </p>
                     </div>
                   </div>
@@ -467,8 +469,9 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
                   <ul className="flex items-center gap-x-6">
                     {TabData.map((data: any, k: number) => (
                       <li key={k} className={`relative flex flex-col items-center justify-center gap-1 py-2 px-2 cursor-pointer transition-all duration-300 ease-in-out font-medium text-sm ${selectedTabbar === data.title ? "text-blue-500 font-semibold" : "text-gray-500 dark:text-gray-400"}`} onClick={() => TabSelection(data.title)} >
-                        <span className="flex items-center text-[1rem] font-semibold gap-x-4">{data.icon} {data.title}</span>
-                        {selectedTabbar === data.title && (<span className="px-2 absolute bottom-[-4px] left-0 w-full h-[2px] bg-blue-500"></span>)}
+                        <span className="flex items-center text-[1rem] font-semibold gap-x-4">{data.icon} {data.title.charAt(0).toUpperCase() + data.title.slice(1)}</span>
+                          {selectedTabbar === data.title && (<span className="px-2 absolute bottom-[-4px] left-0 w-full h-[2px] bg-blue-500">
+                        </span>)}
                       </li>
                     ))}
                   </ul>
@@ -574,8 +577,8 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
                                       <Table.Head className="bg-gray-100 dark:bg-gray-700">
                                         <Table.HeadCell> Name </Table.HeadCell>
                                         <Table.HeadCell> Reason </Table.HeadCell>
-                                        <Table.HeadCell> Email </Table.HeadCell>
                                         <Table.HeadCell> Phone number </Table.HeadCell>
+                                        <Table.HeadCell> Email </Table.HeadCell>
                                         <Table.HeadCell> Comment </Table.HeadCell>
                                         <Table.HeadCell> status </Table.HeadCell>
                                         <Table.HeadCell>Created Date</Table.HeadCell>

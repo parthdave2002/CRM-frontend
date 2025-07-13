@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getOrderlist, ReturnOrderlist } from "../../Store/actions";
 import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
 import ExampleBreadcrumb from "../../components/breadcrumb";
+import ExamplePagination from "../../components/pagination";
 const IMG_URL = import.meta.env["VITE_API_URL"];
 
 const WarehousePage  = function ()  {     
@@ -51,6 +52,21 @@ const WarehousePage  = function ()  {
             }, [Orderlist, TotalOrderData, OrderlistSize, CurrentPage]);
           //  ------------- Get  Data From Reducer Code end --------------
 
+      // ----------- next Button  Code Start -------------
+        // const [TotalListData, setTotalListData] = useState(0);
+        // const [CurrentPageNo, setCurrentPageNo] = useState(0);
+        const [PageNo, setPageNo] = useState(1);
+        const [RoePerPage, setRoePerPage] = useState(5);
+
+        const RowPerPage = (event: any) => {
+          const value = Number(event)
+          setRoePerPage(value);
+          setPageNo(1);
+          setCurrentPageNo(0)
+        };
+        const PageDataList = (data:any) =>{ setPageNo(data)}
+      // ------------- Next button Code End -------------
+
       // ---------------- Search code start ----------------
         const [searchData, setSearchData] = useState(null);
         const Changename = (data:any) =>{
@@ -72,32 +88,36 @@ const WarehousePage  = function ()  {
                     <ExampleBreadcrumb  Name={Name} Searchplaceholder={Searchplaceholder} searchData={searchData} Changename= {Changename} />
                     <>
                         {leadData && leadData.length > 0 ? (
-                        <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
-                            <Table.Head className="bg-gray-100 dark:bg-gray-700">
-                            <Table.HeadCell>Order id</Table.HeadCell>
-                            <Table.HeadCell>Farmer Name</Table.HeadCell>
-                            <Table.HeadCell>Mobile Number</Table.HeadCell>
-                            <Table.HeadCell>Created Date</Table.HeadCell>
-                            <Table.HeadCell>Advisor Name</Table.HeadCell>
-                            <Table.HeadCell>Status</Table.HeadCell>
-                            <Table.HeadCell> Action</Table.HeadCell>
-                            </Table.Head>
+                            <>
+                                <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
+                                    <Table.Head className="bg-gray-100 dark:bg-gray-700">
+                                    <Table.HeadCell>Order id</Table.HeadCell>
+                                    <Table.HeadCell>Farmer Name</Table.HeadCell>
+                                    <Table.HeadCell>Mobile Number</Table.HeadCell>
+                                    <Table.HeadCell>Created Date</Table.HeadCell>
+                                    <Table.HeadCell>Status</Table.HeadCell>
+                                    <Table.HeadCell>Advisor Name</Table.HeadCell>
+                                    <Table.HeadCell> Action</Table.HeadCell>
+                                    </Table.Head>
 
-                            <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
-                            {leadData &&
-                                leadData.map((item: any, k: number) => (
-                                <Table.Row key={k}    className="hover:bg-gray-100 dark:hover:bg-gray-700"    >
-                                    <Table.Cell  className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer"  onClick={() => OpenModal(item)} >   {item?.order_id}  </Table.Cell>
-                                    <Table.Cell  className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer"  onClick={() => OpenModal(item)} >   {item?.customer?.customer_name}  </Table.Cell>
-                                    <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">   {item?.customer?.mobile_number ? item?.customer?.mobile_number : "-"}   </Table.Cell>
-                                    <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">   {moment(item?.added_at).format( "DD-MM-YYYY hh:mm:ss"   )}   </Table.Cell>
-                                    <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">   {item?.status ? item?.status.charAt(0).toUpperCase() +  item?.status.slice(1).toLowerCase()  : "-"} </Table.Cell>
-                                    <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">    {item?.advisor_name?.name}     </Table.Cell>
-                                    <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">   <Button onClick={() => OPenConfirmModal(item._id)}>  Mark As Return   </Button>    </Table.Cell>
-                                </Table.Row>
-                                ))}
-                            </Table.Body>
-                        </Table>
+                                    <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
+                                    {leadData &&
+                                        leadData.map((item: any, k: number) => (
+                                        <Table.Row key={k}    className="hover:bg-gray-100 dark:hover:bg-gray-700"    >
+                                            <Table.Cell  className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer"  onClick={() => OpenModal(item)} >   {item?.order_id}  </Table.Cell>
+                                            <Table.Cell  className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer"  onClick={() => OpenModal(item)} >   {item?.customer?.customer_name}  </Table.Cell>
+                                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">   {item?.customer?.mobile_number ? item?.customer?.mobile_number : "-"}   </Table.Cell>
+                                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">   {moment(item?.added_at).format( "DD-MM-YYYY hh:mm:ss"   )}   </Table.Cell>
+                                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">   {item?.status ? item?.status.charAt(0).toUpperCase() +  item?.status.slice(1).toLowerCase()  : "-"} </Table.Cell>
+                                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">    {item?.advisor_name?.name}     </Table.Cell>
+                                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">   <Button onClick={() => OPenConfirmModal(item._id)}>  Mark As Return   </Button>    </Table.Cell>
+                                        </Table.Row>
+                                        ))}
+                                    </Table.Body>
+                                </Table>
+
+                                <ExamplePagination PageData={PageDataList} RowPerPage={RowPerPage}   RowsPerPageValue={RoePerPage}  PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData}/>
+                          </>
                         ) : (
                         <div className="text-center py-4 dark:text-gray-50">   No DataFound   </div>
                         )}
@@ -120,7 +140,7 @@ const WarehousePage  = function ()  {
                         ) : null}
 
                         {ProductModal == true ? (
-                        <Modal  onClose={() => setProductModal(false)}  show={ProductModal}  size="xl" >
+                        <Modal  onClose={() => setProductModal(false)}  show={ProductModal}  size="xl" dismissible>
                                 <Modal.Header className="px-6 pt-6 pb-0">   <span className="sr-only"> Change status</span> </Modal.Header>
                                 <Modal.Body className="px-6 pt-0 pb-6 max-h-[22rem] overflow-scroll">
                                 <div className="space-y-4">

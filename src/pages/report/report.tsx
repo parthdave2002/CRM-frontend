@@ -347,7 +347,7 @@ const ReportPage: FC = function () {
                         <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white"> { item?.coupon?.amount ? item?.coupon?.amount : "-"} </Table.Cell>
                         <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white"> { item?.total_amount} </Table.Cell>
                         <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white"> { item?.advisor_name?.name} </Table.Cell>
-                        <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white"> { item?.status.charAt(0).toUpperCase() + item?.status.slice(1).toLowerCase()} </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white"> { item?.status ? item?.status.charAt(0).toUpperCase() + item?.status.slice(1).toLowerCase() : "-"} </Table.Cell>
                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {moment (item.added_at).format("DD-MM-YYYY")}  </Table.Cell>
                       </Table.Row>
                     ))}

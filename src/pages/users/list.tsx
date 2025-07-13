@@ -61,6 +61,7 @@ const UserListPage: FC = function () {
   const RowPerPage = (event: any) => { 
     const value = Number(event)
     setRoePerPage(value);
+    setPageNo(1)
   };
   const PageDataList = (data:any) =>{ setPageNo(data)}
   // ------------- Nect button Code End -------------

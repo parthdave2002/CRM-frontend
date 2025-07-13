@@ -286,7 +286,6 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
     }),
 
     onSubmit: (values) => {
-
       if (!selectedheaderaboutid) return setValidateheaderabout(1) 
         if (!selectedirrigationtypeid) return setValidateirrigationtype(1) 
         if (!selectedirrigationsourceid) return setValidateirrigationsource(1)
@@ -295,8 +294,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
         if (!selectedTalukaid) return setValidateTaluka(1)
         if (!selectedDistrictid) return setValidateDistrict(1)
         if (!selectedStateid) return setValidateState(1)
-        if (!selectedcropid) return setValidatecrop(1);
-
+        if (selectedcropid.length === 0) return setValidatecrop(1);
       let requserData :any = {
         firstname: values?.firstname.trim().charAt(0).toUpperCase() + values?.firstname.trim().slice(1).toLowerCase(),
         middlename: values?.middlename.trim().charAt(0).toUpperCase() + values?.middlename.trim().slice(1).toLowerCase(),
@@ -379,7 +377,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
   const [validatecrop, setValidatecrop] = useState(0);
 
   const Iscropdata = (data: any) => {
-    if (!data || data.length === 0) {
+    if (!data) {
       setSelectedcropid([]);
       setSelectedcropOption([]);
       setValidatecrop(1)
@@ -543,6 +541,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
         if (!selectedheaderaboutOption) setValidateheaderabout(1) 
         if (!selectedirrigationtypeOption) setValidateirrigationtype(1) 
         if (!selectedirrigationsourceOption) setValidateirrigationsource(1)
+        if (selectedcropid.length == 0) return setValidatecrop(1)
         if (!selectedlandtypeOption) setValidatelandtype(1)
         if (!selectedVillageOption) setValidateVaillage(1)
         if (!selectedTalukaOption) setValidateTaluka(1)
@@ -639,7 +638,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
           </div>
 
            <div>
-            <Label htmlFor="heard_aboutus"> Crops <span className='text-red-500'>*</span></Label>
+            <Label htmlFor="crops"> Crops <span className='text-red-500'>*</span></Label>
             <div className="mt-1" onClick={ () => handleCropLoad ()} >
               <Select
                 className="w-full dark:text-white"
@@ -657,7 +656,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
                 isClearable={true}
                 isMulti={true}
               />
-              {validatecrop == 1 ? (<FormFeedback type="invalid" className="text-Red text-sm"> Please select crop </FormFeedback>) : null}
+              {validatecrop == 1 ? (<FormFeedback type="invalid" className="text-red-500 text-sm"> Please select crop </FormFeedback>) : null}
             </div>
           </div>
 
