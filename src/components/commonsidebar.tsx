@@ -43,7 +43,7 @@ const CommonSidebarPage: FC = function () {
                 index === 0 && "bg-light-white"
               } `}
             >
-              <img src={`../public/images/users/${Menu.src}.png`} className="h-[2rem] w-7" />
+              <img src={`../images/users/${Menu.src}.png`} className="h-[2rem] w-7" />
             </li>
           ))}
            {open && (

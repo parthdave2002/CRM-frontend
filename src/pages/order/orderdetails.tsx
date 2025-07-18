@@ -217,7 +217,7 @@ const OrdererDetailsPage: FC = function () {
                           const total = amount + gst;
                           return (
                             <tr key={k} className="bg-gray-50 text-center text-[0.8rem]">
-                              <td className="border p-2 text-left break-words">{item?.id?.name?.englishname}</td>
+                              <td className="border p-2 text-left break-words">{item?.id?.name?.englishname} ({item?.id?.packaging} {item?.id?.packagingtype?.type_eng})</td>
                               <td className="border p-2">{item?.hsn_code}</td>
                               <td className="border p-2">{item?.batch_no}</td>
                               <td className="border p-2">{item?.price}</td>
