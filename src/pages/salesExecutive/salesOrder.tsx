@@ -1,7 +1,7 @@
 import SalesMobileInput from '../../components/input/salesMobileInput';
 import React, { FC, useEffect, useState } from 'react'
 import { FaArrowLeft } from 'react-icons/fa'
-import  farmerimage from "../../../public/images/users/farmer-2.png"
+import  farmerimage from "/images/users/farmer-2.png"
 import SalesFarmerDashboard from './salesFarmerDashboard';
 import moment from 'moment';
 import { CheckCustomerExist, getCallbackdata } from "../../Store/actions";

@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import type { FC } from "react";
-import LOGO from "/public/images/authentication/404-page.webp"
+import LOGO from "/images/authentication/404-page.webp"
 import { useNavigate } from "react-router";
 
 

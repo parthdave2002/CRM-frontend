@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { MdKeyboardArrowRight, MdReport } from "react-icons/md";
 import  userimage from "../../img/group.jpg"
 import { FaHandHoldingDollar } from "react-icons/fa6";
@@ -51,6 +51,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
   const DashboardDataList = useSelector((state: any) => state.SalesDashboard.DashboardDataList?.data);
   const OrderDataList = useSelector((state: any) => state.Order.SalesExeOrderlist);
   const LeadDataList = useSelector((state: any) => state.Lead.Leaddatalist);
+  
   const [SalesOrderData, setSalesOrderData] = useState([])
   // ----------- next Button  Code Start -------------
     const [TotalListData, setTotalListData] = useState(0);
@@ -80,6 +81,42 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
       const PageFarmerDataList = (data: any) => { setPageFarmerNo(data) }
   // ------------- Next button  Farmer  Code End -------------
 
+  const userImages = [
+    "/images/farmer/11.webp",
+    "/images/farmer/12.webp",
+    "/images/farmer/13.webp",
+    "/images/farmer/14.webp",
+    "/images/farmer/15.webp",
+    "/images/farmer/16.webp",
+    "/images/farmer/17.webp",
+    "/images/farmer/18.webp",
+    "/images/farmer/19.webp",
+    "/images/farmer/20.webp",
+    "/images/farmer/21.webp",
+    "/images/farmer/22.webp",
+    "/images/farmer/23.webp",
+  ];
+
+   const imagesForFarmers = useMemo(() => {
+    const shuffled: any[] = [];
+    let imgCopy = [...userImages];
+
+    FarmerData.forEach((_, idx) => {
+      // If copy is empty, start new shuffled copy
+      if (imgCopy.length === 0) {
+        imgCopy = [...userImages];
+      }
+
+      // Pick random index
+      const randIdx = Math.floor(Math.random() * imgCopy.length);
+      shuffled.push(imgCopy[randIdx]);
+
+      // Remove selected image to avoid repeat until next cycle
+      imgCopy.splice(randIdx, 1);
+    });
+
+    return shuffled;
+  }, [FarmerData]);
 
   const [data, setData] = useState<string | null>(null);
   const role = Cookies.get("role");
@@ -231,8 +268,12 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
         ]
     
         const TabSelection = (data: string) => {
-          setselectedTabbar(data)
-          // setLeadData([])
+          setselectedTabbar(data);
+          setRowLeadPerPage(5);
+          setLeadPageNo(1);
+          setleadCurrentPageNo(0)
+          setLeadData([])
+          setTotalLeadListData(0)
         }
 
       useEffect(() =>{
@@ -389,7 +430,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
                   <div className="grid grid-cols-2 my-6  xl:grid-cols-5 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-3">
                     {FarmerData && FarmerData.map((item: any, k: number) => (
                       <div className="bg-[#f4f9fd] w-[12rem] dark:bg-gray-700 px-[2rem] py-3 rounded-xl flex flex-col gap-y-2" key={k}>
-                        <img src={userimage} alt="" className="h-16 w-16 rounded-full self-center border-2 border-blue-600 p-1" />
+                        <img src={imagesForFarmers[k] ?? "/images/farmer/11.webp" } alt="" className="h-16 w-16 rounded-full self-center border-2 border-blue-600 p-1" />
                         <div className="text-gray-500 dark:text-gray-100 text-[0.9rem] text-center max-w-[15rem] truncate"> {item?.customer_name} </div>
                         <div className="text-gray-500 dark:text-gray-100 text-[0.9rem] text-center"> {item?.mobile_number}</div>
                         {/* <div className="text-gray-500 dark:text-gray-100 text-[0.8rem] text-center border border-gray-500 rounded-md size-fit px-2 cursor-pointer self-center" onClick={() => handleClickCall()}> View </div> */}
@@ -476,42 +517,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
                     ))}
                   </ul>
                 </div>
-                {/* {leadData && leadData.length > 0 ?
-                  <>
-                    <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
-                      <Table.Head className="bg-gray-100 dark:bg-gray-700">
-                        <Table.HeadCell>name</Table.HeadCell>
-                        <Table.HeadCell>mobile Number</Table.HeadCell>
-                        <Table.HeadCell> Email</Table.HeadCell>
-                        <Table.HeadCell>Lead From</Table.HeadCell>
-                        <Table.HeadCell>Reason</Table.HeadCell>
-                        <Table.HeadCell>comment</Table.HeadCell>
-                        <Table.HeadCell>Status</Table.HeadCell>
-                        <Table.HeadCell>Created Date</Table.HeadCell>
-                        <Table.HeadCell>Action</Table.HeadCell>
-                      </Table.Head>
-
-                      <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
-                        {leadData && leadData.map((item: any, k: number) => (
-                          <Table.Row key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
-                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.name} </Table.Cell>
-                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.mobile_number} </Table.Cell>
-                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.email ? item?.email  : "-"} </Table.Cell>
-                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.type ?   item?.type.charAt(0).toUpperCase() + item?.type.slice(1).toLowerCase() :  "-"} </Table.Cell>
-                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> { item?.user_type ? item?.user_type ?.split('_') .map((word :any) => word.charAt(0).toUpperCase() + word.slice(1)) .join(' ') : "-"}</Table.Cell>
-                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.comment ? item?.comment  : "-"} </Table.Cell>
-                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.status ? item?.status.charAt(0).toUpperCase() + item?.status.slice(1).toLowerCase() : "-"} </Table.Cell>
-                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item?.created_at).format("DD-MM-YYYY")}</Table.Cell>
-                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.status =="pending" ? <Button onClick={() => OPenConfirmModal(item._id) }> Mark As Read</Button> :  "-" } </Table.Cell>
-                          </Table.Row>
-                        ))}
-                      </Table.Body>
-                    </Table>
-
-                    <ExamplePagination PageData={PageDataList} RowPerPage={RowPerPage} RowsPerPageValue={RoePerPage} PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData} />
-                  </>
-                : null} */}
-
+    
                  <div className='mt-[1.5rem] px-4'>
                           {selectedTabbar == "order" ?
                             <>

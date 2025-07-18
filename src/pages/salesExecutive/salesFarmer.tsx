@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import  farmerimage from "../../../public/images/users/farmer-2.png"
+import  farmerimage from "/images/users/farmer-2.png"
 import { FaArrowLeft } from "react-icons/fa";
 import SalesFarmerDashboard from "./salesFarmerDashboard";
 import { toast } from "react-toastify";
