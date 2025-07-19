@@ -17,13 +17,105 @@ interface FarmerHistoryProps{
   AddtoCartCall : ( value : any) => void;
   FuturOrderDate : ( value : any) => void;
   setCartOrderid : ( value : any) => void;
+  openComplain ?: string;
+  setOpenComplain  ?: ( value : string) => void;
+  orderId ?: string;
+  set_OrderId  ?: (value: string) => void;
 }
 
-const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetailsmodal, setOpenDetailIData, AddtoCartCall, FuturOrderDate, setCartOrderid}) => {
+const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetailsmodal, setOpenDetailIData, AddtoCartCall, FuturOrderDate, setCartOrderid, openComplain, setOpenComplain, orderId, set_OrderId}) => {
   const dispatch = useDispatch()
 
   // ----------- Tabnavbar code start --------------------
     const [selectedTabbar, setselectedTabbar] = useState("Order");
+    const [UserOrderDataList, setUserOrderDataList] = useState([]);
+    const [UserComplainDataList, setUserComplainDataList] = useState([]);
+    const [UserTaglogDataList, setUserTaglogDataList] = useState([]);
+    const [isOpenComplainModel , setisOpenComplainModel ]  = useState(false);
+    const [isComplainData , setisComplainData ]  = useState([]);
+
+    useEffect(() => {
+      const fetchAndOpenComplain = async () => {
+        if (openComplain) {
+          try {
+            setselectedTabbar("Complain");
+            const customerDataString = Cookies.get("customer_data");
+            let customerData = null;
+            if (customerDataString && customerDataString !== "undefined") {
+              customerData = JSON.parse(customerDataString);
+            }
+            const customerId = customerData?._id;
+            if (!customerId) return;
+             
+            if(isComplainData.length == 0){
+              const requser = { customer_id: customerId, page: 1, size: 10 };
+              await dispatch(getFarmerComplainlist(requser) as any);
+            }
+            
+            await new Promise(resolve => setTimeout(resolve, 500));
+            const complainItem = UserComplainDataList.find((item: any) => item?.complain_id === openComplain);
+
+            if (complainItem) {
+              setisComplainData(complainItem);
+              await new Promise(resolve => setTimeout(resolve, 200));
+              setisOpenComplainModel(true);
+            } else {
+              console.error("Complain item not found!");
+              // toast.error("Complain not found!");
+            }
+          } catch (err) {
+            console.error("Error fetching complain list:", err);
+            // toast.error("Something went wrong!");
+          }
+        }
+      };
+
+      fetchAndOpenComplain();
+    }, [openComplain, dispatch]);
+
+    // useEffect(() =>{
+    //   const fetchAndOpenComplain = async () => {
+    //     if (orderId) {
+    //           console.log(" +++++++++++++++++= >>>>>>>>", orderId);
+    //       try {
+    //         setselectedTabbar("Order");
+    //         console.log("UserOrderDataList >>>>>>>>", UserOrderDataList.length);
+            
+    //         // if(UserOrderDataList.length == 0){
+    //              const customerDataString = Cookies.get("customer_data");
+    //               let customerData = null;
+    //               if (customerDataString && customerDataString !== "undefined") {
+    //                 customerData = JSON.parse(customerDataString);
+    //               }
+    //               const customerId = customerData?._id;
+    //               if (!customerId) return;
+    //               const requser = { customer_id: customerId, page: 1, size: 10 };
+    //               await dispatch(getFarmerOrderlist(requser) as any);
+    //         // }
+
+    //         await new Promise(resolve => setTimeout(resolve, 500));
+    //         const orderItem :any = UserOrderDataList.find((item: any) => item?.order_id === orderId);
+    //         console.log("orderItem ***********", orderItem);
+
+    //         if (orderItem) {
+    //            setOpenDetailIData(orderItem);
+    //             console.log("&&&&&&&&&&&&&&& orderItem ***********");
+    //             await new Promise(resolve => setTimeout(resolve, 200));
+    //             setOpenDetailsmodal(true)
+    //             setOpenDetailIData(orderItem?.order_id);
+    //         } else {
+    //           console.error("Order item not found!");
+    //           // toast.error("Complain not found!");
+    //         }
+    //       } catch (err) {
+    //         console.error("Error fetching complain list:", err);
+    //         // toast.error("Something went wrong!");
+    //       }
+    //     }
+    //   };
+
+    //   fetchAndOpenComplain();
+    // },[orderId])
 
     const TabData = [
       { title: "Order", icon: <BsCartCheckFill  size={20} /> },
@@ -37,11 +129,16 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
   // ----------- Tabnavbar code end --------------------
 
   // ------------complain details page ------------------
-    const [isOpenComplainModel , setisOpenComplainModel ]  = useState(false);
-    const [isComplainData , setisComplainData ]  = useState([]);
+
     const ComplainCall = ( id:string,data: any) =>{
       setisOpenComplainModel(true);
       setisComplainData(data);
+    }
+
+    const CloseModal = () =>{
+      setisOpenComplainModel(false);
+      setisComplainData([]);
+      setOpenComplain?.("");
     }
   // ------------complain details page ------------------
 
@@ -82,13 +179,13 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
       if(selectedTabbar == "Order"){
         dispatch(getFarmerOrderlist(requser));
       }
-      else if(selectedTabbar == "Complain" && isOpenComplainModel == false){
+      else if(selectedTabbar == "Complain"){
         dispatch(getFarmerComplainlist(requser));
       }else if(selectedTabbar == "Taglog"){
         dispatch(getCustomerTagloglist(requser));
       }
     }
-  },[dispatch, selectedTabbar, PageNo, RoePerPage, isOpenComplainModel ])
+  },[dispatch, selectedTabbar, PageNo, RoePerPage ])
 
   // ------------- Get  Data From Reducer Code Start --------------
   
@@ -96,9 +193,7 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
     const Complainlist = useSelector((state: any) => state.Complain.SinglefarmerComplainlist );
     const Tagloglist = useSelector((state: any) => state.Taglog.CustomerTagloglist );
 
-    const [UserOrderDataList, setUserOrderDataList] = useState([]);
-    const [UserComplainDataList, setUserComplainDataList] = useState([]);
-    const [UserTaglogDataList, setUserTaglogDataList] = useState([]);
+
     
     useEffect(() => {
       if(selectedTabbar == "Order"){
@@ -174,7 +269,11 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
                   <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
                     {UserOrderDataList && UserOrderDataList.map((item: any, k: number) => (
                       <Table.Row key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
-                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => OderDetailsCall(item?.order_id, item)}>  {item?.order_id} </Table.Cell>
+                            {item?.order_type == "future" && item?.status == null ? 
+                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => FuturaOrderCall(item?.order_id, item)}>  {item?.order_id} </Table.Cell>
+                            : 
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => OderDetailsCall(item?.order_id, item)}>  {item?.order_id} </Table.Cell>
+                          }
                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item?.added_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.order_type ? item?.order_type.charAt(0).toUpperCase() + item?.order_type.slice(1).toLowerCase() : "-"} </Table.Cell>
                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.order_type == "future" && item?.future_order_date != null ? moment(item?.future_order_date).format("DD-MM-YYYY") : "-"} </Table.Cell>
@@ -255,7 +354,7 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
         <ExamplePagination PageData={PageDataList} RowPerPage={RowPerPage} RowsPerPageValue={RoePerPage} PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData} />
       </div>
 
-      <ComplainDetails setisOpenComplainModel={() => setisOpenComplainModel(false)} isOpenComplainModel={isOpenComplainModel} isComplainData={isComplainData}/>
+      <ComplainDetails setisOpenComplainModel={CloseModal} isOpenComplainModel={isOpenComplainModel} isComplainData={isComplainData} />
     </>
   )
 }
