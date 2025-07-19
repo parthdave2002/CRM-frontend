@@ -3,18 +3,21 @@ import { FaArrowLeft } from "react-icons/fa6";
 import SalesFarmerDashboard from "./salesFarmerDashboard";
 import SalesMobileInput from "../../components/input/salesMobileInput";
 import { useDispatch, useSelector } from "react-redux";
-import { CheckCustomerExist, getSalesComplainlist } from "../../Store/actions";
+import { CheckCustomerExist, getSalesComplainlist, ResetComplainlist } from "../../Store/actions";
 import moment from "moment";
 import { toast } from "react-toastify";
 import LoaderPage from "../../components/loader";
+import ToastMessage from "../../components/ToastMessage";
 
 interface PropsData{
     setDatactive :any;
+    openComplain: string;
     openProfile : boolean;
     setOpenProfile : (value : boolean) => void;
+    setOpenComplain : (value : string) => void;
 }
 
-const SalesUpcomingComplainPage : FC <PropsData> = function ({ setDatactive, openProfile, setOpenProfile})  {
+const SalesUpcomingComplainPage : FC <PropsData> = function ({ setDatactive, openProfile, setOpenProfile, openComplain, setOpenComplain })  {
     
     const dispatch = useDispatch()
     const [isLoading, setisLoading] = useState(false);
@@ -43,7 +46,9 @@ const SalesUpcomingComplainPage : FC <PropsData> = function ({ setDatactive, ope
 
     useEffect(() =>{
         setinialTime(true)
+        dispatch(ResetComplainlist())
         dispatch(getSalesComplainlist())
+
     },[])
 
     const [UserComplainDataList, setUserComplainDataList] = useState([]);
@@ -57,6 +62,11 @@ const SalesUpcomingComplainPage : FC <PropsData> = function ({ setDatactive, ope
     useEffect(() => {
         if (CheckCustomerExistlist?.success == true && inialTime == false ) {
             setOpenProfile(true);
+           setOpenComplain(searchComplainData)
+            setisLoading(false)
+        }else if (CheckCustomerExistlist?.success == false){
+            dispatch(ResetComplainlist())
+            toast.error(CheckCustomerExistlist?.msg)
             setisLoading(false)
         }
     }, [CheckCustomerExistlist])
@@ -66,7 +76,7 @@ const SalesUpcomingComplainPage : FC <PropsData> = function ({ setDatactive, ope
         <>  
             {isLoading ? <LoaderPage /> : null  }
             {openProfile == true ?
-                <SalesFarmerDashboard setOpenProfile={CloseProfileCall} />
+                <SalesFarmerDashboard  openComplain={openComplain} setOpenComplain={setOpenComplain}   setOpenProfile={CloseProfileCall} />
                 : 
                 <>
                     <div className='lg:flex justify-between'>
@@ -102,6 +112,8 @@ const SalesUpcomingComplainPage : FC <PropsData> = function ({ setDatactive, ope
                     </div>
                 </>
             }
+
+            <ToastMessage />
         </>
     );
 }

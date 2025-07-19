@@ -7,14 +7,13 @@ import SalesProduct from "./salesProduct";
 import SalesOrder from "./salesOrder";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
-import { resetinsertlogin } from "../../Store/actions";
 import { useNavigate } from "react-router";
 
 const SalesCRMPage : FC = function () {
-    const dispatch = useDispatch();
+
     const navigate = useNavigate();
     const [ openProfile, setOpenProfile] = useState(false);
+    const [ openComplain, setOpenComplain] = useState("");
     const [active, setActive] = useState("Dashboard");
     const ActiveData = (data:string) =>{
         setActive(data)
@@ -47,7 +46,7 @@ const SalesCRMPage : FC = function () {
                     
                     <div className="flex flex-col p-3 "> 
                         {active ===  "Dashboard" ? 
-                            <div> <SalesDashboardPage setDatactive={ActiveData}  openProfile={openProfile} setOpenProfile={setOpenProfile}/> </div>
+                            <div> <SalesDashboardPage setDatactive={ActiveData}  openProfile={openProfile} setOpenProfile={setOpenProfile} /> </div>
                         : active ===  "Farmer" ? 
                             <div> <SalesFarmerDetailsPage openProfile={openProfile} setOpenProfile={setOpenProfile} setDatactive={ActiveData}  /></div>
                         : active ===  "Products" ? 
@@ -55,7 +54,7 @@ const SalesCRMPage : FC = function () {
                         : active ===  "Order" ? 
                             <div> <SalesOrder openProfile={openProfile} setOpenProfile={setOpenProfile}  setDatactive={ActiveData}  /></div>
                         : active ===  "Complain" ? 
-                            <div> <SalesUpcomingComplainPage openProfile={openProfile} setOpenProfile={setOpenProfile}   setDatactive={ActiveData}  /> </div>
+                            <div> <SalesUpcomingComplainPage openProfile={openProfile} setOpenProfile={setOpenProfile} openComplain={openComplain} setOpenComplain={setOpenComplain}   setDatactive={ActiveData}  /> </div>
                         : null
                         }
                     </div>

@@ -8,6 +8,7 @@ import { CheckCustomerExist, getCallbackdata } from "../../Store/actions";
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import LoaderPage from '../../components/loader';
+import ToastMessage from '../../components/ToastMessage';
 
 interface PropsData{
   setDatactive :any;
@@ -65,6 +66,9 @@ const SalesOrder : FC <PropsData> = function ({ setDatactive, openProfile,setOpe
       if (CheckCustomerExistlist?.success == true && inialTime == false) {
         setOpenProfile(true);
         setisLoading(false)
+      }else if(CheckCustomerExistlist?.success == false){
+        toast.error(CheckCustomerExistlist?.msg)
+         setisLoading(false)
       }
     }, [CheckCustomerExistlist])
   // --------------- check complain data and the login start ---------------
@@ -73,7 +77,7 @@ const SalesOrder : FC <PropsData> = function ({ setDatactive, openProfile,setOpe
     <>
       {isLoading ? <LoaderPage /> : null  }
       {openProfile == true ?
-            <SalesFarmerDashboard setOpenProfile={CloseProfileCall} />
+            <SalesFarmerDashboard orderId={orderId} set_OrderId={set_OrderId} setOpenProfile={CloseProfileCall} />
         :
         <>
           <div className='flex justify-between'>
@@ -137,6 +141,7 @@ const SalesOrder : FC <PropsData> = function ({ setDatactive, openProfile,setOpe
           </div>
         </>
       }
+      <ToastMessage />
     </>
   )
 }
