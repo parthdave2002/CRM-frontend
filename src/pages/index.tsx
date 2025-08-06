@@ -2,7 +2,6 @@ import { Badge, Dropdown, Table, useTheme } from "flowbite-react";
 import { useEffect, useState, type FC } from "react";
 import { FaUser, FaRupeeSign, FaAsterisk, FaCloud  } from "react-icons/fa";
 import { FaHandHoldingDollar, FaNoteSticky } from "react-icons/fa6";
-import Chart from "react-apexcharts";
 import NavbarSidebarLayout from "../layouts/navbar-sidebar";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,6 +9,7 @@ const IMG_URL = import.meta.env["VITE_API_URL"];
 import moment from "moment";
 import {getDashboarddatalist } from "../Store/actions";
 import Cookies from "js-cookie";
+import LoaderPage from "../components/loader";
 
 const DashboardPage: FC = function () {
 
@@ -85,6 +85,7 @@ const DashboardPage: FC = function () {
   const [OrderData , setOrderData] = useState([]);
   const [UserData , setUserData] = useState([]);
   const [ProductData, setProductData] =useState([]);
+  const [loader, setLoader] =useState(false);
   
   useEffect(() =>{
     setCustomerData(DashboardDataList?.data?.customers);
@@ -97,11 +98,13 @@ const DashboardPage: FC = function () {
     set_total_return_order_Data(DashboardDataList?.data?.totalReturnOrder);
     set_total_return_Amt_Data(DashboardDataList?.data?.totalReturnOrderRevenue );
     set_total_complainData(DashboardDataList?.data?.totalComplain);
-    set_total_complain_List(DashboardDataList?.data?.complainDetails)
+    set_total_complain_List(DashboardDataList?.data?.complainDetails);
+    setLoader(false)
   },[DashboardDataList])
 
   useEffect(() =>{
     dispatch(getDashboarddatalist())
+    setLoader(true)
   },[])
   
   // -------- Customer Data code start -----------------
@@ -135,8 +138,9 @@ const DashboardPage: FC = function () {
 
   return (
     <NavbarSidebarLayout isFooter={false}  isSidebar={true} isNavbar={true}  isRightSidebar={true} >
+      {   loader ? <LoaderPage /> : 
+          
       <div>
-
         <div>
           <div className="md:flex flex-wrap gap-3">
             <div className="w-[calc(33%-6px)] md:w-[32%] w-full mt-[1.5rem] md:mt-0">
@@ -469,6 +473,7 @@ const DashboardPage: FC = function () {
         </div>
        
       </div>
+    }
     </NavbarSidebarLayout>
   );
 };

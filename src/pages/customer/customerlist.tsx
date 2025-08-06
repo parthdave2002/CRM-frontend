@@ -10,6 +10,7 @@ import { getCustomerDatalist, BlockCustomer } from "../../Store/actions";
 import moment from "moment";
 import ToastMessage from "../../components/ToastMessage";
 import { FaUserLock, FaUnlock, FaExclamationCircle  } from "react-icons/fa";
+import LoaderPage from "../../components/loader";
 
 const CustomerListPage : FC = function () {
     const dispatch = useDispatch();
@@ -22,6 +23,7 @@ const CustomerListPage : FC = function () {
       delete: boolean;
     }
     const [AccessList, setAccessList] = useState<AccessData>();
+    const [loader, setLoader] = useState(false);
 
     // ----------- next Button  Code Start -------------
       const [UserDataList, setUserDataList] = useState([]);
@@ -59,6 +61,7 @@ const CustomerListPage : FC = function () {
         setUserDataList(Customerlist ? Customerlist  : null);
         setTotalListData(TotalUserListData ? TotalUserListData : 0);
         setCurrentPageNo(CurrentPage ? CurrentPage : 1);
+        setLoader(false)
       }, [Customerlist,  TotalUserListData, UserListSize, CurrentPage]);
     //  ------------- Get  Data From Reducer Code end --------------
 
@@ -69,6 +72,7 @@ const CustomerListPage : FC = function () {
       };
       if (searchData)  requserdata.search = searchData;
       dispatch(getCustomerDatalist(requserdata))
+      setLoader(true)
     },[dispatch, searchData,PageNo, RoePerPage ])
 
     useEffect(() =>{
@@ -107,6 +111,9 @@ const CustomerListPage : FC = function () {
     return (
         <>  
             <NavbarSidebarLayout isFooter={false}  isSidebar={true} isNavbar={true} isRightSidebar={true}>
+              {loader ? <LoaderPage /> :
+
+                <>
                 <ExampleBreadcrumb  Name={Name} Searchplaceholder={Searchplaceholder} searchData={searchData} Changename= {Changename} />
                 <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
                     <Table.Head className="bg-gray-100 dark:bg-gray-700">
@@ -145,6 +152,8 @@ const CustomerListPage : FC = function () {
                     </Table.Body>
                 </Table>
                 <ExamplePagination PageData={PageDataList} RowPerPage={RowPerPage}   RowsPerPageValue={RoePerPage}  PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData}/>
+                </>
+                }
             </NavbarSidebarLayout>
 
             <ToastMessage />

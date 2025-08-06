@@ -12,6 +12,7 @@ import { useNavigate } from "react-router";
 import moment from "moment";
 import { FaExchangeAlt } from "react-icons/fa";
 import Cookies from "js-cookie";
+import LoaderPage from "../../components/loader";
 const IMG_URL = import.meta.env["VITE_API_URL"];
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 const ToastMessage = lazy(() => import("../../components/ToastMessage"));
@@ -30,6 +31,7 @@ const CategoryListPage: FC = function () {
     delete: boolean;
   }
   const [AccessList, setAccessList] = useState<AccessData>();
+  const [loader, setLoader] = useState(false);
 
   //--------- Access Data Code end------------------
   
@@ -86,12 +88,14 @@ const CategoryListPage: FC = function () {
       };
       if (searchData)  requserdata.search = searchData;
       dispatch(getCategorylist(requserdata));
+      setLoader(true)
     }, [dispatch, PageNo, RoePerPage, searchData]);
 
     useEffect(() => {     
       setCategorylistdata(Categorylist? Categorylist : []);
       setTotalListData(TotalCategoryData ? TotalCategoryData : 0);
       setCurrentPageNo(CurrentPage ? CurrentPage : 1);
+      setLoader(false)
     }, [Categorylist,  CategorylistSize, TotalCategoryData, CurrentPage]);
   //  ------------- Get Data From Reducer Code end --------------
 
@@ -135,8 +139,10 @@ const CategoryListPage: FC = function () {
   return (
     <>
       <NavbarSidebarLayout isFooter={false}  isSidebar={true} isNavbar={true} isRightSidebar={true}>
-        <ExampleBreadcrumb  Name={Name} Searchplaceholder={Searchplaceholder} searchData={searchData} Changename= {Changename} isOpenAddModel= {OpenAddModel} AddAccess={AddAccess}/>
-    
+
+        {loader ? <LoaderPage /> :
+        <>
+          <ExampleBreadcrumb  Name={Name} Searchplaceholder={Searchplaceholder} searchData={searchData} Changename= {Changename} isOpenAddModel= {OpenAddModel} AddAccess={AddAccess}/>
           <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
               <Table.Head className="bg-gray-100 dark:bg-gray-700">
                 <Table.HeadCell> <Checkbox id="select-all" name="select-all" /> </Table.HeadCell>
@@ -172,8 +178,9 @@ const CategoryListPage: FC = function () {
                   ))}
               </Table.Body>
           </Table>
-          
           <ExamplePagination PageData={PageDataList} RowPerPage={RowPerPage}   RowsPerPageValue={RoePerPage}  PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData}/>
+        </>
+        }
       </NavbarSidebarLayout>
     
         {isOpenDelteModel && (
