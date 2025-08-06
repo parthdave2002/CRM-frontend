@@ -10,9 +10,10 @@ import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useNavigate } from "react-router";
 import moment from "moment";
-import { FaExchangeAlt, FaExclamationCircle } from "react-icons/fa";
+import { FaExchangeAlt } from "react-icons/fa";
 import { BiSolidAddToQueue } from "react-icons/bi";
 import Cookies from "js-cookie";
+import LoaderPage from "../../components/loader";
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 const ToastMessage = lazy(() => import("../../components/ToastMessage"));
 
@@ -30,6 +31,7 @@ const TaglogListPage: FC = function () {
     delete: boolean;
   }
   const [AccessList, setAccessList] = useState<AccessData>();
+  const [loader, setLoader] = useState(false);
 
   //--------- Access Data Code end------------------
   
@@ -85,12 +87,14 @@ const TaglogListPage: FC = function () {
       };
       if (searchData)  requserdata.search = searchData;
       dispatch(getTagloglist(requserdata));
+      setLoader(true)
     }, [dispatch, PageNo, RoePerPage, searchData]);
 
     useEffect(() => {        
       setTaglogList(Tagloglist? Tagloglist : []);
       setTotalListData(TotalTaglogData ? TotalTaglogData : 0);
       setCurrentPageNo(CurrentPage ? CurrentPage : 1);
+      setLoader(false)
     }, [Tagloglist,  TagloglistSize, TotalTaglogData, CurrentPage]);
   //  ------------- Get Data From Reducer Code end --------------
 
@@ -142,44 +146,46 @@ const TaglogListPage: FC = function () {
   return (
     <>
       <NavbarSidebarLayout isFooter={false}  isSidebar={true} isNavbar={true} isRightSidebar={true}>
-        <ExampleBreadcrumb  Name={Name} Searchplaceholder={Searchplaceholder} searchData={searchData} Changename= {Changename} isOpenAddModel= {OpenAddModel} AddAccess={AddAccess}/>
-    
-          <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
-              <Table.Head className="bg-gray-100 dark:bg-gray-700">
-                <Table.HeadCell> <Checkbox id="select-all" name="select-all" /> </Table.HeadCell>
-                <Table.HeadCell>Name</Table.HeadCell>
-                <Table.HeadCell>Status</Table.HeadCell>
-                <Table.HeadCell>Created At</Table.HeadCell>
-                {AccessList?.edit  || AccessList?.delete || AccessList?.add ?  <Table.HeadCell>Actions</Table.HeadCell> : null}
-              </Table.Head>
+        {loader ? <LoaderPage /> :
+        <>
+          <ExampleBreadcrumb  Name={Name} Searchplaceholder={Searchplaceholder} searchData={searchData} Changename= {Changename} isOpenAddModel= {OpenAddModel} AddAccess={AddAccess}/>
+            <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
+                <Table.Head className="bg-gray-100 dark:bg-gray-700">
+                  <Table.HeadCell> <Checkbox id="select-all" name="select-all" /> </Table.HeadCell>
+                  <Table.HeadCell>Name</Table.HeadCell>
+                  <Table.HeadCell>Status</Table.HeadCell>
+                  <Table.HeadCell>Created At</Table.HeadCell>
+                  {AccessList?.edit  || AccessList?.delete || AccessList?.add ?  <Table.HeadCell>Actions</Table.HeadCell> : null}
+                </Table.Head>
 
-              <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
-                  {TaglogList && TaglogList.map((item: any, k) => (
-                        <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
-                          <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item?._id} onClick={() => {CheckData(item?._id)}}/>  </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.taglog_name} </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white">
-                            {item.is_active == true ? <div className="flex items-center">  <div className="mr-2 h-2.5 w-2.5 rounded-full bg-green-400"></div> Active  </div>
-                            : <div className="flex items-center">  <div className="mr-2 h-2.5 w-2.5 rounded-full bg-Red"></div> Deactive  </div>}
-                          </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item?.added_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
-                          {AccessList?.edit  || AccessList?.delete || AccessList?.add ?
-                          <Table.Cell className="space-x-2 whitespace-nowrap py-0">
-                            <div className="flex items-center gap-x-3">
-                              {AccessList?.edit ? <Button  gradientDuoTone="greenToBlue" onClick={() => ChangestatusFuncall(item?._id)}><div className="flex items-center gap-x-2 deletebutton min-w-[5rem] text-center font-semibold"> <FaExchangeAlt className="text-lg font-semibold" />  Change status </div> </Button> : null}
-                              {AccessList?.delete ?  <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item?._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete Taglog </div> </Button> : null } 
-                              {AccessList?.add ?  <Button gradientDuoTone="greenToBlue" onClick={() => AddSubTaglogData(item?._id)} > <div className="flex items-center gap-x-2">  <BiSolidAddToQueue className="text-lg" />  Add Sub-Taglog  </div></Button> : null}
-                              {AccessList?.add ?  <Button gradientDuoTone="greenToBlue" onClick={() => getEditTaglogData(item?._id)} > <div className="flex items-center gap-x-2">  <BiSolidAddToQueue className="text-lg" />  Sub-Taglog  </div></Button> : null}
-                            </div>
-                          </Table.Cell>
-                          : null }
-                        </Table.Row>
-                  ))}
-              </Table.Body>
-          </Table>
-          
+                <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
+                    {TaglogList && TaglogList.map((item: any, k) => (
+                          <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
+                            <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item?._id} onClick={() => {CheckData(item?._id)}}/>  </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.taglog_name} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white">
+                              {item.is_active == true ? <div className="flex items-center">  <div className="mr-2 h-2.5 w-2.5 rounded-full bg-green-400"></div> Active  </div>
+                              : <div className="flex items-center">  <div className="mr-2 h-2.5 w-2.5 rounded-full bg-Red"></div> Deactive  </div>}
+                            </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item?.added_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
+                            {AccessList?.edit  || AccessList?.delete || AccessList?.add ?
+                            <Table.Cell className="space-x-2 whitespace-nowrap py-0">
+                              <div className="flex items-center gap-x-3">
+                                {AccessList?.edit ? <Button  gradientDuoTone="greenToBlue" onClick={() => ChangestatusFuncall(item?._id)}><div className="flex items-center gap-x-2 deletebutton min-w-[5rem] text-center font-semibold"> <FaExchangeAlt className="text-lg font-semibold" />  Change status </div> </Button> : null}
+                                {AccessList?.delete ?  <Button  gradientDuoTone="purpleToPink" onClick={() => DeleteFuncall(item?._id)}><div className="flex items-center gap-x-2 deletebutton"> <HiTrash className="text-lg" />  Delete Taglog </div> </Button> : null } 
+                                {AccessList?.add ?  <Button gradientDuoTone="greenToBlue" onClick={() => AddSubTaglogData(item?._id)} > <div className="flex items-center gap-x-2">  <BiSolidAddToQueue className="text-lg" />  Add Sub-Taglog  </div></Button> : null}
+                                {AccessList?.add ?  <Button gradientDuoTone="greenToBlue" onClick={() => getEditTaglogData(item?._id)} > <div className="flex items-center gap-x-2">  <BiSolidAddToQueue className="text-lg" />  Sub-Taglog  </div></Button> : null}
+                              </div>
+                            </Table.Cell>
+                            : null }
+                          </Table.Row>
+                    ))}
+                </Table.Body>
+            </Table>
           <ExamplePagination PageData={PageDataList} RowPerPage={RowPerPage}   RowsPerPageValue={RoePerPage}  PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData}/>
-      </NavbarSidebarLayout>
+          </>
+          }
+          </NavbarSidebarLayout>
     
         {isOpenDelteModel && (
           <Suspense fallback={<div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50"> <div className="text-white">Loading...</div> </div> }>

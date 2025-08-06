@@ -3,6 +3,7 @@ import logo from "../../img/logo.webp";
 import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
 import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
+import LoaderPage from "../../components/loader";
 import { Button,  Checkbox, Table, Modal} from "flowbite-react";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrderlist } from "../../Store/actions";
@@ -20,6 +21,7 @@ const OrderListPage : FC = function () {
       const [UserDataList, setUserDataList] = useState([]);
       const [PageNo, setPageNo] = useState(1);
       const [RoePerPage, setRoePerPage] = useState(5);
+      const [loader, setLoader] = useState(false);
     
       const RowPerPage = (event: any) => {
         const value = Number(event)
@@ -43,6 +45,7 @@ const OrderListPage : FC = function () {
         };
         if (searchData) requserdata.search = searchData;
         dispatch(getOrderlist(requserdata));
+        setLoader(true)
     }, [dispatch, PageNo, RoePerPage, searchData]);
  
     // ------------- Get  Data From Reducer Code Start --------------
@@ -60,6 +63,7 @@ const OrderListPage : FC = function () {
         setUserDataList(Orderlist?.data ? Orderlist?.data  : Orderlist);
         setTotalListData(TotalOrderData ? TotalOrderData : 0);
         setCurrentPageNo(CurrentPage ? CurrentPage : 1);
+        setLoader(false)
       }, [Orderlist, TotalOrderData, OrderlistSize, CurrentPage]);
     //  ------------- Get  Data From Reducer Code end --------------
     
@@ -83,8 +87,6 @@ const OrderListPage : FC = function () {
       setparcelModalData(id)
       setparcelModal(true)
     }
-    console.log("parcelModalData",parcelModalData);
-    
 
     const Downloadcall = async () => {
       const input = invoiceRef.current;
@@ -111,6 +113,8 @@ const OrderListPage : FC = function () {
     return (
         <>  
             <NavbarSidebarLayout isFooter={false}  isSidebar={true} isNavbar={true} isRightSidebar={true}>
+             {loader ? <LoaderPage /> :   
+                <>
                 <ExampleBreadcrumb  Name={Name} Searchplaceholder={Searchplaceholder} searchData={searchData} Changename= {Changename} />
                 <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
                     <Table.Head className="bg-gray-100 dark:bg-gray-700">
@@ -139,7 +143,9 @@ const OrderListPage : FC = function () {
                         ))}
                     </Table.Body>
                 </Table>
-                <ExamplePagination PageData={PageDataList} RowPerPage={RowPerPage}   RowsPerPageValue={RoePerPage}  PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData}/>  
+                <ExamplePagination PageData={PageDataList} RowPerPage={RowPerPage}   RowsPerPageValue={RoePerPage}  PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData}/> 
+                </>
+              } 
             </NavbarSidebarLayout>
 
             <Modal onClose={() => setparcelModal(false)} show={parcelModal} size="xl" dismissible>
@@ -167,7 +173,7 @@ const OrderListPage : FC = function () {
 
                   {/* COD Info */}
                   <div className="border-b border-black py-3 space-y-1">
-                    <p className="font-bold text-xl">COD Amount: ₹ {parcelModalData?.total_amount}</p>
+                    <p className="font-bold text-xl">COD Amount: ₹ {parcelModalData?.total_amount?.toFixed(2)}</p>
                     <p><span className="font-semibold">Biller ID:</span> 0000054470 / 0000057616 / 0000058794</p>
                     <p><span className="font-semibold">Date:</span> {moment(parcelModalData?.added_at).format("DD-MM-YYYY")}</p>
                   </div>

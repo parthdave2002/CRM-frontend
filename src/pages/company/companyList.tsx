@@ -11,7 +11,8 @@ import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useNavigate } from "react-router";
 import moment from "moment";
 import Cookies from "js-cookie";
-import { FaExchangeAlt, FaExclamationCircle } from "react-icons/fa";
+import { FaExchangeAlt } from "react-icons/fa";
+import LoaderPage from "../../components/loader";
 const ToastMessage = lazy(() => import("../../components/ToastMessage"));
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 
@@ -62,6 +63,7 @@ const CompanyListPage: FC = function () {
     const [CurrentPageNo, setCurrentPageNo] = useState(0);
     const [PageNo, setPageNo] = useState(1);
     const [RoePerPage, setRoePerPage] = useState(5);
+      const [loader, setLoader] = useState(false);
 
     const RowPerPage = (event: any) => {
       const value = Number(event)
@@ -86,6 +88,7 @@ const CompanyListPage: FC = function () {
         search: searchData
       };
       dispatch(getCompanylist(requserdata));
+      setLoader(true)
     }, [dispatch, PageNo, RoePerPage, searchData]);
 
     useEffect(() => {        
@@ -93,6 +96,7 @@ const CompanyListPage: FC = function () {
       setTotalListData(TotalCompanyData ? TotalCompanyData : 0);
       setCurrentUserListSize(CompanylistSize ? CompanylistSize : 0);
       setCurrentPageNo(CurrentPage ? CurrentPage : 1);
+      setLoader(false)
     }, [Companylist,  CompanylistSize, TotalCompanyData, CurrentPage]);
   //  ------------- Get Data From Reducer Code end --------------
 
@@ -136,8 +140,9 @@ const CompanyListPage: FC = function () {
   return (
     <>
       <NavbarSidebarLayout isFooter={false}  isSidebar={true} isNavbar={true} isRightSidebar={true}>
+        {loader ? <LoaderPage /> : 
+        <>
         <ExampleBreadcrumb  Name={Name} Searchplaceholder={Searchplaceholder} searchData={searchData} Changename= {Changename} isOpenAddModel= {OpenAddModel} AddAccess={AddAccess}/>
-    
           <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
               <Table.Head className="bg-gray-100 dark:bg-gray-700">
                 <Table.HeadCell> <Checkbox id="select-all" name="select-all" /> </Table.HeadCell>
@@ -174,9 +179,10 @@ const CompanyListPage: FC = function () {
                   ))}
               </Table.Body>
           </Table>
-          
           <ExamplePagination PageData={PageDataList} RowPerPage={RowPerPage}   RowsPerPageValue={RoePerPage}  PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData}/>
-      </NavbarSidebarLayout>
+            </>
+                }
+          </NavbarSidebarLayout>
     
         {isOpenDelteModel && (
           <Suspense fallback={<div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50"> <div className="text-white">Loading...</div> </div> }>
