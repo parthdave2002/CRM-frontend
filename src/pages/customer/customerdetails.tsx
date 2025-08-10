@@ -69,7 +69,7 @@ const CustomerDetailsPage: FC = function () {
               <div key={index} className="grid grid-cols-3 gap-4">
                 <div className="p-4 dark:bg-gray-800 rounded-lg">
                   <h3 className="text-gray-600 dark:text-gray-300 font-semibold">Name</h3>
-                  <p className="text-gray-900 dark:text-white">{data?.customer_name || "N/A"}</p>
+                  <p className="text-gray-900 dark:text-white">{data?.firstname} {data?.middlename} {data?.lastname}</p>
                 </div>
 
                 <div className="p-4 dark:bg-gray-800 rounded-lg">
@@ -79,7 +79,7 @@ const CustomerDetailsPage: FC = function () {
 
                 <div className="p-4 dark:bg-gray-800 rounded-lg">
                   <h3 className="text-gray-600 dark:text-gray-300 font-semibold">Alternate Mobile Number</h3>
-                  <p className="text-gray-900 dark:text-white">{data?.alternate_number || "N/A"}</p>
+                  <p className="text-gray-900 dark:text-white">{data?.alternate_number || "-"}</p>
                 </div>
 
                 <div className="p-4 dark:bg-gray-800 rounded-lg">

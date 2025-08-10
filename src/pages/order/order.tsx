@@ -134,7 +134,7 @@ const OrderListPage : FC = function () {
                                 <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item?._id} onClick={() => {CheckData(item?._id)}}/>  </Table.Cell>
                                 <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => OrderDetailsCall(item._id)}>  {item.order_id} </Table.Cell>
                                 <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.advisor_name?.name} </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">₹ {item?.total_amount.toFixed(2)} </Table.Cell>
+                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">₹ {Math.round(item?.total_amount)} </Table.Cell>
                                 <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.order_type.charAt(0).toUpperCase() + item?.order_type.slice(1).toLowerCase() } </Table.Cell>
                                 <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.status ? item?.status.charAt(0).toUpperCase() + item?.status.slice(1).toLowerCase()  : "-"} </Table.Cell>
                                 <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {moment(item?.added_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
@@ -150,8 +150,10 @@ const OrderListPage : FC = function () {
 
             <Modal onClose={() => setparcelModal(false)} show={parcelModal} size="xl" dismissible>
               <Modal.Header className="flex justify-between items-center px-6 py-3 border-b border-gray-200 ">
+                <div className="flex items-center gap-4">
                 <h2 className="text-lg font-semibold">COD Parcel Invoice</h2>
                 <button   onClick={Downloadcall}   className="inline-flex items-center gap-2 bg-blue-600 text-white text-sm font-medium px-3 py-1.5 rounded hover:bg-blue-700 transition" >   Download  </button>
+                </div>
               </Modal.Header>
 
               <Modal.Body className="px-6 py-4 bg-gray-50 max-h-[30rem] overflow-scroll">
@@ -173,7 +175,7 @@ const OrderListPage : FC = function () {
 
                   {/* COD Info */}
                   <div className="border-b border-black py-3 space-y-1">
-                    <p className="font-bold text-xl">COD Amount: ₹ {parcelModalData?.total_amount?.toFixed(2)}</p>
+                    <p className="font-bold text-xl">COD Amount: ₹ {Math.round(parcelModalData?.total_amount)}</p>
                     <p><span className="font-semibold">Biller ID:</span> 0000054470 / 0000057616 / 0000058794</p>
                     <p><span className="font-semibold">Date:</span> {moment(parcelModalData?.added_at).format("DD-MM-YYYY")}</p>
                   </div>
@@ -181,7 +183,7 @@ const OrderListPage : FC = function () {
                   {/* Delivery Address */}
                   <div className="border-b border-black py-3 space-y-1">
                     <p className="font-semibold underline">Delivery Address</p>
-                    <p><span className="font-semibold">To:</span> {parcelModalData?.customer?.customer_name}</p>
+                    <p><span className="font-semibold">To:</span> {parcelModalData?.customer?.firstname} {parcelModalData?.customer?.middlename}  {parcelModalData?.customer?.lastname} </p>
                     <p><span className="font-semibold">Mo.:</span> {parcelModalData?.customer?.mobile_number} / {parcelModalData?.customer?.alternate_number}</p>
                     <p><span className="font-semibold">Address:</span> {parcelModalData?.customer?.address}</p>
                     <p><span className="font-semibold">AT:</span> {parcelModalData?.customer?.village_name}</p>

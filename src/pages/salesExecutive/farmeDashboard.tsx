@@ -37,7 +37,7 @@ const FarmeDashboard : FC <DashboardProps> = ({classData, viewButton}) => {
       { data && data  ? 
         <div className={classData}> 
         <div>
-          <div className=' dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '> <div className="w-[10rem]" > Name</div> <div> :  {data?.customer_name ? data?.customer_name : "-"} </div>   </div>
+          <div className=' dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '> <div className="w-[10rem]" > Name</div> <div> :  {data?.firstname ? data?.firstname : "-"}  {data?.middlename ? data?.middlename : "-"}   {data?.lastname ? data?.lastname : "-"} </div>   </div>
           <div className='dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div className="w-[10rem]" > Mobile No</div>  <div> :  {data?.mobile_number ? data?.mobile_number : "-"} </div>  </div>
           <div className='dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div className="w-[10rem]"> Alternate No  </div>  <div> :  {data?.alternate_number ? data?.alternate_number : "-"} </div>  </div>
           <div className='dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div className="w-[10rem]" > Address </div> <div> :    {data?.address ? data?.address  : "-"}</div>   </div>

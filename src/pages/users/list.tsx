@@ -11,6 +11,7 @@ import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useNavigate } from "react-router";
 import Cookies from "js-cookie";
+import LoaderPage from "../../components/loader";
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 const ToastMessage = lazy(() => import("../../components/ToastMessage"));
 
@@ -19,6 +20,7 @@ const UserListPage: FC = function () {
   const dispatch = useDispatch();
   const [isOpenDelteModel, setisOpenDelteModel] = useState(false);
   const [UserDataList, setUserDataList] = useState([]);
+  const [loader, setLoader] = useState(false);
 
   // Access Data Code start
   interface AccessData{
@@ -30,9 +32,8 @@ const UserListPage: FC = function () {
   const [AccessList, setAccessList] = useState<AccessData>();
 
   // Access Data Code end
-  const { UserList,  UserListSize, TotalUserListData, CurrentPage, permissionsdata } = useSelector((state: any) => ({
+  const { UserList,   TotalUserListData, CurrentPage, permissionsdata } = useSelector((state: any) => ({
       UserList: state.User.UserList?.data,
-      UserListSize: state.User.UserListSize,
       TotalUserListData: state.User.TotalUserListData,
       CurrentPage: state.User.CurrentPage,
       permissionsdata: state.Login.permissionsdata
@@ -82,18 +83,18 @@ const UserListPage: FC = function () {
     };
     if (searchData)  requserdata.search = searchData;
     dispatch(getUserlist(requserdata));
+    setLoader(true);
   }, [dispatch, PageNo, RoePerPage, searchData]);
 
   const [TotalListData, setTotalListData] = useState(0);
-  const [CurrentUserListSize, setCurrentUserListSize] = useState();
   const [CurrentPageNo, setCurrentPageNo] = useState(0);
   
   useEffect(() => { 
     setUserDataList(UserList ? UserList  : null);
     setTotalListData(TotalUserListData ? TotalUserListData : 0);
-    setCurrentUserListSize(UserListSize ? UserListSize : 0);
     setCurrentPageNo(CurrentPage ? CurrentPage : 1);
-  }, [UserList,  TotalUserListData, UserListSize, CurrentPage]);
+    setLoader(false);
+  }, [UserList,  TotalUserListData, CurrentPage]);
   //  ------------- Get User Data From Reducer Code Start --------------
 
   // ------------- Get User Data Code Start --------------
@@ -137,6 +138,8 @@ const UserListPage: FC = function () {
   return (
     <>
       <NavbarSidebarLayout isFooter={false}  isSidebar={true} isNavbar={true} isRightSidebar={true}>
+        {loader ? <LoaderPage /> :
+                  <>
         <ExampleBreadcrumb  Name={Name} Searchplaceholder={Searchplaceholder} searchData={searchData} Changename= {Changename} isOpenAddModel= {OpenAddModel} AddAccess={AddAccess}/>
           <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
               <Table.Head className="bg-gray-100 dark:bg-gray-700">
@@ -183,9 +186,10 @@ const UserListPage: FC = function () {
               </Table.Body>
           </Table>
         <ExamplePagination PageData={PageDataList} RowPerPage={RowPerPage}   RowsPerPageValue={RoePerPage}    PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData}/>
+        </>
+        }
       </NavbarSidebarLayout>
 
-  
       {isOpenDelteModel && (
           <Suspense fallback={<div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50"> <div className="text-white">Loading...</div> </div> }>
             <DeleteModalPage  isOpenDelteModel={isOpenDelteModel}  name={"user"} setisOpenDelteModel={setisOpenDelteModel}  DelCall={DelRole} />

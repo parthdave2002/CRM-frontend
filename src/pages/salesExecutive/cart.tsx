@@ -28,6 +28,9 @@ interface ProfileInfo{
   is_deleted:  boolean;
   _id: string;
   customer_name : string; 
+  firstname: string;
+  middlename: string;
+  lastname: string;
   mobile_number:  number;
   land_area: number;
   land_type: string;
@@ -147,7 +150,7 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
         customer : data_id,
         order_type :  isOrderTypeModel,
         status : isOrderStatusModel == "extend" ?  null :  isOrderStatusModel,
-        total_amount : grandTotal.toFixed(2),
+        total_amount : Math.round(grandTotal),
        ...(CouponName && { coupon: CouponName.toUpperCase() })
       }
       if (isOrderTypeModel === "future" && isOrderStatusModel == "extend" )  requser.future_order_date = SelectedFutureDate;
@@ -301,9 +304,9 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
                         <Table.Cell style={{ padding: "10px" }} className="whitespace-nowrap font-normal text-gray-900 dark:text-white text-center"> 
                           <Input className='w-[3rem] px-2 py-2 rounded-xl dark:bg-gray-800' value={productQty[item._id] ?? "1"} defaultValue={1} onChange={(e) => ProductQtychange(item._id, e.target.value)}  onBlur={() => handleQtyBlur(item._id)}  inputMode="numeric" />   
                           </Table.Cell>
-                        <Table.Cell style={{ padding: "10px" }} className="whitespace-nowrap font-medium text-gray-900 dark:text-white text-center"> {((item.price - item.discount) * (Number(productQty[item._id] || 1))).toFixed(2)}  </Table.Cell>
-                        <Table.Cell style={{ padding: "10px" }} className="whitespace-nowrap font-medium text-gray-900 dark:text-white text-center"> {(((item.price - item.discount) * (Number(productQty[item._id] || 1))) * (item?.s_gst * 2 / 100)).toFixed(2)}  </Table.Cell>
-                        <Table.Cell style={{ padding: "10px" }} className="whitespace-nowrap font-medium text-gray-900 dark:text-white text-center"> {(((item.price - item.discount) * (Number(productQty[item._id] || 1))) + (((item.price - item.discount) * (Number(productQty[item._id] || 1))) * (item?.s_gst * 2 / 100))).toFixed(2)} </Table.Cell>
+                        <Table.Cell style={{ padding: "10px" }} className="whitespace-nowrap font-medium text-gray-900 dark:text-white text-center"> {Math.round((item.price - item.discount) * (Number(productQty[item._id] || 1)))}  </Table.Cell>
+                        <Table.Cell style={{ padding: "10px" }} className="whitespace-nowrap font-medium text-gray-900 dark:text-white text-center"> {Math.round(((item.price - item.discount) * (Number(productQty[item._id] || 1))) * (item?.s_gst * 2 / 100))}  </Table.Cell>
+                        <Table.Cell style={{ padding: "10px" }} className="whitespace-nowrap font-medium text-gray-900 dark:text-white text-center"> {Math.round((((item.price - item.discount) * (Number(productQty[item._id] || 1))) + (((item.price - item.discount) * (Number(productQty[item._id] || 1))) * (item?.s_gst * 2 / 100))))} </Table.Cell>
                         <Table.Cell style={{ padding: "10px" }} className="space-x-2 whitespace-nowrap"> <div className="flex items-center gap-x-2 bg-red-500 hover:bg-red-600 text-gray-200 px-1 py-1 rounded-lg cursor-pointer" onClick={() => handleRemoveCall(item?._id)}>  <HiTrash className="text-lg" /> Remove </div>  </Table.Cell>
                       </Table.Row>
                     ))}
@@ -323,16 +326,16 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
                   </div>
 
                   <div className="flex-1 flex flex-col items-end space-y-1">
-                    <div className="text-[1rem] font-semibold text-gray-500 dark:text-gray-300 flex justify-between w-full max-w-xs">  <span>Total Discount</span> <span>: {totalDiscount.toFixed(2)} Rs.</span> </div>
-                    <div className="text-[1rem] font-semibold text-gray-500 dark:text-gray-300 flex justify-between w-full max-w-xs"> <span>Total Subtotal</span> <span>: {totalSubtotal.toFixed(2)} Rs.</span> </div>
-                    <div className="text-[1rem] font-semibold text-gray-500 dark:text-gray-300 flex justify-between w-full max-w-xs"> <span>Total GST</span> <span>: {totalGST.toFixed(2)} Rs.</span>  </div>
-                    {CouponAmt ?  <div className="text-[1rem] font-semibold text-gray-500 dark:text-gray-300 flex justify-between w-full max-w-xs"> <span> Coupon Amount</span> <span>: - {CouponAmt.toFixed(2)} Rs.</span>  </div> : null }
+                    <div className="text-[1rem] font-semibold text-gray-500 dark:text-gray-300 flex justify-between w-full max-w-xs">  <span>Total Discount</span> <span>: {Math.round(totalDiscount)} Rs.</span> </div>
+                    <div className="text-[1rem] font-semibold text-gray-500 dark:text-gray-300 flex justify-between w-full max-w-xs"> <span>Total Subtotal</span> <span>: {Math.round(totalSubtotal)} Rs.</span> </div>
+                    <div className="text-[1rem] font-semibold text-gray-500 dark:text-gray-300 flex justify-between w-full max-w-xs"> <span>Total GST</span> <span>: {Math.round(totalGST)} Rs.</span>  </div>
+                    {CouponAmt ?  <div className="text-[1rem] font-semibold text-gray-500 dark:text-gray-300 flex justify-between w-full max-w-xs"> <span> Coupon Amount</span> <span>: - {Math.round(CouponAmt)} Rs.</span>  </div> : null }
                   </div>
                 </div>
 
                 <div className="flex justify-end items-center text-xl font-semibold text-gray-500 dark:text-gray-300 mt-4 gap-x-4">
                   <span className="text-[1.5rem]">Grand Total</span>
-                  <span className="min-w-[11rem] text-end">: {grandTotal.toFixed(2)} Rs.</span>
+                  <span className="min-w-[11rem] text-end">: {Math.round(grandTotal)} Rs.</span>
                 </div>
               </div>
 
@@ -346,7 +349,7 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
             <div className="flex-1 md:w-[20rem] w-full flex flex-col gap-4 mt-4 lg:mt-0">
             <div className="border dark:border-gray-600 dark:bg-gray-800 p-3 rounded-xl w-full flex flex-col gap-y-3">
               <div className='dark:text-gray-300 text-[1.2rem] font-semibold'>Customer</div>
-              <div className='dark:text-gray-300 flex gap-x-3'><FaUserAlt className='self-center h-7-w-7' />  <span> {data?.customer_name} </span> </div>
+              <div className='dark:text-gray-300 flex gap-x-3'><FaUserAlt className='self-center h-7-w-7' />  <span> {data?.firstname} {data?.middlename} {data?.lastname} </span> </div>
             </div>
 
             <div className="border dark:border-gray-600 dark:bg-gray-800 p-3 rounded-xl w-full flex flex-col gap-y-3">
@@ -365,7 +368,7 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
             </div> 
           </>
           :
-            <div className=" h-full flex flex-col text-center bg-no-repeat bg-center bg-contain w-[65rem]" style={{ backgroundImage: "url('/images/products/empty-cart.png')" }} > </div>
+            <div className=" h-full flex flex-col text-center bg-no-repeat bg-center bg-contain w-[65rem]" style={{ backgroundImage: "url('/images/products/cart-bg.webp')" }} > </div>
           }
       </div> 
 

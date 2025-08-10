@@ -105,7 +105,7 @@ const WarehousePage  = function ()  {
                                         leadData.map((item: any, k: number) => (
                                         <Table.Row key={k}    className="hover:bg-gray-100 dark:hover:bg-gray-700"    >
                                             <Table.Cell  className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer"  onClick={() => OpenModal(item)} >   {item?.order_id}  </Table.Cell>
-                                            <Table.Cell  className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer"  onClick={() => OpenModal(item)} >   {item?.customer?.customer_name}  </Table.Cell>
+                                            <Table.Cell  className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer"  onClick={() => OpenModal(item)} >   {item?.customer?.firstname}  {item?.customer?.middlename}  {item?.customer?.lastname}  </Table.Cell>
                                             <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">   {item?.customer?.mobile_number ? item?.customer?.mobile_number : "-"}   </Table.Cell>
                                             <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">   {moment(item?.added_at).format( "DD-MM-YYYY hh:mm:ss"   )}   </Table.Cell>
                                             <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">   {item?.status ? item?.status.charAt(0).toUpperCase() +  item?.status.slice(1).toLowerCase()  : "-"} </Table.Cell>
