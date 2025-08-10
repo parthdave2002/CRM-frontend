@@ -12,6 +12,7 @@ import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useNavigate } from "react-router";
 import { FaExchangeAlt } from "react-icons/fa";
 import Cookies from "js-cookie";
+import LoaderPage from "../../components/loader";
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 const ToastMessage = lazy(() => import("../../components/ToastMessage"));
 
@@ -30,6 +31,7 @@ const CropsListPage: FC = function () {
     delete: boolean;
   }
   const [AccessList, setAccessList] = useState<AccessData>();
+  const [loader, setLoader] = useState(false);
 
   //--------- Access Data Code end------------------
 
@@ -87,12 +89,14 @@ const CropsListPage: FC = function () {
       };
       if (searchData)  requserdata.search = searchData;
       dispatch(getCroplist(requserdata));
+      setLoader(true);
     }, [dispatch, PageNo, RoePerPage, searchData]);
 
     useEffect(() => {  
       setCroplist(Cropdatalist ? Cropdatalist : null);
       setTotalListData(TotalCropData ? TotalCropData : 0);
       setCurrentPageNo(CurrentPage ? CurrentPage : 1);
+      setLoader(false);
     }, [Cropdatalist,  CroplistSize, TotalCropData, CurrentPage]);
   //  ------------- Get Data From Reducer Code end --------------
 
@@ -135,6 +139,9 @@ const CropsListPage: FC = function () {
   return (
     <>
       <NavbarSidebarLayout isFooter={false}  isSidebar={true} isNavbar={true} isRightSidebar={true}>
+        {loader ? <LoaderPage /> :
+          <>
+
         <ExampleBreadcrumb  Name={Name} Searchplaceholder={Searchplaceholder} searchData={searchData} Changename= {Changename} isOpenAddModel= {OpenAddModel} AddAccess={AddAccess}/>
     
           <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
@@ -179,6 +186,8 @@ const CropsListPage: FC = function () {
           </Table>
           
           <ExamplePagination PageData={PageDataList} RowPerPage={RowPerPage}   RowsPerPageValue={RoePerPage}  PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData}/>
+          </>
+          }
       </NavbarSidebarLayout>
     
         {isOpenDelteModel && (

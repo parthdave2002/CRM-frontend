@@ -26,6 +26,9 @@ const OrdererDetailsPage: FC = function () {
 
   interface CustomerData {
     address: string;
+    firstname: string;
+    middlename: string;
+    lastname: string;
     customer_name : string;
     district_name: string;
     mobile_number : number;
@@ -188,7 +191,7 @@ const OrdererDetailsPage: FC = function () {
                     <div className="grid grid-cols-2 mb-4">
                       <div>
                         <p className="font-semibold">Bill To:</p>
-                        <p>{UserDataList?.customer?.customer_name}</p>
+                        <p>{UserDataList?.customer?.firstname} {UserDataList?.customer?.middlename} {UserDataList?.customer?.lastname}</p>
                         <p className="text-gray-600 text-[0.9rem]">  {UserDataList?.customer?.address}   </p>
                         <p className="text-gray-600 text-[0.9rem]">  {UserDataList?.customer?.village_name}, {UserDataList?.customer?.taluka_name},  {UserDataList?.customer?.district_name},  </p>
                         <p className="text-gray-600 text-[0.9rem]">  {UserDataList?.customer?.state?.name} -  {UserDataList?.customer?.pincode}  </p>
@@ -224,8 +227,8 @@ const OrdererDetailsPage: FC = function () {
                               <td className="border p-2">{item?.discount}</td>
                               <td className="border p-2">{item?.quantity}</td>
                               <td className="border p-2">{amount}</td>
-                              <td className="border p-2">{gst.toFixed(2)}</td>
-                              <td className="border p-2">{total.toFixed(2)}</td>
+                              <td className="border p-2">{Math.round(gst)}</td>
+                              <td className="border p-2">{Math.round(total)}</td>
                             </tr>
                           );
                         })}
@@ -253,7 +256,7 @@ const OrdererDetailsPage: FC = function () {
                                   <p className="w-[6rem]"><strong> Discount</strong></p>
                                   <span className="mx-1">:</span>
                                 </div>
-                                <p>₹{finaldiscount?.toFixed(2) ?? "0.00"}</p>
+                                <p>₹{Math.round(finaldiscount) ?? 0}</p>
                               </div>
 
                               <div className="flex justify-between">
@@ -261,7 +264,7 @@ const OrdererDetailsPage: FC = function () {
                                   <p className="w-[6rem]"><strong>Sub Total</strong></p>
                                   <span className="mx-1">:</span>
                                 </div>
-                                <p>₹{finalsubtotal?.toFixed(2) ?? "0.00"}</p>
+                                <p>₹{Math.round(finalsubtotal) ?? 0}</p>
                               </div>
 
                               <div className="flex justify-between">
@@ -269,7 +272,7 @@ const OrdererDetailsPage: FC = function () {
                                   <p className="w-[6rem]"><strong>Tax</strong></p>
                                   <span className="mx-1">:</span>
                                 </div>
-                                <p>+ ₹{finalgst?.toFixed(2) ?? "0.00"}</p>
+                                <p>+ ₹{Math.round(finalgst) ?? 0 }</p>
                               </div>
                             </div>
 
@@ -281,7 +284,7 @@ const OrdererDetailsPage: FC = function () {
                                     <p className="w-[6rem]"><strong>Grand Total</strong></p>
                                     <span className="mx-1">:</span>
                                   </div>
-                                  <p>₹{grandtotal?.toFixed(2) ?? "0.00"}</p>
+                                  <p>₹{Math.round(grandtotal) ?? 0 }</p>
                                 </div>
 
                                 <div className="flex justify-between">
@@ -289,7 +292,7 @@ const OrdererDetailsPage: FC = function () {
                                     <p className="w-[6rem]"><strong>Coupon</strong></p>
                                     <span className="mx-1">:</span>
                                   </div>
-                                  <p>- ₹{UserDataList?.coupon?.amount?.toFixed(2) ?? "0.00"}</p>
+                                  <p>- ₹{UserDataList?.coupon?.amount ? Math.round(UserDataList?.coupon?.amount) : 0}</p>
                                 </div>
                               </div>
                             )}
@@ -298,7 +301,7 @@ const OrdererDetailsPage: FC = function () {
 
                       </div>
 
-                      <div className="text-2xl font-bold bg-gray-700 text-white px-3 py-2  text-right  leading-tight antialiased">Total : ₹{total?.toFixed(2) ?? "0.00"}</div>
+                      <div className="text-2xl font-bold bg-gray-700 text-white px-3 py-2  text-right  leading-tight antialiased">Total : ₹{total ? Math.round(total) : 0}</div>
 
                       <div className="mt-4 text-[0.8rem] text-gray-700">
                           <div className="flex justify-between"> 
@@ -306,8 +309,8 @@ const OrdererDetailsPage: FC = function () {
                               <img src="/images/authentication/signature.webp" className="mb-3 border-b border-dashed border-gray-400 pb-1 w-[8rem] h-[3rem]" /> 
                           </div>
                         <p className="text-[0.8rem]">  (1) All products are intended for lawful agricultural use only. </p>
-                        <p className="text-[0.8rem]">  (2) Product performance depends on various external factors such as weather, soil conditions, and usage methods. The company shall not be held responsible for crop failure, yield loss, or quality issues. </p>
-                        <p className="text-[0.8rem]">  (3) The battery Pump and Torch have a limited warranty of 6 months for battery only. Do not use electric items while charging, use original adaptor and avoid overcharge or charge in low voltage as it may damage battery.  </p>
+                        <p className="text-[0.8rem]">  (2) Product performance depends on various external factors such as weather, soil conditions, and application methods. The company will not be responsible for crop failure, yield reduction, or quality issues and the company will not compensate for any losses. </p>
+                        <p className="text-[0.8rem]">  (3) The battery Pump and Torch have a limited warranty of 6 months for only battery. Do not use electric items while in charging, use only the original adaptor, don't overcharge and avoid charging in low voltage as it may damage battery.  </p>
                         <p className="text-[0.8rem]">  (4) All disputes are subject to the jurisdiction of Una or Kapadvanj. E & O.E  </p>
                       </div>
 

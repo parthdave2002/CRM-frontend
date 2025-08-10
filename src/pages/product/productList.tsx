@@ -10,8 +10,8 @@ import { lazy, Suspense, useEffect, useState } from "react";
 import ExamplePagination from "../../components/pagination";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useNavigate } from "react-router";
-import moment from "moment";
 import Cookies from "js-cookie";
+import LoaderPage from "../../components/loader";
 const ToastMessage = lazy(() => import("../../components/ToastMessage"));
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 
@@ -20,7 +20,8 @@ const ProductListPage: FC = function () {
   const navigate = useNavigate();
   const [isOpenDelteModel, setisOpenDelteModel] = useState(false);
   const [ProductList, setProductList] = useState([]);
-  
+  const [loader, setLoader] = useState(false);
+
   //------------ Access Data Code start------------
   interface AccessData{
     add: boolean;
@@ -86,12 +87,14 @@ const ProductListPage: FC = function () {
       };
       if (searchData)  requserdata.search = searchData;
       dispatch(getProductlist(requserdata));
+      setLoader(true);
     }, [dispatch, PageNo, RoePerPage, searchData]);
 
     useEffect(() => {        
       setProductList(Productlist ? Productlist?.data  :[]);
       setTotalListData(TotalProductData ? TotalProductData : 0);
       setCurrentPageNo(CurrentPage ? CurrentPage : 1);
+      setLoader(false)
     }, [Productlist,  ProductlistSize, TotalProductData, CurrentPage]);
   //  ------------- Get Data From Reducer Code end --------------
 
@@ -134,6 +137,8 @@ const ProductListPage: FC = function () {
   return (
     <>
       <NavbarSidebarLayout isFooter={false}  isSidebar={true} isNavbar={true} isRightSidebar={true}>
+        {loader ? <LoaderPage /> :
+          <>
         <ExampleBreadcrumb  Name={Name} Searchplaceholder={Searchplaceholder} searchData={searchData} Changename= {Changename} isOpenAddModel= {OpenAddModel} AddAccess={AddAccess}/>
     
           <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
@@ -177,6 +182,8 @@ const ProductListPage: FC = function () {
           </Table>
           
           <ExamplePagination PageData={PageDataList} RowPerPage={RowPerPage}   RowsPerPageValue={RoePerPage}  PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData}/>
+      </>
+         }
       </NavbarSidebarLayout>
     
         {isOpenDelteModel && (

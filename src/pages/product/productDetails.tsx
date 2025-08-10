@@ -7,6 +7,7 @@ import { useEffect, useState, } from "react";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useParams } from "react-router";
 import moment from "moment";
+import LoaderPage from "../../components/loader";
 const IMG_URL = import.meta.env["VITE_API_URL"];
 
 interface DescriptionData{
@@ -68,10 +69,12 @@ const ProductDetailsPage: FC = function () {
   const dispatch = useDispatch();
   const { id } = useParams();
   const [ProductDatalist, setProductDatalist] = useState<ProductDetails>();
+  const [loader, setLoader] = useState(false);
 
   useEffect(() =>{
     if(id){
         dispatch(GetProductViewlist({ id : id}))   
+        setLoader(true);
     }
   },[id]);
   
@@ -80,7 +83,11 @@ const ProductDetailsPage: FC = function () {
   }));
 
   useEffect(() => {
-    setProductDatalist(singleProductlist ? singleProductlist?.data : null);
+    if(singleProductlist){
+      setProductDatalist(singleProductlist ? singleProductlist?.data : null);
+      setLoader(false);
+    }
+
   }, [singleProductlist]);
 
   let Name = "Product Details";
@@ -89,7 +96,10 @@ const ProductDetailsPage: FC = function () {
 
   return (
     <>
+
       <NavbarSidebarLayout isFooter={false}  isSidebar={true} isNavbar={true} isRightSidebar={true}>
+            {loader ? <LoaderPage /> :
+          <>
         <ExampleBreadcrumb  Name={Name} ParentName={ParentName} ParentLink ={ParentLink} />
        
           <div className="mt-[2rem] bg-white dark:bg-gray-800 p-4">
@@ -204,8 +214,11 @@ const ProductDetailsPage: FC = function () {
                         ))}   
                       </div>
           </div>
-
+</>
+}
       </NavbarSidebarLayout>
+      
+
     </>
   );
 };

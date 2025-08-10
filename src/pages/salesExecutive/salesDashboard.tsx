@@ -284,9 +284,13 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
       // ----------- Tabnavbar code end --------------------
     
     const [ProductModal, setProductModal] = useState(false);
-    const OpenModal = () =>{
+    const [ProductItemModal, setProductItemModal] = useState({});
+
+    const OpenModal = (item: any) =>{
       setProductModal(true)
+      setProductItemModal(item)
     }
+    console.log("ProductItemModal", ProductItemModal);
 
     return (
         <> 
@@ -431,7 +435,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
                     {FarmerData && FarmerData.map((item: any, k: number) => (
                       <div className="bg-[#f4f9fd] w-[12rem] dark:bg-gray-700 px-[2rem] py-3 rounded-xl flex flex-col gap-y-2" key={k}>
                         <img src={imagesForFarmers[k] ?? "/images/farmer/11.webp" } alt="" className="h-16 w-16 rounded-full self-center border-2 border-blue-600 p-1" />
-                        <div className="text-gray-500 dark:text-gray-100 text-[0.9rem] text-center max-w-[15rem] truncate"> {item?.customer_name} </div>
+                        <div className="text-gray-500 dark:text-gray-100 text-[0.9rem] text-center max-w-[15rem] truncate"> {item?.firstname} {item?.middlename} {item?.lastname} </div>
                         <div className="text-gray-500 dark:text-gray-100 text-[0.9rem] text-center"> {item?.mobile_number}</div>
                         {/* <div className="text-gray-500 dark:text-gray-100 text-[0.8rem] text-center border border-gray-500 rounded-md size-fit px-2 cursor-pointer self-center" onClick={() => handleClickCall()}> View </div> */}
                       </div>
@@ -454,7 +458,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
 
                       <div className="pl-3 flex flex-col gap-y-1">
                         {/* <div className="truncate text-gray-500 dark:text-gray-100 dark:text-gray-50 lg:max-w-[15rem]"> {item?.title} </div> */}
-                        <div className="text-[0.7rem] xl:text-[0.9rem] text-gray-500 dark:text-gray-100 dark:text-gray-50 lg:max-w-[15rem] truncate"> {item?.customer_id?.customer_name}</div>
+                        <div className="text-[0.7rem] xl:text-[0.9rem] text-gray-500 dark:text-gray-100 dark:text-gray-50 lg:max-w-[15rem] truncate"> {item?.customer_id?.firstname} {item?.customer_id?.middlename} {item?.customer_id?.lastname} </div>
                         <div className="flex justify-between">
                           <div className="text-gray-500 dark:text-gray-100 dark:text-gray-50 text-[0.8rem]"> {item?.customer_id?.mobile_number}  </div>
                           <div className="text-gray-500 dark:text-gray-100 dark:text-gray-50 text-[0.8rem]"> {moment(item?.created_at).format("DD-MM-YYYY")}  </div>
@@ -489,7 +493,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
                             <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item?.added_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
                             <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.order_type ? item?.order_type.charAt(0).toUpperCase() + item?.order_type.slice(1).toLowerCase() : "-"} </Table.Cell>
                             <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.order_type == "future" ? moment(item?.future_order_date).format("DD-MM-YYYY") : "-"} </Table.Cell>
-                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.total_amount.toFixed(2)} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {Math.round(item?.total_amount)} </Table.Cell>
                             <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.status ? item?.status.charAt(0).toUpperCase() + item?.status.slice(1).toLowerCase() : "-"} </Table.Cell>
                           </Table.Row>
                         ))}
@@ -534,7 +538,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
                                   <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
                                     {leadData && leadData.map((item: any, k: number) => (
                                       <Table.Row key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
-                                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => OpenModal()}> { item?.name} </Table.Cell>
+                                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => OpenModal(item?.products)}> { item?.name} </Table.Cell>
                                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.mobile_number ? item?.mobile_number : "-"} </Table.Cell>
                                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item?.added_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
                                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.status ? item?.status.charAt(0).toUpperCase() + item?.status.slice(1).toLowerCase() : "-"} </Table.Cell>
@@ -662,16 +666,51 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
             : null}
 
             {ProductModal == true ?
-                      <Modal onClose={() => setProductModal(false)}  show={ProductModal} size="md">
-                          <Modal.Header className="px-6 pt-6 pb-0"> <span className="sr-only"> Change status</span></Modal.Header>
-                          <Modal.Body className="px-6 pt-0 pb-6">
-                              <div>
-                                  {Array.isArray(leadData?.products) && leadData.products.map((item: any, k: number) => (
-                                      <div key={k}>{item.quantity}</div>
-                                    ))}
-                              </div>
-                          </Modal.Body>
-                      </Modal>
+                       <Modal
+      onClose={() => setProductModal(false)}
+      show={ProductModal}
+      size="2xl"
+      className="font-sans"
+    >
+      {/* Header */}
+      <Modal.Header className="px-6 pt-6 pb-2 border-b border-gray-200 dark:border-gray-700">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+          Product Details
+        </h2>
+      </Modal.Header>
+
+      {/* Body */}
+      <Modal.Body className="px-6 py-4 space-y-4 bg-gray-50 dark:bg-gray-900">
+        {Array.isArray(ProductItemModal) && ProductItemModal.length > 0 ? (
+          <div className="divide-y divide-gray-200 dark:divide-gray-700">
+            {ProductItemModal.map((item, k) => (
+              <div
+                key={k}
+                className="py-3 grid grid-cols-2 md:grid-cols-4 gap-3 items-center"
+              >
+                <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  {item?._id?.name?.englishname || "-"}
+                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  {item?._id?.categories?.name_eng || "-"}
+                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  {item?._id?.packaging || "-"}  {item?._id?.packagingtype?.type_eng || "-"}
+                </p>
+                <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+                  Qty: {item?.quantity || 0}
+                </p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-4">
+            No product details available.
+          </p>
+        )}
+      </Modal.Body>
+
+    </Modal>
             : null}
           </>
         }

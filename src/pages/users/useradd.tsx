@@ -19,7 +19,7 @@ const AddUserPage : FC = function () {
 
     const { id } = useParams();
     const dispatch = useDispatch();
-    const [file, setFile] = useState<File | null>(null);
+    const [file, setFile] = useState<File | null |  string>(null);
 
     interface RoleData{
         role_title: string;
@@ -289,8 +289,8 @@ const AddUserPage : FC = function () {
             formData.append("bank_passbook",JSON.stringify(selectedBankPassbookid));
             formData.append("is_active", JSON.stringify(selectedStatusid));
             formData.append("role", selectedRoleid);
-            if (file instanceof File) formData.append("user_pic", file); 
-            
+            if (file instanceof File)  formData.append("user_pic", file);
+
             if(id){
                 formData.append("id", id);
                 dispatch(UpdateUserdatalist(formData));
@@ -343,7 +343,8 @@ const AddUserPage : FC = function () {
             emergency_contact_person : UserDataList?.emergency_contact_person ?? "",
             aadhar_card : UserDataList?.aadhar_card ?? "",
             pan_card : UserDataList?.pan_card ?? "",
-            bank_passbook : UserDataList?.bank_passbook ?? null
+            bank_passbook : UserDataList?.bank_passbook ?? null,
+            setFile: UserDataList?.user_pic ? new File([], UserDataList.user_pic) : null
         }));
  
         setSelectedRoleOption({ label: UserDataList?.role.role_title,  value: UserDataList?.role._id });

@@ -23,6 +23,9 @@ interface OrderDetailsProps{
   interface CustomerData {
     address: string;
     customer_name : string;
+    firstname: string;
+    middlename: string;
+    lastname: string;
     district_name: string;
     mobile_number : number;
     alternate_number : number;
@@ -235,7 +238,7 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
                   <div className='flex gap-x-3'> 
                     <div className='py-1 px-4 border rounded-xl self-center dark:text-gray-300'> {data?.quantity}  X  {data?.id?.price} </div>
                     <div className='text-center self-center dark:text-gray-300'> - {data?.id?.discount} </div>
-                    <div className='text-center self-center dark:text-gray-300'> = {(data?.quantity * data?.id?.price - data?.id?.discount)?.toFixed(2)}</div>
+                    <div className='text-center self-center dark:text-gray-300'> = {Math.round(data?.quantity * data?.id?.price - data?.id?.discount)}</div>
                   </div>
                   
                   { openDetailIData?.status == "confirm" ?  <div className='text-center self-center  bg-indigo-600 hover:bg-indigo-700 text-gray-100 rounded-lg cursor-pointer flex gap-x-2 px-3 py-1.5' onClick={() => CompainCall(data?.id?._id)}> <FaExclamationTriangle className='self-center text-xl'  /> Complain </div> : null }
@@ -259,28 +262,28 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
             <div className="flex flex-col justify-self-end w-full max-w-md  dark:bg-gray-800  space-y-4">
                 <div className="flex justify-between w-full text-base md:text-lg font-medium text-gray-600 dark:text-gray-300">
                   <span>Total Discount</span>
-                  <span className="font-semibold text-gray-800 dark:text-white">{totalDiscount.toFixed(2)} Rs.</span>
+                  <span className="font-semibold text-gray-800 dark:text-white">{Math.round(totalDiscount)} Rs.</span>
                 </div>
                 
                 <div className="flex justify-between w-full text-base md:text-lg font-medium text-gray-600 dark:text-gray-300">
                   <span>Total Subtotal</span>
-                  <span className="font-semibold text-gray-800 dark:text-white">{totalSubtotal.toFixed(2)} Rs.</span>
+                  <span className="font-semibold text-gray-800 dark:text-white">{Math.round(totalSubtotal)} Rs.</span>
                 </div>
                 
                 <div className="flex justify-between w-full text-base md:text-lg font-medium text-gray-600 dark:text-gray-300">
                   <span>Total GST</span>
-                  <span className="font-semibold text-gray-800 dark:text-white">{totalGST.toFixed(2)} Rs.</span>
+                  <span className="font-semibold text-gray-800 dark:text-white">{Math.round(totalGST)} Rs.</span>
                 </div>
                 
                 {openDetailIData?.coupon?.amount && (
                   <div className="flex justify-between w-full text-base md:text-lg font-medium text-green-600 dark:text-green-400">
                     <span>Coupon</span>
-                    <span className="font-semibold">- {openDetailIData?.coupon?.amount.toFixed(2)} Rs.</span>
+                    <span className="font-semibold">- {Math.round(openDetailIData?.coupon?.amount) ?? 0} Rs.</span>
                   </div>
                 )}
               </div>
 
-            <div className="flex justify-end items-center text-xl font-semibold text-gray-500 dark:text-gray-300 mt-4 gap-x-4 "> <span className='text-[1.5rem]'>Grand Total</span> <span className='min-w-[11rem] text-end'> : {totalGrandTotal.toFixed(2)} Rs.</span> </div>
+            <div className="flex justify-end items-center text-xl font-semibold text-gray-500 dark:text-gray-300 mt-4 gap-x-4 "> <span className='text-[1.5rem]'>Grand Total</span> <span className='min-w-[11rem] text-end'> : {Math.round(totalGrandTotal)} Rs.</span> </div>
           </div>
 
           { openDetailIData?.status == "confirm" ?
@@ -305,7 +308,7 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
 
           <div className="border dark:border-gray-600 dark:bg-gray-800 p-3 rounded-xl w-full flex flex-col gap-y-3">
             <div className='dark:text-gray-300 text-[1.2rem] font-semibold'>Customer</div>
-            <div className='dark:text-gray-300 flex gap-x-3 truncate max-w-[18rem]'><FaUserAlt className='self-center h-7-w-7'  />  <span> {data?.customer_name} </span> </div>
+            <div className='dark:text-gray-300 flex gap-x-3 truncate max-w-[18rem]'><FaUserAlt className='self-center h-7-w-7'  />  <span> {data?.firstname} {data?.middlename} {data?.lastname} </span> </div>
           </div>
 
           <div className="border dark:border-gray-600 dark:bg-gray-800 p-3 rounded-xl w-full flex flex-col gap-y-3">
@@ -378,7 +381,7 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
                                 <div className="grid grid-cols-2 mb-4">
                                   <div>
                                     <p className="font-semibold">Bill To:</p>
-                                    <p>{UserDataList?.customer?.customer_name}</p>
+                                    <p>{UserDataList?.customer?.firstname} {UserDataList?.customer?.middlename} {UserDataList?.customer?.lastname}</p>
                                     <p className="text-gray-600 text-[0.9rem]">  {UserDataList?.customer?.address}   </p>
                                     <p className="text-gray-600 text-[0.9rem]">  {UserDataList?.customer?.village_name}, {UserDataList?.customer?.taluka_name},  {UserDataList?.customer?.district_name},  </p>
                                     <p className="text-gray-600 text-[0.9rem]">  {UserDataList?.customer?.state?.name} -  {UserDataList?.customer?.pincode}  </p>
@@ -414,8 +417,8 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
                                           <td className="border p-2">{item?.discount}</td>
                                           <td className="border p-2">{item?.quantity}</td>
                                           <td className="border p-2">{amount}</td>
-                                          <td className="border p-2">{gst.toFixed(2)}</td>
-                                          <td className="border p-2">{total.toFixed(2)}</td>
+                                          <td className="border p-2">{Math.round(gst) ?? 0}</td>
+                                          <td className="border p-2">{Math.round(total) ?? 0}</td>
                                         </tr>
                                       );
                                     })}
@@ -443,7 +446,7 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
                                               <p className="w-[6rem]"><strong> Discount</strong></p>
                                               <span className="mx-1">:</span>
                                             </div>
-                                            <p>₹{finaldiscount?.toFixed(2) ?? "0.00"}</p>
+                                            <p>₹{Math.round(finaldiscount) ?? 0}</p>
                                           </div>
             
                                           <div className="flex justify-between">
@@ -451,7 +454,7 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
                                               <p className="w-[6rem]"><strong>Sub Total</strong></p>
                                               <span className="mx-1">:</span>
                                             </div>
-                                            <p>₹{finalsubtotal?.toFixed(2) ?? "0.00"}</p>
+                                            <p>₹{Math.round(finalsubtotal) ?? 0}</p>
                                           </div>
             
                                           <div className="flex justify-between">
@@ -459,7 +462,7 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
                                               <p className="w-[6rem]"><strong>Tax</strong></p>
                                               <span className="mx-1">:</span>
                                             </div>
-                                            <p>+ ₹{finalgst?.toFixed(2) ?? "0.00"}</p>
+                                            <p>+ ₹{Math.round(finalgst) ?? 0}</p>
                                           </div>
                                         </div>
             
@@ -471,7 +474,7 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
                                                 <p className="w-[6rem]"><strong>Grand Total</strong></p>
                                                 <span className="mx-1">:</span>
                                               </div>
-                                              <p>₹{grandtotal?.toFixed(2) ?? "0.00"}</p>
+                                              <p>₹{Math.round(grandtotal) ?? 0}</p>
                                             </div>
             
                                             <div className="flex justify-between">
@@ -479,7 +482,7 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
                                                 <p className="w-[6rem]"><strong>Coupon</strong></p>
                                                 <span className="mx-1">:</span>
                                               </div>
-                                              <p>- ₹{UserDataList?.coupon?.amount?.toFixed(2) ?? "0.00"}</p>
+                                              <p>- ₹{Math.round(UserDataList?.coupon?.amount) ?? 0}</p>
                                             </div>
                                           </div>
                                         )}
@@ -487,9 +490,9 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
                                     </div>
             
                                   </div>
-            
-                                  <div className="text-2xl font-bold bg-gray-700 text-white px-3 py-2  text-right  leading-tight antialiased">Total : ₹{total?.toFixed(2) ?? "0.00"}</div>
-            
+
+                                  <div className="text-2xl font-bold bg-gray-700 text-white px-3 py-2  text-right  leading-tight antialiased">Total : ₹{Math.round(total) ?? 0}</div>
+
                                   <div className="mt-4 text-[0.8rem] text-gray-700">
                                       <div className="flex justify-between"> 
                                           <div className="text-[1.2rem]" ><strong>Terms & Conditions:</strong>  </div>

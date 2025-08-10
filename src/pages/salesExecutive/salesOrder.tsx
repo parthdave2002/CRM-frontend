@@ -105,7 +105,7 @@ const SalesOrder : FC <PropsData> = function ({ setDatactive, openProfile,setOpe
                           <img src={farmerimage} alt="" className={` h-16 w-16 rounded-full self-center border-2 ${k % 2 === 0 ? "border-[#ffdd85]" : "border-blue-600"}  p-1`} />
                           
                           <div className="flex justify-between mt-3">
-                            <div className="text-gray-700 dark:text-gray-100 text-[1rem] truncate flex-1">   {item?.customer?.customer_name}  </div>
+                            <div className="text-gray-700 dark:text-gray-100 text-[1rem] truncate flex-1">   {item?.customer?.firstname}  {item?.customer?.middlename}  {item?.customer?.lastname}  </div>
                             <div className="text-gray-700 dark:text-gray-100  text-[1rem] text-end flex-1 ">   {item?.customer?.mobile_number}   </div>
                           </div>
 

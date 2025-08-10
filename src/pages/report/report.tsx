@@ -243,7 +243,7 @@ const ReportPage: FC = function () {
                 <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
                   {Customerdata && Customerdata.map((item: any, k: any) => (
                       <Table.Row  key={k}  className="hover:bg-gray-100 dark:hover:bg-gray-700">
-                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.customer_name} </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.firstname} {item?.middlename} {item?.lastname} </Table.Cell>
                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.mobile_number} </Table.Cell>
                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.alternate_number ?  item?.alternate_number : "-"} </Table.Cell>
                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.land_area} </Table.Cell>
@@ -324,7 +324,7 @@ const ReportPage: FC = function () {
                     Orderdata.map((item: any, k: any) => (
                       <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700"  >
                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.order_id}  </Table.Cell>
-                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.customer?.customer_name}  </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.customer?.firstname} {item?.customer?.middlename} {item?.customer?.lastname}  </Table.Cell>
                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.customer?.address}  </Table.Cell>
                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.customer?.district_name}  </Table.Cell>
                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.customer?.taluka_name}  </Table.Cell>

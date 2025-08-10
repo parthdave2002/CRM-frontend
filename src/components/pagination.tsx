@@ -47,7 +47,7 @@ const ExamplePagination: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = funct
 
           <div className="mb-[2rem] md:mb-0">
             <span className="dark:text-white"> Rows Per Pages </span>
-            <select className="rounded-xl dark:bg-CardColor dark:text-white" onChange={(e) => { rowData(e); }} >
+            <select className="rounded-xl dark:bg-CardColor dark:text-white" onChange={(e) => { rowData(e); }} value={RowsPerPageValue}>
             <option value="5">5</option>
               <option value="10">10</option>
               <option value="25">25</option>

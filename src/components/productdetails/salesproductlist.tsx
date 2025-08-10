@@ -81,9 +81,9 @@ const Salesproductlist : FC <PorductData> = ({searchData, ProductDetailsCall, is
                   </Table.Cell>
                   <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.packaging} {item?.packagingtype?.type_eng} </Table.Cell>
                   <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.avl_qty ? item?.avl_qty  : 0} </Table.Cell>
-                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.price ? (item?.price).toFixed(2) :  0} </Table.Cell>
-                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.discount ? (item?.discount).toFixed(2) : 0}</Table.Cell>
-                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.price - item?.discount ? (item?.price - item?.discount).toFixed(2) : 0}  </Table.Cell>
+                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.price ? Math.round(item?.price) :  0} </Table.Cell>
+                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.discount ? Math.round(item?.discount) : 0}</Table.Cell>
+                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.price - item?.discount ? Math.round(item?.price - item?.discount) : 0}  </Table.Cell>
                   {isLoggedin  ?  
                   <>
                       {item?.avl_qty  != 0?
