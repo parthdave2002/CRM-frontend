@@ -271,7 +271,7 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
     <>
       <div className='flex justify-between'>
         <div className="text-[2rem] font-semibold text-gray-900 dark:text-gray-100"> Cart : {cartOrderid}</div>
-        {cartOrderid ?  <div className="flex border border-indigo-500 text-indigo-500 dark:text-white hover:text-gray-100 font-semibold px-6 py-2 rounded-full gap-3 hover:bg-indigo-800 transition flex text-center cursor-pointer transition-all duration-500 ease-in-out text-center self-center"  onClick={() => setCartOpen(false)} > <FaCartShopping className="self-center h-5 w-5" /> Countine Shopping </div>  :  null}
+         <div className="flex border border-indigo-500 text-indigo-500 dark:text-white hover:text-gray-100 font-semibold px-6 py-2 rounded-full gap-3 hover:bg-indigo-800 transition flex text-center cursor-pointer transition-all duration-500 ease-in-out text-center self-center"  onClick={() => setCartOpen(false)} > <FaCartShopping className="self-center h-5 w-5" /> Countine Shopping </div> 
         <div className="text-[2rem] font-semibold text-gray-900 dark:text-gray-100 flex self-center cursor-pointer " onClick={() => CloseCall()}> <FaWindowClose /> </div>
       </div>
 
