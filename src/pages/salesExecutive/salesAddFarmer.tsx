@@ -63,8 +63,8 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
       setSelectedcropid(data.crops.map((crop: any) => crop._id));
     }
     
-      setSelectedStateOption({label : data?.state?.name, value : data?.state?._id })
-      setSelectedStateid(data?.state?._id)
+      setSelectedStateOption({label : "Gujarat", value : "67fa3afe74c66bf000111796" })
+      setSelectedStateid("67fa3afe74c66bf000111796")
 
       setSelectedDistrictOption({ label : data?.district_name, value :data?.district })
       setSelectedDistrictid(data?.district)
