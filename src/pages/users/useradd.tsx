@@ -244,17 +244,21 @@ const AddUserPage : FC = function () {
             // .matches(/[@$!%*?&]/, "Password must contain at least one special character (@$!%*?&)"),
            
             password: Yup.string()
-                .when([], {
-                    is: () => !id, // If `id` does NOT exist, apply validation
-                    then: (schema) =>
-                        schema.required("Please Enter Password")
-                            .min(5, "Password must be at least 5 characters long")
-                            .max(10, "Password must be at most 10 characters long")
-                            .matches(/[A-Z]/, "Password must contain at least one uppercase letter (A-Z)")
-                            .matches(/\d/, "Password must contain at least one numeric digit (0-9)")
-                            .matches(/[@$!%*?&]/, "Password must contain at least one special character (@$!%*?&)"),
-                    otherwise: (schema) => schema.notRequired(), // If `id` exists, make it optional
-                }),
+  .test(
+    'password-validation',
+    'Password must meet the criteria',
+    function (value) {
+      if (!value) return true; // ✅ allow empty
+      // validate manually
+      if (value.length < 5) return this.createError({ message: 'Password must be at least 5 characters long' });
+      if (value.length > 10) return this.createError({ message: 'Password must be at most 10 characters long' });
+      if (!/[A-Z]/.test(value)) return this.createError({ message: 'Password must contain at least one uppercase letter (A-Z)' });
+      if (!/\d/.test(value)) return this.createError({ message: 'Password must contain at least one numeric digit (0-9)' });
+      if (!/[@$!%*?&]/.test(value)) return this.createError({ message: 'Password must contain at least one special character (@$!%*?&)' });
+      return true; // ✅ all good
+    }
+  ),
+
             mobile_no: Yup.string().required("Please Enter Mobile Number")
             .matches(/^\d{10}$/, "Mobile number must be 10 digits"),
             address: Yup.string().required("Please Enter Address"),
@@ -276,7 +280,7 @@ const AddUserPage : FC = function () {
             const formData = new FormData();
             formData.append("name", values.name);
             formData.append("email", values.email);
-            if(!id) formData.append("password", values.password);
+            if(values?.password) formData.append("password", values.password);
             formData.append("gender", selectedGenderid);
             formData.append("mobile_no", String(values.mobile_no));
             formData.append("date_of_joining", moment(values?.date_of_joining).format("DD-MM-YYYY"));

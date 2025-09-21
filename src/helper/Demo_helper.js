@@ -104,6 +104,7 @@ export const UpdateUserdatalistApi = async (requserdata) => await api.create(url
 export const CheckUserdatalistApi = async (requserdata) => await api.get(url.CHECK_USER_LIST, requserdata);
 export const profileUserdatalistApi = async (requserdata) => await api.get(url.GET_PROFILE_DATA_LIST, requserdata);
 export const updateprofileUserdatalistApi = async (requserdata) => await api.postMultipart(url.UPDATE_PROFILE_DATA_LIST, requserdata);
+export const updatepasswordApi = async (requserdata) => await api.get(url.UPDATE_PASSWORD_DATA_LIST, requserdata);
 
 // Roles Api
 export const RolelistApi = async (requserdata) => await api.get(url.GET_ROLES_LIST, requserdata);

@@ -33,7 +33,11 @@ import {
 
  UPDATE_PROFILE_DATA_LIST,
  UPDATE_PROFILE_DATA_LIST_SUCCESS,
- UPDATE_PROFILE_DATA_LIST_ERROR
+ UPDATE_PROFILE_DATA_LIST_ERROR,
+
+   UPDATE_PASSWORD_DATA_LIST,
+   UPDATE_PASSWORD_DATA_LIST_SUCCESS,
+   UPDATE_PASSWORD_DATA_LIST_ERROR 
 } from "./actionType";
 
 const INIT_STATE = {
@@ -47,6 +51,7 @@ const INIT_STATE = {
   CheckUserList:[],
   Profileuserdata:[],
   UpdateProfileuserdata:[],
+  UpdatePassworddata:[],
   error: {},
 };
 
@@ -171,6 +176,7 @@ const User = (state = INIT_STATE, action) => {
             AddUserlistdata:[],
             UpdateUserList: [],
             UpdateProfileuserdata:[],
+            UpdatePassworddata:[],
             CheckUserList:[],
             error: {},
           };
@@ -236,6 +242,25 @@ const User = (state = INIT_STATE, action) => {
     case UPDATE_PROFILE_DATA_LIST_ERROR:
       switch (action.payload.actionType) {
         case UPDATE_PROFILE_DATA_LIST:
+          return {
+            ...state,
+            error: action.payload,
+          };
+        default:
+          return { ...state };
+      }
+
+          case UPDATE_PASSWORD_DATA_LIST_SUCCESS:
+      switch (action.payload.actionType) {
+        case UPDATE_PASSWORD_DATA_LIST:
+          return {
+            ...state,
+            UpdatePassworddata: action.payload.data,
+          };
+      }
+    case UPDATE_PASSWORD_DATA_LIST_ERROR:
+      switch (action.payload.actionType) {
+        case UPDATE_PASSWORD_DATA_LIST:
           return {
             ...state,
             error: action.payload,
