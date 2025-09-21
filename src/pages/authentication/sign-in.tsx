@@ -84,7 +84,7 @@ const SignInPage: FC = function () {
          navigation("/warehouse");
          location.reload();
       }
-      else{
+      else if(LoginRols == "67b388a7d593423df0e24295"){
         navigation("/dashboard");
         location.reload();
       }
@@ -116,7 +116,7 @@ const SignInPage: FC = function () {
     useEffect(()=>{
       const role = Cookies.get("role");
       const token = Cookies.get("token");
-      if(token  && role  != "67b1195be442284118ab89bf" || token  && role  != "68331b9e271c0b706832de91" ){
+      if(token && role =="67b388a7d593423df0e24295" ){
           navigation("/dashboard");
       }else if(token  && role == "67b1195be442284118ab89bf" || token  && role == "68331b9e271c0b706832de91"){
         navigation("/sales-crm");
