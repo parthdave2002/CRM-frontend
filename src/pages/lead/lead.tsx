@@ -4,7 +4,6 @@ import ExampleBreadcrumb from "../../components/breadcrumb";
 import { Button,   Modal, Table} from "flowbite-react";
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
-import { IoCheckmarkDoneSharp } from "react-icons/io5";
 import { FormFeedback, Input } from "reactstrap";
 import { GiCheckMark } from "react-icons/gi";
 import { getleadlist } from "../../Store/actions";
@@ -12,14 +11,23 @@ import moment from "moment";
 import ExamplePagination from "../../components/pagination";
 const LeadListPage : FC = function () {
   const dispatch = useDispatch();
-    // ----------- next Button  Code Start -------------
-      const [UserDataList, setUserDataList] = useState([]);
-      const [PageNo, setPageNo] = useState(1);
-      const [RoePerPage, setRoePerPage] = useState(5);
-    
-      const RowPerPage = (value: any) => { setRoePerPage(value)};
-      const PageDataList = (data:any) =>{ setPageNo(data)}
-    // ------------- Next button Code End -------------
+
+  const [UserDataList, setUserDataList] = useState([]);
+  
+  // ----------- next Button  Code Start -------------
+    const [TotalListData, setTotalListData] = useState(0);
+    const [CurrentPageNo, setCurrentPageNo] = useState(0);
+    const [PageNo, setPageNo] = useState(1);
+    const [RoePerPage, setRoePerPage] = useState(5);
+
+    const RowPerPage = (event: any) => {
+      const value = Number(event)
+       setRoePerPage(value);
+       setCurrentPageNo(0)
+       setPageNo(1)
+     };
+    const PageDataList = (data:any) =>{ setPageNo(data)}
+  // ------------- Next button Code End -------------
     
     // ---------------- Search User code start ----------------
         const [searchData, setSearchData] = useState(null);
@@ -31,14 +39,11 @@ const LeadListPage : FC = function () {
     // ------------- Get  Data From Reducer Code Start --------------
     const  Leaddatalist= useSelector((state: any) => state.Lead.Leaddatalist)
 
-      const [TotalListData, setTotalListData] = useState(0);
-      const [CurrentUserListSize, setCurrentUserListSize] = useState();
-      const [CurrentPageNo, setCurrentPageNo] = useState(0);
-      
+
       useEffect(() => {
         setUserDataList(Leaddatalist ? Leaddatalist.data  : null);
         setTotalListData(Leaddatalist?.totalData  ? Leaddatalist?.totalData  : 0);
-        setCurrentUserListSize(Leaddatalist?.size ? Leaddatalist.size : 0);
+        // setCurrentUserListSize(Leaddatalist?.size ? Leaddatalist.size : 0);
         setCurrentPageNo(Leaddatalist?.page ? Leaddatalist?.page : 1);
       }, [Leaddatalist]);
     //  ------------- Get  Data From Reducer Code end --------------
@@ -65,7 +70,6 @@ const LeadListPage : FC = function () {
 
 
     let Name = "Lead List";
-    let Searchplaceholder = "Search For Lead";
 
     const [isOpenDelteModel, setisOpenCommentModel] = useState(false);
     const OpenDesModal = () => {
@@ -101,14 +105,20 @@ const LeadListPage : FC = function () {
     if(selectedStatusid) dispatch(getleadlist(requserdata));
   }, [dispatch, PageNo, RoePerPage, searchData, selectedStatusid]);
 
-
-  console.log("UserDataList", UserDataList);
+  // -------- order open modal -------------
+      const [ProductModal, setProductModal] = useState(false);
+      const [ProductItemModal, setProductItemModal] = useState({});
   
+      const OpenOrderModal = (item: any) =>{
+        setProductModal(true)
+        setProductItemModal(item)
+      }
+    // ------------ order open modal ---------------
 
     return (
         <>  
             <NavbarSidebarLayout isFooter={false}  isSidebar={true} isNavbar={true} isRightSidebar={true}>
-                <ExampleBreadcrumb  Name={Name} Searchplaceholder={Searchplaceholder} searchData={searchData} Changename= {Changename} />
+                <ExampleBreadcrumb  Name={Name}  searchData={searchData} Changename= {Changename} />
 
                 <div className="bg-white dark:bg-gray-800 p-4 flex gap-x-4">
                   <Select
@@ -143,7 +153,7 @@ const LeadListPage : FC = function () {
                         {UserDataList && UserDataList.map((item: any, k) => (
                           <Table.Row key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
                     
-                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white">  {item?.name} </Table.Cell>
+                            <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white cursor-pointer" onClick={() => OpenOrderModal(item?.products)}>  {item?.name} </Table.Cell>
                             <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white">  {item?.mobile_number} </Table.Cell>
                             <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white">  {moment(item.added_at).format("DD-MM-YYYY hh:ss:mm")} </Table.Cell>
                             <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white">  {item?.status}  </Table.Cell>
@@ -213,7 +223,7 @@ const LeadListPage : FC = function () {
                   :null}
                 </div>
 
-                <ExamplePagination PageData={PageDataList} RowPerPage={RowPerPage}  PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData}/>
+                <ExamplePagination PageData={PageDataList} RowPerPage={RowPerPage}   RowsPerPageValue={RoePerPage}  PageNo={PageNo} CurrentPageNo={CurrentPageNo} TotalListData={TotalListData}/>
             </NavbarSidebarLayout>
 
 
@@ -243,6 +253,54 @@ const LeadListPage : FC = function () {
             </div>
           </Modal.Body>
         </Modal>
+
+         {ProductModal == true ?
+                       <Modal
+      onClose={() => setProductModal(false)}
+      show={ProductModal}
+      size="2xl"
+      className="font-sans"
+    >
+      {/* Header */}
+      <Modal.Header className="px-6 pt-6 pb-2 border-b border-gray-200 dark:border-gray-700">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+          Product Details
+        </h2>
+      </Modal.Header>
+
+      {/* Body */}
+      <Modal.Body className="px-6 py-4 space-y-4 bg-gray-50 dark:bg-gray-900">
+        {Array.isArray(ProductItemModal) && ProductItemModal.length > 0 ? (
+          <div className="divide-y divide-gray-200 dark:divide-gray-700">
+            {ProductItemModal.map((item, k) => (
+              <div
+                key={k}
+                className="py-3 grid grid-cols-2 md:grid-cols-4 gap-3 items-center"
+              >
+                <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  {item?._id?.name?.englishname || "-"}
+                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  {item?._id?.categories?.name_eng || "-"}
+                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  {item?._id?.packaging || "-"}  {item?._id?.packagingtype?.type_eng || "-"}
+                </p>
+                <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+                  Qty: {item?.quantity || 0}
+                </p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-4">
+            No product details available.
+          </p>
+        )}
+      </Modal.Body>
+
+    </Modal>
+            : null}
         </>
     );
 }

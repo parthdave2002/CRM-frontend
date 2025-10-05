@@ -4,6 +4,8 @@ import { saveAs } from "file-saver";
 import Papa from "papaparse";
 import * as XLSX from "xlsx";
 import moment from "moment";
+import { useDispatch, useSelector } from "react-redux";
+import { getReportDatalist } from "../../Store/actions";
 interface IExportDataModalProps {
   data: any;
   name: string;
@@ -11,11 +13,6 @@ interface IExportDataModalProps {
   status?:string;
   startDate?:string | null;
   endDate?:string | null;
-}
-
-interface Payload {
-  page?: number;
-  limit?: number;
 }
 
 const ExportDataModal: FC<IExportDataModalProps> = ({
@@ -26,11 +23,13 @@ const ExportDataModal: FC<IExportDataModalProps> = ({
   endDate,
   ...rest
 }) => {
+  const dispatch = useDispatch()
   const [download, setDownload] = useState<string>("");
 
-  const exportdata: any = data;
-  console.log("exportdata", exportdata);
+    const  GetReportDatalist  = useSelector((state: any) => state.AdminDashboard.GetReportDatalist,);
+  console.log("GetReportDatalist",GetReportDatalist);
   
+  const exportdata: any = GetReportDatalist?.data;
 
   const formatDataModuleWise=(exportData:any,name:string)=>{
     let arr:any=[];
@@ -140,6 +139,15 @@ const ExportDataModal: FC<IExportDataModalProps> = ({
   }, [exportdata, download]); 
 
   const fetchData = async (method = "") => {
+
+     const reqUserData = {
+          ...(endDate && { endDate: endDate }),
+          ...(startDate && { startDate: startDate }),
+          type: name,
+          export: "true",
+      };
+
+    dispatch(getReportDatalist(reqUserData));
     setDownload(method); // Set the download type
   };
 
