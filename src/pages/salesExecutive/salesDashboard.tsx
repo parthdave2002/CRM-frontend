@@ -290,7 +290,6 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
       setProductModal(true)
       setProductItemModal(item)
     }
-    console.log("ProductItemModal", ProductItemModal);
 
     return (
         <> 
