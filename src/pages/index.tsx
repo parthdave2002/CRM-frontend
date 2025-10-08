@@ -144,21 +144,21 @@ const DashboardPage: FC = function () {
         <div>
           <div className="md:flex flex-wrap gap-3">
             <div className="w-[calc(33%-6px)] md:w-[32%] w-full mt-[1.5rem] md:mt-0">
-              <div className="h-24 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-red-200 dark:bg-gray-800 dark:text-gray-50">
+              <div className="h-24 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-red-500 text-white dark:bg-gray-800 dark:text-gray-50">
                 <div className="flex w-full justify-between items-start">
-                  <div className="p-3 rounded-full bg-purple-500 self-center">
-                    <FaHandHoldingDollar className="text-white w-6 h-6" />
+                  <div className="p-3 rounded-full bg-gray-100 self-center">
+                    <FaHandHoldingDollar className="text-gray-700 w-6 h-6 " />
                   </div>
                   <div className="self-center">
-                    <select className="border border-gray-300 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily" onChange={(e) => OrderDropDownCall(e)}>
+                    <p className="text-[1.3rem] font-bold ">Total Order</p>
+                  </div>
+               
+                  <div className="text-center self-center items-start text-white">
+                    <select className="border border-gray-100 bg-white text-gray-900 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily" onChange={(e) => OrderDropDownCall(e)}>
                       <option value="daily">Daily</option>
                       <option value="weekly">Weekly</option>
                       <option value="monthly">Monthly</option>
                     </select>
-                  </div>
-               
-                  <div className="text-center self-center items-start ">
-                    <p className="text-md font-bold">Total Order</p>
                     <p className="text-lg font-bold text-center mt-2">{ selectedOrderframe == "weekly" ? total_orderData?.weekly   : selectedOrderframe == "monthly" ?  total_orderData?.monthly :    total_orderData?.daily}</p>
                   </div>
                 </div>
@@ -166,20 +166,20 @@ const DashboardPage: FC = function () {
             </div>
 
             <div className="w-[calc(33%-6px)] md:w-[32%] w-full mt-[1.5rem] md:mt-0">
-              <div className="h-24 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-red-200 dark:bg-gray-800 dark:text-gray-50">
+              <div className="h-24 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-green-500 text-gray-50 dark:bg-gray-800 dark:text-gray-50">
                 <div className="flex w-full justify-between items-start">
-                  <div className="p-3 rounded-full bg-purple-500 self-center">
-                    <FaRupeeSign className="text-white w-6 h-6" />
+                  <div className="p-3 rounded-full bg-gray-100 self-center">
+                    <FaRupeeSign className="text-gray-700 w-6 h-6" />
                   </div>
                   <div className="self-center">
-                    <select className="border border-gray-300 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily"  onChange={(e) => revenueDropDownCall(e)}>
+                    <p className="text-[1.3rem] font-bold">Total Revenue</p>
+                  </div>
+                  <div className="text-center self-center items-start">
+                     <select className="border border-gray-300 bg-white text-gray-900 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily"  onChange={(e) => revenueDropDownCall(e)}>
                       <option value="daily">Daily</option>
                       <option value="weekly">Weekly</option>
                       <option value="monthly">Monthly</option>
                     </select>
-                  </div>
-                  <div className="text-center self-center items-start">
-                    <p className="text-md font-bold">Total Revenue</p>
                     {/* <p className="text-lg font-bold text-center mt-2">{ selectedrevenueframe == "weekly" ? total_revenueData?.weekly   : selectedrevenueframe == "monthly" ?  total_revenueData?.monthly :    total_revenueData?.daily}</p> */}
 
                     <p className="text-lg font-bold text-center mt-2">
@@ -206,20 +206,21 @@ const DashboardPage: FC = function () {
             </div>
 
             <div className="w-[calc(33%-6px)] md:w-[32%] w-full mt-[1.5rem] md:mt-0">
-              <div className="h-24 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-red-200 dark:bg-gray-800 dark:text-gray-50">
+              <div className="h-24 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-blue-500 text-white dark:bg-gray-800 dark:text-gray-50">
                 <div className="flex w-full justify-between items-start">
-                  <div className="p-3 rounded-full bg-purple-500 self-center">
-                    <FaUser className="text-white w-6 h-6" />
+                  <div className="p-3 rounded-full bg-gray-100 self-center">
+                    <FaUser className="text-gray-800 w-6 h-6" />
                   </div>
                   <div className="self-center">
-                    <select className="border border-gray-300 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily"    onChange={(e) => UserDropDownCall(e)}>
+                      <p className="text-[1.3rem] font-bold">Total Farmer</p>
+                  </div>
+                  <div className="text-center self-center items-start">
+                   
+                      <select className="border border-gray-300 bg-white text-gray-900 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily"    onChange={(e) => UserDropDownCall(e)}>
                       <option value="daily">Daily</option>
                       <option value="weekly">Weekly</option>
                       <option value="monthly">Monthly</option>
                     </select>
-                  </div>
-                  <div className="text-center self-center items-start">
-                    <p className="text-md font-bold">Total Farmer</p>
                     <p className="text-lg font-bold text-center mt-2">{ selectedUserframe == "weekly" ? total_userData?.weekly   : selectedUserframe == "monthly" ?  total_userData?.monthly :    total_userData?.daily}</p>
                   </div>
                 </div>
@@ -231,21 +232,21 @@ const DashboardPage: FC = function () {
         <div className="my-3">
           <div className="md:flex flex-wrap gap-3">
             <div className="w-[calc(33%-6px)] md:w-[32%] w-full mt-[1.5rem] md:mt-0">
-              <div className="h-24 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-red-200 dark:bg-gray-800 dark:text-gray-50">
+              <div className="h-24 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-purple-500 text-white dark:bg-gray-800 dark:text-gray-50">
                 <div className="flex w-full justify-between items-start">
-                  <div className="p-3 rounded-full bg-purple-500 self-center">
-                    <FaAsterisk  className="text-white w-6 h-6" />
+                  <div className="p-3 rounded-full bg-gray-100 self-center">
+                    <FaAsterisk  className="text-gray-800 w-6 h-6" />
                   </div>
                   <div className="self-center">
-                    <select className="border border-gray-300 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily" onChange={(e) => returncountDropDownCall(e)}>
+                    <p className="text-[1.3rem] font-bold"> Return Order</p>
+                  </div>
+               
+                  <div className="text-center self-center items-start ">
+                    <select className="border border-gray-300 text-gray-800 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily" onChange={(e) => returncountDropDownCall(e)}>
                       <option value="daily">Daily</option>
                       <option value="weekly">Weekly</option>
                       <option value="monthly">Monthly</option>
                     </select>
-                  </div>
-               
-                  <div className="text-center self-center items-start ">
-                    <p className="text-md font-bold"> Return Order</p>
                     <p className="text-lg font-bold text-center mt-2">{ selectedReturnOrder == "weekly" ? total_return_order_Data?.weekly   : selectedReturnOrder == "monthly" ?  total_return_order_Data?.monthly :    total_return_order_Data?.daily}</p>
                   </div>
                 </div>
@@ -253,20 +254,20 @@ const DashboardPage: FC = function () {
             </div>
 
             <div className="w-[calc(33%-6px)] md:w-[32%] w-full mt-[1.5rem] md:mt-0">
-              <div className="h-24 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-red-200 dark:bg-gray-800 dark:text-gray-50">
+              <div className="h-24 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-teal-500 text-white dark:bg-gray-800 dark:text-gray-50">
                 <div className="flex w-full justify-between items-start">
-                  <div className="p-3 rounded-full bg-purple-500 self-center">
-                    <FaCloud  className="text-white w-6 h-6" />
+                  <div className="p-3 rounded-full bg-gray-100 self-center">
+                    <FaCloud  className="text-gray-800 w-6 h-6" />
                   </div>
                   <div className="self-center">
-                    <select className="border border-gray-300 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily"  onChange={(e) => returnrevenueDropDownCall(e)}>
+                    <p className="text-[1.3rem] font-bold"> Return Revenue</p>
+                  </div>
+                  <div className="text-center self-center items-start">
+                     <select className="border border-gray-300 text-gray-800 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily"  onChange={(e) => returnrevenueDropDownCall(e)}>
                       <option value="daily">Daily</option>
                       <option value="weekly">Weekly</option>
                       <option value="monthly">Monthly</option>
                     </select>
-                  </div>
-                  <div className="text-center self-center items-start">
-                    <p className="text-md font-bold"> Return Revenue</p>
                     <p className="text-lg font-bold text-center mt-2">{ selectedReturnamt == "weekly" ? total_return_Amt_Data?.weekly   : selectedReturnamt == "monthly" ?  total_return_Amt_Data?.monthly :    total_return_Amt_Data?.daily}</p>
                   </div>
                 </div>
@@ -274,20 +275,20 @@ const DashboardPage: FC = function () {
             </div>
 
             <div className="w-[calc(33%-6px)] md:w-[32%] w-full mt-[1.5rem] md:mt-0">
-              <div className="h-24 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-red-200 dark:bg-gray-800 dark:text-gray-50">
+              <div className="h-24 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-orange-500 text-white dark:bg-gray-800 dark:text-gray-50">
                 <div className="flex w-full justify-between items-start">
-                  <div className="p-3 rounded-full bg-purple-500 self-center">
-                    <FaNoteSticky  className="text-white w-6 h-6" />
+                  <div className="p-3 rounded-full bg-gray-100 self-center">
+                    <FaNoteSticky  className="text-gray-800 w-6 h-6" />
                   </div>
                   <div className="self-center">
-                    <select className="border border-gray-300 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily"    onChange={(e) => complainDropDownCall(e)}>
+                    <p className="text-[1.3rem] font-bold">Total Complain</p>
+                  </div>
+                  <div className="text-center self-center items-start">
+                    <select className="border border-gray-300 text-gray-800 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily"    onChange={(e) => complainDropDownCall(e)}>
                       <option value="daily">Daily</option>
                       <option value="weekly">Weekly</option>
                       <option value="monthly">Monthly</option>
                     </select>
-                  </div>
-                  <div className="text-center self-center items-start">
-                    <p className="text-md font-bold">Total Complain</p>
                     <p className="text-lg font-bold text-center mt-2">{ selectedTotalComplain == "weekly" ? total_complainData?.weekly   : selectedTotalComplain == "monthly" ?  total_complainData?.monthly :    total_complainData?.daily}</p>
                   </div>
                 </div>

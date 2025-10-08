@@ -5,7 +5,7 @@ import Papa from "papaparse";
 import * as XLSX from "xlsx";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import { getReportDatalist } from "../../Store/actions";
+import { getExportDatalist,ResetExportDatalist } from "../../Store/actions";
 interface IExportDataModalProps {
   data: any;
   name: string;
@@ -26,10 +26,7 @@ const ExportDataModal: FC<IExportDataModalProps> = ({
   const dispatch = useDispatch()
   const [download, setDownload] = useState<string>("");
 
-    const  GetReportDatalist  = useSelector((state: any) => state.AdminDashboard.GetReportDatalist,);
-  console.log("GetReportDatalist",GetReportDatalist);
-  
-  const exportdata: any = GetReportDatalist?.data;
+    const  exportdata  = useSelector((state: any) => state.ExportData.ExportDatalist);
 
   const formatDataModuleWise=(exportData:any,name:string)=>{
     let arr:any=[];
@@ -61,9 +58,9 @@ const ExportDataModal: FC<IExportDataModalProps> = ({
             "Alternate mobile":(data && data?.alternate_number) ? data?.alternate_number : 'N/A',
             "Crop":(data && data?.crops) ? data.crops.map((crop:any) => crop.name_eng).join(', ') : 'N/A',
             "Address":(data && data?.address) ? data?.address : 'N/A',
-            "District":(data && data?.district_name) ? data?.district_name : 'N/A',
-            "Taluka":(data && data?.taluka_name) ? data?.taluka_name : 'N/A',
-            "Village":(data && data?.village_name) ? data?.village_name : 'N/A',
+            "District":(data && data?.district?.name) ? data?.district?.name : 'N/A',
+            "Taluka":(data && data?.taluka?.name) ? data?.taluka?.name : 'N/A',
+            "Village":(data && data?.village?.name) ? data?.village?.name : 'N/A',
             "Pincode":(data && data?.pincode) ? data?.pincode : 'N/A',
             "Postoffice":(data && data?.post_office) ? data?.post_office : 'N/A',
             "Land area":(data && data?.land_area)?data?.land_area : 'N/A',
@@ -87,16 +84,16 @@ const ExportDataModal: FC<IExportDataModalProps> = ({
     } else if(name=="order"){
         exportData.map((data:any)=>{
           arr.push({
-            "Order id":(data && data?.order_id)? data?.order_id : 'N/A',
-            "Farmer name":(data && data?.customer?.customer_name) ? data?.customer?.customer_name : 'N/A',
-            "Address":(data && data?.customer?.address) ? data?.customer?.address : 'N/A',
-            "District":(data && data?.customer?.district_name) ? data?.customer?.district_name : 'N/A',
-            "Taluka":(data && data?.customer?.taluka_name) ? data?.customer?.taluka_name : 'N/A',
-            "Village":(data && data?.customer?.village_name) ? data?.customer?.village_name : 'N/A',
-            "Pincode":(data && data?.customer?.pincode) ? data?.customer?.pincode : 'N/A',
-            "Post office":(data && data?.customer?.post_office) ? data?.customer?.post_office : 'N/A',
-            "Mobile":(data && data?.customer?.mobile_number) ? data?.customer?.mobile_number : 'N/A',
-            "Alternate Mobile":(data && data?.customer?.alternate_number) ? data?.customer?.alternate_number : 'N/A',
+            "Order id":(data && data?.order_id)? data?.order_id : '-',
+            "Farmer name": data && data.customer ? [  data.customer.firstname,  data.customer.middlename,  data.customer.lastname ].filter(Boolean).join(" ")  : '-',
+            "Address":(data && data?.customer?.address) ? data?.customer?.address : '-',
+            "District":(data && data?.customer?.district?.name) ? data?.customer?.district?.name : '-',
+            "Taluka":(data && data?.customer?.taluka?.name) ? data?.customer?.taluka?.name : '-',
+            "Village":(data && data?.customer?.village?.name) ? data?.customer?.village?.name : '-',
+            "Pincode":(data && data?.customer?.pincode) ? data?.customer?.pincode : '-',
+            "Post office":(data && data?.customer?.post_office) ? data?.customer?.post_office : '-',
+            "Mobile":(data && data?.customer?.mobile_number) ? data?.customer?.mobile_number : '-',
+            "Alternate Mobile":(data && data?.customer?.alternate_number) ? data?.customer?.alternate_number : '-',
             "Products / Packing / Quantity":(data &&  data?.products?.length) ?  
             data.products
                 .map((p:any) => {
@@ -106,14 +103,13 @@ const ExportDataModal: FC<IExportDataModalProps> = ({
                   return `${name} (${pack} ${packType})`;
                 })
                 .join(', ') 
-            : 'N/A',
-            "Coupon code":(data && data?.coupon?.name) ? data?.coupon?.name : 'N/A',
-            "Discount amount":(data && data?.coupon?.amount) ? data?.coupon?.amount : 'N/A',
-            "Final  amount ":(data && data?.total_amount) ? data?.total_amount : 'N/A',
-            "Advisor Name":(data && data?.advisor_name?.name) ? data?.advisor_name?.name : 'N/A',
-            "Status":(data && data?.status) ? data?.status : 'N/A',
+            : '-',
+            "Coupon code":(data && data?.coupon?.name) ? data?.coupon?.name : '-',
+            "Discount amount":(data && data?.coupon?.amount) ? data?.coupon?.amount : '-',
+            "Final  amount ":(data && data?.total_amount) ? data?.total_amount : '-',
+            "Advisor Name":(data && data?.advisor_name?.name) ? data?.advisor_name?.name : '-',
+            "Status":(data && data?.status) ? data?.status : '-',
             "Order date":(data && data?.added_at) ?  moment(data?.added_at).format("DD-MM-YYYY") : 'N/A',
-
           })
         })
     } 
@@ -135,6 +131,7 @@ const ExportDataModal: FC<IExportDataModalProps> = ({
         XLSX.writeFile(workbook, `${name}.xlsx`);
       }
       setDownload(""); 
+      dispatch(ResetExportDatalist());
     }
   }, [exportdata, download]); 
 
@@ -144,10 +141,9 @@ const ExportDataModal: FC<IExportDataModalProps> = ({
           ...(endDate && { endDate: endDate }),
           ...(startDate && { startDate: startDate }),
           type: name,
-          export: "true",
       };
 
-    dispatch(getReportDatalist(reqUserData));
+    dispatch(getExportDatalist(reqUserData));
     setDownload(method); // Set the download type
   };
 
