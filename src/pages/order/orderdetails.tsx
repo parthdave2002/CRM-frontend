@@ -80,66 +80,75 @@ const OrdererDetailsPage: FC = function () {
   let ParentName = "Order List";
   let ParentLink = "/order/list";
 
-  // ---------- Invioce Pagination start ------------
-  const A4_HEIGHT_PX = 1123;
-  const STATIC_HEIGHT_PX = 400; // estimated
-  const ROW_HEIGHT_PX = 40;
+  // ---------- Invoice Pagination start ------------
+  // Show exactly 6 products per page and generate new pages with the same layout
+  const ITEMS_PER_PAGE = 6;
 
-  const chunkProducts = (products: any[], maxRows: number) => {
-    const chunks = [];
-    for (let i = 0; i < products.length; i += maxRows) {
-      chunks.push(products.slice(i, i + maxRows));
+  const chunkProducts = (products: any[], pageSize: number) => {
+    const chunks: any[] = [];
+    for (let i = 0; i < products.length; i += pageSize) {
+      chunks.push(products.slice(i, i + pageSize));
     }
     return chunks;
   };
 
   const products = UserDataList?.products || [];
-  const maxRowsPerPage = Math.floor((A4_HEIGHT_PX - STATIC_HEIGHT_PX) / ROW_HEIGHT_PX);
-  const productChunks = chunkProducts(products, maxRowsPerPage);
+  const productChunks = chunkProducts(products, ITEMS_PER_PAGE);
 
-  // ---------- Invioce Pagination end ------------
+  // ---------- Invoice Pagination end ------------
 
   const downloadPDF = async () => {
     const input = invoiceRef.current;
     if (!input) return;
+    // Capture each page element separately to avoid slicing/clipping issues
+    const pages = Array.from(input.children) as HTMLElement[];
+    if (pages.length === 0) return;
 
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pageWidthMM = pdf.internal.pageSize.getWidth();
 
-  const canvas = await html2canvas(input, {
-    scale: 3,            // Reduce resolution
-    useCORS: true,       // Enables logo/image loading from external URLs
-    allowTaint: false,
-    logging: false
-  });
-  const imgData = canvas.toDataURL("image/jpeg", 0.7);
+    for (let i = 0; i < pages.length; i++) {
+      const pageEl = pages[i];
+      // use a slightly higher scale for better quality, but keep size reasonable
+      const pageCanvas = await html2canvas(pageEl, { scale: 2, useCORS: true, allowTaint: false });
+      const imgData = pageCanvas.toDataURL('image/jpeg', 0.95);
 
-    const pdf = new jsPDF("p", "mm", "a4");
-    const imgWidth = 210; // A4 width in mm
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      const pxPerMM = pageCanvas.width / pageWidthMM;
+      const imgHeightMM = pageCanvas.height / pxPerMM;
 
-    pdf.addImage(imgData, "JPEG", 0, 0, imgWidth, imgHeight);
+      if (i > 0) pdf.addPage();
+      pdf.addImage(imgData, 'JPEG', 0, 0, pageWidthMM, imgHeightMM);
+    }
+
     pdf.save(`Invoice_${UserDataList?.order_id}.pdf`);
-  };
+};
 
   const printPDF = async () => {
     if (!invoiceRef.current) return;
 
     const input = invoiceRef.current;
+    // Capture each page element separately and build a PDF
+    const pages = Array.from(input.children) as HTMLElement[];
+    if (pages.length === 0) return;
 
-    // Capture the div as image
-    const canvas = await html2canvas(input, {
-      scale: 2, // improves quality
-      useCORS: true,
-    });
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pageWidthMM = pdf.internal.pageSize.getWidth();
 
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF("p", "px", "a4"); // px is better for html2canvas
+    for (let i = 0; i < pages.length; i++) {
+      const pageEl = pages[i];
+      const pageCanvas = await html2canvas(pageEl, { scale: 2, useCORS: true, allowTaint: false });
+      const imgData = pageCanvas.toDataURL('image/png', 0.95);
 
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-    const blob = pdf.output("blob");
+      const pxPerMM = pageCanvas.width / pageWidthMM;
+      const imgHeightMM = pageCanvas.height / pxPerMM;
+
+      if (i > 0) pdf.addPage();
+      pdf.addImage(imgData, 'PNG', 0, 0, pageWidthMM, imgHeightMM);
+    }
+
+    const blob = pdf.output('blob');
     const blobUrl = URL.createObjectURL(blob);
-    window.open(blobUrl, "_blank");
+    window.open(blobUrl, '_blank');
   }
 
   return (
@@ -152,14 +161,13 @@ const OrdererDetailsPage: FC = function () {
             <Button color="primary" onClick={downloadPDF} >  <MdFileDownload className="w-6 h-6" /> <div className="text-[1rem]"> Download PDF </div>   </Button>
           </div>
          
-           <div >
-              {productChunks.map((productChunk, pageIndex) => {
-                return(
-                <div key={pageIndex}
-                  style={{ width: "794px", height: "1123px" }}
-                  className="mx-auto bg-white shadow-lg p-6 rounded-lg flex flex-col justify-between font-sans page-break "
-                  ref={invoiceRef}
-                >
+          <div ref={invoiceRef}>
+             {productChunks.map((productChunk, pageIndex) => {
+               return(
+              <div key={pageIndex}
+                style={{ width: "794px", height: "1123px", pageBreakAfter: pageIndex === productChunks.length - 1 ? 'auto' : 'always' }}
+                className="mx-auto bg-white shadow-lg p-6 rounded-lg flex flex-col justify-between font-sans page-break mt-3"
+              >
                   {/* --- Static Top Content --- */}
                   <div className="flex flex-col">
                     <div className="text-center mb-2">
@@ -214,7 +222,7 @@ const OrdererDetailsPage: FC = function () {
                         </tr>
                       </thead>
                       <tbody>
-                        {productChunk.map((item, k) => {
+                        {productChunk.map((item:any, k:any) => {
                           const amount = item?.quantity * (item?.price -  item?.discount) ;
                           const gst = ((amount) * (item?.c_gst * 2 / 100));
                           const total = amount + gst;
@@ -236,7 +244,38 @@ const OrdererDetailsPage: FC = function () {
                     </table>
                   </div>
 
-                  {/* --- Footer (only on last page) --- */}
+                  {/* Terms & Conditions + signature/social block for non-last pages (footer). On last page it will render after totals. */}
+                  {pageIndex !== productChunks.length - 1 && (
+                    <>
+                      <div className="mt-4 text-[0.8rem] text-gray-700">
+                        <div className="flex justify-between"> 
+                          <div className="text-[1.2rem]" ><strong>Terms & Conditions:</strong>  </div>
+                          <img src="/images/authentication/signature.webp" className="mb-3 border-b border-dashed border-gray-400 pb-1 w-[8rem] h-[3rem]" /> 
+                        </div>
+                        <p className="text-[0.8rem]">  (1) All products are intended for lawful agricultural use only. </p>
+                        <p className="text-[0.8rem]">  (2) Product performance depends on various external factors such as weather, soil conditions, and application methods. The company will not be responsible for crop failure, yield reduction, or quality issues and the company will not compensate for any losses. </p>
+                        <p className="text-[0.8rem]">  (3) The battery Pump and Torch have a limited warranty of 6 months for only battery. Do not use electric items while in charging, use only the original adaptor, don't overcharge and avoid charging in low voltage as it may damage battery.  </p>
+                        <p className="text-[0.8rem]">  (4) All disputes are subject to the jurisdiction of Una or Kapadvanj. E & O.E  </p>
+                      </div>
+
+                      <div className="mt-4 text-center text-gray-600">
+                        <h6 className="text-[1rem] leading-none">
+                            <span role="img" aria-label="pray" className="mr-1">🙏</span>
+                            એગ્રી ભારતમાંથી ખરીદી કરવા બદલ આભાર !
+                            <span role="img" aria-label="pray" className="ml-1">🙏</span>
+                          </h6>
+                        <div className="flex justify-center items-center gap-x-3 mt-3 text-[0.9rem]"> 
+                          <img src="/images/products/facebook.png" className="w-5 h-5  align-middle" alt="Facebook" /> 
+                          <img src="/images/products/instagram.png"  className="w-6 h-6  align-middle" alt="Insta" /> 
+                          <img src="/images/products/whatsapp.png"  className="w-6 h-6  align-middle" alt="WhatsApp" /> 
+                          <img src="/images/products/youtube.png"  className="w-6 h-6  align-middle" alt="Youtube" /> 
+                          <img src="/images/products/website.png"   className="w-5 h-5  align-middle" alt="Website" />  
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                  {/* Footer (only on last page) with account & totals */}
                   {pageIndex === productChunks.length - 1 && (
                     <>
                       <div className="mt-4 flex">
@@ -303,14 +342,15 @@ const OrdererDetailsPage: FC = function () {
 
                       <div className="text-2xl font-bold bg-gray-700 text-white px-3 py-2  text-right  leading-tight antialiased">Total : ₹{total ? Math.round(total) : 0}</div>
 
+                      {/* Terms & Conditions + signature/social block AFTER totals on last page */}
                       <div className="mt-4 text-[0.8rem] text-gray-700">
-                          <div className="flex justify-between"> 
-                              <div className="text-[1.2rem]" ><strong>Terms & Conditions:</strong>  </div>
-                              <img src="/images/authentication/signature.webp" className="mb-3 border-b border-dashed border-gray-400 pb-1 w-[8rem] h-[3rem]" /> 
-                          </div>
+                        <div className="flex justify-between"> 
+                          <div className="text-[1.2rem]" ><strong>Terms & Conditions:</strong>  </div>
+                          <img src="/images/authentication/signature.webp" className="mb-3 border-b border-dashed border-gray-400 pb-1 w-[8rem] h-[3rem]" /> 
+                        </div>
                         <p className="text-[0.8rem]">  (1) All products are intended for lawful agricultural use only. </p>
                         <p className="text-[0.8rem]">  (2) Product performance depends on various external factors such as weather, soil conditions, and application methods. The company will not be responsible for crop failure, yield reduction, or quality issues and the company will not compensate for any losses. </p>
-                        <p className="text-[0.8rem]">  (3) The battery Pump and Torch have a limited warranty of 6 months for only battery. Do not use electric items while in charging, use only the original adaptor, don't overcharge and avoid charging in low voltage as it may damage battery.  </p>
+                        <p className="text-[0.8rem]">  (3) The battery Pump and Torch have a limited warranty of 6 months for only battery. Do not use electric items while in charging, use only the original adaptor, don't overcharge and avoid charging in low voltage as it may damage battery.  </p>
                         <p className="text-[0.8rem]">  (4) All disputes are subject to the jurisdiction of Una or Kapadvanj. E & O.E  </p>
                       </div>
 
@@ -326,7 +366,7 @@ const OrdererDetailsPage: FC = function () {
                           <img src="/images/products/whatsapp.png"  className="w-6 h-6  align-middle" alt="WhatsApp" /> 
                           <img src="/images/products/youtube.png"  className="w-6 h-6  align-middle" alt="Youtube" /> 
                           <img src="/images/products/website.png"   className="w-5 h-5  align-middle" alt="Website" />  
-                          </div>
+                        </div>
                       </div>
                     </>
                   )}
