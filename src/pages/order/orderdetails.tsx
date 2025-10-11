@@ -24,18 +24,22 @@ const OrdererDetailsPage: FC = function () {
     }
   },[id])
 
+  interface Location {
+  name: string;
+}
+
   interface CustomerData {
     address: string;
     firstname: string;
     middlename: string;
     lastname: string;
     customer_name : string;
-    district_name: string;
+    district: Location;
     mobile_number : number;
     alternate_number : number;
     pincode : string;
-    taluka_name:string;
-    village_name : string;
+    taluka: Location;
+    village : Location;
     state :any;
   }
 
@@ -201,7 +205,7 @@ const OrdererDetailsPage: FC = function () {
                         <p className="font-semibold">Bill To:</p>
                         <p>{UserDataList?.customer?.firstname} {UserDataList?.customer?.middlename} {UserDataList?.customer?.lastname}</p>
                         <p className="text-gray-600 text-[0.9rem]">  {UserDataList?.customer?.address}   </p>
-                        <p className="text-gray-600 text-[0.9rem]">  {UserDataList?.customer?.village_name}, {UserDataList?.customer?.taluka_name},  {UserDataList?.customer?.district_name},  </p>
+                        <p className="text-gray-600 text-[0.9rem]">  {UserDataList?.customer?.village?.name}, {UserDataList?.customer?.taluka?.name},  {UserDataList?.customer?.district?.name},  </p>
                         <p className="text-gray-600 text-[0.9rem]">  {UserDataList?.customer?.state?.name} -  {UserDataList?.customer?.pincode}  </p>
                         <p className="text-gray-600 text-[0.9rem]">  Contact : {UserDataList?.customer?.mobile_number}, {UserDataList?.customer?.alternate_number} </p>
                       </div>

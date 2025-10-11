@@ -11,6 +11,7 @@ import Cookies from 'js-cookie';
 import SuccessErrorModalPage from '../../components/modal/successErrorModal';
 import moment from 'moment';
 import { BsCartXFill } from 'react-icons/bs';
+import { Location } from 'types/types';
 const IMG_URL = import.meta.env["VITE_API_URL"];
 
 interface OrderDetailsProps{
@@ -26,12 +27,12 @@ interface OrderDetailsProps{
     firstname: string;
     middlename: string;
     lastname: string;
-    district_name: string;
+    district: Location;
     mobile_number : number;
     alternate_number : number;
     pincode : string;
-    taluka_name:string;
-    village_name : string;
+    taluka:Location;
+    village : Location;
     state :any;
   }
 
@@ -319,9 +320,9 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
           <div className="border dark:border-gray-600 dark:bg-gray-800 p-3 rounded-xl w-full flex flex-col gap-y-3">
             <div className='dark:text-gray-300 text-[1.2rem] font-semibold'>Shipping Address</div>
             <div className='dark:text-gray-300 '>  {data?.customerAddress } </div>
-            <div className='dark:text-gray-300'> District :   {data?.district_name } </div>
-            <div className='dark:text-gray-300'> Taluka :  {data?.taluka_name } </div>
-            <div className='dark:text-gray-300'> Village :  {data?.village_name } </div>
+            <div className='dark:text-gray-300'> District :   {data?.district?.name } </div>
+            <div className='dark:text-gray-300'> Taluka :  {data?.taluka?.name } </div>
+            <div className='dark:text-gray-300'> Village :  {data?.village?.name } </div>
             <div className='dark:text-gray-300'> Pincode : {data?.pincode } </div>
           </div>
         </div>
@@ -383,7 +384,7 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
                                     <p className="font-semibold">Bill To:</p>
                                     <p>{UserDataList?.customer?.firstname} {UserDataList?.customer?.middlename} {UserDataList?.customer?.lastname}</p>
                                     <p className="text-gray-600 text-[0.9rem]">  {UserDataList?.customer?.address}   </p>
-                                    <p className="text-gray-600 text-[0.9rem]">  {UserDataList?.customer?.village_name}, {UserDataList?.customer?.taluka_name},  {UserDataList?.customer?.district_name},  </p>
+                                    <p className="text-gray-600 text-[0.9rem]">  {UserDataList?.customer?.village?.name}, {UserDataList?.customer?.taluka?.name},  {UserDataList?.customer?.district?.name},  </p>
                                     <p className="text-gray-600 text-[0.9rem]">  {UserDataList?.customer?.state?.name} -  {UserDataList?.customer?.pincode}  </p>
                                     <p className="text-gray-600 text-[0.9rem]">  Contact : {UserDataList?.customer?.mobile_number}, {UserDataList?.customer?.alternate_number} </p>
                                   </div>

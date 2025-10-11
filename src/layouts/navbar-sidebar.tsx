@@ -28,7 +28,7 @@ const NavbarSidebarLayout: FC<PropsWithChildren<NavbarSidebarLayoutProps>> =
       <>
           {isNavbar == true ? <Navbar isNavbar={isNavbar} isAppbar={isAppbar} /> :  null}
           <div className="flex">
-              {isSidebar == true ?  <Sidebar  /> : null}
+              {isSidebar == true ?   <Sidebar    /> : null}
               <MainContent isFooter={isFooter}  >  {children} </MainContent>
               {isRightSidebar && <RightSidebar isRightSidebar={isRightSidebar} />}
           </div>
@@ -38,7 +38,7 @@ const NavbarSidebarLayout: FC<PropsWithChildren<NavbarSidebarLayoutProps>> =
 
 const MainContent: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = function ({children, isFooter,}) {
   return (
-        <main  className="relative h-full w-full overflow-y-auto lg:ml-64 bg-Cultured dark:bg-gray-900 px-4 pt-6 "  >
+        <main  className="relative h-full w-full overflow-y-auto bg-Cultured dark:bg-gray-900 px-4 pt-6 "  >
           {children}
         </main>
   );

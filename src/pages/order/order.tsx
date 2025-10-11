@@ -209,9 +209,9 @@ const OrderListPage : FC = function () {
                     <p><span className="font-semibold">To:</span> {parcelModalData?.customer?.firstname} {parcelModalData?.customer?.middlename}  {parcelModalData?.customer?.lastname} </p>
                     <p><span className="font-semibold">Mo.:</span> {parcelModalData?.customer?.mobile_number} / {parcelModalData?.customer?.alternate_number}</p>
                     <p><span className="font-semibold">Address:</span> {parcelModalData?.customer?.address}</p>
-                    <p><span className="font-semibold">AT:</span> {parcelModalData?.customer?.village_name}</p>
-                    <p><span className="font-semibold">TA:</span> {parcelModalData?.customer?.taluka_name}</p>
-                    <p><span className="font-semibold">Dist:</span> {parcelModalData?.customer?.district_name} - {parcelModalData?.customer?.pincode}</p>
+                    <p><span className="font-semibold">AT:</span> {parcelModalData?.customer?.village?.name}</p>
+                    <p><span className="font-semibold">TA:</span> {parcelModalData?.customer?.taluka?.name}</p>
+                    <p><span className="font-semibold">Dist:</span> {parcelModalData?.customer?.district?.name} - {parcelModalData?.customer?.pincode}</p>
                     <p><span className="font-semibold">Post:</span> {parcelModalData?.customer?.post_office}</p>
                   </div>
 

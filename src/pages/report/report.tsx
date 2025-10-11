@@ -233,9 +233,9 @@ const ReportPage: FC = () => {
                   <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.irrigation_type}</Table.Cell>
                   <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.heard_about_agribharat}</Table.Cell>
                   <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.address}</Table.Cell>
-                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.district_name}</Table.Cell>
-                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.taluka_name}</Table.Cell>
-                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.village_name}</Table.Cell>
+                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.district?.name}</Table.Cell>
+                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.taluka?.name}</Table.Cell>
+                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.village?.name}</Table.Cell>
                   <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.pincode}</Table.Cell>
                   <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.post_office}</Table.Cell>
                   <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.ref_name || "-"}</Table.Cell>
@@ -307,9 +307,9 @@ const ReportPage: FC = () => {
                   <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.order_id}</Table.Cell>
                   <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.customer?.firstname} {item?.customer?.middlename} {item?.customer?.lastname}</Table.Cell>
                   <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.customer?.address}</Table.Cell>
-                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.customer?.district_name}</Table.Cell>
-                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.customer?.taluka_name}</Table.Cell>
-                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.customer?.village_name}</Table.Cell>
+                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.customer?.district?.name}</Table.Cell>
+                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.customer?.taluka?.name}</Table.Cell>
+                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.customer?.village?.name}</Table.Cell>
                   <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.customer?.post_office}</Table.Cell>
                   <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.customer?.pincode}</Table.Cell>
                   <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.customer?.mobile_number}</Table.Cell>

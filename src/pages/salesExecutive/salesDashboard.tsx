@@ -330,10 +330,10 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
 
             <div className="md:flex  flex-wrap gap-3 my-[2rem]">
               <div className="flex-1  mt-[1.5rem] md:mt-0">
-                <div className="h-24 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-red-200 dark:bg-gray-700 dark:text-gray-50">
+                <div className="h-24 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-red-600 dark:bg-gray-700 dark:text-gray-50">
                   <div className="flex w-full justify-between items-start">
-                    <div className="p-3 rounded-full bg-purple-500 self-center">
-                      <FaRupeeSign className="text-white w-6 h-6" />
+                    <div className="p-3 rounded-full bg-gray-50 self-center">
+                      <FaRupeeSign className="text-gray-800 w-6 h-6" />
                     </div>
                     <div className="self-center">
                       <select className="border border-gray-300 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily" onChange={(e) => RevenueDropDownCall(e)}>
@@ -342,7 +342,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
                         <option value="monthly">Monthly</option>
                       </select>
                     </div>
-                    <div className="text-center self-center items-start">
+                    <div className="text-center self-center items-start text-white">
                       <p className="text-md font-bold"> Revenue</p>
                       <p className="text-lg font-bold text-center mt-2"> { Math.round(
                           selectedRevenueframe === "weekly"
@@ -358,10 +358,10 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
               </div>
 
               <div className="flex-1  mt-[1.5rem] md:mt-0">
-                <div className="h-24 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-red-200 dark:bg-gray-700 dark:text-gray-50">
+                <div className="h-24 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-purple-600 dark:bg-gray-700 dark:text-gray-50">
                   <div className="flex w-full justify-around items-start">
-                    <div className="p-3 rounded-full bg-purple-500 self-center">
-                      <FaHandHoldingDollar className="text-white w-6 h-6" />
+                    <div className="p-3 rounded-full bg-gray-50 self-center">
+                      <FaHandHoldingDollar className="text-gray-800 w-6 h-6" />
                     </div>
                     <div className="self-center">
                       <select className="border border-gray-300 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily" onChange={(e) => OrderDropDownCall(e)}>
@@ -371,7 +371,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
                       </select>
                     </div>
 
-                    <div className="text-center self-center items-start ">
+                    <div className="text-center self-center items-start text-white ">
                       <p className="text-md font-bold">Total Order</p>
                       <p className="text-lg font-bold text-center mt-2"> {selectedOrderframe == "weekly" ? TotalOrder?.weekly : selectedOrderframe == "monthly" ? TotalOrder?.monthly : TotalOrder?.daily}</p>
                     </div>
@@ -380,10 +380,10 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
               </div>
 
               <div className="flex-1  mt-[1.5rem] md:mt-0">
-                <div className="h-24 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-red-200 dark:bg-gray-700 dark:text-gray-50">
+                <div className="h-24 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-orange-500 dark:bg-gray-700 dark:text-gray-50">
                   <div className="flex w-full justify-between items-start">
-                    <div className="p-3 rounded-full bg-purple-500 self-center">
-                      <FaRupeeSign className="text-white w-6 h-6" />
+                    <div className="p-3 rounded-full bg-gray-50 self-center">
+                      <FaRupeeSign className="text-gray-800 w-6 h-6" />
                     </div>
                     <div className="self-center">
                       <select className="border border-gray-300 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily" onChange={(e) => FutureOrderDropDownCall(e)}>
@@ -392,7 +392,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
                         <option value="monthly">Monthly</option>
                       </select>
                     </div>
-                    <div className="text-center self-center items-start">
+                    <div className="text-center self-center items-start text-white">
                       <p className="text-md font-bold"> Future Order</p>
                       <p className="text-lg font-bold text-center mt-2">  {selectedfutureOrderframe == "weekly" ? TotalFutureOrder?.weekly : selectedfutureOrderframe == "monthly" ? TotalFutureOrder?.monthly : TotalFutureOrder?.daily}</p>
                     </div>
@@ -401,10 +401,10 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
               </div>
 
               <div className="flex-1  mt-[1.5rem] md:mt-0">
-                <div className="h-24 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-red-200 dark:bg-gray-700 dark:text-gray-50">
+                <div className="h-24 p-3 rounded-xl w-full flex flex-wrap justify-between transition-all bg-green-500 dark:bg-gray-700 dark:text-gray-50">
                   <div className="flex w-full justify-between items-start">
-                    <div className="p-3 rounded-full bg-purple-500 self-center">
-                      <FaUser className="text-white w-6 h-6" />
+                    <div className="p-3 rounded-full bg-gray-50 self-center">
+                      <FaUser className="text-gray-800 w-6 h-6" />
                     </div>
                     <div className="self-center">
                       <select className="border border-gray-300 rounded-full px-2 py-1 text-sm dark:bg-gray-800 dark:text-gray-50" defaultValue="daily" onChange={(e) => RetrunDropDownCall(e)} >
@@ -413,7 +413,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
                         <option value="monthly">Monthly</option>
                       </select>
                     </div>
-                    <div className="text-center self-center items-start">
+                    <div className="text-center self-center items-start text-white">
                       <p className="text-md font-bold"> Return order</p>
                       <p className="text-lg font-bold text-center mt-2">{selectedReturnframe == "weekly" ? TotalReturnOrder?.weekly : selectedReturnframe == "monthly" ? TotalReturnOrder?.monthly : TotalReturnOrder?.daily}</p>
                     </div>

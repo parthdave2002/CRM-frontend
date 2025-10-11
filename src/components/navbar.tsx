@@ -66,7 +66,7 @@ const ExampleNavbar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> =
           <div className="flex items-center justify-between">
               <div className="flex items-center">
                   <Navbar.Brand onClick={handleNavigationdashboard}>
-                    <img alt="logo" src={logo} className="mr-3 h-6 sm:h-10 ml-16 cursor-pointer" />
+                    <img alt="logo" src={logo} className="mr-3 h-6 sm:h-12 ml-10 cursor-pointer" />
                   </Navbar.Brand>
               </div>
 

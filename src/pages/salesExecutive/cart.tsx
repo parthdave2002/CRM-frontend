@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 import { BsCartXFill } from 'react-icons/bs';
 import Cookies from 'js-cookie';
 import moment from 'moment';
+import { Location } from 'types/types';
 
 interface Cartprops{
   setCartOpen : (value : boolean) => void;
@@ -38,11 +39,11 @@ interface ProfileInfo{
   irrigation_type:  string;
   heard_about_agribharat:  string;
   address: string;
-  district:  string;
+  district:  Location;
   district_name:  string;
-  taluka:  string;
+  taluka:  Location;
   taluka_name:  string;
-  village:  string;
+  village:  Location;
   village_name:  string;
   pincode:  number;
   created_by:  string;
@@ -360,9 +361,9 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
             <div className="border dark:border-gray-600 dark:bg-gray-800 p-3 rounded-xl w-full flex flex-col gap-y-3">
               <div className='dark:text-gray-300 text-[1.2rem] font-semibold'>Shipping Address</div>
               <div className='dark:text-gray-300 '>  {data?.address} </div>
-              <div className='dark:text-gray-300'> District :   {data?.district_name} </div>
-              <div className='dark:text-gray-300'> Taluka :  {data?.taluka_name} </div>
-              <div className='dark:text-gray-300'> Village :  {data?.village_name} </div>
+              <div className='dark:text-gray-300'> District :   {data?.district?.name} </div>
+              <div className='dark:text-gray-300'> Taluka :  {data?.taluka?.name} </div>
+              <div className='dark:text-gray-300'> Village :  {data?.village?.name} </div>
               <div className='dark:text-gray-300'> Pincode : {data?.pincode} </div>
             </div>
             </div> 
