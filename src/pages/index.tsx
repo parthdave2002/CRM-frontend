@@ -300,7 +300,7 @@ const DashboardPage: FC = function () {
         {/* <div className="my-6 lg:grid  grid-flow-row gap-4 flex flex-col"> <SalesThisWeek /> </div> */}
         <div className="my-6 ">
           <div className="rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6 xl:p-8">
-            <div className="mb-4 flex items-center justify-between">
+            <div className="mb-4 flex items-center justify-between bg-gray-200 dark:bg-gray-900 p-3 rounded-xl">
               <div>
                 <div className="mb-2 text-md lg:text-xl font-bold text-gray-900 dark:text-white"> Latest Orders </div>
                 <span className="text-base font-normal text-gray-600 dark:text-gray-400 hidden md:block"> This is a list of latest transactions </span>
@@ -342,7 +342,7 @@ const DashboardPage: FC = function () {
         
         <div className="my-6 lg:grid grid-cols-2 grid-flow-row gap-4">
             <div className="mb-4 h-full rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6">
-                <div className="mb-4 flex items-center justify-between">
+                <div className="mb-4 flex items-center justify-between bg-gray-200 dark:bg-gray-900 p-3 rounded-xl">
                   <h3 className="text-xl font-bold leading-none text-gray-900 dark:text-white"> Latest Farmers </h3>
                   {CustomerAccessList?.view ? <div className="inline-flex items-center rounded-lg p-2 text-sm font-medium text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700 cursor-pointer" onClick={() => ViewAllCall("customer")}>  View all </div> : null }
                 </div>
@@ -369,7 +369,7 @@ const DashboardPage: FC = function () {
 
           {/* User Data */}
             <div className="mb-4 h-full rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6">
-              <div className="mb-4 flex items-center justify-between">
+              <div className="mb-4 flex items-center justify-between bg-gray-200 dark:bg-gray-900 p-3 rounded-xl">
                 <h3 className="text-xl font-bold leading-none text-gray-900 dark:text-white"> Latest Advisor </h3>
                 {AccessList?.view ? <div className="inline-flex items-center rounded-lg p-2 text-sm font-medium text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700 cursor-pointer" onClick={() => ViewAllCall("users")}>  View all </div> : null }
               </div>
@@ -395,7 +395,7 @@ const DashboardPage: FC = function () {
         </div>
 
         <div className=" my-6 rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6 xl:p-8">
-          <div className="mb-4 flex items-center justify-between">
+          <div className="mb-4 flex items-center justify-between bg-gray-200 dark:bg-gray-900 p-3 rounded-xl">
             <div>
               <div className="mb-2 text-md lg:text-xl font-bold text-gray-900 dark:text-white"> Latest Products </div>
               <span className="text-base font-normal text-gray-600 dark:text-gray-400 hidden md:block"> This is a list of latest products </span>
@@ -434,7 +434,7 @@ const DashboardPage: FC = function () {
         </div>
 
         <div className=" my-6 rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6 xl:p-8">
-          <div className="mb-4 flex items-center justify-between">
+          <div className="mb-4 flex items-center justify-between bg-gray-200 dark:bg-gray-900 p-3 rounded-xl">
             <div>
               <div className="mb-2 text-md lg:text-xl font-bold text-gray-900 dark:text-white"> Latest Complain </div>
               <span className="text-base font-normal text-gray-600 dark:text-gray-400 hidden md:block"> This is a list of latest complain </span>

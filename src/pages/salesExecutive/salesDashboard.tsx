@@ -425,7 +425,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
             <div className=" flex flex-col xl:flex-row gap-[1rem]  justify-between">
               {FarmerData && FarmerData.length ?
                 <div className="bg-[#ffff] dark:bg-gray-800 rounded-xl p-4 ">
-                  <div className="flex justify-between ">
+                  <div className="flex justify-between bg-gray-200 dark:bg-gray-900 p-2 rounded-xl ">
                     <div className="text-[1.4rem] font-semibold text-gray-900 dark:text-gray-200"> Farmer Profile  ({TotalFarmerListData})</div>
                     {/* <div className="flex  self-center align-center text-blue-500 hover:text-blue-800 cursor-pointer" onClick={() => ViweAllCall("Farmer")}> <div> View all  </div>  <MdKeyboardArrowRight style={{ alignSelf: "center" }} /></div> */}
                   </div>
@@ -446,7 +446,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
 
               {ComplainData &&  ComplainData.length ?
                 <div className="bg-[#ffff] dark:bg-gray-900 rounded-xl py-3 px-5  w-[20rem] ">
-                  <div className="flex justify-between">
+                  <div className="flex justify-between bg-gray-200 dark:bg-gray-900 p-2 rounded-xl ">
                     <div className="text-[1.3rem] font-semibold text-gray-900 dark:text-gray-200"> Complain ({ComplainData.length})</div>
                     <div className="flex  self-center align-center text-blue-500 hover:text-blue-800 cursor-pointer" onClick={() => ViweAllCall("Complain")}> <div> View all  </div>  <MdKeyboardArrowRight style={{ alignSelf: "center" }} /></div>
                   </div>
@@ -471,7 +471,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
             
             {SalesOrderData && SalesOrderData.length > 0 ?
               <div className="mt-[4rem]">
-              <h3 className="mb-4 text-xl font-bold leading-none text-gray-900 dark:text-white"> Order List </h3>
+              <h3 className="mb-4 text-xl font-bold leading-none text-gray-900 dark:text-white bg-gray-200 dark:bg-gray-900 p-3 rounded-xl "> Order List </h3>
                 {SalesOrderData && SalesOrderData.length > 0 ?
                 
                   <>

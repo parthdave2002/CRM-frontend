@@ -149,7 +149,7 @@ const ExportDataModal: FC<IExportDataModalProps> = ({
 
   return (
     <>
-        <Dropdown inline label="Export">
+        <Dropdown inline={false} label="Export" className="bg-blue-600 text-white font-medium rounded-lg  focus:ring-2 focus:ring-blue-400">
           <Dropdown.Item onClick={() => fetchData("csv")}>Export CSV</Dropdown.Item>
           <Dropdown.Item onClick={() => fetchData("excel")}>Export Excel</Dropdown.Item>  
         </Dropdown>

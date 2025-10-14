@@ -136,13 +136,13 @@ const LeftSidebar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = function ()
 
   return (
     <div className="hidden lg:block">
-        <div className="bg-gray-600 dark:bg-gray-800 p-3 rounded-r-xl text-white"> 
-          <Sidebar className="bg-gray-600 dark:bg-gray-800 text-white w-[15rem] ">
+        <div className="bg-gray-200 dark:bg-gray-800 p-3 rounded-r-xl text-gray-800"> 
+          <Sidebar className="bg-gray-200 dark:bg-gray-800 text-gray-800 w-[15rem] ">
             <Sidebar.Items className="pb-[6rem]">
               <Sidebar.ItemGroup>
                 {filteredSidebarData.map((item, k) => (
                   <NavLink to={item.to} key={k}>
-                    <Sidebar.Item icon={item.icon}  className={item.to === currentPage ? " bg-white text-greay-800 dark:text-white dark:bg-gray-700" : " text-white hover:text-gray-800"} >  {item.name} </Sidebar.Item>
+                    <Sidebar.Item icon={item.icon}  className={item.to === currentPage ? " bg-white text-gray-800 dark:text-white dark:bg-gray-700" : " text-gray-800 hover:text-gray-800"} >  {item.name} </Sidebar.Item>
                   </NavLink>
                 ))}
               </Sidebar.ItemGroup>
