@@ -336,7 +336,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
     { label :"Instagram", value : "instagram"},
     { label :"Facebook", value : "facebook"},
     { label :"What's App", value : "whatsapp"},
-    { label :"Linkedin", value : "linkedin"},
+    { label :"Linkedin", value : "linkedIn"},
     { label :"Youtube", value : "youtube"},
     { label :"Brochure ", value : "brochure"},
     { label :"Agro shop", value : "shop"},
