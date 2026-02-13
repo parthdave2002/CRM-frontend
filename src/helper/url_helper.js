@@ -73,6 +73,7 @@ export const DELETE_PRODUCT_LIST = "/api/product/remove-product";
 export const GET_RELATED_PRODUCT_LIST = "/api/product/product-related";
 
 // Order
+export const GET_ORDER_CHANGE_LIST = "/api/order/change-order-status"
 export const GET_UPDATE_ORDER_LIST = "/api/order/update-order";
 export const GET_ORDER_LIST = "/api/order/get-order";
 export const GET_SALES_EXECUTIVE_ORDER_LIST  = "/api/order/get-order-sales-executive";
@@ -101,7 +102,7 @@ export const CHANGE_STATUS_SUB_TAGLOG_LIST = "/api/taglog/update-subtaglog";
 export const GET_CUSTOMER_TAGLOG_LIST = "/api/taglog/get-customer-taglog";
 export const ADD_CUSTOMER_TAGLOG_LIST = "/api/taglog/add-customer-taglog";
 
-export const GET_EXPORT_DATA_LIST = "/api/export/export-data";
+export const GET_EXPORT_DATA_LIST = "/api/report/export-data";
 
 // Customer
 export const GET_CUSTOMER_DATA_LIST = "/api/customer/get-customers";

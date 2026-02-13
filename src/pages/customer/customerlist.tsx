@@ -134,9 +134,9 @@ const CustomerListPage : FC = function () {
                                   <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item?._id} onClick={() => {CheckData(item._id)}}/>  </Table.Cell>
                                   <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer truncate max-w-[15rem]" onClick={() => DetailsCustomerCall(item?._id)}>  {item?.firstname} {item?.middlename} {item?.lastname} </Table.Cell>
                                   <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.mobile_number} </Table.Cell>
-                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.district_name} </Table.Cell>
-                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.taluka_name} </Table.Cell>
-                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.village_name} </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.district?.name} </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.taluka?.name} </Table.Cell>
+                                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.village?.name} </Table.Cell>
                                   <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment (item?.added_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
                                   <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white">
                                       {item.is_deleted == true ?  <div className="flex items-center">  <div className="mr-2 h-2.5 w-2.5 rounded-full bg-Red"></div> Deactive  </div> :   <div className="flex items-center">  <div className="mr-2 h-2.5 w-2.5 rounded-full bg-green-400"></div> Active  </div> }

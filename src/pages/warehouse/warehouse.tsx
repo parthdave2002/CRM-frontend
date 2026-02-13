@@ -74,8 +74,12 @@ const WarehousePage  = function ()  {
         }
       // ---------------- Search code end ----------------
           
-        useEffect(() => {          
-          dispatch(getOrderlist({returnOrder : true}))
+        useEffect(() => {       
+          let requser = {
+            returnOrder : true, 
+            warehouse : true
+          }   
+          dispatch(getOrderlist(requser))
         }, [dispatch])
 
       let Name = "Warehouse ";

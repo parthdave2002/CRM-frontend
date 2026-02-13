@@ -23,10 +23,7 @@ const ExportData = (state = INIT_STATE, action) => {
         case GET_EXPORT_DATA_LIST:
           return {
             ...state,
-            ExportDatalist: action.payload.data.data,
-            ExportDatalistSize: action.payload.data.size,
-            TotalExportData: action.payload.data.totalData,
-            CurrentPage: action.payload.data.page,
+            ExportDatalist: action.payload.data,
           };
       }
     case GET_EXPORT_DATA_LIST_ERROR:

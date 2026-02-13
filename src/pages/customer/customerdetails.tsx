@@ -116,17 +116,17 @@ const CustomerDetailsPage: FC = function () {
 
                 <div className="p-4 dark:bg-gray-800 rounded-lg">
                   <h3 className="text-gray-600 dark:text-gray-300 font-semibold">District</h3>
-                  <p className="text-gray-900 dark:text-white">{data?.district_name || "N/A"}</p>
+                  <p className="text-gray-900 dark:text-white">{data?.district?.name || "N/A"}</p>
                 </div>
 
                 <div className="p-4 dark:bg-gray-800 rounded-lg">
                   <h3 className="text-gray-600 dark:text-gray-300 font-semibold">Taluka</h3>
-                  <p className="text-gray-900 dark:text-white">{data?.taluka_name || "N/A"}</p>
+                  <p className="text-gray-900 dark:text-white">{data?.taluka?.name || "N/A"}</p>
                 </div>
                 
                 <div className="p-4 dark:bg-gray-800 rounded-lg">
                   <h3 className="text-gray-600 dark:text-gray-300 font-semibold">Village</h3>
-                  <p className="text-gray-900 dark:text-white">{data?.village_name || "N/A"}</p>
+                  <p className="text-gray-900 dark:text-white">{data?.village?.name || "N/A"}</p>
                 </div>
 
                 <div className="p-4 dark:bg-gray-800 rounded-lg">

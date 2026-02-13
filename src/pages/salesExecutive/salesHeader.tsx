@@ -1,7 +1,5 @@
 import { FC} from "react";
-import {  FaAccessibleIcon, FaCapsules, FaOpencart } from "react-icons/fa";
-import { MdGridView  } from "react-icons/md";
-import { BiShocked } from "react-icons/bi";
+import logo from "../../img/logo.webp";
 
 interface PropsData{
   setDatactive :any;
@@ -29,7 +27,8 @@ const SalesHeaderPage : FC<PropsData> = function ({ active, setDatactive, openPr
 
 
     return (
-      <div className="flex justify-end  ">
+      <div className="flex justify-between px-6 ">
+        <div>   <img alt="logo" src={logo} className="mr-3 h-6 sm:h-12  cursor-pointer" /></div>
         <div className=" flex  gap-x-4  justify-center"  >
             {menuItems.map((item:any, k:number) => (
               <div key={k} >

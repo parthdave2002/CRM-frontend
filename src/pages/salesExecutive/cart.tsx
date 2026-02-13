@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
-import { Button, Table } from "flowbite-react";
+import { Button, Select, Table } from "flowbite-react";
 import { FaGhost, FaPhoneVolume, FaUserAlt, FaWindowClose } from 'react-icons/fa'
 import { HiTrash } from 'react-icons/hi';
 import { FaCartShopping } from 'react-icons/fa6';
@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 import { BsCartXFill } from 'react-icons/bs';
 import Cookies from 'js-cookie';
 import moment from 'moment';
+import { Location } from 'types/types';
 
 interface Cartprops{
   setCartOpen : (value : boolean) => void;
@@ -38,11 +39,11 @@ interface ProfileInfo{
   irrigation_type:  string;
   heard_about_agribharat:  string;
   address: string;
-  district:  string;
+  district:  Location;
   district_name:  string;
-  taluka:  string;
+  taluka:  Location;
   taluka_name:  string;
-  village:  string;
+  village:  Location;
   village_name:  string;
   pincode:  number;
   created_by:  string;
@@ -112,6 +113,26 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
     };
   // ----------- Product Qty Change data getcode start ----------------
 
+  // ----------  priority code start --------------------------
+  const priorityoption = [
+    { label: "", value: "Post" },
+    { label: "Lmd", value: "Lmd" },
+    { label: "Courier ", value: "Courier " },
+    { label : " Delhivery.com", value :"Delhivery.com"},
+    { label : " Self", value :"Self"},
+    { label : " Transport ", value :"Transport "},
+    { label : " Porter", value :"Porter"},
+    
+  ]
+
+  const [selectedDelieveryby, setSelectedDelieveryby] = useState("");
+
+   const revenueDropDownCall =  (e:any) =>{
+      setSelectedDelieveryby(e.target.value)
+    }
+  // ----------  priority code end --------------------------
+
+
   // ---------------- Place Order code start ----------------
     const [isOpenSuccessOrderModel, setisOpenSuccessOrderModel ] = useState(false);
     const [isOpenSuccessOrderMessage, setisOpenSuccessOrderMessage ] = useState("");
@@ -149,6 +170,7 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
         products : productsArray,
         customer : data_id,
         order_type :  isOrderTypeModel,
+        delivery_by : selectedDelieveryby,
         status : isOrderStatusModel == "extend" ?  null :  isOrderStatusModel,
         total_amount : Math.round(grandTotal),
        ...(CouponName && { coupon: CouponName.toUpperCase() })
@@ -323,6 +345,20 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
                       <div className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-8">  <Input className=' px-2 py-2 rounded-xl dark:bg-gray-800' placeholder='Enter coupon code' onChange={(e) =>ApplyCoupon(e.target.value)} />  </div>
                       <button onClick={AppliedCoupon} className="mb-8 inline-flex items-center justify-center px-5 py-2 rounded-xl bg-green-500 text-white font-medium shadow-md hover:bg-green-600 hover:scale-105 active:scale-100 transition-all duration-200" > Apply </button>
                     </div>
+
+                     <div className='flex gap-x-3'>
+                      <div className="mt-1">
+                        <select className="w-[15rem] border border-gray-300 bg-white text-gray-900 rounded-xl px-4 py-2 text-md dark:bg-gray-800 dark:text-gray-50" defaultValue="Post" onChange={(e) => revenueDropDownCall(e)}>
+                          <option value="Post">Post</option>
+                          <option value="Lmd">Lmd</option>
+                          <option value="Courier">Courier</option>
+                          <option value="Delhivery.com">Delhivery.com</option>
+                          <option value="Self">Self</option>
+                          <option value="Transport">Transport</option>
+                          <option value="Porter">Porter</option>
+                        </select>
+                      </div>
+                    </div>
                   </div>
 
                   <div className="flex-1 flex flex-col items-end space-y-1">
@@ -360,9 +396,9 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
             <div className="border dark:border-gray-600 dark:bg-gray-800 p-3 rounded-xl w-full flex flex-col gap-y-3">
               <div className='dark:text-gray-300 text-[1.2rem] font-semibold'>Shipping Address</div>
               <div className='dark:text-gray-300 '>  {data?.address} </div>
-              <div className='dark:text-gray-300'> District :   {data?.district_name} </div>
-              <div className='dark:text-gray-300'> Taluka :  {data?.taluka_name} </div>
-              <div className='dark:text-gray-300'> Village :  {data?.village_name} </div>
+              <div className='dark:text-gray-300'> District :   {data?.district?.name} </div>
+              <div className='dark:text-gray-300'> Taluka :  {data?.taluka?.name} </div>
+              <div className='dark:text-gray-300'> Village :  {data?.village?.name} </div>
               <div className='dark:text-gray-300'> Pincode : {data?.pincode} </div>
             </div>
             </div> 

@@ -66,14 +66,14 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
       setSelectedStateOption({label : "Gujarat", value : "67fa3afe74c66bf000111796" })
       setSelectedStateid("67fa3afe74c66bf000111796")
 
-      setSelectedDistrictOption({ label : data?.district_name, value :data?.district })
-      setSelectedDistrictid(data?.district)
+      setSelectedDistrictOption({ label : data?.district?.name, value :data?.district?._id })
+      setSelectedDistrictid(data?.district?._id)
 
-      setSelectedTalukaOption({ label : data?.taluka_name, value :data?.taluka })
-      setSelectedTalukaid(data?.taluka)
+      setSelectedTalukaOption({ label : data?.taluka?.name, value :data?.taluka?._id })
+      setSelectedTalukaid(data?.taluka?._id)
 
-      setSelectedVillageOption({ label : data?.village_name, value :data?.village })
-      setSelectedVillageid(data?.village)
+      setSelectedVillageOption({ label : data?.village?.name, value :data?.village?._id })
+      setSelectedVillageid(data?.village?._id)
 
       // Header About
       const matchedaboutOption = HeardAboutOprions.find(opt => opt.value === data.heard_about_agribharat);
@@ -336,7 +336,7 @@ const SalesAddFarmer: FC<ProfileData> = ({setFarmerAdded, isEditFarmer, handleAc
     { label :"Instagram", value : "instagram"},
     { label :"Facebook", value : "facebook"},
     { label :"What's App", value : "whatsapp"},
-    { label :"Linkedin", value : "linkedin"},
+    { label :"Linkedin", value : "linkedIn"},
     { label :"Youtube", value : "youtube"},
     { label :"Brochure ", value : "brochure"},
     { label :"Agro shop", value : "shop"},

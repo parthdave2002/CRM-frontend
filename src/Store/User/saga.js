@@ -193,6 +193,9 @@ function* onGetUpdatePasswordData({ payload: requstuser }) {
   try {
     const reponse = yield call(updatepasswordApi, requstuser);
     yield put(UpdatePasswordSuccess(UPDATE_PASSWORD_DATA_LIST, reponse));
+     if (reponse?.success === true || reponse?.success === "true") {
+      toast.success(reponse?.msg);
+    }
   } catch (error) {
     yield put(UpdatePasswordFail(error));
   }

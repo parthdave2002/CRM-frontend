@@ -14,6 +14,7 @@ import moment from "moment";
 import { Button, Checkbox, Table } from "flowbite-react";
 import ExportDataModal from "../../components/exportdata/exportCSV";
 import ExamplePagination from "../../components/pagination";
+import LoaderPage from "../../components/loader";
 
 enum ReportType {
   Advisor = "advisor",
@@ -43,6 +44,7 @@ const ReportPage: FC = () => {
   const [currentPageNo, setCurrentPageNo] = useState(0);
   const [pageNo, setPageNo] = useState(1);
   const [rowPerPage, setRowPerPage] = useState(5);
+  const [loader, setLoader] = useState(false);
 
   const  GetReportDatalist  = useSelector((state: any) => state.AdminDashboard.GetReportDatalist,);
 
@@ -64,6 +66,7 @@ const ReportPage: FC = () => {
   }, [GetReportDatalist, selectedStatusId]);
 
   useEffect(() => {
+    setLoader(false);
     setTotalListData(GetReportDatalist?.totalData || 0);
     setCurrentPageNo(GetReportDatalist?.page || 0);
     setRowPerPage(GetReportDatalist?.size || 5);
@@ -117,6 +120,7 @@ const ReportPage: FC = () => {
           size: rowPerPage
       };
       dispatch(getReportDatalist(reqUserData));
+      setLoader(true);
     }
   }, [startDateData, endDateData, selectedStatusId, pageNo, rowPerPage, dispatch]);
 
@@ -229,9 +233,9 @@ const ReportPage: FC = () => {
                   <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.irrigation_type}</Table.Cell>
                   <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.heard_about_agribharat}</Table.Cell>
                   <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.address}</Table.Cell>
-                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.district_name}</Table.Cell>
-                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.taluka_name}</Table.Cell>
-                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.village_name}</Table.Cell>
+                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.district?.name}</Table.Cell>
+                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.taluka?.name}</Table.Cell>
+                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.village?.name}</Table.Cell>
                   <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.pincode}</Table.Cell>
                   <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.post_office}</Table.Cell>
                   <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.ref_name || "-"}</Table.Cell>
@@ -303,9 +307,9 @@ const ReportPage: FC = () => {
                   <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.order_id}</Table.Cell>
                   <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.customer?.firstname} {item?.customer?.middlename} {item?.customer?.lastname}</Table.Cell>
                   <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.customer?.address}</Table.Cell>
-                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.customer?.district_name}</Table.Cell>
-                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.customer?.taluka_name}</Table.Cell>
-                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.customer?.village_name}</Table.Cell>
+                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.customer?.district?.name}</Table.Cell>
+                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.customer?.taluka?.name}</Table.Cell>
+                  <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.customer?.village?.name}</Table.Cell>
                   <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.customer?.post_office}</Table.Cell>
                   <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.customer?.pincode}</Table.Cell>
                   <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{item?.customer?.mobile_number}</Table.Cell>
@@ -340,79 +344,81 @@ const ReportPage: FC = () => {
 
   return (
     <NavbarSidebarLayout isFooter={false} isSidebar isNavbar isRightSidebar>
-      <div className="min-h-screen">
-        <ExampleBreadcrumb Name={pageTitle} />
-        <div className="bg-white dark:bg-gray-800 p-4 flex gap-x-4 flex-wrap">
-          <div>
-            <Select
-              className="w-[15rem] dark:text-white"
-              classNames={{
-                control: () => "react-select__control",
-                singleValue: () => "react-select__single-value",
-                menu: () => "react-select__menu",
-                option: ({ isSelected }) =>
-                  isSelected
-                    ? "react-select__option--is-selected"
-                    : "react-select__option",
-                placeholder: () => "react-select__placeholder",
-              }}
-              value={selectedStatusOption}
-              onChange={handleStatusChange}
-              options={statusOptions}
-              isClearable
-            />
-          </div>
-          <div className="relative">
-            <DatePicker
-              selectsRange
-              startDate={startDate}
-              endDate={endDate}
-              onChange={handleDateChange}
-              isClearable
-              maxDate={new Date()}
-              popperPlacement="bottom-start"
-              popperModifiers={[
-                {
-                  name: 'preventOverflow',
-                  options: {
-                    boundary: 'viewport',
-                  },
-                },
-              ] as any}
-              className="w-full pl-10 py-2 px-5 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-300 text-gray-700 dark:bg-gray-800 dark:text-gray-200"
-              placeholderText="Select Date Range"
-            />
-            <IoCalendarNumberSharp className="absolute left-3 top-2.5 w-5 h-5 text-gray-400" />
-          </div>
-          {selectedStatusId && (
-            <Button gradientDuoTone="purpleToPink" onClick={getDataCall}>
-              <div className="flex items-center gap-x-3 w-[5rem] text-center">
-                <FaSearch /> Submit
+       {loader ? <LoaderPage /> :
+          <div className="min-h-screen">
+            <ExampleBreadcrumb Name={pageTitle} />
+            <div className="bg-white dark:bg-gray-800 p-4 flex gap-x-4 flex-wrap">
+              <div>
+                <Select
+                  className="w-[15rem] dark:text-white"
+                  classNames={{
+                    control: () => "react-select__control",
+                    singleValue: () => "react-select__single-value",
+                    menu: () => "react-select__menu",
+                    option: ({ isSelected }) =>
+                      isSelected
+                        ? "react-select__option--is-selected"
+                        : "react-select__option",
+                    placeholder: () => "react-select__placeholder",
+                  }}
+                  value={selectedStatusOption}
+                  onChange={handleStatusChange}
+                  options={statusOptions}
+                  isClearable
+                />
               </div>
-            </Button>
-          )}
-          {selectedStatusId && showReportData && (
-            <div className="flex-1 justify-items-end self-center">
-              <Suspense fallback={<div>Loading...</div>}>
-                <ExportDataModal data={exportData} startDate={startDateData} endDate={endDateData} name={selectedStatusId} />
-              </Suspense>
+              <div className="relative">
+                <DatePicker
+                  selectsRange
+                  startDate={startDate}
+                  endDate={endDate}
+                  onChange={handleDateChange}
+                  isClearable
+                  maxDate={new Date()}
+                  popperPlacement="bottom-start"
+                  popperModifiers={[
+                    {
+                      name: 'preventOverflow',
+                      options: {
+                        boundary: 'viewport',
+                      },
+                    },
+                  ] as any}
+                  className="w-full pl-10 py-2 px-5 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-300 text-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                  placeholderText="Select Date Range"
+                />
+                <IoCalendarNumberSharp className="absolute left-3 top-2.5 w-5 h-5 text-gray-400" />
+              </div>
+              {selectedStatusId && (
+                <Button gradientDuoTone="purpleToPink" onClick={getDataCall}>
+                  <div className="flex items-center gap-x-3 w-[5rem] text-center">
+                    <FaSearch /> Submit
+                  </div>
+                </Button>
+              )}
+              {selectedStatusId && showReportData && (
+                <div className="flex-1 justify-items-end self-center">
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <ExportDataModal data={exportData} startDate={startDateData} endDate={endDateData} name={selectedStatusId} />
+                  </Suspense>
+                </div>
+              )}
             </div>
-          )}
-        </div>
-        <div className="mt-8 bg-white dark:bg-gray-800 p-4">
-          {renderTable()}
-        </div>
-        {Array.isArray(reportData) && reportData.length > 0 && (
-          <ExamplePagination
-            PageData={handlePageChange}
-            RowPerPage={handleRowsPerPage}
-            RowsPerPageValue={rowPerPage}
-            PageNo={pageNo}
-            CurrentPageNo={currentPageNo}
-            TotalListData={totalListData}
-          />
-        )}
-      </div>
+            <div className="mt-8 bg-white dark:bg-gray-800 p-4">
+              {renderTable()}
+            </div>
+            {Array.isArray(reportData) && reportData.length > 0 && (
+              <ExamplePagination
+                PageData={handlePageChange}
+                RowPerPage={handleRowsPerPage}
+                RowsPerPageValue={rowPerPage}
+                PageNo={pageNo}
+                CurrentPageNo={currentPageNo}
+                TotalListData={totalListData}
+              />
+            )}
+          </div>
+        }
     </NavbarSidebarLayout>
   );
 };

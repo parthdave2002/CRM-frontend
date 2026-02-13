@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react'
 import { MdKeyboardArrowDown, MdKeyboardArrowRight, MdKeyboardArrowUp } from 'react-icons/md'
 import Cookies from 'js-cookie';
-import { ProfileInfo } from 'types/types';
+import { FarmerProfileInfo } from 'types/types';
 
 interface DashboardProps{
   classData ?: string;
@@ -14,7 +14,7 @@ const FarmeDashboard : FC <DashboardProps> = ({classData, viewButton}) => {
     setExpanded(!expanded);
   };
 
-  const [data, setData] = useState<ProfileInfo | null>()  
+  const [data, setData] = useState<FarmerProfileInfo | null>()  
   //  -------------Farmer Data get  code start ----------------------
     const customerDataString = Cookies.get("customer_data");
     useEffect(() => {
@@ -41,9 +41,9 @@ const FarmeDashboard : FC <DashboardProps> = ({classData, viewButton}) => {
           <div className='dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div className="w-[10rem]" > Mobile No</div>  <div> :  {data?.mobile_number ? data?.mobile_number : "-"} </div>  </div>
           <div className='dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div className="w-[10rem]"> Alternate No  </div>  <div> :  {data?.alternate_number ? data?.alternate_number : "-"} </div>  </div>
           <div className='dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div className="w-[10rem]" > Address </div> <div> :    {data?.address ? data?.address  : "-"}</div>   </div>
-          <div className='dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div className="w-[10rem]" > District </div> <div> :   {data?.district_name ? data?.district_name : "-"}</div>   </div>
-          <div className='dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div className="w-[10rem]" > Taluka </div> <div> :     {data?.taluka_name ? data?.taluka_name : "-"}</div>   </div>
-          <div className='dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div className="w-[10rem]" > Village </div> <div> :    {data?.village_name ? data?.village_name : "-"}</div>   </div>
+          <div className='dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div className="w-[10rem]" > District </div> <div> :   {data?.district?.name ? data?.district?.name : "-"}</div>   </div>
+          <div className='dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div className="w-[10rem]" > Taluka </div> <div> :     {data?.taluka?.name ? data?.taluka?.name : "-"}</div>   </div>
+          <div className='dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div className="w-[10rem]" > Village </div> <div> :    {data?.village?.name ? data?.village?.name : "-"}</div>   </div>
           <div className='dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div className="w-[10rem]" > Pincode </div> <div> :    {data?.pincode ? data?.pincode : "-"}</div>   </div>
           <div className='dark:text-gray-200 flex gap-x-3 mt-2 text-[1.1rem] '>  <div className="w-[10rem]" > Post Office </div> <div> :    {data?.post_office ? data?.post_office : "-"}</div>   </div>
 

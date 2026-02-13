@@ -4,6 +4,10 @@ import {
   GET_UPDATE_ORDER_LIST_SUCCESS,
   GET_UPDATE_ORDER_LIST_ERROR,
 
+  GET_ORDER_CHANGE_LIST,
+  GET_ORDER_CHANGE_LIST_ERROR,
+  GET_ORDER_CHANGE_LIST_SUCCESS,
+
   GET_ORDER_LIST,
   GET_ORDER_LIST_SUCCESS,
   GET_ORDER_LIST_ERROR,
@@ -98,6 +102,26 @@ const Order = (state = INIT_STATE, action) => {
           return { ...state };
       }
     
+    case GET_ORDER_CHANGE_LIST_SUCCESS:
+      switch (action.payload.actionType) {
+        case GET_ORDER_CHANGE_LIST:
+          return {
+            ...state,
+            Orderlist: action.payload.data.data,
+          };
+      }
+    case GET_ORDER_CHANGE_LIST_ERROR:
+      switch (action.payload.actionType) {
+        case GET_ORDER_CHANGE_LIST:
+          return {
+            ...state,
+            error: action.payload,
+          };
+
+        default:
+          return { ...state };
+      }
+
     case ADD_ORDER_LIST_SUCCESS:
       switch (action.payload.actionType) {
         case ADD_ORDER_LIST:
