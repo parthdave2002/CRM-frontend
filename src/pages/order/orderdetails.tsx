@@ -185,17 +185,16 @@ const OrdererDetailsPage: FC = function () {
                     </div>
 
                     <div className="flex justify-between items-center mb-4 border-b pb-4">
-                      <div>
-                        <p className="text-gray-500 text-[0.9rem]"> Warehouse-1, Diu Road, </p>
-                        <p className="text-gray-500 text-[0.9rem]">At: Kesariya - 362560, Ta.: Una,</p>
-                        <p className="text-gray-500 text-[0.9rem]">  Dist.: Gir Somnath, Gujarat </p>
-                        <p className="text-gray-500 text-[0.9rem]">  GST :  </p>
-                      </div>
+                       <div>
+                         <p className="text-gray-500 text-[0.9rem]"> Shop No-26, Ground Floor,Arth Business Center (ABC), </p>
+                         <p className="text-gray-500 text-[0.9rem]"> S.P Ring Road, Nikol, Ahmedabad - 382350, Gujarat</p>
+                         <p className="text-gray-500 text-[0.9rem]"> GST :  24ACBFA6896P1ZQ</p>
+                       </div>
                       <div className="text-right">
                         <p className="text-gray-500 text-sm"><strong> Pesticide Lic No: </strong> GRS/FP1230000664/2023-24 </p>
                         <p className="text-gray-500 text-sm"><strong> Seeds Lic No: </strong>  GRS/FSR230000774/2023-24	 </p>
                         <p className="text-gray-500 text-sm"> <strong> Ferlitizer Lic No: </strong> GRS/FFR230000775/2023-24 </p>
-                        <p className="text-gray-500 text-sm"> E-mail: agribharat2023@gmail.com</p>
+                        <p className="text-gray-500 text-sm"> E-mail: contact@agribharat.com</p>
                         <p className="text-gray-500 text-sm"> Contact : 91000 29329/91000 29429 </p>
                       </div>
                     </div>
@@ -259,7 +258,7 @@ const OrdererDetailsPage: FC = function () {
                         <p className="text-[0.8rem]">  (1) All products are intended for lawful agricultural use only. </p>
                         <p className="text-[0.8rem]">  (2) Product performance depends on various external factors such as weather, soil conditions, and application methods. The company will not be responsible for crop failure, yield reduction, or quality issues and the company will not compensate for any losses. </p>
                         <p className="text-[0.8rem]">  (3) The battery Pump and Torch have a limited warranty of 6 months for only battery. Do not use electric items while in charging, use only the original adaptor, don't overcharge and avoid charging in low voltage as it may damage battery.  </p>
-                        <p className="text-[0.8rem]">  (4) All disputes are subject to the jurisdiction of Una or Kapadvanj. E & O.E  </p>
+                        <p className="text-[0.8rem]">  (4) All disputes are subject to the jurisdiction of Ahmedabad. E & O.E  </p>
                       </div>
 
                       <div className="mt-4 text-center text-gray-600">
@@ -355,7 +354,7 @@ const OrdererDetailsPage: FC = function () {
                         <p className="text-[0.8rem]">  (1) All products are intended for lawful agricultural use only. </p>
                         <p className="text-[0.8rem]">  (2) Product performance depends on various external factors such as weather, soil conditions, and application methods. The company will not be responsible for crop failure, yield reduction, or quality issues and the company will not compensate for any losses. </p>
                         <p className="text-[0.8rem]">  (3) The battery Pump and Torch have a limited warranty of 6 months for only battery. Do not use electric items while in charging, use only the original adaptor, don't overcharge and avoid charging in low voltage as it may damage battery.  </p>
-                        <p className="text-[0.8rem]">  (4) All disputes are subject to the jurisdiction of Una or Kapadvanj. E & O.E  </p>
+                        <p className="text-[0.8rem]">  (4) All disputes are subject to the jurisdiction of Ahmedabad. E & O.E  </p>
                       </div>
 
                       <div className="mt-4 text-center text-gray-600">

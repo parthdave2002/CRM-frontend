@@ -52,10 +52,13 @@ const ProfilePage : FC = function () {
                 <div className="mt-[2rem] bg-white dark:bg-gray-800 p-4">
                     <div className="flex flex-col ">
 
-                        <ImageUploadPreview onFileSelect={setFile1}  defaultImage={userData?.user_pic ? `${IMG_URL}/public/user/${userData?.user_pic}` : ""}  />
 
-                        <div>
-                                <div className="flex flex-col gap-y-3 dark:text-gray-50 w-full mt-[3rem]">
+                        <div  className=" bg-[#e5e7eb] dark:bg-gray-900 p-6 rounded-lg shadow">
+                                
+                                <div className="mb-6 dark:text-gray-50 text-xl ">  Profile </div>
+
+                                <ImageUploadPreview onFileSelect={setFile1}   defaultImage={userData?.user_pic ? `${IMG_URL}/public/user/${userData?.user_pic}` : ""}  />
+                                <div className="flex  justify-between gap-3 dark:text-gray-50 w-full mt-[3rem]">
                                 <div> Name : { userData ? userData?.name : "N/A"}</div>
                                 <div> Email : { userData ? userData?.email : "N/A" } </div>
                                 <div> Role : {   userData ? userData?.role?.role_title : "N/A"   } </div>
@@ -84,12 +87,15 @@ const ProfilePage : FC = function () {
                                                             const [showNew, setShowNew] = useState(false);
                                                             const [showConfirm, setShowConfirm] = useState(false);
                                                             return (
-                                                                <Form className=" bg-gray-50 dark:bg-gray-700 p-6 rounded-lg shadow">
+                                                                <Form className=" bg-[#e5e7eb] dark:bg-gray-700 p-6 rounded-lg shadow">
+                                                                   
+                                                                   <div className="mb-6 dark:text-gray-50 text-xl"> Update Password</div>
+
                                                                    <div className="flex gap-x-3">
                                                                         <div className="flex-1">
-                                                                            <label className="block text-sm font-medium mb-1" htmlFor="password">New Password</label>
+                                                                            <label className="block text-sm font-medium mb-1 dark:text-gray-50" htmlFor="password">New Password</label>
                                                                             <div className="relative">
-                                                                                <Field  name="password"  placeholder="New Password"  type={showNew ? "text" : "password"}   className="w-full px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"  />
+                                                                                <Field  name="password"  placeholder="New Password"  type={showNew ? "text" : "password"}   className="w-full px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-50"  />
                                                                                 <button type="button" onClick={() => setShowNew(v => !v)}
                                                                                     className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-300">
                                                                                     {showNew ? <FaRegEyeSlash size={20} />  :   <FaRegEye size={20} />}
@@ -98,7 +104,7 @@ const ProfilePage : FC = function () {
                                                                             <ErrorMessage name="password" component="div" className="text-red-500 text-xs mt-1" />
                                                                         </div>
                                                                         <div  className="flex-1">
-                                                                            <label className="block text-sm font-medium mb-1" htmlFor="confirmPassword">Confirm Password</label>
+                                                                            <label className="block text-sm font-medium mb-1 dark:text-gray-50" htmlFor="confirmPassword">Confirm Password</label>
                                                                             <div className="relative">
                                                                                 <Field
                                                                                     name="confirmPassword"

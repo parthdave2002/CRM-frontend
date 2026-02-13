@@ -73,6 +73,7 @@ export const DELETE_PRODUCT_LIST = "/api/product/remove-product";
 export const GET_RELATED_PRODUCT_LIST = "/api/product/product-related";
 
 // Order
+export const GET_ORDER_CHANGE_LIST = "/api/order/change-order-status"
 export const GET_UPDATE_ORDER_LIST = "/api/order/update-order";
 export const GET_ORDER_LIST = "/api/order/get-order";
 export const GET_SALES_EXECUTIVE_ORDER_LIST  = "/api/order/get-order-sales-executive";

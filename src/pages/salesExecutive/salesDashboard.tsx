@@ -11,7 +11,7 @@ import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import ExamplePagination from '../../components/pagination';
-import { getleadlist, getsalesDashboard, getSalesExecutiveOrderlist, MarkasReadLeadlist, resetinsertlogin } from "../../Store/actions";
+import { getleadlist, getOrderChangelist, getOrderlist, getsalesDashboard, getSalesExecutiveOrderlist, MarkasReadLeadlist, resetinsertlogin } from "../../Store/actions";
 import moment from "moment";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { BsCartCheckFill } from "react-icons/bs";
@@ -51,6 +51,23 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
   const DashboardDataList = useSelector((state: any) => state.SalesDashboard.DashboardDataList?.data);
   const OrderDataList = useSelector((state: any) => state.Order.SalesExeOrderlist);
   const LeadDataList = useSelector((state: any) => state.Lead.Leaddatalist);
+
+  const { Orderlist, OrderlistSize, TotalOrderData, CurrentPage } = useSelector((state: any) => ({
+    Orderlist: state.Order.Orderlist,
+    OrderlistSize: state.Order.OrderlistSize,
+    TotalOrderData: state.Order.TotalOrderData,
+    CurrentPage: state.Order.CurrentPage,
+  }));
+
+
+  useEffect(() => {
+    console.log("Orderlist  >>>>>>>>>>",Orderlist);
+    
+    setOrderData(Orderlist ? Orderlist : []);
+    setTotalListData(TotalOrderData ? TotalOrderData : 0);
+    setCurrentPageNo(CurrentPage ? CurrentPage : 1);
+  }, [Orderlist, TotalOrderData, OrderlistSize, CurrentPage]);
+
   
   const [SalesOrderData, setSalesOrderData] = useState([])
   // ----------- next Button  Code Start -------------
@@ -118,6 +135,13 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
     return shuffled;
   }, [FarmerData]);
 
+  const ConfirmOrder = (data:string) =>{
+    let requser = {
+        orderId : data
+    }
+      dispatch(getOrderChangelist(requser))
+  }
+
   const [data, setData] = useState<string | null>(null);
   const role = Cookies.get("role");
   useEffect(() => {
@@ -146,6 +170,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
   },[OrderDataList])
 
     const [leadData, setLeadData] = useState<any>(null)
+    const [OrderData, setOrderData] = useState<any>(null)
     const [TotalLeadListData, setTotalLeadListData] = useState(0);
     const [leadCurrentPageNo, setleadCurrentPageNo] = useState(0);
     const [LeadPageNo, setLeadPageNo] = useState(1);
@@ -281,6 +306,13 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
           dispatch(getleadlist({ type: selectedTabbar, page: LeadPageNo, size: RowLeadPerPage }))
         }
       },[dispatch,selectedTabbar, LeadPageNo, RowLeadPerPage])
+
+      useEffect(() =>{
+        if(role === "697e5c8d7f405930a844b03c"){
+             let requser = {  confirmation : true }   
+              dispatch(getOrderlist(requser))
+        }
+      },[dispatch])
       // ----------- Tabnavbar code end --------------------
     
     const [ProductModal, setProductModal] = useState(false);
@@ -618,6 +650,43 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
                   </div>
               </div>
              : null } 
+
+               {role === "697e5c8d7f405930a844b03c" ?
+              <div className="mt-[4rem]">
+              <h3 className="mb-4 text-[2rem] font-bold leading-none text-gray-900 dark:text-white"> Order List </h3>
+
+                 <div className='mt-[1.5rem] px-4'>
+                            <>
+                              {OrderData && OrderData.length > 0 ?
+                                <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 ">
+                                  <Table.Head className="bg-gray-100 dark:bg-gray-700">
+                                    <Table.HeadCell>Order id</Table.HeadCell>
+                                    <Table.HeadCell> Customer Name</Table.HeadCell>
+                                    <Table.HeadCell>Phone Number</Table.HeadCell>
+                                    <Table.HeadCell>Created Date</Table.HeadCell>
+                                    <Table.HeadCell>Created By</Table.HeadCell>
+                                    <Table.HeadCell> Action</Table.HeadCell>
+                                  </Table.Head>
+                
+                                  <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
+                                    {OrderData && OrderData.map((item: any, k: number) => (
+                                      <Table.Row key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
+                                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" > { item?.order_id} </Table.Cell>
+                                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.customer?.customer_name ? item?.customer?.customer_name : "-"} </Table.Cell>
+                                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.customer?.mobile_number ? item?.customer?.mobile_number : "-"} </Table.Cell>
+                                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item?.added_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
+                                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.advisor_name?.name ? item?.advisor_name?.name : "-"} </Table.Cell>
+                                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> <Button onClick={() => ConfirmOrder(item?._id) }> Mark As Confirm</Button> </Table.Cell>
+                                      </Table.Row>
+                                    ))}
+                                  </Table.Body>
+                                </Table>
+                                : <div className='text-center py-4 dark:text-gray-50'>No DataFound </div>}
+                            </>
+                          <ExamplePagination PageData={LeadPageDataList} RowPerPage={LeadRowPerPage} RowsPerPageValue={RowLeadPerPage} PageNo={LeadPageNo} CurrentPageNo={leadCurrentPageNo} TotalListData={TotalLeadListData} />
+                  </div>
+              </div>
+             : null } 
             
             {/* <div className="mt-[4rem]">
               <h3 className="mb-4 text-xl font-bold leading-none text-gray-900 dark:text-white"> Complain List </h3>
@@ -665,52 +734,52 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
             : null}
 
             {ProductModal == true ?
-                       <Modal
-      onClose={() => setProductModal(false)}
-      show={ProductModal}
-      size="2xl"
-      className="font-sans"
-    >
-      {/* Header */}
-      <Modal.Header className="px-6 pt-6 pb-2 border-b border-gray-200 dark:border-gray-700">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-          Product Details
-        </h2>
-      </Modal.Header>
-
-      {/* Body */}
-      <Modal.Body className="px-6 py-4 space-y-4 bg-gray-50 dark:bg-gray-900">
-        {Array.isArray(ProductItemModal) && ProductItemModal.length > 0 ? (
-          <div className="divide-y divide-gray-200 dark:divide-gray-700">
-            {ProductItemModal.map((item, k) => (
-              <div
-                key={k}
-                className="py-3 grid grid-cols-2 md:grid-cols-4 gap-3 items-center"
+              <Modal
+                onClose={() => setProductModal(false)}
+                show={ProductModal}
+                size="2xl"
+                className="font-sans"
               >
-                <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  {item?._id?.name?.englishname || "-"}
-                </p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {item?._id?.categories?.name_eng || "-"}
-                </p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {item?._id?.packaging || "-"}  {item?._id?.packagingtype?.type_eng || "-"}
-                </p>
-                <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
-                  Qty: {item?.quantity || 0}
-                </p>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-4">
-            No product details available.
-          </p>
-        )}
-      </Modal.Body>
+                {/* Header */}
+                <Modal.Header className="px-6 pt-6 pb-2 border-b border-gray-200 dark:border-gray-700">
+                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    Product Details
+                  </h2>
+                </Modal.Header>
 
-    </Modal>
-            : null}
+                {/* Body */}
+                <Modal.Body className="px-6 py-4 space-y-4 bg-gray-50 dark:bg-gray-900">
+                  {Array.isArray(ProductItemModal) && ProductItemModal.length > 0 ? (
+                    <div className="divide-y divide-gray-200 dark:divide-gray-700">
+                      {ProductItemModal.map((item, k) => (
+                        <div
+                          key={k}
+                          className="py-3 grid grid-cols-2 md:grid-cols-4 gap-3 items-center"
+                        >
+                          <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {item?._id?.name?.englishname || "-"}
+                          </p>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                            {item?._id?.categories?.name_eng || "-"}
+                          </p>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                            {item?._id?.packaging || "-"}  {item?._id?.packagingtype?.type_eng || "-"}
+                          </p>
+                          <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+                            Qty: {item?.quantity || 0}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-4">
+                      No product details available.
+                    </p>
+                  )}
+                </Modal.Body>
+
+              </Modal>
+              : null}
           </>
         }
         </>

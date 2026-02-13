@@ -11,10 +11,12 @@ import { useNavigate } from "react-router";
 import moment from "moment";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import Cookies from "js-cookie";
 
 const OrderListPage : FC = function () {
       const navigate = useNavigate();
       const dispatch = useDispatch();
+      const role = Cookies.get("role");
       const invoiceRef = useRef<HTMLDivElement>(null);
 
     // ----------- next Button  Code Start -------------
@@ -39,11 +41,12 @@ const OrderListPage : FC = function () {
    // ---------------- Search User code end ----------------
 
     useEffect(() => {
-        let requserdata: { page: number; size: number; search?: string } = {
+        let requserdata: { page: number; size: number; search?: string; warehouse?:boolean } = {
             page: PageNo,
             size: RoePerPage
         };
-        if (searchData) requserdata.search = searchData;
+        if (searchData) requserdata.search = searchData;  
+        if(role == "685c305069eaa1084c92c5fe" )  requserdata.warehouse = true;
         dispatch(getOrderlist(requserdata));
         setLoader(true)
     }, [dispatch, PageNo, RoePerPage, searchData]);
@@ -88,48 +91,104 @@ const OrderListPage : FC = function () {
       setparcelModal(true)
     }
 
-    const Downloadcall = async () => {
-      const input = invoiceRef.current;
-      if (!input) return;
+  const Downloadcall = async () => {
+    const input = invoiceRef.current;
+    if (!input) return;
 
-      const canvas = await html2canvas(input, {
-        scale: 3,            // HIGH quality
-        useCORS: true,
-        allowTaint: false,
-      });
+    const canvas = await html2canvas(input, {
+      scale: 3,
+      useCORS: true,
+    });
 
-      const imgData = canvas.toDataURL("image/jpeg", 1.0);
+    const imgData = canvas.toDataURL("image/png");
 
-      const pdfWidth = canvas.width * 0.264583;  // px to mm
-      const pdfHeight = canvas.height * 0.264583;
+    const pdf = new jsPDF("p", "mm", "a4");
 
-      const pdf = new jsPDF("p", "mm", [pdfWidth, pdfHeight]);
+    const pageWidth = 210;
+    const pageHeight = 297;
 
-      pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
-      pdf.save("COD_Parcel.pdf");
-    };
+    // Half A4 size
+    const targetWidth = pageWidth / 2; // 105mm
+    const targetHeight = (canvas.height * targetWidth) / canvas.width;
 
-      const printPDF = async () => {
-        if (!invoiceRef.current) return;
+    // Center horizontally, top aligned
+    const x = (pageWidth - targetWidth) / 2;
+    const y = 10;
+
+    pdf.addImage(imgData, "PNG", x, y, targetWidth, targetHeight);
+    pdf.save("COD_Parcel.pdf");
+  };
+
+  const printPDF = async () => {
+    const input = invoiceRef.current;
+    if (!input) return;
+
+    const canvas = await html2canvas(input, {
+      scale: 2,
+      useCORS: true,
+    });
+
+    const imgData = canvas.toDataURL("image/png");
+
+    const pdf = new jsPDF("p", "mm", "a4");
+
+    const pageWidth = 210;
+    const pageHeight = 297;
+
+    const targetWidth = pageWidth / 2; // Half A4
+    const targetHeight = (canvas.height * targetWidth) / canvas.width;
+
+    const x = (pageWidth - targetWidth) / 2;
+    const y = 10;
+
+    pdf.addImage(imgData, "PNG", x, y, targetWidth, targetHeight);
+
+    const blobUrl = pdf.output("bloburl");
+    window.open(blobUrl, "_blank");
+  };
+
+    // const Downloadcall = async () => {
+    //   const input = invoiceRef.current;
+    //   if (!input) return;
+
+    //   const canvas = await html2canvas(input, {
+    //     scale: 3,            // HIGH quality
+    //     useCORS: true,
+    //     allowTaint: false,
+    //   });
+
+    //   const imgData = canvas.toDataURL("image/jpeg", 1.0);
+
+    //   const pdfWidth = canvas.width * 0.264583;  // px to mm
+    //   const pdfHeight = canvas.height * 0.264583;
+
+    //   const pdf = new jsPDF("p", "mm", [pdfWidth, pdfHeight]);
+
+    //   pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
+    //   pdf.save("COD_Parcel.pdf");
+    // };
+
+      // const printPDF = async () => {
+      //   if (!invoiceRef.current) return;
     
-        const input = invoiceRef.current;
+      //   const input = invoiceRef.current;
     
-        // Capture the div as image
-        const canvas = await html2canvas(input, {
-          scale: 2, // improves quality
-          useCORS: true,
-        });
+      //   // Capture the div as image
+      //   const canvas = await html2canvas(input, {
+      //     scale: 2, // improves quality
+      //     useCORS: true,
+      //   });
     
-        const imgData = canvas.toDataURL("image/png");
-        const pdf = new jsPDF("p", "px", "a4"); // px is better for html2canvas
+      //   const imgData = canvas.toDataURL("image/png");
+      //   const pdf = new jsPDF("p", "px", "a4"); // px is better for html2canvas
     
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-        const blob = pdf.output("blob");
-        const blobUrl = URL.createObjectURL(blob);
-        window.open(blobUrl, "_blank");
-      }
+      //   const pdfWidth = pdf.internal.pageSize.getWidth();
+      //   const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+      //   pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+      //   const blob = pdf.output("blob");
+      //   const blobUrl = URL.createObjectURL(blob);
+      //   window.open(blobUrl, "_blank");
+      // }
 
     return (
         <>  
@@ -197,35 +256,33 @@ const OrderListPage : FC = function () {
 
                   {/* COD Info */}
                   <div className="border-b border-black py-3 space-y-1">
-                    <p className="font-bold text-xl">COD Amount: ₹ {Math.round(parcelModalData?.total_amount)}</p>
-                    {/* <p><span className="font-semibold">Biller ID:</span> 0000054470 / 0000057616 / 0000058794</p> */}
-                    <p><span className="font-semibold">Biller ID:</span> 1000054470 </p>
-                    <p><span className="font-semibold">Date:</span> {moment(parcelModalData?.added_at).format("DD-MM-YYYY")}</p>
+                    <p className="font-bold text-xl ">COD Amount: ₹ {Math.round(parcelModalData?.total_amount)}</p>
+                    <div className="flex justify-between text-[1rem]">
+                      <p><span className="font-bold">Biller ID:</span> 1675499490 </p>
+                      <p><span className="font-bold">Date:</span> {moment(parcelModalData?.added_at).format("DD-MM-YYYY")}</p>
+                    </div>
                   </div>
 
                   {/* Delivery Address */}
-                  <div className="border-b border-black py-3 space-y-1">
-                    <p className="font-semibold underline">Delivery Address</p>
-                    <p><span className="font-semibold">To:</span> {parcelModalData?.customer?.firstname} {parcelModalData?.customer?.middlename}  {parcelModalData?.customer?.lastname} </p>
-                    <p><span className="font-semibold">Mo.:</span> {parcelModalData?.customer?.mobile_number} / {parcelModalData?.customer?.alternate_number}</p>
-                    <p><span className="font-semibold">Address:</span> {parcelModalData?.customer?.address}</p>
-                    <p><span className="font-semibold">AT:</span> {parcelModalData?.customer?.village?.name}</p>
-                    <p><span className="font-semibold">TA:</span> {parcelModalData?.customer?.taluka?.name}</p>
-                    <p><span className="font-semibold">Dist:</span> {parcelModalData?.customer?.district?.name} - {parcelModalData?.customer?.pincode}</p>
-                    <p><span className="font-semibold">Post:</span> {parcelModalData?.customer?.post_office}</p>
-                  </div>
+              <div className="border-b border-black py-3 space-y-1 text-[1rem] font-bold">
+                <p className="underline">Delivery Address</p>
+                <p><span className="">TO : </span> {parcelModalData?.customer?.firstname} {parcelModalData?.customer?.middlename}  {parcelModalData?.customer?.lastname} </p>
+                <p><span className="">MO :</span> {parcelModalData?.customer?.mobile_number}  {parcelModalData?.customer?.alternate_number ? ` / ${parcelModalData.customer.alternate_number}` : null}</p>
+                <p><span className="">ADDRESS  : </span> {parcelModalData?.customer?.address}</p>
+
+                <p><span className="font-semibold">AT :</span> {parcelModalData?.customer?.village?.name}</p>
+                <p><span className="font-semibold">TA :</span> {parcelModalData?.customer?.taluka?.name}</p>
+                <p><span className="font-semibold">DIST :</span> {parcelModalData?.customer?.district?.name} - {parcelModalData?.customer?.pincode}</p>
+                <p><span className="font-semibold">POST :</span> {parcelModalData?.customer?.post_office}</p>
+              </div>
 
                   {/* Sender Info */}
                   <div className="py-3 space-y-1">
-                    <p className="font-semibold underline">From: AGRI BHARAT</p>
-                    <p><span className="font-semibold">Phone:</span> 9100029429 / 7990987972 / 9624696200</p>
-                    <p><span className="font-semibold">Post Office:</span> Una Branch</p>
-                    <p><span className="font-semibold">Office Address:</span> Warehouse No:1, Olvan Road, Near Market Paldi</p>
-                    <div className="grid grid-cols-2 gap-2 mt-1">
-                      <p><span className="font-semibold">AT:</span> Paldi (Post - Delwada)</p>
-                      <p><span className="font-semibold">TA:</span> Una</p>
-                      <p><span className="font-semibold">Dist:</span> Gir Somnath - 362510</p>
-                    </div>
+                    <p className="font-semibold underline">FROM : AGRI BHARAT</p>
+                    <p><span className="font-semibold">MO : </span>  9100029429 / 9100029329 / 9624696200 </p>
+                    <p><span className="font-semibold">POST OFFICE :</span> Nikol (S.O)</p>
+                    <p><span className="font-semibold">OFFICE ADDRESS :</span> Shop No-26, Ground Floor,Arth Business Center (ABC), S.P Ring Road, Nikol, Ahmedabad-382350</p>
+                    
 
                     {/* Logo aligned to right */}
                     <div className="flex justify-end mt-3">

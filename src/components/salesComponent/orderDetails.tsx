@@ -272,7 +272,7 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
                 </div>
                 
                 <div className="flex justify-between w-full text-base md:text-lg font-medium text-gray-600 dark:text-gray-300">
-                  <span>Total GST</span>
+                  <span>Total GST </span>
                   <span className="font-semibold text-gray-800 dark:text-white">{Math.round(totalGST)} Rs.</span>
                 </div>
                 
@@ -365,16 +365,14 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
             
                                 <div className="flex justify-between items-center mb-4 border-b pb-4">
                                   <div>
-                                    <p className="text-gray-500 text-[0.9rem]"> Warehouse-1, Diu Road, </p>
-                                    <p className="text-gray-500 text-[0.9rem]">At: Kesariya - 362560, Ta.: Una,</p>
-                                    <p className="text-gray-500 text-[0.9rem]">  Dist.: Gir Somnath, Gujarat </p>
-                                    <p className="text-gray-500 text-[0.9rem]">  GST :  </p>
+                                    <p className="text-gray-500 text-[0.9rem]"> Shop No-26, Ground Floor,Arth Business Center (ABC), S.P Ring Road, Nikol, Ahmedabad-382350, Gujarat  </p>
+                                    <p className="text-gray-500 text-[0.9rem]">  GST : 24ACBFA6896P1ZQ </p>
                                   </div>
                                   <div className="text-right">
                                     <p className="text-gray-500 text-sm"><strong> Pesticide Lic No: </strong> GRS/FP1230000664/2023-24 </p>
                                     <p className="text-gray-500 text-sm"><strong> Seeds Lic No: </strong>  GRS/FSR230000774/2023-24	 </p>
                                     <p className="text-gray-500 text-sm"> <strong> Ferlitizer Lic No: </strong> GRS/FFR230000775/2023-24 </p>
-                                    <p className="text-gray-500 text-sm"> E-mail: agribharat2023@gmail.com</p>
+                                    <p className="text-gray-500 text-sm"> E-mail: contact@agribharat.com</p>
                                     <p className="text-gray-500 text-sm"> Contact : 91000 29329/91000 29429 </p>
                                   </div>
                                 </div>
