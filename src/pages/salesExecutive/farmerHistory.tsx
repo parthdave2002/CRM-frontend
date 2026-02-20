@@ -259,10 +259,12 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
                     <Table.HeadCell>Order id</Table.HeadCell>
                     <Table.HeadCell>Order Date</Table.HeadCell>
                     <Table.HeadCell> Order Type</Table.HeadCell>
+                    <Table.HeadCell> Order Status</Table.HeadCell>
                     <Table.HeadCell>Callback Date</Table.HeadCell>
+                    <Table.HeadCell> Delivery Type</Table.HeadCell>
+                    <Table.HeadCell> Delivery Status</Table.HeadCell>
                     <Table.HeadCell>COD Amt</Table.HeadCell>
                     <Table.HeadCell>Created By</Table.HeadCell>
-                    <Table.HeadCell>Status</Table.HeadCell>
                     <Table.HeadCell> Action</Table.HeadCell>
                   </Table.Head>
 
@@ -276,10 +278,19 @@ const FarmerHistory : FC <FarmerHistoryProps> = ({setOpenDetailId, setOpenDetail
                           }
                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {moment(item?.added_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.order_type ? item?.order_type.charAt(0).toUpperCase() + item?.order_type.slice(1).toLowerCase() : "-"} </Table.Cell>
-                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.order_type == "future" && item?.future_order_date != null ? moment(item?.future_order_date).format("DD-MM-YYYY") : "-"} </Table.Cell>
-                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {Math.round(item?.total_amount)} </Table.Cell>
-                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.advisor_name?.name} </Table.Cell>
                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.status ? item?.status.charAt(0).toUpperCase() + item?.status.slice(1).toLowerCase() : "-"} </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.order_type == "future" && item?.future_order_date != null ? moment(item?.future_order_date).format("DD-MM-YYYY") : "-"} </Table.Cell>
+                      
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.delivery_through ? item?.delivery_through.charAt(0).toUpperCase() + item?.delivery_through.slice(1).toLowerCase() : "-"} </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-md font-medium text-gray-900 dark:text-white py-0">
+                          <div className='flex flex-col'>
+                              <div>  {item?.delivery_by ? item?.delivery_by.charAt(0).toUpperCase() + item?.delivery_by.slice(1).toLowerCase() : "-"}  </div>
+                              <div>  {item?.tracking_number ? item?.tracking_number : "-"} </div>
+                            </div>
+                           </Table.Cell>
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {Math.round(item?.total_amount)} </Table.Cell>
+
+                        <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.advisor_name?.name} </Table.Cell>
                         <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.order_type == "future" && item?.status == null ?
                           <Button className='bg-gradient-to-br from-purple-700 to-blue-400 text-white hover:bg-gradient-to-bl focus:ring-blue-300 dark:focus:ring-blue-800 border-0 ' onClick={() => FuturaOrderCall(item?.order_id, item)}> Confirm Order</Button>
                           : "-"}

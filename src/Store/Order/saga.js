@@ -35,6 +35,9 @@ import {
 } from "./actionType";
 import { UpdateOrderlistApi,OrderlistApi, AddOrderlistApi, DelOrderlistApi, ReturnOrderlistApi, OrderDetaillistApi, FermerOrderlistApi, SalesOrderlistApi, ChangeOrderlistApi} from "../../helper/Demo_helper";
 import { toast } from "react-toastify";
+import Cookies from "js-cookie";
+
+const role = Cookies.get("role");
 
 function* onGetUpdateOrderList({ payload: requstuser }) {
   try {
@@ -50,6 +53,13 @@ function* onGetOrderChangeList({ payload: requstuser }) {
   try {
     const response = yield call(ChangeOrderlistApi, requstuser);
     yield put(getOrderChangelistSuccess(GET_ORDER_CHANGE_LIST, response));
+    toast.success(response?.msg)
+    if (response.success === true || response.success === "true" && role === "697e5c8d7f405930a844b03c") {
+      let requser = {  warehouse : true, page : 1, size : 5 }   
+      const response = yield call(OrderlistApi, requser);
+      yield put(getOrderlistSuccess(GET_ORDER_LIST, response));
+    }
+
   } catch (error) {
     toast.error(error?.msg)
     yield put(getOrderChangelistFail(error));

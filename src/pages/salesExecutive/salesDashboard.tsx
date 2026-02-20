@@ -61,11 +61,9 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
 
 
   useEffect(() => {
-    console.log("Orderlist  >>>>>>>>>>",Orderlist);
-    
     setOrderData(Orderlist ? Orderlist : []);
-    setTotalListData(TotalOrderData ? TotalOrderData : 0);
-    setCurrentPageNo(CurrentPage ? CurrentPage : 1);
+    setTotalOrderListData(TotalOrderData ? TotalOrderData : 0);
+    setCurrentOrderPageNo(CurrentPage ? CurrentPage : 1);
   }, [Orderlist, TotalOrderData, OrderlistSize, CurrentPage]);
 
   
@@ -137,7 +135,8 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
 
   const ConfirmOrder = (data:string) =>{
     let requser = {
-        orderId : data
+        orderId : data,
+        status : "confirm"
     }
       dispatch(getOrderChangelist(requser))
   }
@@ -168,6 +167,11 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
     setSalesOrderData(OrderDataList?.data)
     setCurrentPageNo(OrderDataList?.page)
   },[OrderDataList])
+
+      const [TotalOrderListData, setTotalOrderListData] = useState(0);
+    const [CurrentOrderPageNo, setCurrentOrderPageNo] = useState(0);
+    const [PageOrderNo, setPageOrderNo] = useState(1);
+    const [RowOrderPerPage, setRowOrderPerPage] = useState(10);
 
     const [leadData, setLeadData] = useState<any>(null)
     const [OrderData, setOrderData] = useState<any>(null)
@@ -683,7 +687,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
                                 </Table>
                                 : <div className='text-center py-4 dark:text-gray-50'>No DataFound </div>}
                             </>
-                          <ExamplePagination PageData={LeadPageDataList} RowPerPage={LeadRowPerPage} RowsPerPageValue={RowLeadPerPage} PageNo={LeadPageNo} CurrentPageNo={leadCurrentPageNo} TotalListData={TotalLeadListData} />
+                          <ExamplePagination  RowPerPage={RowOrderPerPage} RowsPerPageValue={RowOrderPerPage} PageNo={PageOrderNo} CurrentPageNo={CurrentOrderPageNo} TotalListData={TotalOrderListData} />
                   </div>
               </div>
              : null } 

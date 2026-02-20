@@ -41,6 +41,8 @@ const WarehousePage  = function ()  {
                 TotalOrderData: state.Order.TotalOrderData,
                 CurrentPage: state.Order.CurrentPage,
               }));
+
+              console.log("Orderlist", Orderlist)
       
             const [TotalListData, setTotalListData] = useState(0);
             const [CurrentPageNo, setCurrentPageNo] = useState(0);
