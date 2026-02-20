@@ -6,12 +6,14 @@ import ExampleBreadcrumb from "../../components/breadcrumb";
 import LoaderPage from "../../components/loader";
 import { Button,  Checkbox, Table, Modal} from "flowbite-react";
 import { useDispatch, useSelector } from "react-redux";
-import { getOrderlist } from "../../Store/actions";
+import { getOrderChangelist, getOrderlist } from "../../Store/actions";
 import { useNavigate } from "react-router";
 import moment from "moment";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import Cookies from "js-cookie";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
+import ToastMessage from "../../components/ToastMessage";
 
 const OrderListPage : FC = function () {
       const navigate = useNavigate();
@@ -20,7 +22,7 @@ const OrderListPage : FC = function () {
       const invoiceRef = useRef<HTMLDivElement>(null);
 
     // ----------- next Button  Code Start -------------
-      const [UserDataList, setUserDataList] = useState([]);
+      const [UserDataList, setUserDataList] = useState<any[]>([]);
       const [PageNo, setPageNo] = useState(1);
       const [RoePerPage, setRoePerPage] = useState(5);
       const [loader, setLoader] = useState(false);
@@ -63,7 +65,17 @@ const OrderListPage : FC = function () {
       const [CurrentPageNo, setCurrentPageNo] = useState(0);
       
       useEffect(() => {
-        setUserDataList(Orderlist?.data ? Orderlist?.data  : Orderlist);
+      
+        let listArray: any[] = [];
+        const maybeData = Orderlist?.data ? Orderlist.data : Orderlist;
+        if (Array.isArray(maybeData)) {
+          listArray = maybeData;
+        } else if (maybeData) {
+          // unexpected payload, leave existing list or convert one-item
+          console.warn("Orderlist is not an array", maybeData);
+          listArray = [];
+        }
+        setUserDataList(listArray);
         setTotalListData(TotalOrderData ? TotalOrderData : 0);
         setCurrentPageNo(CurrentPage ? CurrentPage : 1);
         setLoader(false)
@@ -84,9 +96,41 @@ const OrderListPage : FC = function () {
         navigate(`/order/details/${data}`)
     }
 
+    // ================== Update Order Status Code Start ==================
+        const [ isOpenConfirmModel, setisOpenConfirmModel ] = useState(false);
+        const [ isUpdateOrderStatus, setIsUpdateOrderStatus ] = useState("");
+        const [ isUpdateOrderId, setIsUpdateOrderId ] = useState("");
+        const [ currentOrderStatus, setCurrentOrderStatus ] = useState("");
+        const [ driverName, setDriverName ] = useState("");
+        const [ trackingNumber, setTrackingNumber ] = useState("");
+    
+        const UpdateOrderStatusCall = () =>{
+          setisOpenConfirmModel(false)
+          const payload: any = { orderId : isUpdateOrderId, status : isUpdateOrderStatus };
+          
+          // Add driver name and tracking number for dispatch from ready to ship
+          if(currentOrderStatus === "ready to ship" && isUpdateOrderStatus === "in transit") {
+            payload.name = driverName;
+            payload.tracking_number = trackingNumber;
+          }
+          
+          dispatch(getOrderChangelist(payload));
+          setDriverName("");
+          setTrackingNumber("");
+        }
+
+        const UpdateCall =(id: string, data:string, currentStatus?: string) =>{
+          setIsUpdateOrderStatus(data)
+          setIsUpdateOrderId(id)
+          setCurrentOrderStatus(currentStatus || "")
+          setisOpenConfirmModel(true)
+        }
+    // ================== Update Order Status Code End ==================
+
     const [ parcelModal, setparcelModal ] = useState(false);
     const [ parcelModalData, setparcelModalData ] = useState<any>({});
-    const OpenParcelModal = (id:any) =>{
+    const OpenParcelModal = (id:any, call: boolean) =>{
+      if(call)  dispatch(getOrderChangelist({ orderId : id?._id, status : "ready to ship" }))
       setparcelModalData(id)
       setparcelModal(true)
     }
@@ -202,14 +246,16 @@ const OrderListPage : FC = function () {
                         <Table.HeadCell>Order id</Table.HeadCell>
                         <Table.HeadCell> Advisor Name </Table.HeadCell>
                         <Table.HeadCell>COD Amt</Table.HeadCell>
-                        <Table.HeadCell>Type</Table.HeadCell>
-                        <Table.HeadCell>Status</Table.HeadCell>
+                        <Table.HeadCell>Order Type</Table.HeadCell>
+                        <Table.HeadCell> Order Status</Table.HeadCell>
+                        <Table.HeadCell> Delivery Type</Table.HeadCell>
+                        <Table.HeadCell> Delivery Status</Table.HeadCell>
                         <Table.HeadCell>Created At</Table.HeadCell>
                         <Table.HeadCell>Action</Table.HeadCell>
                     </Table.Head>
 
                     <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
-                        {UserDataList && UserDataList.map((item: any, k:number) => (
+                        {Array.isArray(UserDataList) && UserDataList.map((item: any, k:number) => (
                             <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
                                 <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item?._id} onClick={() => {CheckData(item?._id)}}/>  </Table.Cell>
                                 <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0 cursor-pointer" onClick={() => OrderDetailsCall(item._id)}>  {item.order_id} </Table.Cell>
@@ -217,8 +263,35 @@ const OrderListPage : FC = function () {
                                 <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">₹ {Math.round(item?.total_amount)} </Table.Cell>
                                 <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.order_type.charAt(0).toUpperCase() + item?.order_type.slice(1).toLowerCase() } </Table.Cell>
                                 <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.status ? item?.status.charAt(0).toUpperCase() + item?.status.slice(1).toLowerCase()  : "-"} </Table.Cell>
+                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> {item?.delivery_through ? item?.delivery_through.charAt(0).toUpperCase() + item?.delivery_through.slice(1).toLowerCase() : "-"} </Table.Cell>
+                                <Table.Cell className="whitespace-nowrap text-md font-medium text-gray-900 dark:text-white py-0">
+                                  <div className='flex flex-col'>
+                                    <div>  {item?.delivery_by ? item?.delivery_by.charAt(0).toUpperCase() + item?.delivery_by.slice(1).toLowerCase() : "-"}  </div>
+                                    <div>  {item?.tracking_number ? item?.tracking_number : "-"} </div>
+                                  </div>
+                                </Table.Cell>
                                 <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {moment(item?.added_at).format("DD-MM-YYYY hh:mm:ss")} </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">   {item?.status && item?.status === "confirm" ?<Button onClick={() => OpenParcelModal(item) }> Parcel cover </Button> : "-" }</Table.Cell>
+                                <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> 
+                                    {item?.status && item?.status === "confirm" ?   <Button onClick={() => UpdateCall(item?._id, "packing", item?.status)}> In Packing </Button> : 
+                                    item?.status && item?.status === "packing" ?    <Button onClick={() => OpenParcelModal(item, true)}> Parcel cover </Button> :
+                                    item?.status && item?.status === "ready to ship" ?
+                                    <div className="flex gap-x-5"> 
+                                        <Button onClick={() => OpenParcelModal(item, false)}> Parcel cover </Button>
+                                        <Button onClick={() => UpdateCall(item?._id, "in transit", item?.status)}> In Transit </Button> 
+                                    </div>
+                                    :
+                                    item?.status && item?.status === "in transit" ?  
+                                    <div className="flex gap-x-5">
+                                      <Button className="w-[8rem]" onClick={() => OpenParcelModal(item, false)}> Parcel cover </Button>
+                                      <Button className="w-[8rem]" onClick={() => UpdateCall(item?._id, "delivered", item?.status)}> Delivered </Button>
+                                      <Button className="w-[8rem]" onClick={() => UpdateCall(item?._id, "loss", item?.status)}> Loss </Button>
+                                      <Button className="w-[8rem]" onClick={() => UpdateCall(item?._id, "return", item?.status)}> Return </Button>
+                                    </div>
+
+                                    : item?.status && item?.status === "delivered"  ||  item?.status && item?.status === "loss"  ||  item?.status && item?.status === "return" ?  
+                                      <Button className="w-[8rem]" onClick={() => OpenParcelModal(item, false)}> Parcel cover </Button>
+                                    :   "-" }
+                                </Table.Cell>
                             </Table.Row>
                         ))}
                     </Table.Body>
@@ -293,7 +366,47 @@ const OrderListPage : FC = function () {
               </Modal.Body>
             </Modal>
 
+        <Modal onClose={() => {setisOpenConfirmModel(false); setDriverName(""); setTrackingNumber("");}} show={isOpenConfirmModel} size="xl">
+          <Modal.Header className="px-6 pt-6 pb-0"> <span className="sr-only"> Confirmation  </span></Modal.Header>
+          <Modal.Body className="px-6 pt-0 pb-6">
+            <div className="flex flex-col items-center gap-y-6 "> <HiOutlineExclamationCircle className="text-7xl text-red-500" />
+              <p className="text-xl text-gray-500"> Are you sure you want to Update order status ? </p>
 
+                  {currentOrderStatus === "ready to ship" && isUpdateOrderStatus === "in transit" && (
+                    <div className="w-full space-y-4">
+                      <div> 
+                        <label className="block text-sm font-medium text-gray-700 mb-1 dark:text-gray-100"> Name : </label>
+                        <input 
+                          type="text" 
+                          placeholder="Dispatch Through" 
+                          value={driverName}
+                          onChange={(e) => setDriverName(e.target.value)}
+                          className="border border-gray-300 rounded px-2 py-1 w-full" 
+                        />
+                      </div>
+                      <div> 
+                        <label className="block text-sm font-medium text-gray-700 mb-1 dark:text-gray-100"> Tracking Number : </label>
+                        <input 
+                          type="text" 
+                          placeholder="Enter Tracking Details"
+                          value={trackingNumber}
+                          onChange={(e) => setTrackingNumber(e.target.value)}
+                          className="border border-gray-300 rounded px-2 py-1 w-full" 
+                        />
+                      </div>
+                    </div>
+                  )}
+              
+
+              <div className="flex items-center gap-x-3">
+                <Button color="failure" onClick={() => UpdateOrderStatusCall()}>  Yes, I'm sure </Button>
+                <Button color="gray" onClick={() => {setisOpenConfirmModel(false); setDriverName(""); setTrackingNumber("");}}> No, cancel </Button>
+              </div>
+            </div>
+          </Modal.Body>
+        </Modal>
+
+        <ToastMessage />
         </>
     );
 }

@@ -114,20 +114,9 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
   // ----------- Product Qty Change data getcode start ----------------
 
   // ----------  priority code start --------------------------
-  const priorityoption = [
-    { label: "", value: "Post" },
-    { label: "Lmd", value: "Lmd" },
-    { label: "Courier ", value: "Courier " },
-    { label : " Delhivery.com", value :"Delhivery.com"},
-    { label : " Self", value :"Self"},
-    { label : " Transport ", value :"Transport "},
-    { label : " Porter", value :"Porter"},
-    
-  ]
+  const [selectedDelieveryby, setSelectedDelieveryby] = useState("Post");
 
-  const [selectedDelieveryby, setSelectedDelieveryby] = useState("");
-
-   const revenueDropDownCall =  (e:any) =>{
+   const deliveryThroughCall =  (e:any) =>{
       setSelectedDelieveryby(e.target.value)
     }
   // ----------  priority code end --------------------------
@@ -137,7 +126,7 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
     const [isOpenSuccessOrderModel, setisOpenSuccessOrderModel ] = useState(false);
     const [isOpenSuccessOrderMessage, setisOpenSuccessOrderMessage ] = useState("");
     const [isOpenConfirmModel, setisOpenConfirmModel ] = useState(false);
-    const [isOrderStatusModel, setisOrderStatusModel ] = useState("confirm");
+    const [isOrderStatusModel, setisOrderStatusModel ] = useState("pending");
     const [isOrderTypeModel, setisOrderTypeModel ] = useState("confirm");
     const [SelectedFutureDate, setSelectedFutureDate ] = useState("");
 
@@ -170,7 +159,7 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
         products : productsArray,
         customer : data_id,
         order_type :  isOrderTypeModel,
-        delivery_by : selectedDelieveryby,
+        delivery_through : selectedDelieveryby,
         status : isOrderStatusModel == "extend" ?  null :  isOrderStatusModel,
         total_amount : Math.round(grandTotal),
        ...(CouponName && { coupon: CouponName.toUpperCase() })
@@ -348,7 +337,7 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
 
                      <div className='flex gap-x-3'>
                       <div className="mt-1">
-                        <select className="w-[15rem] border border-gray-300 bg-white text-gray-900 rounded-xl px-4 py-2 text-md dark:bg-gray-800 dark:text-gray-50" defaultValue="Post" onChange={(e) => revenueDropDownCall(e)}>
+                        <select className="w-[15rem] border border-gray-300 bg-white text-gray-900 rounded-xl px-4 py-2 text-md dark:bg-gray-800 dark:text-gray-50" defaultValue="Post" onChange={(e) => deliveryThroughCall(e)}>
                           <option value="Post">Post</option>
                           <option value="Lmd">Lmd</option>
                           <option value="Courier">Courier</option>
@@ -378,7 +367,7 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
               <div className="flex gap-x-3 justify-end mt-6 mb-4">
                 {cartOrderid ?<div className="flex border border-indigo-500 text-indigo-500 dark:text-white hover:text-gray-100 font-semibold px-6 py-2 rounded-full gap-3 hover:bg-indigo-800 transition flex text-center cursor-pointer transition-all duration-500 ease-in-out" onClick={() => OrderplaceCall("cancel", "future" )}> <BsCartXFill   className="self-center h-5 w-5" /> Cancel Order </div> : null}
                 <div className="flex border border-indigo-500 text-indigo-500 dark:text-white hover:text-gray-100 font-semibold px-6 py-2 rounded-full gap-3 hover:bg-indigo-800 transition flex text-center cursor-pointer transition-all duration-500 ease-in-out" onClick={() => OrderplaceCall("extend",  "future" )}> <FaGhost className="self-center h-5 w-5" /> Future Order </div>
-                <div className="flex border border-indigo-500 text-indigo-500 dark:text-white hover:text-gray-100 font-semibold px-6 py-2 rounded-full gap-3 hover:bg-indigo-800 transition flex text-center cursor-pointer transition-all duration-500 ease-in-out" onClick={() => OrderplaceCall("confirm", "confirm" )}> <FaCartShopping className="self-center h-5 w-5" /> Place Order </div>
+                <div className="flex border border-indigo-500 text-indigo-500 dark:text-white hover:text-gray-100 font-semibold px-6 py-2 rounded-full gap-3 hover:bg-indigo-800 transition flex text-center cursor-pointer transition-all duration-500 ease-in-out" onClick={() => OrderplaceCall("pending", "confirm" )}> <FaCartShopping className="self-center h-5 w-5" /> Place Order </div>
               </div>
             </div>
 
