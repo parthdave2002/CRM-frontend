@@ -338,7 +338,7 @@ const OrderListPage : FC = function () {
 
                   {/* Delivery Address */}
               <div className="border-b border-black py-3 space-y-1 text-[1rem] font-bold">
-                <p className="underline">Delivery Address</p>
+                <p className="underline">Delivery Address :</p>
                 <p><span className="">TO : </span> {parcelModalData?.customer?.firstname} {parcelModalData?.customer?.middlename}  {parcelModalData?.customer?.lastname} </p>
                 <p><span className="">MO :</span> {parcelModalData?.customer?.mobile_number}  {parcelModalData?.customer?.alternate_number ? ` / ${parcelModalData.customer.alternate_number}` : null}</p>
                 <p><span className="">ADDRESS  : </span> {parcelModalData?.customer?.address}</p>

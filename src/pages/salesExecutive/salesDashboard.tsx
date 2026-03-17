@@ -1,6 +1,5 @@
 import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { MdKeyboardArrowRight, MdReport } from "react-icons/md";
-import  userimage from "../../img/group.jpg"
 import { FaHandHoldingDollar } from "react-icons/fa6";
 import { FaAngleDown, FaRegClock, FaRupeeSign, FaUser } from "react-icons/fa";
 import SalesFarmerDashboard from "./salesFarmerDashboard";
@@ -15,7 +14,6 @@ import { getleadlist, getOrderChangelist, getOrderlist, getsalesDashboard, getSa
 import moment from "moment";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { BsCartCheckFill } from "react-icons/bs";
-const IMG_URL = import.meta.env["VITE_API_URL"];
 
   interface PropsData {
     setDatactive: any;
@@ -343,7 +341,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
 
               <div className="relative flex ">
                 <button onClick={() => setIsOpen(!isOpen)} className="flex items-center text-sm px-3 py-0.5 font-medium text-gray-900 hover:text-blue-600 md:me-0  dark:text-white  dark:hover:text-gray-100" type="button"  >
-                  <img className="w-8 h-8 me-2 rounded-full" src={ LoginUserimg ? `${IMG_URL}/public/user/${LoginUserimg}` : userphoto} alt="user photo" />
+                  <img className="w-8 h-8 me-2 rounded-full" src={ (LoginUserimg as unknown as string) || userphoto} alt="user photo" />
                   <span> {data ? data : ""}  </span>
                   <FaAngleDown className="w-4 h-4 ms-3" />
                 </button>

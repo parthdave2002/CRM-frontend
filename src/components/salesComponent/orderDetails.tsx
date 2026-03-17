@@ -12,7 +12,6 @@ import SuccessErrorModalPage from '../../components/modal/successErrorModal';
 import moment from 'moment';
 import { BsCartXFill } from 'react-icons/bs';
 import { Location } from 'types/types';
-const IMG_URL = import.meta.env["VITE_API_URL"];
 
 interface OrderDetailsProps{
   orderId : string | null;
@@ -229,7 +228,7 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
               {openDetailIData?.products  && openDetailIData?.products.map((data:any , k:number) =>(
                 <div key={k} className='flex justify-between gap-x-4 my-4'>
                   <div className='flex gap-x-3'>
-                    <div> <img className='w-[3rem] h-[3rem]' src={`${IMG_URL}/public/product/${data?.id?.product_pics[0]}` } alt='product image' /> </div>
+                    <div> <img className='w-[3rem] h-[3rem]' src={data?.id?.product_pics?.[0]} alt='product image' /> </div>
                     <div>
                       <div className='truncate max-w-[25rem] text-gray-600 dark:text-gray-300'> {data?.id?.name?.englishname} </div>
                       <div className='truncate max-w-[25rem] text-gray-600 text-[0.8rem] dark:text-gray-300'> {data?.id?.tech_name?.english_tech_name} </div>

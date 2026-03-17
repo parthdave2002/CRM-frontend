@@ -11,7 +11,6 @@ import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useNavigate } from "react-router";
 import moment from "moment";
 import Cookies from "js-cookie";
-const IMG_URL = import.meta.env["VITE_API_URL"];
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 const ToastMessage = lazy(() => import("../../components/ToastMessage"));
 
@@ -150,7 +149,7 @@ const BannerListPage: FC = function () {
                           <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item._id} onClick={() => {CheckData(item._id)}}/>  </Table.Cell>
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0"> 
                             <img
-                              src={`${IMG_URL}/public/banner/${item.banner_pic}`}
+                              src={item?.banner_pic}
                               alt="Banner"
                               className="h-16 w-32 object-cover rounded"
                             />

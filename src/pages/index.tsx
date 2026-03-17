@@ -5,7 +5,6 @@ import { FaHandHoldingDollar, FaNoteSticky } from "react-icons/fa6";
 import NavbarSidebarLayout from "../layouts/navbar-sidebar";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-const IMG_URL = import.meta.env["VITE_API_URL"];
 import moment from "moment";
 import {getDashboarddatalist } from "../Store/actions";
 import Cookies from "js-cookie";
@@ -379,7 +378,7 @@ const DashboardPage: FC = function () {
                     <li className="py-3 sm:py-4" key={k}>
                     <div className="flex items-center space-x-4">
                       <div className="shrink-0">
-                        <img className="h-8 w-8 rounded-full"    src={`${IMG_URL}/public/user/${item.user_pic}`}  alt="" />
+                        <img className="h-8 w-8 rounded-full"    src={item?.user_pic}  alt="" />
                       </div>
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-sm font-medium text-gray-900 dark:text-white"> {item.name} </p>

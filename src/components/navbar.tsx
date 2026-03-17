@@ -11,7 +11,6 @@ import { IoIosSearch } from "react-icons/io";
 import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { resetinsertlogin } from "../Store/actions";
-const IMG_URL = import.meta.env["VITE_API_URL"];
 
 interface NavbarSidebarLayoutProps {
   isNavbar?: boolean;
@@ -84,7 +83,7 @@ const ExampleNavbar: FC<PropsWithChildren<NavbarSidebarLayoutProps>> =
                         type="button"
                       >
                         <span className="sr-only">Open user menu</span>
-                        <img  className="w-8 h-8 rounded-full"  src={`${IMG_URL}/public/user/${LoginUserimg}`}  alt="user photo"  />
+                        <img  className="w-8 h-8 rounded-full"  src={(LoginUserimg as unknown as string) || userphoto}  alt="user photo"  />
                       </button>
                     </Menu.Button>
                   </div>

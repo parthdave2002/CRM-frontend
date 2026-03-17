@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
 import ExampleBreadcrumb from "../../components/breadcrumb";
-const IMG_URL = import.meta.env["VITE_API_URL"];
+import userphoto from "../../img/profile-picture-3.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import ImageUploadPreview from "../../components/input/imageuploader";
 import {ProfileUserdatalist, UpdatePassword, UpdateProfileUserdatalist }  from "../../Store/actions"
@@ -57,7 +57,7 @@ const ProfilePage : FC = function () {
                                 
                                 <div className="mb-6 dark:text-gray-50 text-xl ">  Profile </div>
 
-                                <ImageUploadPreview onFileSelect={setFile1}   defaultImage={userData?.user_pic ? `${IMG_URL}/public/user/${userData?.user_pic}` : ""}  />
+                                <ImageUploadPreview onFileSelect={setFile1}   defaultImage={userData?.user_pic ? userData?.user_pic :  userphoto}  />
                                 <div className="flex  justify-between gap-3 dark:text-gray-50 w-full mt-[3rem]">
                                 <div> Name : { userData ? userData?.name : "N/A"}</div>
                                 <div> Email : { userData ? userData?.email : "N/A" } </div>

@@ -13,7 +13,6 @@ import moment from "moment";
 import { FaExchangeAlt } from "react-icons/fa";
 import Cookies from "js-cookie";
 import LoaderPage from "../../components/loader";
-const IMG_URL = import.meta.env["VITE_API_URL"];
 const DeleteModalPage = lazy(() => import("../../components/modal/deleteModal"));
 const ToastMessage = lazy(() => import("../../components/ToastMessage"));
 
@@ -158,7 +157,7 @@ const CategoryListPage: FC = function () {
                   {Categorylistdata && Categorylistdata.map((item: any, k) => (
                         <Table.Row  key={k} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
                           <Table.Cell className="w-4 py-0" style={{ paddingTop: "1", paddingBottom: "1" }}>  <Checkbox  value={item?._id} onClick={() => {CheckData(item?._id)}}/>  </Table.Cell>
-                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0" style={{padding: "10px"}}>  <img  src={`${IMG_URL}/public/category/${item.category_pic}`}   alt="Category" className="h-16 w-16 object-cover rounded-full"  />   </Table.Cell>
+                          <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0" style={{padding: "10px"}}>  <img  src={item?.category_pic}   alt="Category" className="h-16 w-16 object-cover rounded-full"  />   </Table.Cell>
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.name_eng} </Table.Cell>
                           <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">  {item?.name_guj} </Table.Cell>
                           <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white">

@@ -8,7 +8,6 @@ import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useParams } from "react-router";
 import moment from "moment";
 import LoaderPage from "../../components/loader";
-const IMG_URL = import.meta.env["VITE_API_URL"];
 
 interface DescriptionData{
   id:number;
@@ -106,7 +105,7 @@ const ProductDetailsPage: FC = function () {
                       <div>
                         <div className="flex gap-x-5">
                               {ProductDatalist && ProductDatalist?.product_pics.map((item:any) =>(
-                                <img  className="w-28 h-28 rounded-full"  src={  `${IMG_URL}/public/product/${item}`}  alt="product photo"   />
+                                <img  className="w-28 h-28 rounded-full"  src={item}  alt="product photo"   />
                               ))}
                           </div>
                         <div className="grid grid-cols-3 gap-3 mt-[3rem]">

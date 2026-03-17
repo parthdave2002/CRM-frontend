@@ -7,7 +7,6 @@ import { getOrderlist, ReturnOrderlist } from "../../Store/actions";
 import NavbarSidebarLayout from "../../layouts/navbar-sidebar";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import ExamplePagination from "../../components/pagination";
-const IMG_URL = import.meta.env["VITE_API_URL"];
 
 const WarehousePage  = function ()  {     
 
@@ -152,7 +151,7 @@ const WarehousePage  = function ()  {
                                 <div className="space-y-4">
                                     {ProductModalData &&  ProductModalData.map((item: any, k: number) => ( 
                                         <div  className="flex items-start gap-4 p-4 border rounded-lg shadow-sm bg-white" key={k}>
-                                            <span>  <img  className="w-12 h-12 rounded-full object-cover border"  src={`${IMG_URL}/public/product/${item?.id?.product_pics?.[0]}`} alt="product photo"  />   </span>
+                                            <span>  <img  className="w-12 h-12 rounded-full object-cover border"  src={item?.id?.product_pics?.[0]} alt="product photo"  />   </span>
                                              <div className="flex flex-col text-sm">
                                               <span className="text-sm font-medium text-gray-900">    {item?.id?.name?.englishname}    </span>
                                               <div className="text-gray-600 mt-1">   Quantity: <strong>{item?.quantity}</strong> </div>
