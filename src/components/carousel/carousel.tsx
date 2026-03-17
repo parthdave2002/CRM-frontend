@@ -1,5 +1,4 @@
 import { useState, useEffect, FC } from "react";
-const IMG_URL = import.meta.env["VITE_API_URL"];
 
 interface PropsData{
   data : string[];
@@ -29,7 +28,7 @@ const ProductCarousel: FC <PropsData>= ({data}) => {
         {data && data.map((src, index) => (
           <img
             key={index}
-            src={ `${IMG_URL}/public/product/${src}`}
+            src={src}
             alt={`Slide ${index + 1}`}
             className={`absolute block w-full transition-opacity duration-700 ease-in-out  left-1/2 -translate-x-1/2  h-[15rem] ${
               index === currentIndex ? "opacity-100" : "opacity-0"

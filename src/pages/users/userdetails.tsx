@@ -6,7 +6,6 @@ import { useEffect, useState  } from "react";
 import ExampleBreadcrumb from "../../components/breadcrumb";
 import { useParams } from "react-router";
 import moment from "moment";
-const IMG_URL = import.meta.env["VITE_API_URL"];
 
 interface RoleData{
   role_title :string;
@@ -65,7 +64,7 @@ const UserDetailsPage: FC = function () {
         <div className="mt-[2rem] bg-white dark:bg-gray-800 p-4">
             <div>
               <div  className="grid grid-cols-3 gap-4">
-                 <img  className="w-20 h-20 rounded-full"  src={ UserDataList?.user_pic ? `${IMG_URL}/public/user/${UserDataList?.user_pic}` : ""}  alt="advisor photo"  />
+                 <img  className="w-20 h-20 rounded-full"  src={ UserDataList?.user_pic ? UserDataList?.user_pic : ""}  alt="advisor photo"  />
 
                 {/* Name */}
                 <div className="p-4 dark:bg-gray-800 rounded-lg">

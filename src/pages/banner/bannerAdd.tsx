@@ -109,7 +109,7 @@ const BannerAddPage : FC = function () {
                     <Form onSubmit={(e) => { e.preventDefault(); validation.handleSubmit(); return false; }} >
                         <div>
                             <ImageUploadPreview onFileSelect={setFile}/>
-                            {validateImage == 1 ? <FormFeedback type="invalid" className="text-Red text-sm"> Please select category image </FormFeedback> : null}
+                            {validateImage == 1 ? <FormFeedback type="invalid" className="text-Red text-sm"> Please select banner image </FormFeedback> : null}
                         </div>
 
                         <div>

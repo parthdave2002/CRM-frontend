@@ -13,13 +13,13 @@ import { toast } from "react-toastify";
 import ImageUploadPreview from "../../components/input/imageuploader";
 import moment from "moment";
 import ToastMessage from "../../components/ToastMessage";
-const IMG_URL = import.meta.env["VITE_API_URL"];
 
 const AddUserPage : FC = function () {
 
     const { id } = useParams();
     const dispatch = useDispatch();
-    const [file, setFile] = useState<File | null |  string>(null);
+    const [file, setFile] = useState<File | null>(null);
+    const [preview, setPreview] = useState<string>("");
 
     interface RoleData{
         role_title: string;
@@ -233,37 +233,37 @@ const AddUserPage : FC = function () {
         validationSchema: Yup.object({
             name: Yup.string().required("Please Enter Advisor Name"),
             email: Yup.string().required("Please Enter Email")
-            .matches(/^[^@]+@[^@]+$/, "Email must contain exactly one '@'") // Ensures exactly one '@'
-            .matches(/@[^@]+\.[^@]+$/, "Email must contain exactly one '.' after '@'") // Ensures '.' after '@'
-            .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email format"), // General email validation,
+                .matches(/^[^@]+@[^@]+$/, "Email must contain exactly one '@'") // Ensures exactly one '@'
+                .matches(/@[^@]+\.[^@]+$/, "Email must contain exactly one '.' after '@'") // Ensures '.' after '@'
+                .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email format"), // General email validation,
             // password: Yup.string().required("Please Enter Password")
             // .min(5, "Password must be at least 5 characters long")
             // .max(10, "Password must be at most 10 characters long")
             // .matches(/[A-Z]/, "Password must contain at least one uppercase letter (A-Z)")
             // .matches(/\d/, "Password must contain at least one numeric digit (0-9)")
             // .matches(/[@$!%*?&]/, "Password must contain at least one special character (@$!%*?&)"),
-           
+
             password: Yup.string()
-  .test(
-    'password-validation',
-    'Password must meet the criteria',
-    function (value) {
-      if (!value) return true; // ✅ allow empty
-      // validate manually
-      if (value.length < 5) return this.createError({ message: 'Password must be at least 5 characters long' });
-      if (value.length > 10) return this.createError({ message: 'Password must be at most 10 characters long' });
-      if (!/[A-Z]/.test(value)) return this.createError({ message: 'Password must contain at least one uppercase letter (A-Z)' });
-      if (!/\d/.test(value)) return this.createError({ message: 'Password must contain at least one numeric digit (0-9)' });
-      if (!/[@$!%*?&]/.test(value)) return this.createError({ message: 'Password must contain at least one special character (@$!%*?&)' });
-      return true; // ✅ all good
-    }
-  ),
+                .test(
+                    'password-validation',
+                    'Password must meet the criteria',
+                    function (value) {
+                        if (!value) return true; // ✅ allow empty
+                        // validate manually
+                        if (value.length < 5) return this.createError({ message: 'Password must be at least 5 characters long' });
+                        if (value.length > 10) return this.createError({ message: 'Password must be at most 10 characters long' });
+                        if (!/[A-Z]/.test(value)) return this.createError({ message: 'Password must contain at least one uppercase letter (A-Z)' });
+                        if (!/\d/.test(value)) return this.createError({ message: 'Password must contain at least one numeric digit (0-9)' });
+                        if (!/[@$!%*?&]/.test(value)) return this.createError({ message: 'Password must contain at least one special character (@$!%*?&)' });
+                        return true; // ✅ all good
+                    }
+                ),
 
             mobile_no: Yup.string().required("Please Enter Mobile Number")
-            .matches(/^\d{10}$/, "Mobile number must be 10 digits"),
+                .matches(/^\d{10}$/, "Mobile number must be 10 digits"),
             address: Yup.string().required("Please Enter Address"),
             emergency_mobile_no: Yup.string().required("Please Enter Emergency Mobile Number")
-            .matches(/^\d{10}$/, "Mobile number must be 10 digits"),
+                .matches(/^\d{10}$/, "Mobile number must be 10 digits"),
             emergency_contact_person: Yup.string().required("Please Enter Emergency Contact Person"),
             date_of_birth: Yup.string().required("Please Enter Date of birth"),
             date_of_joining: Yup.string().required("Please Enter Date of joining"),
@@ -348,7 +348,7 @@ const AddUserPage : FC = function () {
             aadhar_card : UserDataList?.aadhar_card ?? "",
             pan_card : UserDataList?.pan_card ?? "",
             bank_passbook : UserDataList?.bank_passbook ?? null,
-            setFile: UserDataList?.user_pic ? new File([], UserDataList.user_pic) : null
+            user_pic: UserDataList?.user_pic ?? ""
         }));
  
         setSelectedRoleOption({ label: UserDataList?.role.role_title,  value: UserDataList?.role._id });
@@ -382,6 +382,10 @@ const AddUserPage : FC = function () {
             setSelectedBankPassbookOption(selectedSatus);
             setSelectedBankPassbookid(selectedSatus?.value ?? null);
         }
+
+        // Set image preview and file state for editing
+        setPreview(UserDataList?.user_pic || "");
+        setFile(null);
     }
  
   }, [UserDataList]);
@@ -401,7 +405,10 @@ const AddUserPage : FC = function () {
                 <div className="mt-[2rem] bg-white dark:bg-gray-800 p-4">
                     <Form onSubmit={(e) => {  e.preventDefault();  validation.handleSubmit(); return false; }}>
 
-                        <ImageUploadPreview onFileSelect={setFile}  defaultImage={UserDataList?.user_pic ? `${IMG_URL}/public/user/${UserDataList?.user_pic}` : ""}/>
+                        <ImageUploadPreview  onFileSelect={(selectedFile) => { 
+                            setFile(selectedFile); 
+                            setPreview(URL.createObjectURL(selectedFile)); 
+                            }}  defaultImage={UserDataList?.user_pic || ""}/>
 
                         <div className="md:flex gap-x-[2rem]">
                             <div className="flex-1 mt-[1rem]">
