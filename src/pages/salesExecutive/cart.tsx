@@ -121,6 +121,24 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
     }
   // ----------  priority code end --------------------------
 
+  // ---------------- Round off code start ----------------
+  const [roundOff, setRoundOff] = useState(0);
+
+  const handleIncrement = () => {
+    setRoundOff((prev) => Math.min(prev + 1, 5));
+  };
+
+  const handleDecrement = () => {
+    setRoundOff((prev) => Math.max(prev - 1, -5));
+  };
+
+  const handleChange = (e:any) => {
+    let value = parseInt(e.target.value) || 0;
+    if (value > 5) value = 5;
+    if (value < -5) value = -5;
+    setRoundOff(value);
+  };
+  // ---------------- Round off code end ----------------
 
   // ---------------- Place Order code start ----------------
     const [isOpenSuccessOrderModel, setisOpenSuccessOrderModel ] = useState(false);
@@ -161,7 +179,7 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
         order_type :  isOrderTypeModel,
         delivery_through : selectedDelieveryby,
         status : isOrderStatusModel == "extend" ?  null :  isOrderStatusModel,
-        total_amount : Math.round(grandTotal),
+        total_amount : Math.round(grandTotal + roundOff),
        ...(CouponName && { coupon: CouponName.toUpperCase() })
       }
       if (isOrderTypeModel === "future" && isOrderStatusModel == "extend" )  requser.future_order_date = SelectedFutureDate;
@@ -355,12 +373,21 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
                     <div className="text-[1rem] font-semibold text-gray-500 dark:text-gray-300 flex justify-between w-full max-w-xs"> <span>Total Subtotal</span> <span>: {Math.round(totalSubtotal)} Rs.</span> </div>
                     <div className="text-[1rem] font-semibold text-gray-500 dark:text-gray-300 flex justify-between w-full max-w-xs"> <span>Total GST</span> <span>: {Math.round(totalGST)} Rs.</span>  </div>
                     {CouponAmt ?  <div className="text-[1rem] font-semibold text-gray-500 dark:text-gray-300 flex justify-between w-full max-w-xs"> <span> Coupon Amount</span> <span>: - {Math.round(CouponAmt)} Rs.</span>  </div> : null }
+                    <div className="text-[1rem] font-semibold text-gray-500 dark:text-gray-300 flex justify-between w-full max-w-xs items-center">
+                    <span>Round Off</span>
+                      <span className="flex items-center space-x-2"> <span>:</span>
+                        <button   onClick={handleDecrement}  className="px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded"  >  - </button>
+                        <input  type="number" value={roundOff}  onChange={handleChange}  className="w-12 text-center border rounded" />
+                        <button onClick={handleIncrement}  className="px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded" >  + </button>
+                        <span>Rs.</span>
+                      </span>
+                  </div>
                   </div>
                 </div>
 
                 <div className="flex justify-end items-center text-xl font-semibold text-gray-500 dark:text-gray-300 mt-4 gap-x-4">
                   <span className="text-[1.5rem]">Grand Total</span>
-                  <span className="min-w-[11rem] text-end">: {Math.round(grandTotal)} Rs.</span>
+                  <span className="min-w-[11rem] text-end">: {Math.round(grandTotal + roundOff)} Rs.</span>
                 </div>
               </div>
 
