@@ -22,6 +22,7 @@ interface Cartprops{
   cartOrderid ?: any;
   setCartOrderid: (value : any) => void;
   future_date ?:any;
+  roundOff ?: number;
 }
 
 interface ProfileInfo{
@@ -53,7 +54,7 @@ interface ProfileInfo{
   smart_phone: boolean;
 }
 
-const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCartItem, cartOrderid, setCartOrderid, future_date}) => {
+const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCartItem, cartOrderid, setCartOrderid, future_date, roundOff}) => {
   const dispatch = useDispatch();
   const [CouponName, setCouponName] = useState< string>();
   const [CouponAmt, setCouponAmt] = useState(0);
@@ -122,7 +123,7 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
   // ----------  priority code end --------------------------
 
   // ---------------- Round off code start ----------------
-  const [roundOff, setRoundOff] = useState(0);
+  const [roundOffState, setRoundOff] = useState(roundOff ?? 0);
 
   const handleIncrement = () => {
     setRoundOff((prev) => Math.min(prev + 1, 5));
@@ -179,7 +180,8 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
         order_type :  isOrderTypeModel,
         delivery_through : selectedDelieveryby,
         status : isOrderStatusModel == "extend" ?  null :  isOrderStatusModel,
-        total_amount : Math.round(grandTotal + roundOff),
+        total_amount : Math.round(grandTotal + roundOffState),
+        round_off: roundOffState,
        ...(CouponName && { coupon: CouponName.toUpperCase() })
       }
       if (isOrderTypeModel === "future" && isOrderStatusModel == "extend" )  requser.future_order_date = SelectedFutureDate;
@@ -241,10 +243,8 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
   // --------------- Add Order Suucess/ error code start ----------------
     const AddOrderdatalist = useSelector((state: any) => state.Order.AddOrderdatalist);
     const UpdateOrderdatalist = useSelector((state: any) => state.Order.UpdateOrderlist);
-      console.log("UpdateOrderdatalist", UpdateOrderdatalist);
 
     useEffect(() => {
-      
       if (AddOrderdatalist?.success || UpdateOrderdatalist?.success ) {
         setisOpenSuccessOrderModel(true);
         setisOpenSuccessOrderMessage(UpdateOrderdatalist?.msg ? UpdateOrderdatalist?.msg : AddOrderdatalist?.msg);
@@ -377,7 +377,7 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
                     <span>Round Off</span>
                       <span className="flex items-center space-x-2"> <span>:</span>
                         <button   onClick={handleDecrement}  className="px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded"  >  - </button>
-                        <input  type="number" value={roundOff}  onChange={handleChange}  className="w-12 text-center border rounded" />
+                        <input  type="number" value={roundOffState}  onChange={handleChange}  className="w-12 text-center border rounded" />
                         <button onClick={handleIncrement}  className="px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded" >  + </button>
                         <span>Rs.</span>
                       </span>
@@ -387,7 +387,7 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
 
                 <div className="flex justify-end items-center text-xl font-semibold text-gray-500 dark:text-gray-300 mt-4 gap-x-4">
                   <span className="text-[1.5rem]">Grand Total</span>
-                  <span className="min-w-[11rem] text-end">: {Math.round(grandTotal + roundOff)} Rs.</span>
+                  <span className="min-w-[11rem] text-end">: {Math.round(grandTotal + roundOffState)} Rs.</span>
                 </div>
               </div>
 
