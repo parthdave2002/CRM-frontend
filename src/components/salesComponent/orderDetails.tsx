@@ -54,6 +54,7 @@ interface OrderDetailsProps{
     status: string;
     total_amount : number;
     coupon : any;
+    round_off : number;
   }
 
 const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openDetailIData}) => {  
@@ -103,7 +104,7 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
         totalDiscount += discount * quantity;
         totalGST += gstAmount;
         const totalBeforeCoupon =   totalSubtotal + totalGST;
-        totalGrandTotal = Math.max(0, totalBeforeCoupon - (openDetailIData?.coupon?.amount ?? 0));
+        totalGrandTotal = Math.max(0, totalBeforeCoupon - (openDetailIData?.coupon?.amount ?? 0) + (openDetailIData?.round_off ?? 0) );
       });
 
       return { totalSubtotal, totalDiscount, totalGST, grandTotal: totalSubtotal + totalGST, totalGrandTotal };
@@ -158,7 +159,8 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
       customer: openDetailIData?.customer?.id, 
       order_id : orderId,
       order_type : "confirm",
-      status : isReturn 
+      status : isReturn,
+      round_off: openDetailIData?.round_off ?? 0,
     }
       dispatch(getUpdateOrderlist(requser))
       setisOpenReturnOrderModel(false)
@@ -185,9 +187,9 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
   const finalsubtotal = (UserDataList?.products ?? []).reduce( (sum:any, item:any) => sum + item?.quantity *( item?.id?.price - item?.id?.discount ),  0 );
   const finaldiscount = (UserDataList?.products ?? []).reduce( (sum:any, item:any) => sum + (item?.id?.discount *  item?.quantity ),  0 );
   const finalgst = (UserDataList?.products ?? []).reduce( (sum:any, item:any) => sum + (item?.quantity * (item?.id?.price - item?.id?.discount)) * ((item?.id?.c_gst * 2) / 100), 0 );
-  const grandtotal = finalsubtotal + finalgst;
+  const grandtotal = finalsubtotal + finalgst ;
   const totalBeforeCoupon = finalsubtotal + finalgst;
-  const total = Math.max(0, totalBeforeCoupon - (UserDataList?.coupon?.amount ?? 0));
+  const total = Math.max(0, totalBeforeCoupon - (UserDataList?.coupon?.amount ?? 0) +  (UserDataList?.round_off ?? 0) );
 
   const A4_HEIGHT_PX = 1123;
   const STATIC_HEIGHT_PX = 400; // estimated
@@ -279,6 +281,13 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
                   <div className="flex justify-between w-full text-base md:text-lg font-medium text-green-600 dark:text-green-400">
                     <span>Coupon</span>
                     <span className="font-semibold">- {Math.round(openDetailIData?.coupon?.amount) ?? 0} Rs.</span>
+                  </div>
+                )}
+
+                {openDetailIData?.round_off && (
+                  <div className="flex justify-between w-full text-base md:text-lg font-medium text-green-600 dark:text-green-400">
+                    <span>Round Off</span>
+                    <span className="font-semibold"> {Math.round(openDetailIData?.round_off ?? 0)} Rs.</span>
                   </div>
                 )}
               </div>
@@ -429,7 +438,7 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
                                 <>
                                   <div className="mt-4 flex">
                                     <div className="flex-1 text-[0.8rem]">
-                                      <p>A/c Holder: AGRI BHARAT</p>
+                                      <p>A/c Holder: AGRI BHARAT </p>
                                       <p>A/c No: 50200102495365</p>
                                       <p>Bank: HDFC BANK, KAPADWANJ</p>
                                       <p>IFSC: HDFC0000748</p>
@@ -462,7 +471,7 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
                                             </div>
                                             <p>+ ₹{Math.round(finalgst) ?? 0}</p>
                                           </div>
-                                        </div>
+                                       
             
                                         {/* Coupon Section */}
                                         {UserDataList?.coupon && (
@@ -484,9 +493,19 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
                                             </div>
                                           </div>
                                         )}
+
+                                          {UserDataList?.round_off !== undefined && (
+                                            <div className="flex justify-between my-3">
+                                              <div className="flex">
+                                                <p className="w-[6rem]"><strong>Round Off</strong></p>
+                                                <span className="mx-1">:</span>
+                                              </div>
+                                              <p>₹{Math.round(UserDataList?.round_off ?? 0)}</p>
+                                            </div>
+                                          )}
+                                           </div>
                                       </div>
                                     </div>
-            
                                   </div>
 
                                   <div className="text-2xl font-bold bg-gray-700 text-white px-3 py-2  text-right  leading-tight antialiased">Total : ₹{Math.round(total) ?? 0}</div>

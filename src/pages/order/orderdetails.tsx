@@ -62,6 +62,7 @@ const OrdererDetailsPage: FC = function () {
     status: string;
     total_amount : number;
     coupon : any;
+    round_off: number
   }
 
   const [UserDataList, setUserDataList] = useState<OrderDetailsType | null>( null);
@@ -77,7 +78,7 @@ const OrdererDetailsPage: FC = function () {
   const finalgst = (UserDataList?.products ?? []).reduce( (sum, item:any) => sum + (item?.quantity * (item?.id?.price - item?.id?.discount)) * ((item?.id?.c_gst * 2) / 100), 0 );
   const grandtotal = finalsubtotal + finalgst;
   const totalBeforeCoupon = finalsubtotal + finalgst;
-  const total = Math.max(0, totalBeforeCoupon - (UserDataList?.coupon?.amount ?? 0));
+  const total = Math.max(0, totalBeforeCoupon - (UserDataList?.coupon?.amount ?? 0) +  (UserDataList?.round_off ?? 0));
   // const total = finalsubtotal + finalgst - (UserDataList?.coupon?.amount )  ;
 
   let Name = "Order Details";
@@ -290,7 +291,7 @@ const OrdererDetailsPage: FC = function () {
                         </div>
 
                         <div className="flex-1 text-[1rem]">
-                          <div className="space-y-1">
+                          <div className="space-y-2">
                             {/* Row */}
                             <div className="py-2">
                               <div className="flex justify-between">
@@ -316,10 +317,9 @@ const OrdererDetailsPage: FC = function () {
                                 </div>
                                 <p>+ ₹{Math.round(finalgst) ?? 0 }</p>
                               </div>
-                            </div>
 
                             {/* Coupon Section */}
-                            {UserDataList?.coupon && (
+                            {UserDataList?.coupon ? (
                               <div className="border-t border-dashed border-gray-400 py-2 space-y-1">
                                 <div className="flex justify-between">
                                   <div className="flex">
@@ -337,7 +337,18 @@ const OrdererDetailsPage: FC = function () {
                                   <p>- ₹{UserDataList?.coupon?.amount ? Math.round(UserDataList?.coupon?.amount) : 0}</p>
                                 </div>
                               </div>
+                            ): null}
+
+                            {UserDataList?.round_off !== undefined && (
+                              <div className="flex justify-between ">
+                                <div className="flex">
+                                  <p className="w-[6rem]"><strong>Round Off</strong></p>
+                                  <span className="mx-1">:</span>
+                                </div>
+                                <p>₹{Math.round(UserDataList?.round_off ?? 0)}</p>
+                              </div>
                             )}
+                            </div>
                           </div>
                         </div>
 
