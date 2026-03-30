@@ -297,6 +297,7 @@ const ReportPage: FC = () => {
               <Table.HeadCell>Coupon Code</Table.HeadCell>
               <Table.HeadCell>Discount Amount</Table.HeadCell>
               <Table.HeadCell>Final Amount</Table.HeadCell>
+              <Table.HeadCell> Delivery Type</Table.HeadCell>
               <Table.HeadCell>Advisor Name</Table.HeadCell>
               <Table.HeadCell>Status</Table.HeadCell>
               <Table.HeadCell>Order Date</Table.HeadCell>
@@ -328,7 +329,8 @@ const ReportPage: FC = () => {
                   </Table.Cell>
                   <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white">{item?.coupon?.name || "-"}</Table.Cell>
                   <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white">{item?.coupon?.amount || "-"}</Table.Cell>
-                  <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white">{item?.total_amount.toFixed(2)}</Table.Cell>
+                  <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white">{Math.round(item?.total_amount)}</Table.Cell>
+                  <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white">{item?.delivery_through}</Table.Cell>
                   <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white">{item?.advisor_name?.name}</Table.Cell>
                   <Table.Cell className="whitespace-nowrap p-4 text-base font-normal text-gray-900 dark:text-white">{item?.status ? item?.status.charAt(0).toUpperCase() + item?.status.slice(1).toLowerCase() : "-"}</Table.Cell>
                   <Table.Cell className="whitespace-nowrap text-base font-medium text-gray-900 dark:text-white py-0">{moment(item.added_at).format("DD-MM-YYYY")}</Table.Cell>

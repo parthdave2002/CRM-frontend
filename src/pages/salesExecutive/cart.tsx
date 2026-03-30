@@ -376,9 +376,9 @@ const CartList : FC<Cartprops> = ({setCartOpen,CartData, handleRemoveCall, setCa
                     <div className="text-[1rem] font-semibold text-gray-500 dark:text-gray-300 flex justify-between w-full max-w-xs items-center">
                     <span>Round Off</span>
                       <span className="flex items-center space-x-2"> <span>:</span>
-                        <button   onClick={handleDecrement}  className="px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded"  >  - </button>
-                        <input  type="number" value={roundOffState}  onChange={handleChange}  className="w-12 text-center border rounded" />
-                        <button onClick={handleIncrement}  className="px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded" >  + </button>
+                        <button   onClick={handleDecrement}  className="px-2 py-1 bg-red-600 text-gray-800 dark:text-gray-50 rounded "  >  - </button>
+                        <input  type="number" value={roundOffState}  onChange={handleChange}  className="w-12 text-center text-gray-800  border rounded" />
+                        <button onClick={handleIncrement}  className="px-2 py-1 bg-green-600 text-gray-800 dark:text-gray-50 rounded" >  + </button>
                         <span>Rs.</span>
                       </span>
                   </div>

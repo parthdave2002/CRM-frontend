@@ -371,19 +371,20 @@ const OrderDetails : FC <OrderDetailsProps> = ({orderId, closeOrderDetail, openD
                                   <h1 className="text-3xl font-bold text-gray-800 text-right">INVOICE</h1>
                                 </div>
             
-                                <div className="flex justify-between items-center mb-4 border-b pb-4">
-                                  <div>
-                                    <p className="text-gray-500 text-[0.9rem]"> Shop No-26, Ground Floor,Arth Business Center (ABC), S.P Ring Road, Nikol, Ahmedabad-382350, Gujarat  </p>
-                                    <p className="text-gray-500 text-[0.9rem]">  GST : 24ACBFA6896P1ZQ </p>
-                                  </div>
-                                  <div className="text-right">
-                                    <p className="text-gray-500 text-sm"><strong> Pesticide Lic No: </strong> GRS/FP1230000664/2023-24 </p>
-                                    <p className="text-gray-500 text-sm"><strong> Seeds Lic No: </strong>  GRS/FSR230000774/2023-24	 </p>
-                                    <p className="text-gray-500 text-sm"> <strong> Ferlitizer Lic No: </strong> GRS/FFR230000775/2023-24 </p>
-                                    <p className="text-gray-500 text-sm"> E-mail: contact@agribharat.com</p>
-                                    <p className="text-gray-500 text-sm"> Contact : 91000 29329/91000 29429 </p>
-                                  </div>
-                                </div>
+                              <div className="flex justify-between items-center mb-4 border-b pb-4">
+                       <div>
+                         <p className="text-gray-500 text-[0.9rem]"> Shop No-26, Ground Floor,Arth Business Center (ABC), </p>
+                         <p className="text-gray-500 text-[0.9rem]"> S.P Ring Road, Nikol, Ahmedabad - 382350, Gujarat</p>
+                         <p className="text-gray-500 text-[0.9rem]"> GST :  24ACBFA6896P1ZQ</p>
+                       </div>
+                      <div className="text-right">
+                        <p className="text-gray-500 text-sm"><strong> Pesticide Lic No: </strong> GRS/FP1230000664/2023-24 </p>
+                        <p className="text-gray-500 text-sm"><strong> Seeds Lic No: </strong>  GRS/FSR230000774/2023-24	 </p>
+                        <p className="text-gray-500 text-sm"> <strong> Ferlitizer Lic No: </strong> GRS/FFR230000775/2023-24 </p>
+                        <p className="text-gray-500 text-sm"> E-mail: contact@agribharat.com</p>
+                        <p className="text-gray-500 text-sm"> Contact : 91000 29329/91000 29429 </p>
+                      </div>
+                    </div>
             
                                 <div className="grid grid-cols-2 mb-4">
                                   <div>
