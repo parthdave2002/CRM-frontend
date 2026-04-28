@@ -169,7 +169,13 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
       const [TotalOrderListData, setTotalOrderListData] = useState(0);
     const [CurrentOrderPageNo, setCurrentOrderPageNo] = useState(0);
     const [PageOrderNo, setPageOrderNo] = useState(1);
-    const [RowOrderPerPage, setRowOrderPerPage] = useState(10);
+    const [RowOrderPerPage, setRowOrderPerPage] = useState(5);
+    const RowOrderPageDataList = (data: any) => { setPageOrderNo(data) }
+
+    const OrderRowPerPage = (event: any) => {
+      const value = Number(event)
+      setRowOrderPerPage(value);
+    };
 
     const [leadData, setLeadData] = useState<any>(null)
     const [OrderData, setOrderData] = useState<any>(null)
@@ -311,10 +317,10 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
 
       useEffect(() =>{
         if(role === "697e5c8d7f405930a844b03c"){
-             let requser = {  confirmation : true }   
+             let requser = {  confirmation : true, page: PageOrderNo, size: RowOrderPerPage }   
               dispatch(getOrderlist(requser))
         }
-      },[dispatch])
+      },[dispatch, PageOrderNo, RowOrderPerPage])
       // ----------- Tabnavbar code end --------------------
     
     const [ProductModal, setProductModal] = useState(false);
@@ -685,7 +691,7 @@ const SalesDashboardPage : FC <PropsData> = function ({ setDatactive,  openProfi
                                 </Table>
                                 : <div className='text-center py-4 dark:text-gray-50'>No DataFound </div>}
                             </>
-                          <ExamplePagination  RowPerPage={RowOrderPerPage} RowsPerPageValue={RowOrderPerPage} PageNo={PageOrderNo} CurrentPageNo={CurrentOrderPageNo} TotalListData={TotalOrderListData} />
+                          <ExamplePagination  RowPerPage={OrderRowPerPage} RowsPerPageValue={RowOrderPerPage} PageNo={PageOrderNo} PageData={RowOrderPageDataList} CurrentPageNo={CurrentOrderPageNo} TotalListData={TotalOrderListData} />
                   </div>
               </div>
              : null } 

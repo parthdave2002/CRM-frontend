@@ -87,7 +87,7 @@ const OrdererDetailsPage: FC = function () {
 
   // ---------- Invoice Pagination start ------------
   // Show exactly 6 products per page and generate new pages with the same layout
-  const ITEMS_PER_PAGE = 6;
+  const ITEMS_PER_PAGE = 7;
 
   const chunkProducts = (products: any[], pageSize: number) => {
     const chunks: any[] = [];
@@ -176,34 +176,35 @@ const OrdererDetailsPage: FC = function () {
                   {/* --- Static Top Content --- */}
                   <div className="flex flex-col">
                     <div className="text-center mb-2">
-                      <h6 className="text-[0.9rem]  text-gray-500 ">  એગ્રી ભારત કંપનીમાંથી 100% ખાતરીબંધ બ્રાન્ડેડ કૃષિ પ્રોડક્ટ ઘરે બેઠા ઓર્ડર કરવા અને ખેતીને લગતી વધુ માહિતી માટે  </h6>
-                      <h6 className="text-[0.9rem]  text-gray-500 ">  હેલ્પલાઇન નંબર 9100029429/9100029329 પર સંપર્ક કરો!!!  જય કિસાન  </h6>
+                      <h6 className="text-[0.8rem]  text-gray-500 ">  એગ્રી ભારત કંપનીમાંથી 100% ખાતરીબંધ બ્રાન્ડેડ કૃષિ પ્રોડક્ટ ઘરે બેઠા ઓર્ડર કરવા અને ખેતીને લગતી વધુ માહિતી માટે  </h6>
+                      <h6 className="text-[0.8rem]  text-gray-500 ">  હેલ્પલાઇન નંબર 9100029429/9100029329 પર સંપર્ક કરો!!!  જય કિસાન  </h6>
                     </div>
 
-                    <div className="flex justify-between items-center mb-4">
+                    <div className="flex justify-between items-center mb-3">
                       <img src={logo} alt="Company Logo" className="w-24" />
-                      <h1 className="text-3xl font-bold text-gray-800 text-right">INVOICE</h1>
+                      <h1 className="text-2xl font-bold text-gray-800 text-right">INVOICE</h1>
                     </div>
 
-                    <div className="flex justify-between items-center mb-4 border-b pb-4">
+                    <div className="flex justify-between items-center mb-2 border-b pb-3">
                        <div>
-                         <p className="text-gray-500 text-[0.9rem]"> Shop No-26, Ground Floor,Arth Business Center (ABC), </p>
-                         <p className="text-gray-500 text-[0.9rem]"> S.P Ring Road, Nikol, Ahmedabad - 382350, Gujarat</p>
-                         <p className="text-gray-500 text-[0.9rem]"> GST :  24ACBFA6896P1ZQ</p>
+                         <p className="text-gray-500 text-[0.8rem]"> Shop No-26, Ground Floor,Arth Business Center (ABC), </p>
+                         <p className="text-gray-500 text-[0.8rem]"> S.P Ring Road, Nikol, Ahmedabad - 382350, Gujarat</p>
+                          <p className="text-gray-500 text-[0.8rem]"> E-mail: contact@agribharat.com</p>
+                          <p className="text-gray-500 text-[0.8rem]"> Contact : 91000 29329/91000 29429 </p>
                        </div>
                       <div className="text-right">
-                        <p className="text-gray-500 text-sm"><strong> Pesticide Lic No: </strong> GRS/FP1230000664/2023-24 </p>
-                        <p className="text-gray-500 text-sm"><strong> Seeds Lic No: </strong>  GRS/FSR230000774/2023-24	 </p>
-                        <p className="text-gray-500 text-sm"> <strong> Ferlitizer Lic No: </strong> GRS/FFR230000775/2023-24 </p>
-                        <p className="text-gray-500 text-sm"> E-mail: contact@agribharat.com</p>
-                        <p className="text-gray-500 text-sm"> Contact : 91000 29329/91000 29429 </p>
+                        <p className="text-gray-500  text-[0.8rem]"> GSTIN :  24ACBFA6896P1ZQ</p>
+                        <p className="text-gray-500  text-[0.8rem]"><strong> Pesticide Lic No: </strong> GRS/FP1230000664/2023-24 </p>
+                        <p className="text-gray-500  text-[0.8rem]"><strong> Seeds Lic No: </strong>  GRS/FSR230000774/2023-24	 </p>
+                        <p className="text-gray-500  text-[0.8rem]"> <strong> Ferlitizer Lic No: </strong> GRS/FFR230000775/2023-24 </p>
+
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 mb-4">
+                    <div className="grid grid-cols-2 mb-3">
                       <div>
-                        <p className="font-semibold">Bill To:</p>
-                        <p>{UserDataList?.customer?.firstname} {UserDataList?.customer?.middlename} {UserDataList?.customer?.lastname}</p>
+                        <p className="font-semibold">Bill To: <span>{UserDataList?.customer?.firstname} {UserDataList?.customer?.middlename} {UserDataList?.customer?.lastname}</span></p>
+                        
                         <p className="text-gray-600 text-[0.9rem]">  {UserDataList?.customer?.address}   </p>
                         <p className="text-gray-600 text-[0.9rem]">  {UserDataList?.customer?.village?.name}, {UserDataList?.customer?.taluka?.name},  {UserDataList?.customer?.district?.name},  </p>
                         <p className="text-gray-600 text-[0.9rem]">  {UserDataList?.customer?.state?.name} -  {UserDataList?.customer?.pincode}  </p>
@@ -282,7 +283,7 @@ const OrdererDetailsPage: FC = function () {
                   {/* Footer (only on last page) with account & totals */}
                   {pageIndex === productChunks.length - 1 && (
                     <>
-                      <div className="mt-4 flex">
+                      <div className="mt-2 flex">
                         <div className="flex-1 text-[0.8rem]">
                           <p>A/c Holder: AGRI BHARAT</p>
                           <p>A/c No: 50200102495365</p>
@@ -290,13 +291,12 @@ const OrdererDetailsPage: FC = function () {
                           <p>IFSC: HDFC0000748</p>
                         </div>
 
-                        <div className="flex-1 text-[1rem]">
+                        <div className="flex-1 text-[0.9rem]">
                           <div className="space-y-2">
-                            {/* Row */}
-                            <div className="py-2">
+                            <div className="py-3">
                               <div className="flex justify-between">
                                 <div className="flex">
-                                  <p className="w-[6rem]"><strong> Discount</strong></p>
+                                  <p className="w-[6rem] "><strong> Discount</strong></p>
                                   <span className="mx-1">:</span>
                                 </div>
                                 <p>₹{Math.round(finaldiscount) ?? 0}</p>
@@ -320,7 +320,7 @@ const OrdererDetailsPage: FC = function () {
 
                             {/* Coupon Section */}
                             {UserDataList?.coupon ? (
-                              <div className="border-t border-dashed border-gray-400 py-2 space-y-1">
+                              <div className="border-dashed border-gray-400">
                                 <div className="flex justify-between">
                                   <div className="flex">
                                     <p className="w-[6rem]"><strong>Grand Total</strong></p>
@@ -339,7 +339,7 @@ const OrdererDetailsPage: FC = function () {
                               </div>
                             ): null}
 
-                            {UserDataList?.round_off !== undefined && (
+                            {UserDataList?.round_off !== 0 && (
                               <div className="flex justify-between ">
                                 <div className="flex">
                                   <p className="w-[6rem]"><strong>Round Off</strong></p>
@@ -354,22 +354,22 @@ const OrdererDetailsPage: FC = function () {
 
                       </div>
 
-                      <div className="text-2xl font-bold bg-gray-700 text-white px-3 py-2  text-right  leading-tight antialiased">Total : ₹{total ? Math.round(total) : 0}</div>
+                      <div className="text-xl font-bold bg-gray-700 text-white px-3 py-2  text-right  leading-tight antialiased">Total : ₹{total ? Math.round(total) : 0}</div>
 
                       {/* Terms & Conditions + signature/social block AFTER totals on last page */}
                       <div className="mt-4 text-[0.8rem] text-gray-700">
                         <div className="flex justify-between"> 
-                          <div className="text-[1.2rem]" ><strong>Terms & Conditions:</strong>  </div>
-                          <img src="/images/authentication/signature.webp" className="mb-3 border-b border-dashed border-gray-400 pb-1 w-[8rem] h-[3rem]" /> 
+                          <div className="text-[1rem]" ><strong>Terms & Conditions:</strong>  </div>
+                          <img src="/images/authentication/signature.webp" className=" border-b border-dashed border-gray-400 pb-1 w-[6rem] h-[2.2rem]" /> 
                         </div>
-                        <p className="text-[0.8rem]">  (1) All products are intended for lawful agricultural use only. </p>
-                        <p className="text-[0.8rem]">  (2) Product performance depends on various external factors such as weather, soil conditions, and application methods. The company will not be responsible for crop failure, yield reduction, or quality issues and the company will not compensate for any losses. </p>
-                        <p className="text-[0.8rem]">  (3) The battery Pump and Torch have a limited warranty of 6 months for only battery. Do not use electric items while in charging, use only the original adaptor, don't overcharge and avoid charging in low voltage as it may damage battery.  </p>
-                        <p className="text-[0.8rem]">  (4) All disputes are subject to the jurisdiction of Ahmedabad. E & O.E  </p>
+                        <p className="text-[0.7rem]">  (1) All products are intended for lawful agricultural use only. </p>
+                        <p className="text-[0.7rem]">  (2) Product performance depends on various external factors such as weather, soil conditions, and application methods. The company will not be responsible for crop failure, yield reduction, or quality issues and the company will not compensate for any losses. </p>
+                        <p className="text-[0.7rem]">  (3) The battery Pump and Torch have a limited warranty of 6 months for only battery. Do not use electric items while in charging, use only the original adaptor, don't overcharge and avoid charging in low voltage as it may damage battery.  </p>
+                        <p className="text-[0.7rem]">  (4) All disputes are subject to the jurisdiction of Ahmedabad. E & O.E  </p>
                       </div>
 
                       <div className="mt-4 text-center text-gray-600">
-                        <h6 className="text-[1rem] leading-none">
+                        <h6 className="text-[0.8rem] leading-none">
                             <span role="img" aria-label="pray" className="mr-1">🙏</span>
                             એગ્રી ભારતમાંથી ખરીદી કરવા બદલ આભાર !
                             <span role="img" aria-label="pray" className="ml-1">🙏</span>
